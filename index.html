@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TechMountain Bootcamp — Interactive, accessible tech education for learners in Malawi. Learn coding, web development, and more.">
+    <meta name="theme-color" content="#1a2332">
+    <title>TechMountain Bootcamp — Learn Tech in Malawi</title>
+
+    <style>
+        /* ============================================================
+           CSS — style.css (Main Styles)
+           ============================================================ */
+
+        /* ---------- CSS Variables / Design Tokens ---------- */
+        :root {
+            --clr-primary: #1a2332;
+            --clr-primary-light: #2c3e50;
+            --clr-primary-lighter: #3d4f63;
+            --clr-accent: #00c853;
+            --clr-accent-hover: #00a844;
+            --clr-accent-soft: rgba(0, 200, 83, 0.12);
+            --clr-bg: #f8f9fa;
+            --clr-surface: #ffffff;
+            --clr-text: #2d3436;
+            --clr-text-muted: #6c757d;
+            --clr-border: #e0e0e0;
+            --clr-danger: #e53935;
+            --clr-warning: #ffa000;
+            --clr-white: #ffffff;
+
+            --font-stack: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.15);
+
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --max-width: 1200px;
+            --header-height: 64px;
+        }
+
+        /* ---------- Reset & Base ---------- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-stack);
+            background: var(--clr-bg);
+            color: var(--clr-text);
+            line-height: 1.6;
+            font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        a {
+            color: var(--clr-accent);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+        a:hover {
+            color: var(--clr-accent-hover);
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        /* ---------- Utility ---------- */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-muted {
+            color: var(--clr-text-muted);
+        }
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+        .mt-4 {
+            margin-top: 2rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+        .mb-4 {
+            margin-bottom: 2rem;
+        }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 1rem;
+            border: 2px solid transparent;
+            transition: all var(--transition);
+            line-height: 1.4;
+            text-align: center;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .btn:focus-visible {
+            outline: 3px solid var(--clr-accent);
+            outline-offset: 2px;
+        }
+        .btn-primary {
+            background: var(--clr-accent);
+            color: var(--clr-primary);
+            border-color: var(--clr-accent);
+        }
+        .btn-primary:hover {
+            background: var(--clr-accent-hover);
+            border-color: var(--clr-accent-hover);
+            color: var(--clr-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.35);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--clr-primary);
+            border-color: var(--clr-primary);
+        }
+        .btn-secondary:hover {
+            background: var(--clr-primary);
+            color: var(--clr-white);
+        }
+        .btn-outline-light {
+            background: transparent;
+            color: var(--clr-white);
+            border-color: var(--clr-white);
+        }
+        .btn-outline-light:hover {
+            background: var(--clr-white);
+            color: var(--clr-primary);
+        }
+        .btn-sm {
+            padding: 8px 18px;
+            font-size: 0.875rem;
+        }
+        .btn-lg {
+            padding: 16px 36px;
+            font-size: 1.1rem;
+        }
+        .btn-block {
+            width: 100%;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ---------- Header & Navigation ---------- */
+        .site-header {
+            background: var(--clr-primary);
+            color: var(--clr-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--clr-white);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            background: var(--clr-accent);
+            color: var(--clr-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 4px;
+            align-items: center;
+        }
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 500;
+            transition: all var(--transition);
+            display: block;
+        }
+        .nav-link:hover {
+            color: var(--clr-white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            color: var(--clr-primary);
+            background: var(--clr-accent);
+            font-weight: 600;
+        }
+        .nav-cta {
+            background: var(--clr-accent);
+            color: var(--clr-primary) !important;
+            font-weight: 600;
+            padding: 8px 20px;
+        }
+        .nav-cta:hover {
+            background: var(--clr-accent-hover) !important;
+            color: var(--clr-primary) !important;
+        }
+        .hamburger {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--clr-white);
+            font-size: 1.8rem;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: background var(--transition);
+        }
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .hamburger:focus-visible {
+            outline: 2px solid var(--clr-accent);
+            outline-offset: 2px;
+        }
+
+        /* ---------- Pages / Views ---------- */
+        .page {
+            display: none;
+            flex: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- Hero Section (Landing) ---------- */
+        .hero {
+            background: var(--clr-primary);
+            color: var(--clr-white);
+            padding: 60px 0 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: var(--clr-bg);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--clr-accent-soft);
+            color: var(--clr-accent);
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 200, 83, 0.3);
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            line-height: 1.15;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            max-width: 700px;
+        }
+        .hero h1 .highlight {
+            color: var(--clr-accent);
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 560px;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--clr-accent);
+        }
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* ---------- Section Headings ---------- */
+        .section {
+            padding: 60px 0;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            color: var(--clr-primary);
+        }
+        .section-subtitle {
+            color: var(--clr-text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* ---------- Course Cards ---------- */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .course-card {
+            background: var(--clr-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--clr-border);
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            border-color: var(--clr-accent);
+        }
+        .course-card-image {
+            height: 160px;
+            background: var(--clr-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--clr-accent);
+            font-weight: 700;
+            position: relative;
+        }
+        .course-card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--clr-accent);
+            color: var(--clr-primary);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .course-card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--clr-accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .course-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--clr-primary);
+        }
+        .course-card-description {
+            color: var(--clr-text-muted);
+            font-size: 0.95rem;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .course-card-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--clr-text-muted);
+            margin-bottom: 16px;
+        }
+        .course-card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ---------- Features ---------- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            background: var(--clr-surface);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--clr-border);
+            text-align: center;
+            transition: all var(--transition);
+        }
+        .feature-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--clr-accent);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--clr-primary);
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: var(--clr-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ---------- Testimonials ---------- */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .testimonial-card {
+            background: var(--clr-surface);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--clr-border);
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: var(--clr-text);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--clr-primary);
+            color: var(--clr-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .testimonial-name {
+            font-weight: 600;
+            color: var(--clr-primary);
+        }
+        .testimonial-role {
+            font-size: 0.85rem;
+            color: var(--clr-text-muted);
+        }
+
+        /* ---------- Filter Buttons ---------- */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            border: 2px solid var(--clr-border);
+            background: var(--clr-surface);
+            color: var(--clr-text);
+            font-weight: 500;
+            transition: all var(--transition);
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            border-color: var(--clr-accent);
+            color: var(--clr-accent);
+        }
+        .filter-btn.active {
+            background: var(--clr-accent);
+            border-color: var(--clr-accent);
+            color: var(--clr-primary);
+            font-weight: 600;
+        }
+
+        /* ---------- Lesson Page Layout ---------- */
+        .lesson-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 0;
+            min-height: calc(100vh - var(--header-height));
+        }
+        .lesson-sidebar {
+            background: var(--clr-surface);
+            border-right: 1px solid var(--clr-border);
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(100vh - var(--header-height));
+            position: sticky;
+            top: var(--header-height);
+        }
+        .lesson-sidebar-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--clr-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--clr-accent);
+        }
+        .lesson-nav-list {
+            list-style: none;
+        }
+        .lesson-nav-item {
+            margin-bottom: 4px;
+        }
+        .lesson-nav-link {
+            display: block;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            color: var(--clr-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .lesson-nav-link:hover {
+            background: var(--clr-accent-soft);
+            color: var(--clr-primary);
+        }
+        .lesson-nav-link.active {
+            background: var(--clr-accent-soft);
+            border-color: var(--clr-accent);
+            color: var(--clr-primary);
+            font-weight: 600;
+        }
+        .lesson-nav-link.completed::after {
+            content: ' ✓';
+            color: var(--clr-accent);
+            font-weight: 700;
+        }
+        .lesson-content {
+            padding: 30px 40px;
+            max-width: 800px;
+        }
+        .lesson-content h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--clr-primary);
+            margin-bottom: 8px;
+        }
+        .lesson-content h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--clr-primary);
+            margin-top: 28px;
+            margin-bottom: 12px;
+        }
+        .lesson-content p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+        .lesson-content code {
+            background: var(--clr-primary);
+            color: var(--clr-accent);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+        }
+        .lesson-content pre {
+            background: var(--clr-primary);
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .lesson-content pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: 0.95rem;
+        }
+        .lesson-content ul,
+        .lesson-content ol {
+            margin: 0 0 16px 24px;
+            line-height: 1.8;
+        }
+        .lesson-content blockquote {
+            border-left: 4px solid var(--clr-accent);
+            padding-left: 16px;
+            margin: 16px 0;
+            color: var(--clr-text-muted);
+            font-style: italic;
+        }
+        .lesson-complete-btn {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--clr-border);
+        }
+        .lesson-progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--clr-text-muted);
+        }
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--clr-border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--clr-accent);
+            border-radius: var(--radius-full);
+            transition: width 0.4s ease;
+        }
+
+        /* ---------- Enrollment Form ---------- */
+        .enroll-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        .enroll-form {
+            background: var(--clr-surface);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--clr-border);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--clr-primary);
+            font-size: 0.95rem;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--clr-border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color var(--transition);
+            background: var(--clr-bg);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--clr-accent);
+            background: var(--clr-surface);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .form-error {
+            color: var(--clr-danger);
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: var(--clr-danger);
+        }
+        .form-group.error .form-error {
+            display: block;
+        }
+        .payment-info {
+            background: var(--clr-primary);
+            color: var(--clr-white);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .payment-info h3 {
+            color: var(--clr-accent);
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+        }
+        .payment-step {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 18px;
+            align-items: flex-start;
+        }
+        .payment-step-number {
+            background: var(--clr-accent);
+            color: var(--clr-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        .payment-step-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .payment-step-text strong {
+            color: var(--clr-accent);
+        }
+        .payment-options {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        .payment-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .success-message {
+            background: var(--clr-accent-soft);
+            border: 2px solid var(--clr-accent);
+            color: var(--clr-primary);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            margin-top: 16px;
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* ---------- Footer ---------- */
+        .site-footer {
+            background: var(--clr-primary);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 30px;
+        }
+        .footer-heading {
+            color: var(--clr-white);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+        .footer-link {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            transition: color var(--transition);
+        }
+        .footer-link:hover {
+            color: var(--clr-accent);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ---------- Back to Top ---------- */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--clr-accent);
+            color: var(--clr-primary);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow-md);
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition);
+            z-index: 900;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .back-to-top:hover {
+            background: var(--clr-accent-hover);
+            transform: translateY(-3px);
+        }
+
+        /* ---------- Offline Indicator ---------- */
+        .offline-banner {
+            background: var(--clr-warning);
+            color: var(--clr-primary);
+            text-align: center;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .offline-banner.show {
+            display: block;
+        }
+
+        /* ============================================================
+           CSS — responsive.css (Mobile-First Media Queries)
+           ============================================================ */
+
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .lesson-layout {
+                grid-template-columns: 1fr;
+            }
+            .lesson-sidebar {
+                position: static;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid var(--clr-border);
+                padding: 16px 20px;
+            }
+            .lesson-content {
+                padding: 24px 20px;
+                max-width: 100%;
+            }
+            .enroll-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --header-height: 56px;
+            }
+            .nav-list {
+                display: none;
+                position: absolute;
+                top: var(--header-height);
+                left: 0;
+                right: 0;
+                background: var(--clr-primary);
+                flex-direction: column;
+                padding: 16px 20px;
+                gap: 4px;
+                box-shadow: var(--shadow-md);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .nav-list.open {
+                display: flex;
+            }
+            .nav-link {
+                padding: 12px 16px;
+                width: 100%;
+                text-align: left;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero {
+                padding: 40px 0 50px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+                letter-spacing: -0.5px;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+            }
+            .hero-actions .btn {
+                width: 100%;
+            }
+            .hero-stats {
+                gap: 20px;
+                justify-content: space-around;
+            }
+            .hero-stat-number {
+                font-size: 1.5rem;
+            }
+            .section {
+                padding: 40px 0;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-bar {
+                gap: 6px;
+            }
+            .filter-btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+            .lesson-content {
+                padding: 16px;
+            }
+            .lesson-content h1 {
+                font-size: 1.5rem;
+            }
+            .lesson-content pre {
+                padding: 14px;
+                font-size: 0.8rem;
+            }
+            .enroll-form,
+            .payment-info {
+                padding: 20px;
+            }
+            .back-to-top {
+                bottom: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .hero-stat-number {
+                font-size: 1.3rem;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .btn-lg {
+                padding: 14px 28px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    OFFLINE INDICATOR
+    ============================================================ -->
+    <div class="offline-banner" id="offlineBanner" role="alert">
+        ⚠️ You are currently offline. Some content may not be available.
+    </div>
+
+    <!-- ============================================================
+    HEADER & NAVIGATION
+    ============================================================ -->
+    <header class="site-header" role="banner">
+        <div class="container">
+            <a href="#home" class="logo" aria-label="TechMountain Bootcamp Home">
+                <span class="logo-icon" aria-hidden="true">TM</span>
+                TechMountain
+            </a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+                ☰ 
+            </button>
+            <nav aria-label="Main navigation">
+                <ul class="nav-list" id="navList" role="menubar">
+                    <li role="none"><a href="#home" class="nav-link active" data-nav="home" role="menuitem">Home</a></li>
+                    <li role="none"><a href="#courses" class="nav-link" data-nav="courses" role="menuitem">Courses</a></li>
+                    <li role="none"><a href="#lesson" class="nav-link" data-nav="lesson" role="menuitem">Start Learning</a></li>
+                    <li role="none"><a href="#enroll" class="nav-link nav-cta" data-nav="enroll" role="menuitem">Enroll Now</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    PAGE: HOME (Landing)
+    ============================================================ -->
+    <main class="page active" id="page-home" role="main">
+        <!-- Hero -->
+        <section class="hero" aria-label="Hero">
+            <div class="container">
+                <span class="hero-badge">🇲🇼 Made for Malawi — Low Data Friendly</span>
+                <h1>Learn <span class="highlight">Tech Skills</span> That Get You Hired.</h1>
+                <p class="hero-subtitle">
+                    TechMountain Bootcamp is an interactive, accessible platform for Malawian learners.
+                    Master coding, web development, and more — at your own pace, with flexible payments.
+                </p>
+                <div class="hero-actions">
+                    <a href="#courses" class="btn btn-primary btn-lg">Browse Courses</a>
+                    <a href="#enroll" class="btn btn-outline-light btn-lg">Enroll Now</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">350+</div>
+                        <div class="hero-stat-label">Students Enrolled</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">12</div>
+                        <div class="hero-stat-label">Course Tracks</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">85%</div>
+                        <div class="hero-stat-label">Job Placement Rate</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number">24/7</div>
+                        <div class="hero-stat-label">Community Support</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section" aria-label="Features">
+            <div class="container">
+                <h2 class="section-title">Why TechMountain?</h2>
+                <p class="section-subtitle">Built specifically for learners in Malawi. Fast, affordable, and community-driven.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📶</div>
+                        <h3>Low Data Optimized</h3>
+                        <p>All content is compressed and cached. Re-read lessons offline without wasting mobile data.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">💰</div>
+                        <h3>Flexible Mobile Money</h3>
+                        <p>Pay with Airtel Money or TNM Mpamba. Affordable installment plans for every budget.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">💬</div>
+                        <h3>Community Support</h3>
+                        <p>Join WhatsApp and Telegram study groups. Get help from instructors and peers in real time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🎯</div>
+                        <h3>Practical Projects</h3>
+                        <p>Build a real portfolio with hands-on coding exercises and downloadable starter files.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Courses Preview -->
+        <section class="section" aria-label="Featured Courses" style="padding-top:0;">
+            <div class="container">
+                <h2 class="section-title">Featured Courses</h2>
+                <p class="section-subtitle">Start your journey with our most popular tracks.</p>
+                <div class="course-grid" id="featuredCoursesGrid">
+                    <!-- Dynamically populated by JavaScript -->
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#courses" class="btn btn-secondary">View All Courses →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section" aria-label="Testimonials" style="background:var(--clr-surface);">
+            <div class="container">
+                <h2 class="section-title">What Our Students Say</h2>
+                <p class="section-subtitle">Real stories from learners across Malawi.</p>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"TechMountain changed my life. I started with zero coding knowledge and now I work as a junior developer in Lilongwe. The lessons are clear and the community is amazing."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar" aria-hidden="true">C</div>
+                            <div>
+                                <div class="testimonial-name">Chisomo Banda</div>
+                                <div class="testimonial-role">Web Developer, Lilongwe</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"The mobile money payment option made it easy to enroll. I study in the evenings after work and I can already build my own websites after just 3 months."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar" aria-hidden="true">T</div>
+                            <div>
+                                <div class="testimonial-name">Thoko Mwale</div>
+                                <div class="testimonial-role">Entrepreneur, Blantyre</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"I love that I can download lesson transcripts and read them offline. It works perfectly on my basic smartphone with limited data."</p>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar" aria-hidden="true">G</div>
+                            <div>
+                                <div class="testimonial-name">Gift Phiri</div>
+                                <div class="testimonial-role">Student, Mzuzu</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================================
+    PAGE: COURSES (Catalog)
+    ============================================================ -->
+    <main class="page" id="page-courses" role="main">
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">Course Catalog</h1>
+                <p class="section-subtitle">Filter by category to find the right track for you.</p>
+                <div class="filter-bar" id="filterBar" role="tablist" aria-label="Filter courses by category">
+                    <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Courses</button>
+                    <button class="filter-btn" data-filter="frontend" role="tab" aria-selected="false">Frontend</button>
+                    <button class="filter-btn" data-filter="backend" role="tab" aria-selected="false">Backend</button>
+                    <button class="filter-btn" data-filter="mobile" role="tab" aria-selected="false">Mobile</button>
+                    <button class="filter-btn" data-filter="data" role="tab" aria-selected="false">Data &amp; AI</button>
+                    <button class="filter-btn" data-filter="foundations" role="tab" aria-selected="false">Foundations</button>
+                </div>
+                <div class="course-grid" id="allCoursesGrid">
+                    <!-- Dynamically populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================================
+    PAGE: LESSON (Module Reader)
+    ============================================================ -->
+    <main class="page" id="page-lesson" role="main">
+        <div class="lesson-layout">
+            <!-- Sidebar -->
+            <aside class="lesson-sidebar" aria-label="Lesson navigation">
+                <h2 class="lesson-sidebar-title" id="lessonSidebarTitle">Course Modules</h2>
+                <nav aria-label="Module navigation">
+                    <ul class="lesson-nav-list" id="lessonNavList">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </nav>
+            </aside>
+            <!-- Content -->
+            <article class="lesson-content" id="lessonContent" aria-live="polite">
+                <!-- Dynamically populated -->
+            </article>
+        </div>
+    </main>
+
+    <!-- ============================================================
+    PAGE: ENROLL
+    ============================================================ -->
+    <main class="page" id="page-enroll" role="main">
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">Enroll in a Course</h1>
+                <p class="section-subtitle">Complete the form below and follow the payment instructions to get started.</p>
+                <div class="enroll-layout">
+                    <!-- Form -->
+                    <div class="enroll-form">
+                        <h2 class="mb-2" style="font-size:1.3rem; font-weight:700; color:var(--clr-primary);">Registration Form</h2>
+                        <form id="enrollForm" novalidate aria-label="Enrollment form">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" placeholder="e.g., Chisomo Banda" required autocomplete="name">
+                                <span class="form-error">Please enter your full name.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                                <span class="form-error">Please enter a valid email address.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number (for mobile money) *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+265 999 000 000" required autocomplete="tel">
+                                <span class="form-error">Please enter your phone number.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="courseSelect">Select Course *</label>
+                                <select id="courseSelect" name="courseSelect" required>
+                                    <option value="">— Choose a course —</option>
+                                    <option value="HTML/CSS Basics">HTML/CSS Basics</option>
+                                    <option value="JavaScript Essentials">JavaScript Essentials</option>
+                                    <option value="Python Fundamentals">Python Fundamentals</option>
+                                    <option value="React.js Development">React.js Development</option>
+                                    <option value="Node.js & Express">Node.js & Express</option>
+                                    <option value="Flutter Mobile Development">Flutter Mobile Development</option>
+                                    <option value="Data Analysis with Python">Data Analysis with Python</option>
+                                    <option value="Computer Basics & Digital Literacy">Computer Basics &amp; Digital Literacy</option>
+                                </select>
+                                <span class="form-error">Please select a course.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentMethod">Preferred Payment Method *</label>
+                                <select id="paymentMethod" name="paymentMethod" required>
+                                    <option value="">— Choose payment method —</option>
+                                    <option value="airtel">Airtel Money</option>
+                                    <option value="mpamba">TNM Mpamba</option>
+                                    <option value="bank">Bank Transfer</option>
+                                </select>
+                                <span class="form-error">Please select a payment method.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Additional Comments (optional)</label>
+                                <textarea id="comments" name="comments" placeholder="Any questions or special requests..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitBtn">Submit Enrollment</button>
+                            <div class="success-message" id="successMessage" role="alert">
+                                ✅ Enrollment submitted! We'll contact you with payment confirmation within 24 hours.
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Payment Info -->
+                    <div class="payment-info" aria-label="Payment instructions">
+                        <h3>📱 Mobile Money Payment Steps</h3>
+                        <p style="margin-bottom:20px; font-size:0.95rem; line-height:1.7; color:rgba(255,255,255,0.85);">
+                            After submitting the form, follow these steps to complete your enrollment.
+                            Payments are confirmed within 24 hours.
+                        </p>
+                        <div class="payment-options">
+                            <span class="payment-option">Airtel Money</span>
+                            <span class="payment-option">TNM Mpamba</span>
+                            <span class="payment-option">Bank Transfer</span>
+                        </div>
+                        <div class="payment-step">
+                            <span class="payment-step-number" aria-hidden="true">1</span>
+                            <div class="payment-step-text">
+                                Dial <strong>*211#</strong> (+265 996 418 265) or <strong>*444#</strong> (+265 8976 211 95) on your phone.
+                            </div>
+                        </div>
+                        <div class="payment-step">
+                            <span class="payment-step-number" aria-hidden="true">2</span>
+                            <div class="payment-step-text">
+                                Select <strong>"Send Money"</strong> or <strong>"Pay Merchant"</strong>.
+                            </div>
+                        </div>
+                        <div class="payment-step">
+                            <span class="payment-step-number" aria-hidden="true">3</span>
+                            <div class="payment-step-text">
+                                Enter merchant code: <strong>TM-BOOTCAMP</strong>
+                            </div>
+                        </div>
+                        <div class="payment-step">
+                            <span class="payment-step-number" aria-hidden="true">4</span>
+                            <div class="payment-step-text">
+                                Enter the exact amount from your course confirmation.
+                            </div>
+                        </div>
+                        <div class="payment-step">
+                            <span class="payment-step-number" aria-hidden="true">5</span>
+                            <div class="payment-step-text">
+                                Save the transaction ID and send it to our WhatsApp: <strong>+265 89 762 119 5</strong>
+                            </div>
+                        </div>
+                        <p style="margin-top:20px; font-size:0.85rem; color:rgba(255,255,255,0.6);">
+                            💡 <strong style="color:var(--clr-accent);">Installment plans available:</strong> Pay 50% now and 50% before final module.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-heading">TechMountain Bootcamp</h3>
+                    <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); margin-bottom:12px;">
+                        Empowering Malawi's next generation of tech talent.
+                    </p>
+                    <a href="#enroll" class="btn btn-primary btn-sm">Enroll Today</a>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Courses</h3>
+                    <a href="#courses" class="footer-link">HTML/CSS Basics</a>
+                    <a href="#courses" class="footer-link">JavaScript Essentials</a>
+                    <a href="#courses" class="footer-link">Python Fundamentals</a>
+                    <a href="#courses" class="footer-link">Mobile Development</a>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Support</h3>
+                    <a href="#" class="footer-link">WhatsApp: +265 897 6211 95</a>
+                    <a href="#" class="footer-link">Telegram: @techmountain</a>
+                    <a href="#" class="footer-link">Email: wanangwakilembebrown.13@gmail.com</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                </div>
+                <div>
+                    <h3 class="footer-heading">Community</h3>
+                    <a href="#" class="footer-link">Study Group (WhatsApp)</a>
+                    <a href="#" class="footer-link">Alumni Network</a>
+                    <a href="#" class="footer-link">Mentorship Program</a>
+                    <a href="#" class="footer-link">Events &amp; Workshops</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 TechMountain Bootcamp — Lilongwe, Malawi. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Scroll back to top">↑</button>
+
+    <!-- ============================================================
+    JAVASCRIPT
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // js/main.js + js/progress.js (Combined for single-file demo)
+        // ============================================================
+
+        (function() {
+            'use strict';
+
+            // ---------- Data ----------
+            const coursesData = [{
+                id: 'html-css',
+                title: 'HTML/CSS Basics',
+                category: 'frontend',
+                icon: '🎨',
+                badge: 'Beginner',
+                description: 'Learn to build and style beautiful, responsive web pages from scratch. No prior experience needed.',
+                duration: '6 weeks',
+                level: 'Beginner',
+                price: 'MK 25,000',
+                modules: [
+                    { title: 'Getting Started with HTML', content: '<p>HTML is the backbone of every website. Let\'s learn the fundamentals.</p><h2>What is HTML?</h2><p>HTML (HyperText Markup Language) defines the structure of your web pages. Think of it as the skeleton of a website.</p><pre><code>&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;My First Page&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Hello, Malawi!&lt;/h1&gt;\n    &lt;p&gt;This is my first web page.&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;</code></pre><p>Save this code in a file named <code>index.html</code> and open it in your browser.</p>' },
+                    { title: 'CSS Styling Basics', content: '<p>CSS makes your website look beautiful. Learn how to add colors, fonts, and layout.</p><h2>Adding Style with CSS</h2><p>CSS (Cascading Style Sheets) controls the appearance of your HTML elements.</p><pre><code>body {\n  font-family: sans-serif;\n  background: #f8f9fa;\n  color: #333;\n}\n\nh1 {\n  color: #00c853;\n  font-size: 2rem;\n}</code></pre><p>Link your CSS file with <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</p>' },
+                    { title: 'Responsive Design', content: '<p>Your website must work on phones, tablets, and desktops. Learn responsive design principles.</p><h2>Mobile-First Approach</h2><p>Start designing for mobile screens, then scale up. Use <code>@media</code> queries.</p><pre><code>@media (min-width: 768px) {\n  .container {\n    max-width: 720px;\n  }\n}</code></pre><p>Test your site on different devices and browser sizes.</p>' },
+                    { title: 'Building a Portfolio Project', content: '<p>Put your skills together by building a personal portfolio website.</p><h2>Your First Project</h2><p>Create a simple portfolio with your name, bio, and links to your work.</p><ul><li>Use semantic HTML tags</li><li>Apply CSS grid or flexbox for layout</li><li>Make it mobile-friendly</li></ul>' },
+                ],
+            }, {
+                id: 'javascript',
+                title: 'JavaScript Essentials',
+                category: 'frontend',
+                icon: '⚡',
+                badge: 'Popular',
+                description: 'Add interactivity to your websites with JavaScript. Learn variables, functions, DOM manipulation, and more.',
+                duration: '8 weeks',
+                level: 'Beginner-Intermediate',
+                price: 'MK 35,000',
+                modules: [
+                    { title: 'Variables & Data Types', content: '<p>JavaScript is the language of the web. Let\'s start with the basics.</p><h2>Variables</h2><p>Variables store data that your program can use.</p><pre><code>let name = "Chisomo";\nconst age = 25;\nvar isStudent = true;\n\nconsole.log(name, age, isStudent);</code></pre><p>Use <code>let</code> for values that change, <code>const</code> for constants.</p>' },
+                    { title: 'Functions & Events', content: '<p>Functions let you organize code into reusable blocks. Events let you respond to user actions.</p><h2>Functions</h2><pre><code>function greet(name) {\n  return `Hello, ${name}!`;\n}\n\ngreet("Gift"); // "Hello, Gift!"</code></pre><h2>Event Listeners</h2><pre><code>document.querySelector("button")\n  .addEventListener("click", () => {\n    alert("Button clicked!");\n  });</code></pre>' },
+                    { title: 'DOM Manipulation', content: '<p>The Document Object Model (DOM) lets you change HTML with JavaScript.</p><h2>Selecting Elements</h2><pre><code>const heading = document.querySelector("h1");\nheading.textContent = "New Title";\nheading.style.color = "green";</code></pre><p>You can create, modify, and delete elements dynamically.</p>' },
+                    { title: 'Working with APIs', content: '<p>Learn to fetch data from external APIs and display it on your page.</p><h2>Fetch API</h2><pre><code>fetch("https://api.example.com/data")\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));</code></pre><p>APIs power modern web apps — from weather to payments.</p>' },
+                ],
+            }, {
+                id: 'python',
+                title: 'Python Fundamentals',
+                category: 'backend',
+                icon: '🐍',
+                badge: 'Beginner',
+                description: 'Learn the most versatile programming language. Perfect for backend development, data science, and automation.',
+                duration: '10 weeks',
+                level: 'Beginner',
+                price: 'MK 30,000',
+                modules: [
+                    { title: 'Python Basics', content: '<p>Python is known for its readable, clean syntax. Great first language.</p><h2>Your First Python Program</h2><pre><code>print("Hello, Malawi!")\n\nname = input("What is your name? ")\nprint(f"Welcome, {name}!")</code></pre><p>Python uses indentation to define code blocks.</p>' },
+                    { title: 'Data Structures', content: '<p>Lists, dictionaries, tuples, and sets store collections of data.</p><h2>Lists & Dictionaries</h2><pre><code>students = ["Anna", "Bwana", "Chisomo"]\nages = {"Anna": 22, "Bwana": 25, "Chisomo": 19}\n\nprint(students[0])     # "Anna"\nprint(ages["Bwana"])   # 25</code></pre>' },
+                    { title: 'Functions & Modules', content: '<p>Organize your code with functions and import modules for extra functionality.</p><pre><code>def calculate_grade(score):\n    if score >= 70:\n        return "A"\n    elif score >= 50:\n        return "B"\n    else:\n        return "C"\n\nprint(calculate_grade(75))  # "A"</code></pre>' },
+                    { title: 'File Handling', content: '<p>Read from and write to files on your computer.</p><pre><code>with open("notes.txt", "w") as f:\n    f.write("Hello from Python!")\n\nwith open("notes.txt", "r") as f:\n    content = f.read()\n    print(content)</code></pre>' },
+                ],
+            }, {
+                id: 'react',
+                title: 'React.js Development',
+                category: 'frontend',
+                icon: '⚛️',
+                badge: 'Advanced',
+                description: 'Build modern, interactive web applications with React — the most popular JavaScript framework.',
+                duration: '12 weeks',
+                level: 'Intermediate',
+                price: 'MK 50,000',
+                modules: [
+                    { title: 'Components & Props', content: '<p>React uses components to build reusable UI pieces.</p><h2>Your First Component</h2><pre><code>function Welcome({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\n\n// Usage\n&lt;Welcome name="Malawi" /&gt;</code></pre><p>Components receive data through <code>props</code>.</p>' },
+                    { title: 'State & Hooks', content: '<p>State manages dynamic data in your components.</p><h2>useState Hook</h2><pre><code>import { useState } from "react";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    &lt;button onClick={() => setCount(count + 1)}&gt;\n      Count: {count}\n    &lt;/button&gt;\n  );\n}</code></pre>' },
+                    { title: 'Forms & Events', content: '<p>Handle user input and form submissions in React.</p><h2>Controlled Components</h2><pre><code>const [email, setEmail] = useState("");\n\n&lt;input\n  type="email"\n  value={email}\n  onChange={(e) => setEmail(e.target.value)}\n/&gt;</code></pre>' },
+                    { title: 'Routing & API Calls', content: '<p>Create multi-page experiences and fetch data from APIs.</p><h2>React Router</h2><pre><code>import { BrowserRouter, Routes, Route } from "react-router-dom";\n\n&lt;Routes&gt;\n  &lt;Route path="/" element={&lt;Home /&gt;} /&gt;\n  &lt;Route path="/about" element={&lt;About /&gt;} /&gt;\n&lt;/Routes&gt;</code></pre>' },
+                ],
+            }, {
+                id: 'nodejs',
+                title: 'Node.js & Express',
+                category: 'backend',
+                icon: '🟢',
+                badge: 'Popular',
+                description: 'Build fast, scalable backend services and REST APIs with Node.js and Express framework.',
+                duration: '10 weeks',
+                level: 'Intermediate',
+                price: 'MK 45,000',
+                modules: [
+                    { title: 'Node.js Basics', content: '<p>Node.js lets you run JavaScript on the server.</p><h2>Your First Server</h2><pre><code>const http = require("http");\n\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, { "Content-Type": "text/plain" });\n  res.end("Hello from Node.js!");\n});\n\nserver.listen(3000, () => console.log("Server running"));</code></pre>' },
+                    { title: 'Express Routing', content: '<p>Express makes building APIs simple and organized.</p><h2>REST API Routes</h2><pre><code>const express = require("express");\nconst app = express();\n\napp.get("/api/students", (req, res) => {\n  res.json([{ name: "Anna" }, { name: "Bwana" }]);\n});\n\napp.post("/api/students", (req, res) => {\n  // Create a new student\n});</code></pre>' },
+                    { title: 'Database Integration', content: '<p>Connect to MongoDB or PostgreSQL to store your data.</p><h2>MongoDB with Mongoose</h2><pre><code>const mongoose = require("mongoose");\nmongoose.connect("mongodb://localhost:27017/school");\n\nconst Student = mongoose.model("Student", {\n  name: String,\n  age: Number,\n});</code></pre>' },
+                    { title: 'Authentication', content: '<p>Secure your APIs with JWT (JSON Web Tokens).</p><h2>JWT Auth</h2><pre><code>const jwt = require("jsonwebtoken");\n\nconst token = jwt.sign({ userId: 123 }, "secret_key");\n// Send token in Authorization header\n// Verify on protected routes</code></pre>' },
+                ],
+            }, {
+                id: 'flutter',
+                title: 'Flutter Mobile Development',
+                category: 'mobile',
+                icon: '📱',
+                badge: 'New',
+                description: 'Build beautiful, native mobile apps for Android and iOS from a single codebase with Flutter.',
+                duration: '12 weeks',
+                level: 'Intermediate',
+                price: 'MK 55,000',
+                modules: [
+                    { title: 'Dart & Flutter Setup', content: '<p>Flutter uses the Dart language. Get set up for mobile development.</p><h2>Hello Flutter</h2><pre><code>import \'package:flutter/material.dart\';\n\nvoid main() => runApp(MyApp());\n\nclass MyApp extends StatelessWidget {\n  @override\n  Widget build(BuildContext context) {\n    return MaterialApp(\n      home: Scaffold(\n        body: Center(child: Text(\'Hello, Malawi!\')),\n      ),\n    );\n  }\n}</code></pre>' },
+                    { title: 'Widgets & Layouts', content: '<p>Everything in Flutter is a widget. Learn to compose layouts.</p><h2>Common Widgets</h2><pre><code>Column(\n  children: [\n    Text(\'First item\'),\n    Row(\n      children: [\n        Icon(Icons.star),\n        Text(\'Rated 5 stars\'),\n      ],\n    ),\n  ],\n)</code></pre>' },
+                    { title: 'State Management', content: '<p>Manage app state with Provider or Riverpod.</p><h2>Provider Pattern</h2><pre><code>class CounterModel extends ChangeNotifier {\n  int _count = 0;\n  int get count => _count;\n  void increment() {\n    _count++;\n    notifyListeners();\n  }\n}</code></pre>' },
+                    { title: 'APIs & Deployment', content: '<p>Connect your Flutter app to backend APIs and deploy to app stores.</p><p>Learn to integrate REST APIs, handle JSON, and publish to Google Play Store.</p>' },
+                ],
+            }, {
+                id: 'data-analysis',
+                title: 'Data Analysis with Python',
+                category: 'data',
+                icon: '📊',
+                badge: 'In Demand',
+                description: 'Analyze data, create visualizations, and extract insights using pandas, NumPy, and Matplotlib.',
+                duration: '10 weeks',
+                level: 'Intermediate',
+                price: 'MK 40,000',
+                modules: [
+                    { title: 'pandas & NumPy', content: '<p>pandas and NumPy are essential libraries for data manipulation.</p><h2>Loading Data</h2><pre><code>import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv("students.csv")\nprint(df.head())\nprint(df.describe())</code></pre>' },
+                    { title: 'Data Visualization', content: '<p>Create charts and graphs with Matplotlib and Seaborn.</p><h2>Plotting</h2><pre><code>import matplotlib.pyplot as plt\n\nplt.figure(figsize=(10, 6))\nplt.bar(df["name"], df["score"])\nplt.title("Student Scores")\nplt.show()</code></pre>' },
+                    { title: 'Data Cleaning', content: '<p>Real-world data is messy. Learn to handle missing values and duplicates.</p><pre><code># Remove duplicates\ndf = df.drop_duplicates()\n\n# Fill missing values\ndf["age"] = df["age"].fillna(df["age"].mean())</code></pre>' },
+                    { title: 'Practical Project', content: '<p>Analyze a real dataset — e.g., Malawi school enrollment data — and create an insights report.</p><p>Present your findings with visualizations and actionable recommendations.</p>' },
+                ],
+            }, {
+                id: 'digital-literacy',
+                title: 'Computer Basics & Digital Literacy',
+                category: 'foundations',
+                icon: '💻',
+                badge: 'Beginner',
+                description: 'Learn essential computer skills: typing, file management, email, and safe internet usage.',
+                duration: '4 weeks',
+                level: 'Absolute Beginner',
+                price: 'MK 15,000',
+                modules: [
+                    { title: 'Getting Started with Computers', content: '<p>Learn the parts of a computer and how to operate one safely.</p><h2>Basic Operations</h2><ul><li>Turning on/off properly</li><li>Using mouse and keyboard</li><li>Understanding the desktop</li></ul><p>Practice typing with free tools like TypingClub.</p>' },
+                    { title: 'File Management', content: '<p>Organize your files and folders efficiently.</p><h2>Best Practices</h2><ul><li>Create meaningful folder names</li><li>Use cloud storage (Google Drive, Dropbox)</li><li>Back up important files</li></ul>' },
+                    { title: 'Email & Communication', content: '<p>Set up and manage email accounts professionally.</p><h2>Email Etiquette</h2><ul><li>Use a professional address</li><li>Write clear subject lines</li><li>Always proofread before sending</li></ul>' },
+                    { title: 'Internet Safety', content: '<p>Stay safe online with good digital hygiene practices.</p><h2>Key Tips</h2><ul><li>Use strong passwords</li><li>Enable two-factor authentication</li><li>Be cautious with links and attachments</li><li>Protect personal information</li></ul>' },
+                ],
+            }, ];
+
+            // ---------- DOM References ----------
+            const navList = document.getElementById('navList');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const pages = {
+                home: document.getElementById('page-home'),
+                courses: document.getElementById('page-courses'),
+                lesson: document.getElementById('page-lesson'),
+                enroll: document.getElementById('page-enroll'),
+            };
+            const navLinks = document.querySelectorAll('.nav-link[data-nav]');
+            const featuredCoursesGrid = document.getElementById('featuredCoursesGrid');
+            const allCoursesGrid = document.getElementById('allCoursesGrid');
+            const filterBar = document.getElementById('filterBar');
+            const lessonNavList = document.getElementById('lessonNavList');
+            const lessonContent = document.getElementById('lessonContent');
+            const lessonSidebarTitle = document.getElementById('lessonSidebarTitle');
+            const enrollForm = document.getElementById('enrollForm');
+            const successMessage = document.getElementById('successMessage');
+            const backToTop = document.getElementById('backToTop');
+            const offlineBanner = document.getElementById('offlineBanner');
+
+            let currentFilter = 'all';
+            let currentCourseIndex = 0;
+            let currentModuleIndex = 0;
+
+            // ---------- Progress Tracking (localStorage) ----------
+            function getProgress() {
+                try {
+                    return JSON.parse(localStorage.getItem('tm_progress')) || {};
+                } catch {
+                    return {};
+                }
+            }
+
+            function saveProgress(progress) {
+                localStorage.setItem('tm_progress', JSON.stringify(progress));
+            }
+
+            function markModuleComplete(courseId, moduleIndex) {
+                const progress = getProgress();
+                if (!progress[courseId]) progress[courseId] = [];
+                if (!progress[courseId].includes(moduleIndex)) {
+                    progress[courseId].push(moduleIndex);
+                    saveProgress(progress);
+                }
+                renderLesson();
+            }
+
+            function isModuleComplete(courseId, moduleIndex) {
+                const progress = getProgress();
+                return progress[courseId] && progress[courseId].includes(moduleIndex);
+            }
+
+            function getCourseProgress(courseId, totalModules) {
+                const progress = getProgress();
+                const completed = progress[courseId] || [];
+                return { completed, total: totalModules, count: completed.length };
+            }
+
+            // ---------- Routing (Hash-based) ----------
+            function navigateTo(hash) {
+                const route = hash.replace('#', '') || 'home';
+                const validRoutes = Object.keys(pages);
+                const target = validRoutes.includes(route) ? route : 'home';
+
+                // Update pages
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.toggle('active', key === target);
+                });
+
+                // Update nav links
+                navLinks.forEach(link => {
+                    const linkNav = link.dataset.nav;
+                    link.classList.toggle('active', linkNav === target);
+                });
+
+                // Close mobile nav
+                navList.classList.remove('open');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+
+                // Scroll to top on page change
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                // Trigger rendering if needed
+                if (target === 'courses') renderAllCourses(currentFilter);
+                if (target === 'lesson') renderLesson();
+            }
+
+            // Listen for hash changes
+            window.addEventListener('hashchange', () => navigateTo(window.location.hash));
+            // Initial navigation
+            navigateTo(window.location.hash || '#home');
+
+            // ---------- Nav Toggle (Mobile) ----------
+            hamburgerBtn.addEventListener('click', () => {
+                const isOpen = navList.classList.toggle('open');
+                hamburgerBtn.setAttribute('aria-expanded', isOpen);
+                hamburgerBtn.textContent = isOpen ? '✕' : '☰';
+            });
+
+            // Close nav on link click
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navList.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                    hamburgerBtn.textContent = '☰';
+                });
+            });
+
+            // ---------- Render Courses ----------
+            function createCourseCard(course, index) {
+                const card = document.createElement('article');
+                card.className = 'course-card';
+                card.innerHTML = `
+              <div class="course-card-image" style="background:var(--clr-primary); display:flex; align-items:center; justify-content:center; font-size:3rem;">
+                ${course.icon}
+                ${course.badge ? `<span class="course-card-badge">${course.badge}</span>` : ''}
+              </div>
+              <div class="course-card-body">
+                <div class="course-card-category">${course.category}</div>
+                <h3 class="course-card-title">${course.title}</h3>
+                <p class="course-card-description">${course.description}</p>
+                <div class="course-card-meta">
+                  <span>⏱ ${course.duration}</span>
+                  <span>📈 ${course.level}</span>
+                </div>
+                <div class="course-card-meta">
+                  <span>💰 ${course.price}</span>
+                </div>
+                <button class="btn btn-primary btn-sm btn-block start-course-btn" data-course-index="${index}">
+                  Start Learning →
+                </button>
+              </div>
+            `;
+                return card;
+            }
+
+            function renderFeaturedCourses() {
+                const featured = coursesData.slice(0, 3);
+                featuredCoursesGrid.innerHTML = '';
+                featured.forEach(course => {
+                    const index = coursesData.indexOf(course);
+                    featuredCoursesGrid.appendChild(createCourseCard(course, index));
+                });
+                attachStartCourseListeners();
+            }
+
+            function renderAllCourses(filter) {
+                const filtered = filter === 'all' ?
+                    coursesData :
+                    coursesData.filter(c => c.category === filter);
+
+                allCoursesGrid.innerHTML = '';
+                if (filtered.length === 0) {
+                    allCoursesGrid.innerHTML =
+                        '<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--clr-text-muted);">No courses found in this category yet. Check back soon!</p>';
+                    return;
+                }
+                filtered.forEach(course => {
+                    const index = coursesData.indexOf(course);
+                    allCoursesGrid.appendChild(createCourseCard(course, index));
+                });
+                attachStartCourseListeners();
+            }
+
+            function attachStartCourseListeners() {
+                document.querySelectorAll('.start-course-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentCourseIndex = parseInt(btn.dataset.courseIndex, 10);
+                        currentModuleIndex = 0;
+                        // Update URL to lesson page
+                        window.location.hash = '#lesson';
+                        renderLesson();
+                    });
+                });
+            }
+
+            // ---------- Filter ----------
+            filterBar.addEventListener('click', (e) => {
+                const btn = e.target.closest('.filter-btn');
+                if (!btn) return;
+                currentFilter = btn.dataset.filter;
+                filterBar.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.toggle('active', b === btn);
+                    b.setAttribute('aria-selected', b === btn);
+                });
+                renderAllCourses(currentFilter);
+            });
+
+            // ---------- Lesson Rendering ----------
+            function renderLesson() {
+                const course = coursesData[currentCourseIndex];
+                if (!course) {
+                    lessonContent.innerHTML = '<p>Please select a course first.</p>';
+                    lessonNavList.innerHTML = '';
+                    lessonSidebarTitle.textContent = 'No Course Selected';
+                    return;
+                }
+
+                lessonSidebarTitle.textContent = course.title;
+
+                // Render sidebar nav
+                lessonNavList.innerHTML = '';
+                course.modules.forEach((module, idx) => {
+                    const li = document.createElement('li');
+                    li.className = 'lesson-nav-item';
+                    const completed = isModuleComplete(course.id, idx);
+                    const active = idx === currentModuleIndex;
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    a.className = `lesson-nav-link${active ? ' active' : ''}${completed ? ' completed' : ''}`;
+                    a.textContent = `${idx + 1}. ${module.title}`;
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentModuleIndex = idx;
+                        renderLesson();
+                    });
+                    li.appendChild(a);
+                    lessonNavList.appendChild(li);
+                });
+
+                // Render content
+                const module = course.modules[currentModuleIndex];
+                const progress = getCourseProgress(course.id, course.modules.length);
+                const pct = Math.round((progress.count / progress.total) * 100);
+
+                lessonContent.innerHTML = `
+              <h1>${module.title}</h1>
+              <p class="text-muted" style="margin-bottom:20px;">${course.title} — Module ${currentModuleIndex + 1} of ${course.modules.length}</p>
+              <div class="lesson-progress-indicator">
+                <span>Progress:</span>
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width:${pct}%;"></div>
+                </div>
+                <span>${progress.count}/${progress.total} complete</span>
+              </div>
+              <hr style="border:none; border-top:1px solid var(--clr-border); margin:20px 0;">
+              ${module.content}
+              <div class="lesson-complete-btn">
+                <button class="btn btn-primary btn-lg" id="markCompleteBtn" ${isModuleComplete(course.id, currentModuleIndex) ? 'disabled' : ''}>
+                  ${isModuleComplete(course.id, currentModuleIndex) ? '✓ Completed' : 'Mark as Complete'}
+                </button>
+              </div>
+            `;
+
+                // Add mark complete listener
+                const markBtn = document.getElementById('markCompleteBtn');
+                if (markBtn) {
+                    markBtn.addEventListener('click', () => {
+                        markModuleComplete(course.id, currentModuleIndex);
+                    });
+                }
+
+                // Update sidebar active states
+                document.querySelectorAll('.lesson-nav-link').forEach((link, idx) => {
+                    link.classList.toggle('active', idx === currentModuleIndex);
+                });
+            }
+
+            // ---------- Enrollment Form ----------
+            enrollForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+                const fields = [
+                    { id: 'fullName', errorMsg: 'Please enter your full name.' },
+                    { id: 'email', errorMsg: 'Please enter a valid email address.', validate: (val) => /\S+@\S+\.\S+/.test(
+                            val) },
+                    { id: 'phone', errorMsg: 'Please enter your phone number.', validate: (val) => val.trim()
+                            .length >= 8 },
+                    { id: 'courseSelect', errorMsg: 'Please select a course.' },
+                    { id: 'paymentMethod', errorMsg: 'Please select a payment method.' },
+                ];
+
+                fields.forEach(field => {
+                    const input = document.getElementById(field.id);
+                    const group = input.closest('.form-group');
+                    const value = input.value.trim();
+                    let valid = value !== '';
+                    if (field.validate && value !== '') {
+                        valid = field.validate(value);
+                    }
+                    if (!valid) {
+                        group.classList.add('error');
+                        isValid = false;
+                    } else {
+                        group.classList.remove('error');
+                    }
+                });
+
+                if (isValid) {
+                    successMessage.classList.add('show');
+                    enrollForm.querySelector('button[type="submit"]').disabled = true;
+                    enrollForm.querySelector('button[type="submit"]').textContent = 'Enrollment Submitted ✓';
+
+                    // Save enrollment to localStorage
+                    const enrollment = {
+                        name: document.getElementById('fullName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        course: document.getElementById('courseSelect').value,
+                        payment: document.getElementById('paymentMethod').value,
+                        comments: document.getElementById('comments').value,
+                        date: new Date().toISOString(),
+                    };
+                    localStorage.setItem('tm_enrollment', JSON.stringify(enrollment));
+
+                    // Reset after 5 seconds
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                        enrollForm.querySelector('button[type="submit"]').disabled = false;
+                        enrollForm.querySelector('button[type="submit"]').textContent = 'Submit Enrollment';
+                        enrollForm.reset();
+                    }, 5000);
+                }
+            });
+
+            // Remove error state on input
+            enrollForm.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('input', () => {
+                    input.closest('.form-group').classList.remove('error');
+                });
+                input.addEventListener('change', () => {
+                    input.closest('.form-group').classList.remove('error');
+                });
+            });
+
+            // ---------- Back to Top ----------
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.scrollY > 400);
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ---------- Offline Detection ----------
+            function updateOnlineStatus() {
+                if (!navigator.onLine) {
+                    offlineBanner.classList.add('show');
+                } else {
+                    offlineBanner.classList.remove('show');
+                }
+            }
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+
+            // ---------- Initial Render ----------
+            renderFeaturedCourses();
+            renderAllCourses('all');
+            renderLesson();
+
+            // ---------- Keyboard Navigation ----------
+            document.addEventListener('keydown', (e) => {
+                // Close mobile nav on Escape
+                if (e.key === 'Escape' && navList.classList.contains('open')) {
+                    navList.classList.remove('open');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                    hamburgerBtn.textContent = '☰';
+                }
+            });
+
+            console.log('🚀 TechMountain Bootcamp — Loaded Successfully');
+            console.log('📚 Courses available:', coursesData.length);
+            console.log('💾 Progress:', getProgress());
+            console.log('📶 Online:', navigator.onLine);
+
+        })();
+    </script>
+</body>
+</html>
