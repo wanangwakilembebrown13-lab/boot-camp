@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps &amp; Deployment — Interactive Course</title>
+<meta name="description" content="Ship real projects. Learn Git, deployment, environment variables, domains, HTTPS, Docker, and monitoring.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--info:#0284c7;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+.rd table{width:100%;border-collapse:collapse;font-size:14px;margin:14px 0}
+.rd table th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.rd table td{padding:9px 14px;border-bottom:1px solid var(--bd2);vertical-align:top}
+.rd table tr:last-child td{border-bottom:none}
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ex-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:22px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.ex-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.ex-card .hint{font-size:13.5px;color:var(--t3);margin-bottom:16px;line-height:1.6}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-hint{font-size:12px;color:var(--t3);margin-top:5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+/* Terminal */
+.term{background:var(--navy3);color:#e6edf3;border-radius:var(--r);font-family:var(--mono);font-size:13px;line-height:1.55;padding:0;overflow:hidden;border:1px solid #1e2b3d;box-shadow:0 1px 2px rgba(15,23,33,.06)}
+.term-hd{background:#1e2b3d;padding:9px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #263243}
+.term-dots{display:flex;gap:6px}
+.term-dots span{width:11px;height:11px;border-radius:50%;background:#4b5563}
+.term-dots span:nth-child(1){background:#ff5f57}
+.term-dots span:nth-child(2){background:#febc2e}
+.term-dots span:nth-child(3){background:#28c840}
+.term-title{margin-left:auto;font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.term-body{padding:14px 16px;min-height:280px;max-height:420px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.term-line{margin:0;padding:1px 0;color:#e6edf3;white-space:pre-wrap;word-break:break-word}
+.term-line.err{color:#f87171}
+.term-line.ok{color:var(--green)}
+.term-line.muted{color:#6b7280}
+.term-line.info{color:#7dd3fc}
+.term-prompt{display:flex;gap:8px;padding:8px 16px 14px;border-top:1px solid #263243;background:rgba(255,255,255,.02);align-items:center}
+.term-prompt-lbl{color:var(--green);font-weight:700;flex-shrink:0}
+.term-input{flex:1;background:transparent;border:none;outline:none;color:#e6edf3;font-family:var(--mono);font-size:13px;padding:0}
+.term-input::placeholder{color:#4b5563}
+/* Deploy card */
+.deploy-timeline{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.dp-step{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bg);border-radius:var(--r);opacity:.5;transition:all .25s var(--ease);border-left:3px solid var(--bd)}
+.dp-step.active{opacity:1;background:var(--gsoft);border-left-color:var(--green)}
+.dp-step.done{opacity:1;background:rgba(0,200,83,.06);border-left-color:var(--green)}
+.dp-step.err{opacity:1;background:rgba(220,38,38,.05);border-left-color:var(--danger)}
+.dp-num{width:24px;height:24px;border-radius:50%;background:var(--bd);color:var(--t3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.dp-step.active .dp-num{background:var(--green);color:var(--navy)}
+.dp-step.done .dp-num{background:var(--green);color:var(--navy)}
+.dp-step.err .dp-num{background:var(--danger);color:#fff}
+.dp-body{flex:1}
+.dp-name{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:2px}
+.dp-detail{font-size:13px;color:var(--t2);line-height:1.5;font-family:var(--mono)}
+/* Env var table */
+.env-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+.env-table th{background:var(--bg);color:var(--t3);text-align:left;padding:9px 12px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd)}
+.env-table td{padding:9px 12px;border-bottom:1px solid var(--bd2);font-family:var(--mono);font-size:12.5px;vertical-align:middle}
+.env-table td:last-child{text-align:right;font-family:inherit}
+.env-table .key{color:var(--navy);font-weight:600}
+.env-table .val{color:var(--t3)}
+.env-table .val.hidden{letter-spacing:2px;color:var(--t4)}
+.env-remove{color:var(--danger);font-size:12px;font-weight:600;cursor:pointer;background:transparent;border:none;padding:2px 6px;border-radius:4px}
+.env-remove:hover{background:rgba(220,38,38,.08)}
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:16px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+  .field-row{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:16px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+  .term-body{font-size:12px;min-height:200px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">🚀</div>
+      <div class="brand-tx">
+        <div class="brand-nm">DevOps &amp; Deployment</div>
+        <div class="brand-sb">8 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="tools" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Tools</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewTools"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">🚀</div>
+      <div class="footer-tx">
+        <div class="footer-nm">DevOps &amp; Deployment</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- MODULE 1 -->
+<div class="src-read" data-l="g1">
+<p>You can write code. You can build a working project on your laptop. But can you ship it — so that a stranger in Blantyre can open a URL on their phone and use it?</p>
+<p>That gap — between "it works on my machine" and "it's live at <code>myname.com</code>" — is where most self-taught developers give up. This course closes it.</p>
+<h2>What DevOps actually means</h2>
+<p>DevOps is a set of practices that connect <em>development</em> (writing code) with <em>operations</em> (running it in production). It includes:</p>
+<ul>
+<li><strong>Version control</strong> — Git and GitHub</li>
+<li><strong>Deployment</strong> — getting your code to a server</li>
+<li><strong>Configuration</strong> — environment variables, secrets</li>
+<li><strong>Networking</strong> — domains, DNS, HTTPS</li>
+<li><strong>Containers</strong> — Docker, packaging apps</li>
+<li><strong>Monitoring</strong> — logs, health checks, alerts</li>
+<li><strong>Recovery</strong> — backups, rollbacks, disaster plans</li>
+</ul>
+<h2>The four moments every project has</h2>
+<ol>
+<li><strong>Development</strong> — you write code on your laptop</li>
+<li><strong>Build</strong> — code is prepared for production</li>
+<li><strong>Deploy</strong> — code is sent to a server</li>
+<li><strong>Run</strong> — users interact with it live</li>
+</ol>
+<p>Most tutorials cover step 1 and stop. This course covers 2, 3, and 4.</p>
+<h2>Why this matters for Malawi</h2>
+<p>A skilled Malawian developer who can also deploy — reliably, securely, cheaply — is worth far more than one who cannot. Every local business that wants a website, every NGO that needs a data tool, every startup that wants to launch, needs someone who can get code live and keep it running.</p>
+<p>And with free tiers from Render, Railway, Fly.io, and Cloudflare, the cost is essentially zero to start.</p>
+<blockquote><strong>The promise of this course:</strong> by the end, you will have a working project live at a real URL, with a custom domain, HTTPS, environment variables, logging, and a plan for when things break.</blockquote>
+</div>
+
+<div class="src-read" data-l="g2">
+<p>Git is the most important tool in a developer's toolkit after the text editor itself. It is not just "save" — it is a complete system for tracking every change you have ever made.</p>
+<h2>What Git actually does</h2>
+<p>Git keeps a history of every change to every file in your project. Not just the current state — every state it has ever been in. You can:</p>
+<ul>
+<li>See what changed between any two points in time</li>
+<li>Revert to any previous version</li>
+<li>Work on multiple features simultaneously without conflicts</li>
+<li>Collaborate with others without overwriting their work</li>
+<li>Know exactly who changed what, and when</li>
+</ul>
+<h2>The three areas</h2>
+<p>Git has three areas:</p>
+<ol>
+<li><strong>Working directory</strong> — the files you see on disk</li>
+<li><strong>Staging area</strong> — changes you have marked to include in the next commit</li>
+<li><strong>Repository</strong> — the permanent history</li>
+</ol>
+<p>The workflow is always: <code>edit → add → commit</code>. Edit files, stage the changes you want, commit them with a message.</p>
+<h2>Why staging matters</h2>
+<p>Beginners often wonder why they have to "stage" anything. Why not just commit?</p>
+<p>Because you do not always want to commit everything. Maybe you fixed a bug AND started an unrelated experiment. You want to commit the fix separately, so the history stays clean.</p>
+<p>Staging lets you choose exactly what goes into each commit.</p>
+<h2>The commands you will use 90% of the time</h2>
+<pre><code>git status              # what is going on right now?
+git add file.txt        # stage one file
+git add .               # stage everything
+git commit -m "Fix bug" # save the staged changes
+git log --oneline       # see recent commits
+git diff                # see what changed but is not staged</code></pre>
+<h2>What a good commit looks like</h2>
+<p>A commit is a snapshot with a message. Good messages describe <em>why</em>, not <em>what</em> — the diff already shows what changed.</p>
+<ul>
+<li><strong>Bad:</strong> <code>update stuff</code>, <code>fix</code>, <code>asdf</code></li>
+<li><strong>Good:</strong> <code>Fix login redirect loop when session expires</code>, <code>Add email validation to signup form</code></li>
+</ul>
+<p>Six months from now, when you are debugging a production issue at 11pm, you will thank yourself for the good message.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Try it in the sandbox below</strong>
+The terminal is a real Git simulator. Type <code>help</code> to see available commands. Try this flow:
+<ul style="margin-top:8px;">
+<li><code>git init</code></li>
+<li><code>echo "Hello" &gt; readme.md</code></li>
+<li><code>git status</code></li>
+<li><code>git add .</code></li>
+<li><code>git commit -m "Add readme"</code></li>
+<li><code>git log --oneline</code></li>
+</ul>
+</div>
+</div>
+
+<div class="src-read" data-l="g3">
+<p>So far you have committed to a single timeline. But real projects have features, experiments, and fixes happening in parallel. That is what branches are for.</p>
+<h2>What is a branch?</h2>
+<p>A branch is a separate line of development. You start from some commit, make changes, and those changes exist only on that branch — until you merge it back.</p>
+<p>The default branch is called <code>main</code> (or <code>master</code> in older projects).</p>
+<h2>Why branches matter</h2>
+<p>Imagine you are working on a live site. A client asks for a small fix AND a big new feature at the same time.</p>
+<ul>
+<li><strong>Without branches:</strong> you build the feature halfway, then have to ship a broken half-feature to fix the bug.</li>
+<li><strong>With branches:</strong> you make a branch called <code>fix-login-bug</code>, ship the fix, then come back to your feature branch and continue.</li>
+</ul>
+<h2>The commands</h2>
+<pre><code>git branch                    # list branches
+git branch new-feature        # create a new branch
+git checkout new-feature      # switch to it
+git checkout -b new-feature   # create and switch, in one step
+
+# ... make changes on the branch ...
+
+git checkout main             # go back to main
+git merge new-feature         # merge the branch into main</code></pre>
+<h2>Fast-forward merges</h2>
+<p>If <code>main</code> has not changed since you branched off, the merge is trivial. Git just moves the <code>main</code> label forward to point at your branch's latest commit. This is called a <strong>fast-forward merge</strong>.</p>
+<p>If both branches have changes, Git creates a <strong>merge commit</strong> that combines them — and if the same line of the same file changed on both sides, you have a <strong>conflict</strong> to resolve.</p>
+<h2>Merge conflicts</h2>
+<p>A conflict looks like this in the file:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+current change
+=======
+other change
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; other-branch</code></pre>
+<p>You edit the file, keep the version you want, delete the markers, then:</p>
+<pre><code>git add conflicted-file.txt
+git commit</code></pre>
+<p>Conflicts are not failures. They are Git saying "you changed this line two ways, please tell me which one wins."</p>
+<h2>Branching strategy for solo developers</h2>
+<p>You do not need a complex branching model. For solo work:</p>
+<ul>
+<li><code>main</code> is always deployable</li>
+<li>Every new feature or fix gets its own branch</li>
+<li>Merge back into <code>main</code> when it works</li>
+<li>Delete the branch after merging</li>
+</ul>
+<p>That is enough. Later, when you join a team, you will learn their specific workflow.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Try branching in the sandbox</strong>
+<code>git checkout -b feature-x</code> then make a commit, then <code>git checkout main</code>, then <code>git merge feature-x</code>. Watch the log.
+</div>
+</div>
+
+<div class="src-read" data-l="g4">
+<p>Git tracks your work locally. GitHub (or GitLab, or Bitbucket) is a remote home for your repository — where your team can see it, and where deployment platforms read from.</p>
+<h2>Local vs remote</h2>
+<ul>
+<li><strong>Local</strong> — the repository on your laptop</li>
+<li><strong>Remote</strong> — a copy on a server (GitHub)</li>
+</ul>
+<p>Your local repository knows about remotes. By default, the first remote you add is called <code>origin</code>.</p>
+<pre><code>git remote add origin https://github.com/you/repo.git
+git push -u origin main</code></pre>
+<p>The <code>-u</code> flag sets <code>origin/main</code> as the default upstream, so future <code>git push</code> and <code>git pull</code> know where to go.</p>
+<h2>The four commands</h2>
+<pre><code>git clone https://github.com/you/repo.git   # copy a remote repo to your laptop
+git pull                                    # fetch + merge remote changes
+git push                                    # send local commits to remote
+git fetch                                   # download without merging</code></pre>
+<p>90% of your time with remotes is <code>pull → work → commit → push</code>.</p>
+<h2>Pull requests</h2>
+<p>A <strong>pull request</strong> (PR) is GitHub's way of proposing changes. You push a branch, then open a PR that says "please review and merge this into main."</p>
+<p>Even for solo projects, PRs are useful: they give you a place to review your own work before merging. A quick self-review often catches bugs.</p>
+<h2>.gitignore</h2>
+<p>Some files should never be committed. Add a <code>.gitignore</code> file at the root:</p>
+<pre><code># Dependencies
+node_modules/
+__pycache__/
+venv/
+
+# Secrets
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+*.log</code></pre>
+<p>Rules: never commit <code>node_modules</code>, never commit <code>.env</code>, never commit build output. Anyone can regenerate them.</p>
+<h2>The one rule about secrets</h2>
+<p>If you accidentally commit a password, API key, or secret token — <strong>assume it is compromised</strong>. Changing the commit history does not help; the secret has already been pushed, indexed, and possibly scraped by automated bots that scan GitHub.</p>
+<p>The only safe response is:</p>
+<ol>
+<li>Rotate the secret immediately (get a new key from the provider)</li>
+<li>Delete the old one</li>
+<li>Add the file to <code>.gitignore</code></li>
+<li>Commit the fix</li>
+</ol>
+<h2>GitHub profile README</h2>
+<p>Create a repository named exactly the same as your GitHub username (e.g. <code>chisomo/chisomo</code>). Put a <code>README.md</code> in it. That README shows on your GitHub profile — it is your front page.</p>
+<p>A good profile README is short:</p>
+<ul>
+<li>One line about what you do</li>
+<li>Two or three projects pinned</li>
+<li>Contact links</li>
+</ul>
+<blockquote><strong>Treat your GitHub like a portfolio.</strong> Recruiters look at it. Commit regularly, write meaningful messages, and pin your best work.</blockquote>
+</div>
+
+<div class="src-read" data-l="g5">
+<p>Your code needs secrets: database passwords, API keys, tokens. These must never be hardcoded. Environment variables are the standard way to handle them.</p>
+<h2>The problem</h2>
+<pre><code>// NEVER DO THIS
+const db = connect({
+  host: 'db.example.com',
+  password: 'SuperSecret123!',
+});</code></pre>
+<p>If this code is on GitHub, the password is compromised. If someone steals your laptop, the password is compromised. If a contractor works on the project, they can read the password. And when you need to rotate it — because you will — you have to change code and redeploy.</p>
+<h2>The solution: environment variables</h2>
+<pre><code>const db = connect({
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
+});</code></pre>
+<p>The values live outside your code. In development, they come from a <code>.env</code> file (which is not committed). In production, they come from the hosting platform's dashboard.</p>
+<h2>Local development: .env files</h2>
+<pre><code># .env — never commit this
+DB_HOST=db.example.com
+DB_PASSWORD=SuperSecret123!
+API_KEY=sk_live_abc123
+PORT=3000</code></pre>
+<p>Load them with the <code>dotenv</code> package (Node) or <code>python-dotenv</code> (Python):</p>
+<pre><code>require('dotenv').config();
+// Now process.env.DB_HOST works</code></pre>
+<h2>Production: the platform's dashboard</h2>
+<p>Every deployment platform (Render, Railway, Fly.io, Vercel, Netlify) has an "Environment" or "Secrets" section. You paste the same key-value pairs there, and the platform injects them at runtime. The production environment is separate — a stolen dev key does not affect production.</p>
+<h2>What to store in env vars</h2>
+<ul>
+<li>Database URLs and passwords</li>
+<li>API keys (Stripe, Anthropic, Twilio, etc.)</li>
+<li>JWT signing secrets</li>
+<li>SMTP credentials</li>
+<li>Sentry / error tracking DSN</li>
+<li>Feature flags</li>
+</ul>
+<h2>What NOT to store</h2>
+<ul>
+<li>Non-secret configuration (feature names, timeouts) — those can go in code</li>
+<li>Anything you would be happy printing in a log</li>
+</ul>
+<h2>Rotating secrets</h2>
+<p>You should be able to change any secret without changing code. That is the whole point. A rotation is:</p>
+<ol>
+<li>Generate a new key at the provider</li>
+<li>Update the value in your dev <code>.env</code> and the platform dashboard</li>
+<li>Redeploy (often not even needed for env vars)</li>
+<li>Delete the old key at the provider</li>
+</ol>
+<p>Do this every 6 months for critical secrets, and immediately if you suspect a leak.</p>
+<h2>A note on the .env file and Git</h2>
+<p>If you ever type <code>git status</code> and see <code>.env</code> as an untracked file you might be about to stage — stop. Add it to <code>.gitignore</code> first. Better yet, add it before you create the file.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Practice</strong>
+Open the Env Var Manager in the Tools tab. Add three variables, mark one as secret, and see how the preview output changes.
+</div>
+</div>
+
+<div class="src-read" data-l="g6">
+<p>Time to ship something real. In this lesson you will deploy a Node.js app to a free hosting platform.</p>
+<h2>The platforms</h2>
+<p>Three free options that work well from Malawi:</p>
+<table>
+<tr><th>Platform</th><th>Best for</th><th>Free tier</th></tr>
+<tr><td>Render</td><td>Node, Python, Docker</td><td>Free web services (spin down after 15 min idle)</td></tr>
+<tr><td>Railway</td><td>Node, Python, databases</td><td>$5 free credit/month</td></tr>
+<tr><td>Fly.io</td><td>Anything, low-latency global</td><td>Small free allowance</td></tr>
+</table>
+<p>For beginners, <strong>Render</strong> is the most straightforward. Sign up with GitHub, connect a repository, click deploy.</p>
+<h2>The prep checklist</h2>
+<p>Before you deploy, make sure your project has:</p>
+<ol>
+<li>A <code>package.json</code> with a <code>start</code> script</li>
+<li>Environment variables read from <code>process.env</code></li>
+<li>A <code>.gitignore</code> that excludes <code>node_modules</code> and <code>.env</code></li>
+<li>The code pushed to GitHub</li>
+</ol>
+<h2>package.json</h2>
+<pre><code>{
+  "name": "my-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}</code></pre>
+<p>The platform runs <code>npm install</code>, then <code>npm start</code>. If your start script is wrong, deployment fails.</p>
+<h2>Respecting the PORT variable</h2>
+<p>Platforms assign you a port dynamically. Never hardcode it:</p>
+<pre><code>const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =&gt; {
+  console.log(`Server running on port ${PORT}`);
+});</code></pre>
+<p>Locally it runs on 3000. In production, the platform tells your app which port to use.</p>
+<h2>A minimal server.js</h2>
+<pre><code>const express = require('express');
+const app = express();
+
+app.get('/', (req, res) =&gt; {
+  res.json({
+    message: 'Hello from Malawi',
+    time: new Date().toISOString(),
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =&gt; console.log('Listening on', PORT));</code></pre>
+<h2>The deployment flow on Render</h2>
+<ol>
+<li>Push your code to GitHub</li>
+<li>Log in to render.com with GitHub</li>
+<li>Click "New Web Service"</li>
+<li>Select your repository</li>
+<li>Set <strong>Build Command</strong>: <code>npm install</code></li>
+<li>Set <strong>Start Command</strong>: <code>npm start</code></li>
+<li>Add environment variables under "Environment"</li>
+<li>Click "Create Web Service"</li>
+</ol>
+<p>First deploy takes 2–3 minutes. You get a URL like <code>my-app.onrender.com</code>. That URL is live.</p>
+<h2>The free tier reality</h2>
+<p>Render's free tier spins down apps after 15 minutes of inactivity. The next request takes 30–60 seconds to "wake" the app. This is fine for portfolio projects and demos. For a real production app, pay the $7/month for the always-on tier.</p>
+<h2>Common failure modes</h2>
+<ul>
+<li><strong>Wrong start script</strong> — check <code>package.json</code></li>
+<li><strong>Missing env vars</strong> — check the dashboard</li>
+<li><strong>Port hardcoded</strong> — use <code>process.env.PORT</code></li>
+<li><strong>Node version mismatch</strong> — add an <code>"engines"</code> field or a <code>.nvmrc</code></li>
+<li><strong>Build failure</strong> — read the logs from the dashboard</li>
+</ul>
+<blockquote><strong>Deploy early, deploy often.</strong> The first deploy of a new project should happen before you have written any real features. It takes 10 minutes and eliminates the "it works locally but not in production" problem forever.</blockquote>
+</div>
+
+<div class="src-read" data-l="g7">
+<p>Python is even easier to deploy than Node, since the platform handles the virtual environment for you.</p>
+<h2>The project structure</h2>
+<pre><code>my-python-app/
+├── app.py
+├── requirements.txt
+├── .env
+├── .gitignore
+└── README.md</code></pre>
+<h2>requirements.txt</h2>
+<p>The Python equivalent of <code>package.json</code>. It lists dependencies:</p>
+<pre><code>Flask==3.0.0
+python-dotenv==1.0.0
+gunicorn==21.2.0</code></pre>
+<p>Generate it with:</p>
+<pre><code>pip freeze &gt; requirements.txt</code></pre>
+<h2>app.py — Flask + production server</h2>
+<pre><code>from flask import Flask, jsonify
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return jsonify({
+        'message': 'Hello from Malawi',
+        'env': os.environ.get('APP_ENV', 'production'),
+    })
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)</code></pre>
+<h2>Why gunicorn</h2>
+<p>Flask's built-in server is fine for development but not for production. <strong>Gunicorn</strong> is a production-grade WSGI server that handles concurrency properly.</p>
+<p>Your start command becomes:</p>
+<pre><code>gunicorn app:app</code></pre>
+<p>Read that as: "run the <code>app</code> variable from the <code>app.py</code> module."</p>
+<h2>Deploying on Render</h2>
+<ol>
+<li>Push code to GitHub</li>
+<li>New Web Service on Render</li>
+<li>Build Command: <code>pip install -r requirements.txt</code></li>
+<li>Start Command: <code>gunicorn app:app</code></li>
+<li>Add environment variables</li>
+<li>Deploy</li>
+</ol>
+<p>That is it. Python deployment is often faster than Node because there is no build step.</p>
+<h2>Environment variables in Python</h2>
+<pre><code>import os
+
+DB_URL = os.environ.get('DATABASE_URL')
+API_KEY = os.environ.get('API_KEY')
+
+if not DB_URL:
+    raise RuntimeError('DATABASE_URL is not set')</code></pre>
+<p>The <code>raise</code> pattern is important: fail loudly at startup if a required secret is missing. Do not let the app start with a <code>None</code> value that will crash later in a weird place.</p>
+<h2>Common failure modes</h2>
+<ul>
+<li><strong>Forgot gunicorn</strong> — Flask dev server times out or dies</li>
+<li><strong>Hardcoded port</strong> — must use <code>os.environ.get('PORT')</code></li>
+<li><strong>Missing requirements.txt</strong> — deploy fails on install step</li>
+<li><strong>Wrong module path in gunicorn</strong> — check that <code>app:app</code> matches your file and variable names</li>
+</ul>
+<h2>Where to deploy for free</h2>
+<p>Same platforms as Node: Render, Railway, Fly.io. The setup process is identical — just different build/start commands.</p>
+<blockquote><strong>The Python advantage:</strong> no build step, no compilation, no bundle size. Python apps go live in less than a minute once the code is on GitHub.</blockquote>
+</div>
+
+<div class="src-read" data-l="g8">
+<p>You have a URL like <code>my-app.onrender.com</code>. It works. But you want <code>myname.com</code> — a real domain that you own.</p>
+<h2>Buying a domain</h2>
+<p>Registrars sell domains. Common choices:</p>
+<ul>
+<li><strong>Namecheap</strong> — around $10/year for <code>.com</code></li>
+<li><strong>Cloudflare Registrar</strong> — at-cost, no markup</li>
+<li><strong>Google Domains</strong> — now Squarespace</li>
+</ul>
+<p>For a Malawian developer, a <code>.com</code> or a country-specific domain (if you want <code>.mw</code>) works. Prices vary. A <code>.com</code> is the standard choice.</p>
+<h2>How DNS works</h2>
+<p>DNS translates a domain name into an IP address. When someone types <code>myname.com</code>:</p>
+<ol>
+<li>The browser asks a DNS resolver</li>
+<li>The resolver looks up the domain's <em>nameservers</em></li>
+<li>The nameservers tell it the <em>A record</em> (IP address) or <em>CNAME</em> (another domain to look up)</li>
+<li>The browser connects to that IP</li>
+</ol>
+<h2>The records you will set</h2>
+<table>
+<tr><th>Type</th><th>Name</th><th>Value</th><th>Purpose</th></tr>
+<tr><td>A</td><td>@</td><td>IP address</td><td>Point the root domain</td></tr>
+<tr><td>CNAME</td><td>www</td><td>my-app.onrender.com</td><td>Point a subdomain</td></tr>
+<tr><td>CNAME</td><td>api</td><td>my-api.onrender.com</td><td>Point a subdomain to another service</td></tr>
+</table>
+<p>The <code>@</code> means the root domain (<code>myname.com</code>). <code>www</code> means <code>www.myname.com</code>.</p>
+<h2>Connecting your domain to Render</h2>
+<ol>
+<li>In Render, go to your service → Settings → Custom Domains</li>
+<li>Add <code>myname.com</code> and <code>www.myname.com</code></li>
+<li>Render shows you the DNS records to create</li>
+<li>Go to your registrar's DNS panel</li>
+<li>Add the records as instructed</li>
+<li>Wait 5–30 minutes for propagation</li>
+</ol>
+<p>DNS changes take time to spread across the internet. It is not instant, but usually under an hour.</p>
+<h2>HTTPS with Let's Encrypt</h2>
+<p>HTTPS encrypts traffic between the user and the server. Without it, passwords and data travel in plain text.</p>
+<p>Every modern platform provisions HTTPS automatically. Render, Railway, Fly.io, and Netlify all use <strong>Let's Encrypt</strong> — a free certificate authority — to issue certificates.</p>
+<p>Once your domain is connected, HTTPS is enabled automatically. You do not manage certificates. You do not renew them. It just works.</p>
+<h2>Redirect HTTP to HTTPS</h2>
+<p>Make sure your site forces HTTPS. On Render, this is on by default. On other platforms, there is usually a "Force HTTPS" toggle.</p>
+<h2>The www vs root question</h2>
+<p>You should have one canonical version and redirect the other. Most people pick <code>www</code> (because CNAME records are simpler) or the root (because it is shorter).</p>
+<p>On Render: add both as custom domains, and Render redirects automatically to whichever you set as primary.</p>
+<h2>Verifying</h2>
+<p>Once connected, open your domain in a browser. You should see:</p>
+<ul>
+<li>Your app's content</li>
+<li>A padlock icon (HTTPS)</li>
+<li>No redirect warnings</li>
+</ul>
+<p>If not, check DNS records with <code>dig</code> or the online tool <code>dnschecker.org</code>. Propagation can take up to 24 hours in the worst case.</p>
+<blockquote><strong>A domain is worth it.</strong> A <code>myname.com</code> looks 100x more professional than a platform subdomain. For a portfolio, for a client, for any serious project — buy the domain. $10/year is nothing compared to the credibility it gives you.</blockquote>
+</div>
+
+<div class="src-read" data-l="g9">
+<p>Docker packages your app and everything it needs into a single unit called a container. It runs the same on your laptop, your colleague's laptop, and the server.</p>
+<h2>The problem Docker solves</h2>
+<p>"It works on my machine" is the oldest complaint in software. Different OS versions, different Python/Node versions, different system libraries — the same code behaves differently everywhere.</p>
+<p>Docker fixes this. You describe the environment once, and it is reproduced exactly wherever the container runs.</p>
+<h2>Containers vs virtual machines</h2>
+<p>Traditional virtual machines ship a whole operating system — gigabytes, minutes to boot.</p>
+<p>Containers share the host OS kernel. They are megabytes and boot in milliseconds.</p>
+<h2>A Dockerfile for Node</h2>
+<pre><code>FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY . .
+
+EXPOSE 3000
+CMD ["node", "server.js"]</code></pre>
+<p>Line by line:</p>
+<ul>
+<li><strong>FROM</strong> — start from a base image (Node 20 on Alpine Linux)</li>
+<li><strong>WORKDIR</strong> — set the working directory inside the container</li>
+<li><strong>COPY + RUN</strong> — install dependencies first (so they cache)</li>
+<li><strong>COPY . .</strong> — copy your code</li>
+<li><strong>EXPOSE</strong> — document which port the app listens on</li>
+<li><strong>CMD</strong> — what runs when the container starts</li>
+</ul>
+<h2>A Dockerfile for Python</h2>
+<pre><code>FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]</code></pre>
+<h2>The three commands</h2>
+<pre><code>docker build -t my-app .           # build the image
+docker run -p 3000:3000 my-app     # run it locally
+docker push my-app                 # push to a registry</code></pre>
+<p>Once pushed, any server anywhere can pull and run your image.</p>
+<h2>docker-compose for multi-service apps</h2>
+<p>When your app needs a database, Redis, or other services:</p>
+<pre><code>version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://user:pass@db:5432/mydb
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:</code></pre>
+<p>Run the whole stack with <code>docker compose up</code>. This is how production systems are typically structured.</p>
+<h2>When to use Docker (and when to skip it)</h2>
+<p><strong>Use Docker when:</strong></p>
+<ul>
+<li>Your app has complex system dependencies</li>
+<li>You deploy to your own server</li>
+<li>You have a team and want identical environments</li>
+<li>You use a platform that expects a Dockerfile</li>
+</ul>
+<p><strong>Skip Docker when:</strong></p>
+<ul>
+<li>You are deploying a simple app to a platform that auto-detects Node/Python</li>
+<li>You are a solo developer on a small project</li>
+<li>You are just getting started and Docker is a distraction</li>
+</ul>
+<p>Render, Railway, and Vercel all deploy simple apps without any Dockerfile. Use them first. Learn Docker when you outgrow them.</p>
+<blockquote><strong>The honest take:</strong> Docker is invaluable for teams and complex systems, but for solo projects on modern platforms, it is often unnecessary ceremony. Know what it is, know when to reach for it, and do not add it to a 3-file Express app.</blockquote>
+</div>
+
+<div class="src-read" data-l="g10">
+<p>Your app is live. Now what? Once real users are using it, you need to know when things break — and you need a plan for when they do.</p>
+<h2>Logging: the foundation</h2>
+<p>Structured logs are the single most useful production tool. Instead of <code>console.log("something happened")</code>, log JSON:</p>
+<pre><code>function log(level, message, meta = {}) {
+  console.log(JSON.stringify({
+    time: new Date().toISOString(),
+    level,
+    message,
+    ...meta,
+  }));
+}
+
+log('info', 'User signed up', { userId: 42 });
+log('error', 'Payment failed', { orderId: 17, reason: 'timeout' });</code></pre>
+<p>Why JSON? Because every logging system on the planet can search, filter, and alert on JSON. It is machine-readable.</p>
+<h2>What to log</h2>
+<ul>
+<li>Every HTTP request: method, path, status, duration</li>
+<li>Errors with full stack traces and context</li>
+<li>Business events: signup, purchase, subscription change</li>
+<li>Slow operations (queries, external API calls)</li>
+</ul>
+<h2>What NOT to log</h2>
+<ul>
+<li>Passwords (never, ever)</li>
+<li>Full credit card numbers</li>
+<li>Authentication tokens</li>
+<li>Personal data beyond what you need</li>
+</ul>
+<h2>Health checks</h2>
+<p>A simple endpoint that reports whether the app is healthy:</p>
+<pre><code>app.get('/health', (req, res) =&gt; {
+  res.json({
+    ok: true,
+    uptime: process.uptime(),
+    version: '1.0.0',
+  });
+});</code></pre>
+<p>Platforms ping this every 30 seconds. If it fails, they alert you.</p>
+<h2>Error tracking</h2>
+<p><strong>Sentry</strong> (sentry.io) has a generous free tier. It catches unhandled errors and shows you:</p>
+<ul>
+<li>The exact line of code</li>
+<li>The user's browser/OS</li>
+<li>What they did right before</li>
+<li>How often this error has happened</li>
+</ul>
+<p>Setup is one line:</p>
+<pre><code>const Sentry = require('@sentry/node');
+Sentry.init({ dsn: process.env.SENTRY_DSN });</code></pre>
+<h2>Backups</h2>
+<p>Every database needs automatic backups. All managed database providers (Render, Railway, Supabase, Neon) offer daily snapshots. Turn them on.</p>
+<p>For files (uploads, images), use object storage (S3, Cloudflare R2, Supabase Storage) rather than the server's local disk. Local disk disappears when the server is redeployed.</p>
+<p>The three rules of backups:</p>
+<ol>
+<li>Automatic — no one remembers to run manual backups</li>
+<li>Tested — you must have restored one to know it works</li>
+<li>Off-site — a backup on the same server is not a backup</li>
+</ol>
+<h2>Graceful shutdown</h2>
+<p>When the platform restarts your app, it sends SIGTERM first. Handle it to finish in-flight requests:</p>
+<pre><code>process.on('SIGTERM', () =&gt; {
+  console.log('Shutting down gracefully…');
+  server.close(() =&gt; {
+    console.log('Closed out remaining connections');
+    process.exit(0);
+  });
+});</code></pre>
+<h2>The incident playbook</h2>
+<p>When something breaks in production:</p>
+<ol>
+<li><strong>Stay calm.</strong> Panic produces bad decisions.</li>
+<li><strong>Check the logs.</strong> What was the last error? What changed recently?</li>
+<li><strong>Roll back if needed.</strong> Platforms keep previous deploys. One click restores them.</li>
+<li><strong>Announce it.</strong> A short status message in your app or on social media reduces angry messages.</li>
+<li><strong>Fix, test, redeploy.</strong> Do not fix directly in production — fix in a branch, test, then deploy.</li>
+<li><strong>Write a post-mortem.</strong> What happened, why, what you will change to prevent it.</li>
+</ol>
+<h2>The rollback button</h2>
+<p>On Render, Railway, Vercel, and most platforms, previous deploys are kept. If your latest deploy broke something, click "Rollback" and you are back to the previous version in seconds.</p>
+<p>This is why you deploy often: each deploy is small, easy to review, and easy to roll back.</p>
+<blockquote><strong>You have finished the course.</strong> You now know Git, deployment, environment variables, domains, HTTPS, Docker, logging, and incident response. That is a complete DevOps toolkit for a solo developer or small team. The gap between "I built something" and "it is live" is closed.</blockquote>
+</div>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'devops_deployment_progress_v1';
+var CAPSTONE_KEY = 'devops_deployment_capstone_v1';
+
+var course = {
+  modules: [
+    {
+      id: 'git', icon: '🌳', title: 'Git Fundamentals',
+      lessons: [
+        { id:'g1', title:'Why DevOps Matters', time:'18 min', tool: null,
+          challenge:'Write down three of your own projects that never left your laptop. For each one, name one thing that stopped you from deploying it. This is your motivation list.',
+          quiz:[
+            { q:'What is the main gap this course closes?', options:['Writing code','Between "it works locally" and "it is live"','Design skills','Testing'], correct:1 },
+            { q:'Which is NOT part of DevOps?', options:['Version control','Deployment','Designing logos','Monitoring'], correct:2 },
+            { q:'Free deployment platforms mentioned:', options:['Only AWS','Render, Railway, Fly.io','Only Heroku','You must pay'], correct:1 }
+          ]},
+        { id:'g2', title:'Git Basics', time:'26 min', tool: 'terminal',
+          challenge:'In the terminal: <code>git init</code>, create a file with <code>echo</code>, stage it with <code>git add .</code>, commit it with <code>git commit -m "First"</code>, then run <code>git log --oneline</code>.',
+          quiz:[
+            { q:'What are the three Git areas?', options:['Local, remote, cloud','Working, staging, repository','Edit, save, push','Init, add, commit'], correct:1 },
+            { q:'Why stage before committing?', options:['Required by Git','To choose exactly what goes into each commit','To save time','It is optional'], correct:1 },
+            { q:'Which is a good commit message?', options:['fix','update stuff','Fix login redirect loop','asdf'], correct:2 }
+          ]},
+        { id:'g3', title:'Branching & Merging', time:'28 min', tool: 'terminal',
+          challenge:'Create a branch with <code>git checkout -b feature</code>, make a commit, switch back with <code>git checkout main</code>, then <code>git merge feature</code>. Watch the log.',
+          quiz:[
+            { q:'What does <code>git checkout -b name</code> do?', options:['Deletes a branch','Creates and switches to a new branch','Merges','Pushes'], correct:1 },
+            { q:'What is a fast-forward merge?', options:['A merge conflict','Moving main to your branch without a merge commit','A failed merge','An automatic push'], correct:1 },
+            { q:'A merge conflict means:', options:['You did something wrong','The same line was changed on both branches','Git is broken','You must restart'], correct:1 }
+          ]},
+        { id:'g4', title:'GitHub & Collaboration', time:'28 min', tool: null,
+          challenge:'Create a GitHub repository. Push at least one of your course projects to it. Add a README that explains what it does. Add a <code>.gitignore</code> that excludes <code>node_modules</code> and <code>.env</code>.',
+          quiz:[
+            { q:'Which remote name is standard?', options:['upstream','origin','remote','master'], correct:1 },
+            { q:'What should you NEVER commit?', options:['README.md','.gitignore','.env files with secrets','Source code'], correct:2 },
+            { q:'If you accidentally commit a secret, what do you do first?', options:['Delete the commit','Rotate the secret immediately','Ignore it','Force push'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'config', icon: '⚙️', title: 'Configuration',
+      lessons: [
+        { id:'g5', title:'Environment Variables & Secrets', time:'26 min', tool: 'env',
+          challenge:'Use the Env Var Manager to add three variables. Mark the API key as secret. Then explain in one sentence why a secret should never be hardcoded in source.',
+          quiz:[
+            { q:'Where should secrets live?', options:['In the source code','In environment variables','In a comment','In git history'], correct:1 },
+            { q:'Local development reads env vars from:', options:['package.json','A .env file','The OS registry','Nowhere'], correct:1 },
+            { q:'Production env vars are set:', options:['In the same .env file','On the deployment platform\'s dashboard','In the code','By the user'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'deploy', icon: '🚀', title: 'Deployment',
+      lessons: [
+        { id:'g6', title:'Deploying a Node App', time:'32 min', tool: 'deploy',
+          challenge:'Walk through the deploy timeline in the tool. Note the exact order of steps. Then write the prep checklist for one of your own Node projects.',
+          quiz:[
+            { q:'How should the port be configured?', options:['Hardcoded 3000','process.env.PORT || 3000','Port 80 always','Random'], correct:1 },
+            { q:'What does the platform do first?', options:['Nothing','Runs npm install, then npm start','Asks for a password','Sends an email'], correct:1 },
+            { q:'Why does the free tier spin down?', options:['A bug','To save resources on idle apps','It does not','A security feature'], correct:1 }
+          ]},
+        { id:'g7', title:'Deploying a Python App', time:'30 min',
+          challenge:'Deploy a simple Flask app to Render. The start command must use gunicorn. Set at least one environment variable on the platform dashboard. Verify the deployed URL responds.',
+          quiz:[
+            { q:'Which WSGI server runs Python in production?', options:['The Flask dev server','gunicorn','py-server','sys.exec'], correct:1 },
+            { q:'The start command uses:', options:['python app.py','gunicorn app:app','flask run','uvicorn'], correct:1 },
+            { q:'What should happen if a required env var is missing at startup?', options:['Continue silently','Fail loudly with a clear error','Use a default','Nothing'], correct:1 }
+          ]},
+        { id:'g8', title:'Domains, DNS & HTTPS', time:'28 min',
+          challenge:'If you own a domain, connect it to a deployed app. If you do not, research the cost of a <code>.com</code> domain at Namecheap or Cloudflare and write down the DNS records you would add.',
+          quiz:[
+            { q:'What does the A record point to?', options:['A domain name','An IP address','An email','A certificate'], correct:1 },
+            { q:'What does the CNAME record point to?', options:['An IP','Another domain name','A file','A port'], correct:1 },
+            { q:'Who provides free HTTPS certificates?', options:['Google','Let\'s Encrypt','Apple','Microsoft'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'containers', icon: '📦', title: 'Containers & Monitoring',
+      lessons: [
+        { id:'g9', title:'Docker — What It Is', time:'30 min',
+          challenge:'Write a Dockerfile for a small project you have already built. You do not need to run it — just get the structure right. Then write three sentences explaining when you would actually use Docker.',
+          quiz:[
+            { q:'What is a container?', options:['A virtual machine','A packaged app + its environment','A folder','A type of server'], correct:1 },
+            { q:'Containers vs VMs: containers are…', options:['Bigger','Smaller and faster','Slower','Same size'], correct:1 },
+            { q:'When should you skip Docker?', options:['Never','For simple apps on platforms that auto-detect','For teams','For complex systems'], correct:1 }
+          ]},
+        { id:'g10', title:'Monitoring, Logs & Recovery', time:'30 min',
+          challenge:'Add a <code>/health</code> endpoint to a project you have built. Log requests with structured JSON. Write a five-line incident playbook for "the site is down."',
+          quiz:[
+            { q:'Why log in JSON?', options:['Prettier','Machine-readable for search and alerts','Required by law','Faster'], correct:1 },
+            { q:'What should NEVER be logged?', options:['Request paths','Passwords and tokens','Error messages','Status codes'], correct:1 },
+            { q:'What is graceful shutdown?', options:['Slow restart','Finishing in-flight requests before exit','Delaying deploy','A slow query'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, tool: l.tool,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+})();
+
+/* PROGRESS */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'dv::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I created a GitHub account and pushed at least one repository' },
+  { id: 'm2', text: 'I wrote a .gitignore that excludes node_modules and .env' },
+  { id: 'm3', text: 'I can stage, commit, and view history from the terminal' },
+  { id: 'm4', text: 'I created a branch, made changes, and merged it back' },
+  { id: 'm5', text: 'I moved at least one secret out of my source code into .env' },
+  { id: 'm6', text: 'I deployed a Node.js or Python app to Render or Railway' },
+  { id: 'm7', text: 'My app is live at a public URL and returns a response' },
+  { id: 'm8', text: 'I connected a custom domain to a deployed app' },
+  { id: 'm9', text: 'I added a /health endpoint and structured logging to a project' },
+  { id: 'm10', text: 'I have a rollback plan (or I have actually rolled back a deploy)' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'g1';
+var currentView = 'lessons';
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'tools') renderTools();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>🚀 DevOps</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (lesson.tool === 'terminal') {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Real Git Simulator</span></h2>';
+    html += '<p class="ed-s">A working Git terminal in your browser. Type <code>help</code> to see every command. Your Git state is real — commits, branches, and merges all behave as they do on your laptop.</p>';
+    html += '<div class="term">';
+    html += '<div class="term-hd"><div class="term-dots"><span></span><span></span><span></span></div><div class="term-title">git simulator</div></div>';
+    html += '<div class="term-body" id="termBody"><p class="term-line muted">Welcome to the Git simulator. Type "help" for a list of commands.</p></div>';
+    html += '<div class="term-prompt"><span class="term-prompt-lbl" id="termPromptLbl">$</span><input class="term-input" id="termInput" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command..."></div>';
+    html += '</div>';
+    html += '<div class="challenge" style="margin-top:16px;"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  } else if (lesson.tool === 'env') {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Env Var Manager</span></h2>';
+    html += '<p class="ed-s">Add environment variables to a virtual project. Mark secrets to hide them from logs. See how the app reads them at runtime.</p>';
+    html += '<div id="envToolArea"></div>';
+    html += '<div class="challenge" style="margin-top:16px;"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  } else if (lesson.tool === 'deploy') {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Deploy Simulator</span></h2>';
+    html += '<p class="ed-s">Watch a real deployment happen step by step. Click "Start deploy" to see each phase, and read the logs to understand what is happening at every stage.</p>';
+    html += '<div id="deployToolArea"></div>';
+    html += '<div class="challenge" style="margin-top:16px;"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  } else {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Your Exercise</h2>';
+    html += '<div class="challenge"><strong>Do this now</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Do the exercise, take the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (lesson.tool === 'terminal') initTerminal();
+  if (lesson.tool === 'env' && $('envToolArea')) renderEnvTool($('envToolArea'));
+  if (lesson.tool === 'deploy' && $('deployToolArea')) renderDeployTool($('deployToolArea'));
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+}
+
+/* ============================================================
+   TERMINAL / GIT SIMULATOR
+   ============================================================ */
+function initTerminal() {
+  var body = $('termBody');
+  var input = $('termInput');
+  var promptLbl = $('termPromptLbl');
+
+  var state = {
+    fs: {},
+    git: {
+      initialized: false,
+      staged: {},
+      commits: [],
+      currentBranch: 'main',
+      branches: {},
+      head: null,
+      remotes: {},
+    },
+  };
+
+  function writeLine(text, cls) {
+    var line = document.createElement('p');
+    line.className = 'term-line' + (cls ? ' ' + cls : '');
+    line.textContent = text;
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function shortHash() {
+    return Math.random().toString(16).slice(2, 9);
+  }
+
+  function updatePrompt() {
+    if (state.git.initialized) {
+      promptLbl.textContent = '~/repo (' + state.git.currentBranch + ') $';
+    } else {
+      promptLbl.textContent = '~ $';
+    }
+  }
+
+  function gitStatus() {
+    var out = [];
+    var stagedKeys = Object.keys(state.git.staged);
+    var untracked = [];
+    var modified = [];
+
+    // Which files are in the current commit's tree?
+    var committedFiles = {};
+    if (state.git.head) {
+      var headCommit = state.git.commits.find(function(c) { return c.id === state.git.head; });
+      if (headCommit) committedFiles = headCommit.tree || {};
+    }
+
+    Object.keys(state.fs).forEach(function(f) {
+      if (state.git.staged[f] !== undefined) return;
+      if (!committedFiles[f]) untracked.push(f);
+      else if (committedFiles[f] !== state.fs[f]) modified.push(f);
+    });
+
+    out.push('On branch ' + state.git.currentBranch);
+    if (Object.keys(state.git.remotes).length) {
+      out.push('Your branch is up to date with \'origin/' + state.git.currentBranch + '\'.');
+    }
+    out.push('');
+    if (stagedKeys.length) {
+      out.push('Changes to be committed:');
+      stagedKeys.forEach(function(f) {
+        out.push('  new file:   ' + f);
+      });
+      out.push('');
+    }
+    if (modified.length) {
+      out.push('Changes not staged for commit:');
+      modified.forEach(function(f) {
+        out.push('  modified:   ' + f);
+      });
+      out.push('');
+    }
+    if (untracked.length) {
+      out.push('Untracked files:');
+      untracked.forEach(function(f) {
+        out.push('  ' + f);
+      });
+      out.push('');
+    }
+    if (!stagedKeys.length && !modified.length && !untracked.length) {
+      out.push('nothing to commit, working tree clean');
+    }
+    return out;
+  }
+
+  function commitLog() {
+    var out = [];
+    if (!state.git.commits.length) return ['(no commits yet)'];
+    state.git.commits.slice().reverse().forEach(function(c) {
+      out.push(c.id + ' ' + c.message + ' (' + c.branch + ')');
+    });
+    return out;
+  }
+
+  function parseCommand(line) {
+    // Simple parser: handles quotes crudely but well enough for teaching
+    var parts = [];
+    var cur = '';
+    var inQuote = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (ch === '"') { inQuote = !inQuote; continue; }
+      if (!inQuote && ch === ' ') {
+        if (cur) { parts.push(cur); cur = ''; }
+      } else {
+        cur += ch;
+      }
+    }
+    if (cur) parts.push(cur);
+    return parts;
+  }
+
+  function execute(rawLine) {
+    var line = rawLine.trim();
+    if (!line) return;
+    writeLine('$ ' + line, 'muted');
+
+    // Handle echo redirection: echo "text" > file
+    var echoMatch = line.match(/^echo\s+(?:"([^"]*)"|'([^']*)'|([^\s>]+))\s*>\s*(\S+)$/);
+    if (echoMatch) {
+      var content = echoMatch[1] || echoMatch[2] || echoMatch[3] || '';
+      var file = echoMatch[4];
+      state.fs[file] = content;
+      writeLine('Wrote ' + file, 'ok');
+      return;
+    }
+
+    var parts = parseCommand(line);
+    var cmd = parts[0];
+    var args = parts.slice(1);
+
+    // git commands
+    if (cmd === 'git') {
+      var sub = args[0];
+      if (!sub) { writeLine('git: missing subcommand', 'err'); return; }
+
+      if (sub === 'init') {
+        state.git.initialized = true;
+        state.git.currentBranch = 'main';
+        state.git.branches = { main: null };
+        state.git.head = null;
+        state.git.commits = [];
+        state.git.staged = {};
+        writeLine('Initialized empty Git repository in /home/user/repo/.git/', 'ok');
+        updatePrompt();
+        return;
+      }
+
+      if (!state.git.initialized) {
+        writeLine('fatal: not a git repository (or any of the parent directories): .git', 'err');
+        return;
+      }
+
+      if (sub === 'status') {
+        gitStatus().forEach(function(l) { writeLine(l); });
+        return;
+      }
+
+      if (sub === 'add') {
+        var target = args[1];
+        if (!target) { writeLine('git add: nothing specified', 'err'); return; }
+        if (target === '.' || target === '-A') {
+          Object.keys(state.fs).forEach(function(f) {
+            state.git.staged[f] = state.fs[f];
+          });
+          writeLine('Staged all changes.', 'ok');
+        } else {
+          if (!(target in state.fs)) {
+            writeLine('fatal: pathspec \'' + target + '\' did not match any files', 'err');
+            return;
+          }
+          state.git.staged[target] = state.fs[target];
+          writeLine('Staged ' + target + '.', 'ok');
+        }
+        return;
+      }
+
+      if (sub === 'commit') {
+        var msgIdx = args.indexOf('-m');
+        if (msgIdx === -1 || !args[msgIdx + 1]) {
+          writeLine('git commit: -m "message" is required in this simulator', 'err');
+          return;
+        }
+        var message = args[msgIdx + 1];
+        var stagedKeys = Object.keys(state.git.staged);
+        if (!stagedKeys.length) {
+          writeLine('nothing to commit, working tree clean', 'muted');
+          return;
+        }
+        var id = shortHash();
+        var newTree = {};
+        // inherit from parent
+        if (state.git.head) {
+          var parent = state.git.commits.find(function(c) { return c.id === state.git.head; });
+          if (parent) newTree = Object.assign({}, parent.tree);
+        }
+        stagedKeys.forEach(function(f) { newTree[f] = state.git.staged[f]; });
+        var commit = { id: id, message: message, tree: newTree, parent: state.git.head, branch: state.git.currentBranch };
+        state.git.commits.push(commit);
+        state.git.head = id;
+        state.git.branches[state.git.currentBranch] = id;
+        state.git.staged = {};
+        writeLine('[' + state.git.currentBranch + ' ' + id + '] ' + message, 'ok');
+        writeLine(' ' + stagedKeys.length + ' file' + (stagedKeys.length !== 1 ? 's' : '') + ' changed', 'muted');
+        return;
+      }
+
+      if (sub === 'log') {
+        commitLog().forEach(function(l) { writeLine(l); });
+        return;
+      }
+
+      if (sub === 'branch') {
+        var name = args[1];
+        if (!name) {
+          Object.keys(state.git.branches).forEach(function(b) {
+            var marker = b === state.git.currentBranch ? '* ' : '  ';
+            writeLine(marker + b);
+          });
+          return;
+        }
+        if (state.git.branches[name]) {
+          writeLine('fatal: a branch named \'' + name + '\' already exists', 'err');
+          return;
+        }
+        state.git.branches[name] = state.git.head;
+        writeLine('Created branch ' + name + '.', 'ok');
+        return;
+      }
+
+      if (sub === 'checkout') {
+        var flag = args[1];
+        var target = (flag === '-b') ? args[2] : args[1];
+        if (!target) { writeLine('git checkout: missing branch name', 'err'); return; }
+        if (flag === '-b') {
+          if (state.git.branches[target]) {
+            writeLine('fatal: a branch named \'' + target + '\' already exists', 'err');
+            return;
+          }
+          state.git.branches[target] = state.git.head;
+          state.git.currentBranch = target;
+          state.git.head = state.git.branches[target];
+          state.git.staged = {};
+          writeLine('Switched to a new branch \'' + target + '\'', 'ok');
+        } else {
+          if (!state.git.branches.hasOwnProperty(target)) {
+            writeLine('error: pathspec \'' + target + '\' did not match any file(s) known to git', 'err');
+            return;
+          }
+          state.git.currentBranch = target;
+          state.git.head = state.git.branches[target];
+          state.git.staged = {};
+          writeLine('Switched to branch \'' + target + '\'', 'ok');
+        }
+        updatePrompt();
+        return;
+      }
+
+      if (sub === 'merge') {
+        var branch = args[1];
+        if (!branch) { writeLine('git merge: missing branch name', 'err'); return; }
+        if (!state.git.branches.hasOwnProperty(branch)) {
+          writeLine('merge: ' + branch + ' - not something we can merge', 'err');
+          return;
+        }
+        var branchCommit = state.git.branches[branch];
+        var currentCommit = state.git.head;
+        if (branchCommit === currentCommit) {
+          writeLine('Already up to date.', 'muted');
+          return;
+        }
+        // Fast-forward if current branch is an ancestor of target
+        var ff = !currentCommit || isAncestor(currentCommit, branchCommit);
+        if (ff) {
+          state.git.head = branchCommit;
+          state.git.branches[state.git.currentBranch] = branchCommit;
+          // Update filesystem to reflect the merged tree
+          var targetCommit = state.git.commits.find(function(c) { return c.id === branchCommit; });
+          if (targetCommit) {
+            Object.keys(targetCommit.tree).forEach(function(f) {
+              state.fs[f] = targetCommit.tree[f];
+            });
+          }
+          writeLine('Updating ' + (currentCommit || '0000000') + '..' + branchCommit, 'ok');
+          writeLine('Fast-forward', 'ok');
+          return;
+        }
+        // Non-fast-forward: create a merge commit (simplified)
+        var mergeId = shortHash();
+        var parentA = state.git.commits.find(function(c) { return c.id === currentCommit; });
+        var parentB = state.git.commits.find(function(c) { return c.id === branchCommit; });
+        var mergeTree = Object.assign({}, parentA ? parentA.tree : {}, parentB ? parentB.tree : {});
+        var mergeCommit = {
+          id: mergeId,
+          message: 'Merge branch \'' + branch + '\' into ' + state.git.currentBranch,
+          tree: mergeTree,
+          parent: currentCommit,
+          parent2: branchCommit,
+          branch: state.git.currentBranch,
+        };
+        state.git.commits.push(mergeCommit);
+        state.git.head = mergeId;
+        state.git.branches[state.git.currentBranch] = mergeId;
+        Object.keys(mergeTree).forEach(function(f) { state.fs[f] = mergeTree[f]; });
+        writeLine('Merge made by the \'ort\' strategy.', 'ok');
+        return;
+      }
+
+      if (sub === 'remote') {
+        if (args[1] === 'add') {
+          var remoteName = args[2];
+          var remoteUrl = args[3];
+          if (!remoteName || !remoteUrl) {
+            writeLine('git remote add: usage: git remote add <name> <url>', 'err');
+            return;
+          }
+          state.git.remotes[remoteName] = remoteUrl;
+          writeLine('Added remote ' + remoteName + ' → ' + remoteUrl, 'ok');
+          return;
+        }
+        if (args[1] === '-v') {
+          if (!Object.keys(state.git.remotes).length) {
+            writeLine('(no remotes configured)');
+            return;
+          }
+          Object.keys(state.git.remotes).forEach(function(r) {
+            writeLine(r + '  ' + state.git.remotes[r] + ' (fetch)');
+            writeLine(r + '  ' + state.git.remotes[r] + ' (push)');
+          });
+          return;
+        }
+        writeLine('git remote: unknown subcommand', 'err');
+        return;
+      }
+
+      if (sub === 'push') {
+        if (!Object.keys(state.git.remotes).length) {
+          writeLine('fatal: no remote configured. Run: git remote add origin <url>', 'err');
+          return;
+        }
+        writeLine('Enumerating objects: ' + (state.git.commits.length * 3) + ', done.');
+        writeLine('Counting objects: 100% (' + (state.git.commits.length * 3) + '/' + (state.git.commits.length * 3) + '), done.');
+        writeLine('Writing objects: 100% (' + (state.git.commits.length * 3) + '/' + (state.git.commits.length * 3) + '), 4.2 KiB, done.');
+        writeLine('To ' + Object.values(state.git.remotes)[0], 'muted');
+        writeLine('   ' + (state.git.head || '0000000') + '..' + (state.git.head || '0000000') + '  ' + state.git.currentBranch + ' -> ' + state.git.currentBranch, 'ok');
+        return;
+      }
+
+      if (sub === 'pull') {
+        if (!Object.keys(state.git.remotes).length) {
+          writeLine('fatal: no remote configured', 'err');
+          return;
+        }
+        writeLine('Already up to date.', 'muted');
+        return;
+      }
+
+      if (sub === 'clone') {
+        writeLine('Cloning into \'repo\'...', 'muted');
+        writeLine('remote: Enumerating objects: 42, done.', 'muted');
+        writeLine('Receiving objects: 100% (42/42), 8.1 KiB, done.', 'ok');
+        writeLine('Note: "git clone" in this simulator does not fetch real data.', 'info');
+        return;
+      }
+
+      if (sub === 'diff') {
+        writeLine('(in the simulator, use "git status" and "git log" to inspect state)', 'muted');
+        return;
+      }
+
+      writeLine('git: \'' + sub + '\' is not a supported command in this simulator. Type "help".', 'err');
+      return;
+    }
+
+    // Non-git commands
+    if (cmd === 'ls') {
+      var files = Object.keys(state.fs);
+      if (!files.length) {
+        writeLine('(empty directory)');
+      } else {
+        files.forEach(function(f) { writeLine(f); });
+      }
+      return;
+    }
+
+    if (cmd === 'cat') {
+      var f = args[0];
+      if (!f || !(f in state.fs)) { writeLine('cat: ' + (f || '') + ': No such file', 'err'); return; }
+      writeLine(state.fs[f]);
+      return;
+    }
+
+    if (cmd === 'rm') {
+      var rf = args[0];
+      if (!rf || !(rf in state.fs)) { writeLine('rm: ' + (rf || '') + ': No such file', 'err'); return; }
+      delete state.fs[rf];
+      if (state.git.staged[rf] !== undefined) delete state.git.staged[rf];
+      writeLine('Removed ' + rf, 'ok');
+      return;
+    }
+
+    if (cmd === 'clear') {
+      body.innerHTML = '';
+      return;
+    }
+
+    if (cmd === 'help') {
+      writeLine('Available commands:', 'info');
+      writeLine('');
+      writeLine('File commands:');
+      writeLine('  echo "text" > file.txt    Create a file with content');
+      writeLine('  ls                        List files');
+      writeLine('  cat file.txt              Show file content');
+      writeLine('  rm file.txt               Delete a file');
+      writeLine('');
+      writeLine('Git commands:');
+      writeLine('  git init                  Initialize a repository');
+      writeLine('  git status                Show what changed');
+      writeLine('  git add .                 Stage all changes');
+      writeLine('  git add file.txt          Stage one file');
+      writeLine('  git commit -m "message"   Save staged changes');
+      writeLine('  git log --oneline         Show commit history');
+      writeLine('  git branch                List branches');
+      writeLine('  git branch name           Create a branch');
+      writeLine('  git checkout name         Switch branch');
+      writeLine('  git checkout -b name      Create and switch');
+      writeLine('  git merge name            Merge a branch');
+      writeLine('  git remote add origin URL Add a remote');
+      writeLine('  git push                  Push to remote');
+      writeLine('  git pull                  Pull from remote');
+      writeLine('  git clone URL             Clone a repository');
+      writeLine('');
+      writeLine('Other:');
+      writeLine('  clear                     Clear the terminal');
+      writeLine('  help                      Show this help');
+      return;
+    }
+
+    writeLine('command not found: ' + cmd + '. Type "help".', 'err');
+  }
+
+  function isAncestor(commitId, descendantId) {
+    if (!commitId) return true;
+    if (commitId === descendantId) return true;
+    var c = state.git.commits.find(function(x) { return x.id === descendantId; });
+    while (c) {
+      if (c.parent === commitId) return true;
+      if (!c.parent) return false;
+      c = state.git.commits.find(function(x) { return x.id === c.parent; });
+    }
+    return false;
+  }
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      var line = input.value;
+      input.value = '';
+      execute(line);
+    }
+  });
+
+  // Focus terminal when lesson loads
+  setTimeout(function() { input.focus(); }, 200);
+  updatePrompt();
+}
+
+/* ============================================================
+   ENV VAR TOOL
+   ============================================================ */
+function renderEnvTool(container) {
+  var vars = [
+    { key: 'PORT', value: '3000', secret: false },
+    { key: 'NODE_ENV', value: 'production', secret: false },
+  ];
+
+  function render() {
+    var html = '';
+    html += '<div class="ex-card">';
+    html += '<h4>Virtual environment variables</h4>';
+    html += '<p class="hint">These are read by your app at runtime via <code>process.env.KEY</code>. Secrets are masked in logs.</p>';
+    html += '<div class="field-row" style="margin-bottom:12px">';
+    html += '<div class="field" style="margin-bottom:0"><label for="envKey">Key</label><input id="envKey" type="text" placeholder="API_KEY"></div>';
+    html += '<div class="field" style="margin-bottom:0"><label for="envVal">Value</label><input id="envVal" type="text" placeholder="secret value"></div>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">';
+    html += '<label style="display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer"><input type="checkbox" id="envSecret" style="accent-color:var(--green)"> Mark as secret</label>';
+    html += '<button class="btn btn-p btn-sm" id="envAdd" type="button" style="margin-left:auto">+ Add variable</button>';
+    html += '</div>';
+    html += '<table class="env-table">';
+    html += '<thead><tr><th>Key</th><th>Value</th><th></th></tr></thead><tbody>';
+    if (!vars.length) {
+      html += '<tr><td colspan="3" style="text-align:center;color:var(--t3);padding:20px">No variables yet. Add one above.</td></tr>';
+    } else {
+      vars.forEach(function(v, i) {
+        html += '<tr>';
+        html += '<td class="key">' + esc(v.key) + '</td>';
+        html += '<td class="val' + (v.secret ? ' hidden' : '') + '">' + esc(v.secret ? '••••••••••••' : v.value) + '</td>';
+        html += '<td><button class="env-remove" data-i="' + i + '" type="button">Remove</button></td>';
+        html += '</tr>';
+      });
+    }
+    html += '</tbody></table>';
+    html += '<div style="margin-top:18px;padding:14px 16px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--info)">';
+    html += '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;color:var(--info);margin-bottom:8px">How your app sees them</div>';
+    html += '<pre style="margin:0;background:var(--navy3);color:#e6edf3;padding:14px 16px;border-radius:8px;font-family:var(--mono);font-size:12.5px;line-height:1.6;overflow-x:auto">';
+    vars.forEach(function(v) {
+      var shown = v.secret ? '***hidden***' : v.value;
+      html += 'process.env.' + v.key + ' === "' + shown + '"\n';
+    });
+    if (!vars.length) html += '(no variables set)';
+    html += '</pre>';
+    html += '</div>';
+    html += '</div>';
+    container.innerHTML = html;
+
+    $('envAdd').addEventListener('click', function() {
+      var k = $('envKey').value.trim();
+      var v = $('envVal').value.trim();
+      var s = $('envSecret').checked;
+      if (!k || !v) return;
+      // Replace if key exists
+      var existing = vars.findIndex(function(x) { return x.key === k; });
+      if (existing !== -1) {
+        vars[existing] = { key: k, value: v, secret: s };
+      } else {
+        vars.push({ key: k, value: v, secret: s });
+      }
+      render();
+    });
+
+    container.querySelectorAll('.env-remove').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        vars.splice(parseInt(btn.getAttribute('data-i'), 10), 1);
+        render();
+      });
+    });
+  }
+
+  render();
+}
+
+/* ============================================================
+   DEPLOY TOOL
+   ============================================================ */
+function renderDeployTool(container) {
+  var steps = [
+    { name: 'Git push', detail: 'Pushing main branch to origin...', log: 'To github.com/you/my-app.git\n   a1b2c3d..e4f5g6h  main -> main' },
+    { name: 'Detect project', detail: 'Detected Node.js project (package.json found)', log: 'Detected runtime: node@20\nBuild command: npm install\nStart command: npm start' },
+    { name: 'Install dependencies', detail: 'Running npm install...', log: 'added 42 packages in 3.2s\nfound 0 vulnerabilities' },
+    { name: 'Build', detail: 'No build step required', log: 'Skipping build (no build script detected)' },
+    { name: 'Upload', detail: 'Uploading your code to the platform...', log: 'Uploading 12 files... done.\nTotal size: 4.2 MB' },
+    { name: 'Set environment', detail: 'Injecting environment variables...', log: 'PORT=10000  (assigned by platform)\nNODE_ENV=production\nDB_URL=***hidden***\nJWT_SECRET=***hidden***' },
+    { name: 'Start service', detail: 'Starting your app...', log: 'Listening on port 10000\nService is live.' },
+    { name: 'Health check', detail: 'Pinging /health...', log: 'GET /health -> 200 OK (12ms)' },
+    { name: 'Enable HTTPS', detail: 'Provisioning Let\'s Encrypt certificate...', log: 'Certificate issued for my-app.onrender.com\nAuto-renewal: enabled' },
+    { name: 'Deployment complete', detail: 'Your app is live at https://my-app.onrender.com', log: '✓ Deploy successful in 47.3 seconds' },
+  ];
+
+  var html = '';
+  html += '<div class="ex-card">';
+  html += '<h4>Deployment simulator</h4>';
+  html += '<p class="hint">Watch a real deployment happen. Click "Start deploy" to run through all ten steps.</p>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">';
+  html += '<button class="btn btn-p" id="dpStart" type="button">🚀 Start deploy</button>';
+  html += '<button class="btn btn-g" id="dpReset" type="button">↺ Reset</button>';
+  html += '</div>';
+  html += '<div class="deploy-timeline" id="dpTimeline"></div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  function renderTimeline(activeIdx) {
+    var el = $('dpTimeline');
+    var h = '';
+    steps.forEach(function(s, i) {
+      var cls = 'dp-step';
+      if (i < activeIdx) cls += ' done';
+      else if (i === activeIdx) cls += ' active';
+      h += '<div class="' + cls + '">';
+      h += '<div class="dp-num">' + (i < activeIdx ? '✓' : (i + 1)) + '</div>';
+      h += '<div class="dp-body">';
+      h += '<div class="dp-name">' + esc(s.name) + '</div>';
+      h += '<div class="dp-detail">' + esc(s.detail) + '</div>';
+      if (i <= activeIdx) {
+        h += '<div class="dp-detail" style="margin-top:6px;white-space:pre-wrap;color:var(--t3);font-size:12px">' + esc(s.log) + '</div>';
+      }
+      h += '</div></div>';
+    });
+    el.innerHTML = h;
+  }
+
+  renderTimeline(-1);
+
+  $('dpStart').addEventListener('click', function() {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = '⏳ Deploying...';
+    var i = 0;
+    function tick() {
+      renderTimeline(i);
+      i++;
+      if (i <= steps.length) {
+        setTimeout(tick, 700);
+      } else {
+        renderTimeline(steps.length);
+        btn.disabled = false;
+        btn.textContent = '🚀 Start deploy';
+      }
+    }
+    tick();
+  });
+
+  $('dpReset').addEventListener('click', function() {
+    renderTimeline(-1);
+  });
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">DevOps &amp; Deployment</h1>';
+  html += '<p class="pg-sub">You can build things. This course is about shipping them — getting your code live at a real URL, with a custom domain, HTTPS, environment variables, and a plan for when things break. The gap between "it works on my laptop" and "it is live" is where most self-taught developers stop. This course closes it.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>8 weeks</h3><p>10 lessons across 4 modules. About 5 hours of learning, plus real deployment work.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>You should have built at least one working project in Node, Python, or similar.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🚀</span>Real tools</h3><p>A working Git simulator, deploy timeline, and environment variable manager.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Git &amp; GitHub</h3><p>Branches, commits, pull requests, remotes, and .gitignore.</p></div>';
+  html += '<div class="ov-card"><h3>Configuration</h3><p>Environment variables, secrets management, and safe configuration.</p></div>';
+  html += '<div class="ov-card"><h3>Deployment</h3><p>Node and Python apps live on Render, Railway, or Fly.io.</p></div>';
+  html += '<div class="ov-card"><h3>Domains &amp; HTTPS</h3><p>DNS records, custom domains, and free TLS with Let\'s Encrypt.</p></div>';
+  html += '<div class="ov-card"><h3>Docker</h3><p>What containers are, when they help, and when to skip them.</p></div>';
+  html += '<div class="ov-card"><h3>Monitoring &amp; recovery</h3><p>Structured logs, health checks, backups, and rollback plans.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'Git Fundamentals', 'Init, commit, branch, merge, and GitHub workflows.'],
+    ['W3', 'Configuration', 'Environment variables and secret management.'],
+    ['W4–5', 'Deployment', 'Ship Node and Python apps to free platforms.'],
+    ['W6', 'Domains &amp; HTTPS', 'Buy a domain, configure DNS, enable HTTPS.'],
+    ['W7', 'Containers', 'Docker basics and when it helps.'],
+    ['W8', 'Monitoring', 'Logs, health checks, backups, and rollbacks.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to ship?</h2>';
+  html += '<p>The end goal is a live project at a real URL. Jump into Lesson 1 and start the journey.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('g1');
+    switchView('lessons');
+  });
+}
+
+/* ============================================================
+   TOOLS
+   ============================================================ */
+function renderTools() {
+  var container = $('viewTools');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Tools &amp; Milestones</h1>';
+  html += '<p class="pg-sub">Interactive tools from the course, plus your real-world DevOps checklist. Tick each milestone only when you have actually done it.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your DevOps progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' real-world milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Real-World Milestones <span class="badge">Actual work</span></h2>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 Jump to a Tool</h2>';
+  html += '<div class="grid-3">';
+  var tools = [
+    { id: 'g2', icon: '🌳', name: 'Git Terminal', desc: 'A working Git simulator for practice.' },
+    { id: 'g5', icon: '🔐', name: 'Env Var Manager', desc: 'Add and manage environment variables.' },
+    { id: 'g6', icon: '🚀', name: 'Deploy Simulator', desc: 'Watch a full deployment step by step.' }
+  ];
+  tools.forEach(function(t) {
+    html += '<button class="ov-card" style="text-align:left;cursor:pointer" data-lesson="' + t.id + '">';
+    html += '<h3><span class="ov-ic">' + t.icon + '</span>' + esc(t.name) + '</h3>';
+    html += '<p>' + esc(t.desc) + '</p>';
+    html += '</button>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('button[data-lesson]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      selectLesson(b.getAttribute('data-lesson'));
+      switchView('lessons');
+    });
+  });
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+/* ============================================================
+   RESOURCES
+   ============================================================ */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your DevOps work.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'Git Book (free)', 'The official, complete guide to Git.', 'https://git-scm.com/book/en/v2'],
+    ['🐙', 'GitHub Docs', 'GitHub\'s own documentation. Clear and thorough.', 'https://docs.github.com/'],
+    ['🚀', 'Render Docs', 'The platform we use most in this course.', 'https://render.com/docs'],
+    ['🚂', 'Railway Docs', 'Alternative deployment platform with $5 free credit.', 'https://docs.railway.app/'],
+    ['✈️', 'Fly.io Docs', 'Global deployment, great for low-latency.', 'https://fly.io/docs/'],
+    ['📦', 'Docker Get Started', 'Official Docker tutorial.', 'https://docs.docker.com/get-started/']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">DevOps Cheatsheet</div><div class="res-d">One-page reference covering Git, deploy commands, env vars, and Docker.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadDeployBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">🚀</span>';
+  html += '<div><div class="res-t">Deploy Checklist</div><div class="res-d">A pre-flight checklist for every project before going live.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadDeployBtn').addEventListener('click', downloadChecklist);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  DEVOPS & DEPLOYMENT — CHEATSHEET',
+    '============================================',
+    '',
+    '--- GIT WORKFLOW ---',
+    'git init',
+    'git status',
+    'git add .',
+    'git commit -m "Meaningful message"',
+    'git log --oneline',
+    'git diff',
+    '',
+    '--- BRANCHING ---',
+    'git checkout -b feature-x     # create and switch',
+    'git checkout main             # switch back',
+    'git merge feature-x           # merge',
+    'git branch -d feature-x       # delete',
+    '',
+    '--- REMOTES ---',
+    'git remote add origin URL',
+    'git push -u origin main',
+    'git pull',
+    'git clone URL',
+    '',
+    '--- .gitignore ---',
+    'node_modules/',
+    '.env',
+    'dist/',
+    'build/',
+    '__pycache__/',
+    'venv/',
+    '',
+    '--- ENVIRONMENT VARIABLES ---',
+    'Node:   process.env.KEY',
+    'Python: os.environ.get("KEY")',
+    'Load with: require("dotenv").config()',
+    '',
+    '--- DEPLOY: NODE ---',
+    'Build:  npm install',
+    'Start:  npm start',
+    'Port:   process.env.PORT || 3000',
+    '',
+    '--- DEPLOY: PYTHON ---',
+    'Build:  pip install -r requirements.txt',
+    'Start:  gunicorn app:app',
+    'Port:   os.environ.get("PORT", 5000)',
+    '',
+    '--- DOMAINS ---',
+    'A record:     @ -> server IP',
+    'CNAME record: www -> my-app.onrender.com',
+    'HTTPS is automatic via Let\'s Encrypt.',
+    '',
+    '--- DOCKER ---',
+    'FROM node:20-alpine',
+    'WORKDIR /app',
+    'COPY package*.json ./',
+    'RUN npm ci --omit=dev',
+    'COPY . .',
+    'EXPOSE 3000',
+    'CMD ["node", "server.js"]',
+    '',
+    'Commands:',
+    'docker build -t my-app .',
+    'docker run -p 3000:3000 my-app',
+    '',
+    '--- HEALTH CHECK ---',
+    'app.get("/health", (req, res) =>',
+    '  res.json({ ok: true, uptime: process.uptime() })',
+    ');',
+    '',
+    '--- STRUCTURED LOGGING ---',
+    'console.log(JSON.stringify({',
+    '  time: new Date().toISOString(),',
+    '  level: "info",',
+    '  message: "User signed up",',
+    '  userId: 42,',
+    '}));',
+    '',
+    '--- GRACEFUL SHUTDOWN ---',
+    'process.on("SIGTERM", () => {',
+    '  server.close(() => process.exit(0));',
+    '});',
+    '',
+    '--- INCIDENT PLAYBOOK ---',
+    '1. Stay calm',
+    '2. Check logs',
+    '3. Rollback if needed',
+    '4. Announce status',
+    '5. Fix, test, redeploy',
+    '6. Write post-mortem',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([lines], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'devops-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadChecklist() {
+  var lines = [
+    '============================================',
+    '  PRE-DEPLOY CHECKLIST',
+    '============================================',
+    '',
+    'Print this. Tick every item before going live.',
+    '',
+    '--- CODE ---',
+    '[ ] All features tested locally',
+    '[ ] No console.log debugging left in production paths',
+    '[ ] Error handling on all API calls',
+    '[ ] Loading states for every async operation',
+    '[ ] 404 and error pages defined',
+    '',
+    '--- SECURITY ---',
+    '[ ] No secrets in source code',
+    '[ ] .env is in .gitignore',
+    '[ ] .env is NOT in git history (check with: git log --all -- .env)',
+    '[ ] All API keys are loaded from environment variables',
+    '[ ] HTTPS enforced',
+    '[ ] CORS configured (not "*" in production)',
+    '',
+    '--- CONFIGURATION ---',
+    '[ ] Port read from process.env.PORT',
+    '[ ] All required env vars documented in README',
+    '[ ] Production env vars set on the platform dashboard',
+    '[ ] Build script is correct',
+    '[ ] Start script is correct',
+    '',
+    '--- DOMAIN & HTTPS ---',
+    '[ ] Domain purchased',
+    '[ ] DNS records configured (A and CNAME)',
+    '[ ] HTTPS certificate issued',
+    '[ ] www redirects to root (or vice versa)',
+    '',
+    '--- MONITORING ---',
+    '[ ] /health endpoint exists',
+    '[ ] Structured logging in place',
+    '[ ] Error tracking set up (Sentry or similar)',
+    '[ ] At least one alert configured',
+    '',
+    '--- BACKUPS ---',
+    '[ ] Database backups enabled',
+    '[ ] Backup restore tested at least once',
+    '[ ] Uploads stored in object storage, not local disk',
+    '',
+    '--- RECOVERY ---',
+    '[ ] Previous deploy is one click away (rollback works)',
+    '[ ] Incident playbook written down',
+    '[ ] Someone else knows how to roll back',
+    '',
+    '--- DOCUMENTATION ---',
+    '[ ] README explains what the project does',
+    '[ ] README explains how to run it locally',
+    '[ ] README explains how to deploy it',
+    '[ ] .env.example committed with placeholder values',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([lines], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'deploy-checklist.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ============================================================
+   COMMUNITY
+   ============================================================ */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Shipping code can feel lonely. Join other Malawian developers who are building, deploying, and debugging in public.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>DevOps WhatsApp Group</h3><p>Share deploy logs, debug production issues, celebrate first live URLs.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer discussions, config snippets, deployment guides.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub Showcase</h3><p>See what other learners have deployed. Get inspired.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Lessons from deploying in Malawi</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Deploy early</h3><p>Deploy the skeleton of a new project before you write any features. It takes 10 minutes and eliminates the "works locally" trap.</p></div>';
+  html += '<div class="ov-card"><h3>Free tiers are enough</h3><p>Render, Railway, and Fly.io all have free tiers that are genuinely useful. Upgrade only when you have real users.</p></div>';
+  html += '<div class="ov-card"><h3>Write logs like you will need them</h3><p>Because you will. At 11pm. On a Friday. Structured logs are your future self\'s best friend.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:36px">';
+  html += '<h2>Stuck on deployment?</h2>';
+  html += '<p>Post the error message and the platform you are on. Someone in the group has hit the same issue and knows the fix.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   CERTIFICATE
+   ============================================================ */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">You unlock the certificate when you have completed every lesson and ticked at least 7 real-world milestones on the Tools tab.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Real-world milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">DevOps &amp; Deployment</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">8 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of DevOps &amp; Deployment, demonstrating proficiency in Git and GitHub, environment variable management, Node.js and Python deployment, DNS configuration, HTTPS, Docker fundamentals, structured logging, and production recovery.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>DevOps &amp; Deployment</h1>' +
+        '<div class="t">8 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of DevOps &amp; Deployment,<br>demonstrating proficiency in Git and GitHub, environment variables,<br>Node.js and Python deployment, DNS configuration, HTTPS,<br>Docker fundamentals, structured logging, and production recovery.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

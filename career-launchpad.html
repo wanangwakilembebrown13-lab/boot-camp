@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Career Launchpad — Interactive Course</title>
+<meta name="description" content="Land your first tech job. Portfolio, GitHub, LinkedIn, interviews, salary negotiation — the last mile between skills and a paycheck.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--info:#0284c7;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d;white-space:pre-wrap}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+.rd table{width:100%;border-collapse:collapse;font-size:14px;margin:14px 0}
+.rd table th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.rd table td{padding:9px 14px;border-bottom:1px solid var(--bd2);vertical-align:top}
+.rd table tr:last-child td{border-bottom:none}
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ex-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:22px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.ex-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.ex-card .hint{font-size:13.5px;color:var(--t3);margin-bottom:16px;line-height:1.6}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-hint{font-size:12px;color:var(--t3);margin-top:5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+/* Scorecard */
+.score-wrap{margin-top:16px}
+.score-ring{display:flex;align-items:center;gap:20px;padding:18px 20px;background:var(--navy3);border-radius:var(--r);color:#fff;margin-bottom:16px}
+.score-ring-circle{position:relative;width:88px;height:88px;flex-shrink:0}
+.score-ring-circle svg{transform:rotate(-90deg)}
+.score-ring-circle .bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8}
+.score-ring-circle .fg{fill:none;stroke:var(--green);stroke-width:8;stroke-linecap:round;transition:stroke-dasharray .6s var(--ease)}
+.score-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--green);letter-spacing:-.5px}
+.score-ring-info h5{font-size:15px;font-weight:700;margin-bottom:4px}
+.score-ring-info p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:6px}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:var(--bg);border-radius:var(--r);font-size:14px;transition:all .15s}
+.checklist li:hover{background:var(--gsoft)}
+.checklist input{accent-color:var(--green);margin-top:3px;width:16px;height:16px;flex-shrink:0}
+.checklist label{cursor:pointer;line-height:1.5;color:var(--text)}
+.checklist li.checked{background:var(--gsoft)}
+.checklist li.checked label{color:var(--navy);font-weight:550}
+.checklist li.critical{border-left:3px solid var(--danger)}
+.checklist li.critical.checked{border-left-color:var(--green)}
+/* Headline builder */
+.headline-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.headline-option{padding:14px 16px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);font-size:14.5px;line-height:1.6;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.headline-option p{flex:1;color:var(--navy);font-weight:500}
+.copy-btn{padding:6px 12px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--rpill);font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.copy-btn:hover{border-color:var(--green);color:var(--navy);background:var(--gsoft)}
+/* STAR builder */
+.star-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.star-field{background:var(--bg);padding:12px 14px;border-radius:var(--r)}
+.star-field label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--green2);margin-bottom:6px}
+.star-field textarea{width:100%;border:1.5px solid var(--bd);border-radius:var(--r);padding:9px 12px;font-size:13.5px;line-height:1.55;font-family:inherit;background:#fff;resize:vertical;min-height:90px}
+.star-field textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.star-feedback{margin-top:14px;padding:14px 16px;background:var(--bg);border-radius:var(--r);font-size:13.5px;line-height:1.65;display:none}
+.star-feedback.show{display:block;animation:appear .25s}
+.star-feedback strong{display:block;color:var(--navy);margin-bottom:6px}
+.star-feedback ul{margin:6px 0 0 18px;padding:0}
+.star-feedback li{margin-bottom:4px;color:var(--t2)}
+/* Negotiation */
+.neg-window{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);overflow:hidden;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.neg-hd{background:var(--navy3);color:#fff;padding:12px 18px;display:flex;align-items:center;gap:12px;font-size:13px}
+.neg-hd-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.neg-hd-info{line-height:1.3}
+.neg-hd-name{font-weight:700;font-size:13.5px}
+.neg-hd-sub{font-size:11.5px;color:rgba(255,255,255,.6)}
+.neg-body{padding:18px;display:flex;flex-direction:column;gap:12px;max-height:480px;overflow-y:auto;background:#fafbfc}
+.neg-msg{padding:12px 16px;border-radius:14px;font-size:14.5px;line-height:1.6;max-width:85%}
+.neg-msg.them{background:var(--surf);border:1px solid var(--bd);align-self:flex-start;border-bottom-left-radius:4px}
+.neg-msg.me{background:var(--navy);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.neg-msg.system{background:rgba(2,132,199,.08);color:var(--info);align-self:center;font-size:13px;font-style:italic;max-width:100%;text-align:center;border:1px dashed rgba(2,132,199,.3)}
+.neg-msg.outcome{background:var(--gsoft);color:var(--navy);align-self:stretch;max-width:100%;font-weight:500;border-left:4px solid var(--green)}
+.neg-msg.outcome.warn{background:rgba(217,119,6,.08);border-left-color:var(--warn)}
+.neg-msg.outcome.bad{background:rgba(220,38,38,.06);border-left-color:var(--danger)}
+.neg-choices{padding:14px 18px;background:var(--surf);border-top:1px solid var(--bd2);display:flex;flex-direction:column;gap:8px}
+.neg-choice{padding:12px 16px;background:#fbfbfc;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14px;line-height:1.5;text-align:left;transition:all .15s;cursor:pointer}
+.neg-choice:hover:not(:disabled){border-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.neg-choice:disabled{opacity:.5;cursor:not-allowed}
+.neg-choice.good{border-color:var(--green);background:var(--gsoft)}
+.neg-choice.bad{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.neg-restart{padding:14px 18px;background:var(--surf);border-top:1px solid var(--bd2);display:none}
+.neg-restart.show{display:block}
+/* Cold email composer */
+.email-preview{background:var(--bg);border-radius:var(--r);padding:16px;margin-top:14px;font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--t2);white-space:pre-wrap;border-left:3px solid var(--info);display:none;max-height:340px;overflow-y:auto}
+.email-preview.show{display:block;animation:appear .25s}
+.email-score{margin-top:14px;padding:16px 18px;border-radius:var(--r);display:none}
+.email-score.show{display:block;animation:appear .25s}
+.email-score.good{background:var(--gsoft);border-left:4px solid var(--green)}
+.email-score.warn{background:rgba(217,119,6,.07);border-left:4px solid var(--warn)}
+.email-score.bad{background:rgba(220,38,38,.05);border-left:4px solid var(--danger)}
+.email-score h5{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.email-score h5 .pct{margin-left:auto;font-size:18px;color:var(--green2);font-weight:800}
+.email-score ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.email-score li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--t2);line-height:1.55}
+.email-score .check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0;margin-top:1px}
+.email-score .check.good{background:var(--green)}
+.email-score .check.bad{background:var(--danger)}
+/* Quiz */
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:16px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+  .star-grid{grid-template-columns:1fr}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+  .field-row{grid-template-columns:1fr}
+  .headline-option{flex-direction:column}
+  .headline-option .copy-btn{align-self:flex-start}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:16px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+  .neg-msg{max-width:95%}
+  .score-ring{flex-direction:column;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">🎯</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Tech Career Launchpad</div>
+        <div class="brand-sb">4 weeks · Beginner</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="tools" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Tools</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewTools"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">🎯</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Tech Career Launchpad</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- MODULE 1 -->
+<div class="src-read" data-l="c1">
+<p>You have the skills. You have the projects. Now you need a job. This course is about the last mile — everything between "I can build things" and "I have a paycheck."</p>
+<h2>What employers actually want</h2>
+<p>Most hiring managers are not looking for the best coder. They are looking for the <strong>lowest-risk hire</strong>. Someone who will:</p>
+<ul>
+<li>Show up on time</li>
+<li>Communicate clearly</li>
+<li>Ask for help when stuck</li>
+<li>Learn without being told</li>
+<li>Not cause drama</li>
+<li>Ship work that works</li>
+</ul>
+<p>Technical skill gets you shortlisted. Everything else gets you hired.</p>
+<h2>The four signals that win interviews</h2>
+<ol>
+<li><strong>You have shipped real things</strong> — not just tutorials. Live URLs, working apps, code on GitHub.</li>
+<li><strong>You can explain your code</strong> — why you made the choices you made, not just what the code does.</li>
+<li><strong>You are easy to work with</strong> — clear communication, no ego, curious questions.</li>
+<li><strong>You want to grow</strong> — you read, you learn, you ask what you do not know.</li>
+</ol>
+<h2>The Malawi tech market</h2>
+<p>Realistic salary ranges (2025):</p>
+<table>
+<tr><th>Role</th><th>Junior monthly (MWK)</th><th>Mid monthly (MWK)</th></tr>
+<tr><td>Frontend developer</td><td>400k – 700k</td><td>900k – 1.5M</td></tr>
+<tr><td>Backend developer</td><td>450k – 800k</td><td>1M – 1.8M</td></tr>
+<tr><td>Mobile developer</td><td>500k – 850k</td><td>1.1M – 2M</td></tr>
+<tr><td>Data analyst</td><td>400k – 700k</td><td>850k – 1.4M</td></tr>
+<tr><td>NGO tech role</td><td>600k – 900k</td><td>1.2M – 2M</td></tr>
+<tr><td>Remote (USD)</td><td>$500 – $1,200/mo</td><td>$1,500 – $4,000/mo</td></tr>
+</table>
+<p>Remote work pays 3–10× local salaries for the same skills. This is not fantasy — Malawians are doing it right now. It is the single biggest opportunity in this course.</p>
+<h2>The reality of the search</h2>
+<p>Job searching is a numbers game. A realistic first-time search in Malawi:</p>
+<ul>
+<li>Apply to <strong>30–50 positions</strong></li>
+<li>Get <strong>5–10 first-round replies</strong></li>
+<li>Get <strong>2–3 interviews</strong></li>
+<li>Land <strong>1 job offer</strong></li>
+</ul>
+<p>That is not failure — it is the base rate. Even strong candidates go through it. The people who get hired are the ones who <em>keep applying</em> after the tenth rejection.</p>
+<blockquote><strong>The mindset:</strong> the search itself is a project. Treat it like one — with deadlines, metrics, and iteration. The person who sends 5 tailored applications per week beats the person who sends 1 perfect application per month.</blockquote>
+</div>
+
+<div class="src-read" data-l="c2">
+<p>Your portfolio is not a museum of your work. It is a sales pitch. A hiring manager spends 30 seconds deciding whether to keep reading. Your portfolio's job is to make them want more.</p>
+<h2>The 5-second test</h2>
+<p>Open your portfolio on a phone. Show it to someone for 5 seconds. Close it. Ask them:</p>
+<ul>
+<li>What does this person do?</li>
+<li>What have they built?</li>
+<li>How would you hire them?</li>
+</ul>
+<p>If they cannot answer all three, the portfolio needs work.</p>
+<h2>What every portfolio needs</h2>
+<table>
+<tr><th>Section</th><th>Priority</th><th>Why</th></tr>
+<tr><td>Name and what you do</td><td>Critical</td><td>First thing seen</td></tr>
+<tr><td>3–5 real projects</td><td>Critical</td><td>Proof you can build</td></tr>
+<tr><td>Live URLs for each project</td><td>Critical</td><td>Show, do not tell</td></tr>
+<tr><td>GitHub link</td><td>Critical</td><td>Code inspection</td></tr>
+<tr><td>Contact (email, LinkedIn)</td><td>Critical</td><td>Easy to reach you</td></tr>
+<tr><td>Short bio</td><td>Nice</td><td>Context and personality</td></tr>
+<tr><td>Resume download</td><td>Nice</td><td>Easy reference</td></tr>
+<tr><td>Skills list</td><td>Nice</td><td>Keyword matching</td></tr>
+<tr><td>Blog or writing</td><td>Bonus</td><td>Shows thinking</td></tr>
+</table>
+<h2>Choosing your 3–5 projects</h2>
+<p>Quality beats quantity. A portfolio with 3 strong projects beats one with 12 weak ones. Rules:</p>
+<ul>
+<li><strong>Live URL required</strong> — a project not on the internet is not a project</li>
+<li><strong>Real users preferred</strong> — even if it is your aunt's shop</li>
+<li><strong>One "flagship"</strong> — your best work, the one you are proudest of</li>
+<li><strong>Variety if possible</strong> — one web app, one API, one data project</li>
+<li><strong>Recent</strong> — projects from 3+ years ago say "I stopped learning"</li>
+</ul>
+<h2>Describing each project</h2>
+<p>For each project, answer four questions:</p>
+<ol>
+<li><strong>What does it do?</strong> One sentence.</li>
+<li><strong>What problem does it solve?</strong> One sentence.</li>
+<li><strong>What did you build?</strong> Technology stack, key features.</li>
+<li><strong>What was hard?</strong> One specific challenge you solved.</li>
+</ol>
+<p>That last one is what separates a portfolio from a list. It shows you think.</p>
+<h2>The portfolio pitfalls</h2>
+<ul>
+<li><strong>No live link</strong> — the fastest way to be ignored</li>
+<li><strong>Only screenshots</strong> — screenshots can be faked; live URLs cannot</li>
+<li><strong>Vague descriptions</strong> — "a website I made" tells me nothing</li>
+<li><strong>Too many projects</strong> — 20 mediocre projects hide your best work</li>
+<li><strong>Broken links</strong> — check every project URL monthly</li>
+<li><strong>Mobile-hostile</strong> — most recruiters check on their phone first</li>
+<li><strong>Slow to load</strong> — over 500 KB and you are losing readers</li>
+</ul>
+<div class="challenge" style="margin-top:22px;">
+<strong>Try the Portfolio Scorecard</strong>
+Scroll down to the tool in this lesson. Tick every element you currently have. Get a score and a list of what is missing.
+</div>
+<blockquote><strong>The rule:</strong> your portfolio should prove you can do the job, in under 30 seconds, on a phone, on a 3G connection. That is the entire brief.</blockquote>
+</div>
+
+<!-- MODULE 2 -->
+<div class="src-read" data-l="c3">
+<p>Recruiters look at your GitHub. Not always, but often enough that it matters. A clean, active GitHub profile is a real asset.</p>
+<h2>What recruiters check</h2>
+<ol>
+<li><strong>Do you have pinned repos?</strong> — the first thing they see</li>
+<li><strong>Are your projects recent?</strong> — a profile with nothing in 2 years says "inactive"</li>
+<li><strong>Do your READMEs explain anything?</strong> — or are they empty</li>
+<li><strong>Are your commits meaningful?</strong> — or all "asdf"</li>
+<li><strong>Is your profile README filled in?</strong> — name, what you do, how to reach you</li>
+</ol>
+<h2>The profile README</h2>
+<p>Create a repo with the exact same name as your username. GitHub shows its README at the top of your profile. It is your GitHub front page.</p>
+<p>A good profile README is short:</p>
+<pre><code># Chisomo Banda
+
+Frontend developer based in Lilongwe, Malawi.
+
+I build fast, mobile-first websites for small businesses.
+
+## What I am working on
+- [Portfolio site](https://chisomo.dev)
+- React dashboard for a local logistics company
+
+## Tech
+HTML · CSS · JavaScript · React · Node.js · Python
+
+## Reach me
+- Email: chisomo@example.mw
+- LinkedIn: [chisomo-banda](https://linkedin.com/in/chisomo-banda)
+- WhatsApp: +265 999 555 123</code></pre>
+<p>That is it. Five sections. Thirty seconds to read. Every recruiter leaves with a clear picture.</p>
+<h2>Pinned repositories</h2>
+<p>Pin 4–6 repos. Not 20. The pinned repos should be:</p>
+<ul>
+<li>Your best work, not your oldest</li>
+<li>Complete, not half-finished experiments</li>
+<li>Named clearly (see next section)</li>
+<li>Each with a real README</li>
+</ul>
+<h2>Naming your repos</h2>
+<ul>
+<li><strong>Bad:</strong> <code>project1</code>, <code>test</code>, <code>my-app</code>, <code>final-version-v2</code></li>
+<li><strong>Good:</strong> <code>weather-dashboard</code>, <code>todo-react-app</code>, <code>blog-api-node</code></li>
+</ul>
+<p>The name should tell the reader what the project is. Same as file names — clarity beats cleverness.</p>
+<h2>Writing a good README</h2>
+<pre><code># Weather Dashboard
+
+A mobile-first weather app that loads in under 1 second on 3G.
+Search any city, see the forecast, save favorites.
+
+## Live demo
+https://weather-demo.chisomo.dev
+
+## Built with
+- HTML, CSS, vanilla JavaScript
+- OpenWeatherMap API
+- Deployed on Netlify
+
+## Features
+- Search by city name
+- 5-day forecast
+- Local storage for recent searches
+- Works offline after first load
+
+## What I learned
+- Fetch API and JSON handling
+- Service Workers for offline support
+- Responsive design with CSS Grid
+
+## Run locally
+1. Clone this repo
+2. Open index.html in a browser
+3. That's it — no build step</code></pre>
+<p>Six sections. Anyone who reads it knows:</p>
+<ul>
+<li>What the project does</li>
+<li>Where to try it</li>
+<li>What stack it uses</li>
+<li>What you learned</li>
+<li>How to run it</li>
+</ul>
+<h2>Commit messages</h2>
+<p>Recruiters do not read every commit. But they see the pattern. Meaningful messages signal professionalism.</p>
+<ul>
+<li><strong>Bad:</strong> <code>fix</code>, <code>update</code>, <code>asdf</code>, <code>stuff</code>, <code>final</code></li>
+<li><strong>Good:</strong> <code>Add search bar to header</code>, <code>Fix login redirect on session expiry</code></li>
+</ul>
+<h2>The contribution graph</h2>
+<p>Green squares look nice, but do not game them. One real commit a week beats 50 fake ones. If you are actively learning, the graph will show it naturally.</p>
+<h2>What to never commit</h2>
+<ul>
+<li><code>.env</code> files with secrets</li>
+<li><code>node_modules</code></li>
+<li>API keys, passwords, tokens</li>
+<li>Build output (<code>dist/</code>, <code>build/</code>)</li>
+<li>Large binary files (videos, datasets)</li>
+</ul>
+<div class="challenge" style="margin-top:22px;">
+<strong>Try the GitHub Reviewer</strong>
+Use the tool in this lesson to score your GitHub profile across 10 signals recruiters check. Fix the lowest scores first.
+</div>
+<blockquote><strong>The test:</strong> give your GitHub URL to a stranger. In 60 seconds, they should know what you do, what you have built, and how to hire you.</blockquote>
+</div>
+
+<div class="src-read" data-l="c4">
+<p>In Malawi, LinkedIn is the single most important professional network. Recruiters search it before they post jobs. NGOs use it to source candidates. Remote-first companies use it to find talent in Africa.</p>
+<h2>The three things recruiters see</h2>
+<ol>
+<li><strong>Your photo</strong> — 6× more clicks if you have one</li>
+<li><strong>Your headline</strong> — the line under your name</li>
+<li><strong>Your About section</strong> — the first two lines, before "see more"</li>
+</ol>
+<p>Everything else matters, but those three decide whether they read further.</p>
+<h2>Your photo</h2>
+<p>You do not need a professional photographer. You need:</p>
+<ul>
+<li>A clear face, well lit, looking at the camera</li>
+<li>Plain background (a wall works)</li>
+<li>A plain shirt or one without logos</li>
+<li>A smile — you are showing you are approachable</li>
+</ul>
+<p>Take 20 photos on your phone against a window. Pick the best one. Done.</p>
+<h2>Your headline</h2>
+<p>The default headline is just your current job title. That wastes the most valuable line on your profile.</p>
+<p>Strong headlines follow this pattern:</p>
+<pre><code>[What you do] | [Who you do it for] | [What makes you different]</code></pre>
+<p>Examples:</p>
+<ul>
+<li><em>Frontend developer | Building fast, mobile-first websites for Malawian businesses</em></li>
+<li><em>Data analyst | Turning programme data into decisions for NGOs</em></li>
+<li><em>Mobile developer | Flutter apps for Android and iOS | Open to remote roles</em></li>
+<li><em>Backend engineer | Python + PostgreSQL | Building APIs for African fintech</em></li>
+</ul>
+<h2>Your About section</h2>
+<p>Not a CV. A short, human paragraph. Structure:</p>
+<ol>
+<li><strong>Who you are</strong> — one sentence</li>
+<li><strong>What you do</strong> — one or two sentences</li>
+<li><strong>What you have built</strong> — one or two examples with a link</li>
+<li><strong>What you are looking for</strong> — one sentence</li>
+<li><strong>How to reach you</strong> — email, portfolio link</li>
+</ol>
+<p>Example:</p>
+<blockquote>
+I am a frontend developer based in Lilongwe. I build fast, mobile-first websites for small businesses and NGOs.<br><br>
+Over the last year I have built 6 production websites, including a booking system for a local tour company and a shop site for a coffee exporter. My portfolio is at chisomo.dev.<br><br>
+I am currently looking for junior frontend roles — local or remote. I am especially interested in teams that care about performance on slow connections.<br><br>
+Best way to reach me: chisomo@example.mw.
+</blockquote>
+<p>Under 120 words. Everything a recruiter needs.</p>
+<h2>Getting the most out of LinkedIn</h2>
+<ul>
+<li><strong>Post once a week.</strong> What you learned, what you built, what confused you. Real posts beat curated perfection.</li>
+<li><strong>Connect with everyone you meet.</strong> Classmates, instructors, anyone in tech in Malawi.</li>
+<li><strong>Follow companies you want to work for.</strong> You will see their posts when they hire.</li>
+<li><strong>Comment on posts.</strong> A thoughtful comment on a hiring manager's post is more effective than 20 cold applications.</li>
+<li><strong>Use the "Open to Work" feature</strong> — recruiters filter by it.</li>
+<li><strong>Fill in skills.</strong> LinkedIn search matches on skills. List 20–30 relevant ones.</li>
+</ul>
+<h2>NGO and remote-work angle</h2>
+<p>If you are targeting NGOs or remote work:</p>
+<ul>
+<li><strong>Add English fluency</strong> in languages section</li>
+<li><strong>Mention timezone flexibility</strong> in About if applying for remote roles outside Africa</li>
+<li><strong>Highlight any international collaboration</strong> — even online study groups count</li>
+<li><strong>Add portfolio link directly in the headline</strong> if short enough</li>
+</ul>
+<div class="challenge" style="margin-top:22px;">
+<strong>Use the Headline Builder</strong>
+Fill in the three inputs in the tool below and get 5 headline options you can pick from and paste directly into LinkedIn.
+</div>
+<blockquote><strong>The 15-minute rule:</strong> spend 15 minutes a week on LinkedIn — updating, connecting, commenting. That tiny habit produces more opportunities than hours spent scrolling job boards.</blockquote>
+</div>
+
+<!-- MODULE 3 -->
+<div class="src-read" data-l="c5">
+<p>Your CV opens doors. Your cover letter or cold email walks you through them. Both need to be short, specific, and tailored.</p>
+<h2>The CV that gets read</h2>
+<p>Most CVs fail because they are too long, too vague, or too generic. A good junior CV in Malawi is:</p>
+<ul>
+<li><strong>1 page</strong> — always, unless you have 10+ years of experience</li>
+<li><strong>Reverse chronological</strong> — most recent first</li>
+<li><strong>Simple</strong> — no graphics, no columns, no fancy templates</li>
+<li><strong>ATS-friendly</strong> — plain text, standard headings, no tables</li>
+<li><strong>Tailored</strong> — adjust the top third for each application</li>
+</ul>
+<h2>The one-page structure</h2>
+<pre><code>[YOUR NAME]
+[Phone] · [Email] · [LinkedIn] · [Portfolio]
+
+SUMMARY (2 lines)
+Junior frontend developer with 6 production projects.
+Comfortable with HTML, CSS, JavaScript, React.
+
+PROJECTS (most important section for you)
+Portfolio Website — chisomo.dev
+- Built with HTML, CSS, JavaScript
+- Loads in 1.2s on 3G, mobile-first design
+
+Weather Dashboard — github.com/chisomo/weather
+- React app fetching OpenWeatherMap API
+- 5-day forecast, local storage for favorites
+
+Todo API — github.com/chisomo/todo-api
+- Node.js + Express REST API with JWT auth
+- Deployed on Render, documented with README
+
+SKILLS
+Frontend: HTML, CSS, JavaScript, React, responsive design
+Backend: Node.js, Express, PostgreSQL
+Tools: Git, GitHub, VS Code, Figma
+
+EDUCATION
+[Your school], [Certificate], [Year]
+
+EXPERIENCE (if any)
+[Job], [Company], [Dates]
+
+LANGUAGES
+English (fluent), Chichewa (native)</code></pre>
+<h2>What to cut</h2>
+<ul>
+<li><strong>Photo</strong> — not needed, wastes space</li>
+<li><strong>Date of birth, marital status</strong> — never include</li>
+<li><strong>References</strong> — provide on request</li>
+<li><strong>"Objective" section</strong> — replace with Summary</li>
+<li><strong>Every school you attended</strong> — only the highest qualification</li>
+<li><strong>Hobbies</strong> — unless directly relevant</li>
+</ul>
+<h2>The cover letter that gets read</h2>
+<p>Most cover letters are ignored. The ones that get read follow the same rule as proposals: <strong>short, specific, and about the employer</strong>, not about you.</p>
+<pre><code>Dear [Hiring Manager name if you can find it],
+
+I am applying for the Junior Frontend Developer role
+advertised on [where you saw it] on [date].
+
+I noticed your current site loads slowly on mobile — I
+tested it just now. I would love to help fix that. I
+build fast, low-bandwidth sites, and my portfolio
+(chisomo.dev) has three examples that load in under 2
+seconds on 3G.
+
+My CV is attached. I am available for an interview at
+any time.
+
+Yours faithfully,
+Chisomo Banda
++265 999 555 123
+chisomo@example.mw</code></pre>
+<p>That is 100 words. It mentions:</p>
+<ul>
+<li>The specific role</li>
+<li>A specific thing you noticed about them</li>
+<li>What you have built (with a link)</li>
+<li>The next step</li>
+</ul>
+<h2>Cold email to a company with no job posting</h2>
+<p>Half of all jobs are never advertised. Cold outreach is how you find them.</p>
+<pre><code>Subject: Quick observation about your site
+
+Hi [Name],
+
+I was looking at [company site] and noticed [specific
+issue or opportunity]. I build [your niche], and I
+would love to help.
+
+Here is a recent project: [link].
+
+If you would like, I can send a free 5-minute video
+showing what I would change. No obligation.
+
+Best,
+Chisomo
+[phone]</code></pre>
+<p>Send 5–10 of these per week to companies you actually admire. Even a 5% reply rate means 2–3 conversations per month.</p>
+<h2>The application tracker</h2>
+<p>Keep a spreadsheet. Columns:</p>
+<ul>
+<li>Date applied</li>
+<li>Company</li>
+<li>Role</li>
+<li>Source (LinkedIn, referral, cold email)</li>
+<li>Status (applied, replied, interview, offer, rejected)</li>
+<li>Follow-up date</li>
+<li>Notes</li>
+</ul>
+<p>Review it every Friday. If you are not sending 5+ applications a week, you are not really job searching.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Use the Cold Email Composer</strong>
+Write a real cold email in the tool below. The scorer checks for length, specificity, greeting, call to action, and other signals.
+</div>
+<blockquote><strong>The 80% rule:</strong> 80% of applications get no reply. That is normal. Focus on the 20% that do. One good conversation can change your year.</blockquote>
+</div>
+
+<div class="src-read" data-l="c6">
+<p>The interview is where you turn a maybe into a yes. Most junior candidates fail not because they lack skill, but because they cannot communicate it.</p>
+<h2>The three interview types</h2>
+<ol>
+<li><strong>Behavioural</strong> — "Tell me about a time when…"</li>
+<li><strong>Technical</strong> — "How would you build…"</li>
+<li><strong>Take-home or live coding</strong> — here is a problem, solve it</li>
+</ol>
+<p>You will face a mix. Prepare for each.</p>
+<h2>Behavioural: the STAR method</h2>
+<p>Every behavioural question wants a story. Structure it as:</p>
+<ul>
+<li><strong>Situation</strong> — one sentence setting the scene</li>
+<li><strong>Task</strong> — what you had to do</li>
+<li><strong>Action</strong> — what you actually did</li>
+<li><strong>Result</strong> — what happened</li>
+</ul>
+<p>Example — "Tell me about a time you solved a hard problem."</p>
+<blockquote>
+<strong>Situation:</strong> On a client project last year, the checkout page was loading in 8 seconds on mobile.<br><br>
+<strong>Task:</strong> I had two days to get it under 2 seconds or the client would lose customers.<br><br>
+<strong>Action:</strong> I compressed the hero image from 1.4 MB to 60 KB, removed two unused JavaScript libraries, and moved the remaining scripts to load after the page rendered.<br><br>
+<strong>Result:</strong> Load time dropped to 1.3 seconds and the client reported a 22% increase in completed orders that month.
+</blockquote>
+<p>Notice: specific numbers, clear actions, real outcome. That is what interviewers want.</p>
+<h2>Technical: the framework</h2>
+<p>When asked "how would you build X," you do not need the perfect answer. You need to show your thinking. Framework:</p>
+<ol>
+<li><strong>Clarify the requirements.</strong> Ask questions: "Who uses this? How many users? Mobile only or desktop too?"</li>
+<li><strong>State your assumptions.</strong> "I will assume under 1,000 users, mobile-first, no login required."</li>
+<li><strong>Sketch the approach.</strong> Frontend, backend, database, deployment.</li>
+<li><strong>Describe trade-offs.</strong> "I could use React for interactivity, or plain JavaScript for simplicity — I would choose plain JavaScript for this scale."</li>
+<li><strong>Mention what you would learn.</strong> "I have not used Redis before, but I would research caching options."</li>
+</ol>
+<p>Asking good questions is more impressive than having the perfect answer. Interviewers are looking for how you think, not what you have memorised.</p>
+<h2>Live coding</h2>
+<p>You will be nervous. Everyone is. Rules:</p>
+<ul>
+<li><strong>Think out loud.</strong> Say what you are doing and why. Silence is the enemy.</li>
+<li><strong>Start simple.</strong> Get something working, then improve it.</li>
+<li><strong>Test as you go.</strong> Use console.log or print statements.</li>
+<li><strong>Ask for help if stuck.</strong> "I am not sure how to do X — could you point me in the right direction?" This is a good sign, not a weakness.</li>
+<li><strong>Reflect afterwards.</strong> "If I had more time, I would refactor this part."</li>
+</ul>
+<h2>Questions you should ask them</h2>
+<p>At the end of the interview, they will ask if you have questions. Have three ready:</p>
+<ul>
+<li>"What does a typical week look like for this role?"</li>
+<li>"What would success look like in the first 90 days?"</li>
+<li>"How does the team handle code reviews and learning?"</li>
+</ul>
+<p>Good questions signal that you are serious about the role, not just looking for any job.</p>
+<h2>After the interview</h2>
+<p>Send a short thank-you email within 24 hours:</p>
+<pre><code>Subject: Thank you
+
+Hi [Name],
+
+Thank you for taking the time to meet with me today.
+I enjoyed learning about [specific thing you discussed].
+
+I am very interested in the role and happy to answer
+any follow-up questions.
+
+Best regards,
+Chisomo</code></pre>
+<p>Three sentences. Most candidates do not send this. You will stand out.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Use the STAR Builder</strong>
+Take a real project you have built. Write out Situation, Task, Action, Result in the tool below. Get feedback on structure and specificity.
+</div>
+<blockquote><strong>The interview secret:</strong> the person who gets the job is rarely the smartest. They are the one who communicates clearly, asks good questions, and makes the interviewer feel like the conversation was easy.</blockquote>
+</div>
+
+<!-- MODULE 4 -->
+<div class="src-read" data-l="c7">
+<p>You have an offer. Now for the part most people get wrong — negotiation. It is not aggressive, awkward, or risky. It is expected, and it is worth real money.</p>
+<h2>Why you should always negotiate</h2>
+<p>Two reasons:</p>
+<ol>
+<li><strong>The first offer is almost never the best offer.</strong> Employers build in room for the negotiation.</li>
+<li><strong>The number compounds.</strong> Your starting salary shapes every future raise, bonus, and job offer.</li>
+</ol>
+<p>A 15% increase at the start can mean millions of kwacha over a career.</p>
+<h2>What is actually negotiable</h2>
+<ul>
+<li><strong>Base salary</strong> — the biggest lever</li>
+<li><strong>Signing bonus</strong> — often easier to get than a higher base</li>
+<li><strong>Start date</strong> — sometimes worth weeks of flexibility</li>
+<li><strong>Remote days</strong> — for hybrid roles</li>
+<li><strong>Training budget</strong> — courses, conferences, certifications</li>
+<li><strong>Equipment</strong> — a laptop, a phone, data allowance</li>
+<li><strong>Review timing</strong> — when your next salary review happens</li>
+<li><strong>Job title</strong> — matters for your next job search</li>
+</ul>
+<p>You will not get all of these. Pick the two that matter most and push on those.</p>
+<h2>The script</h2>
+<p>When you receive an offer, do not say yes or no immediately. Say:</p>
+<blockquote>
+"Thank you — I am very excited about this role. I would like 24 hours to review the details. Is that okay?"
+</blockquote>
+<p>Almost always, yes. Now you have time to think. Then, when you are ready:</p>
+<blockquote>
+"Thank you again. I am excited to accept — but before I do, I would like to discuss the salary. Based on my research and the local market for this role, I was expecting something in the range of [number] – [number]. Is there any flexibility to get closer to that?"
+</blockquote>
+<p>Three things this script does:</p>
+<ul>
+<li>It signals you want the job (you are already accepting)</li>
+<li>It gives a range, not a demand</li>
+<li>It asks a question instead of making a statement</li>
+</ul>
+<h2>How to choose your number</h2>
+<ol>
+<li><strong>Research.</strong> Ask peers, check Glassdoor, look at NGO salary scales.</li>
+<li><strong>Set a target.</strong> What you want, ideally 10–20% above the offer.</li>
+<li><strong>Set a walk-away.</strong> The minimum you would actually accept. Do not go below this.</li>
+<li><strong>Set a range.</strong> Target at the top, walk-away at the bottom.</li>
+</ol>
+<h2>The three responses you will get</h2>
+<h3>"Yes, we can do that."</h3>
+<p>Great. Accept politely, ask for the revised offer in writing. Do not gloat.</p>
+<h3>"We cannot go higher on base, but we can offer…"</h3>
+<p>Consider the alternative. If it is training budget, a review in 6 months, or a signing bonus, that can be worth as much as base salary. Ask what the value is and decide.</p>
+<h3>"That is our final offer."</h3>
+<p>If it is above your walk-away, take it. If it is below and they will not move, thank them and walk away politely. There is almost always another job.</p>
+<h2>What not to do</h2>
+<ul>
+<li><strong>Do not name a number first</strong> — if you can, ask their range. If they insist, give your range, not a single number.</li>
+<li><strong>Do not bluff</strong> — do not say you have another offer if you do not. It can end the conversation.</li>
+<li><strong>Do not apologise</strong> — negotiating is normal. Do not say "sorry to ask."</li>
+<li><strong>Do not accept immediately</strong> — even if the offer is great, thanking them and asking for 24 hours is always correct.</li>
+</ul>
+<h2>For remote roles in USD</h2>
+<p>Remote salaries are often pegged to the country you live in. Some companies try to pay Malawian rates. Push back:</p>
+<blockquote>
+"I understand the cost-of-living adjustment. However, my work is the same regardless of my location, and I have delivered projects on the same stack as your team. I am looking for a rate between $X and $Y based on the value I bring, not just my geography."
+</blockquote>
+<p>This does not always work. But it works more often than most people think, especially for skilled technical roles.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Run the Negotiation Simulator</strong>
+A chat-based scenario. You have an offer. Every choice you make affects the outcome. Try different paths to see how negotiation actually plays out.
+</div>
+<blockquote><strong>The mindset:</strong> negotiating is not asking for a favour. It is a normal business conversation. The worst outcome is that they say no and you accept the original offer — which is where you would have been anyway.</blockquote>
+</div>
+
+<div class="src-read" data-l="c8">
+<p>You have everything now. This final lesson puts it together into a complete job search kit — a single folder, a single checklist, and a plan for the next 30 days.</p>
+<h2>The complete kit</h2>
+<p>By the end of this lesson, you should have all of these in place:</p>
+<ol>
+<li><strong>Portfolio site</strong> — live at a URL, 3+ projects, mobile-friendly</li>
+<li><strong>GitHub profile</strong> — README, 4–6 pinned repos, meaningful commits</li>
+<li><strong>LinkedIn</strong> — professional photo, strong headline, filled About</li>
+<li><strong>CV</strong> — 1 page, tailored for the roles you are targeting</li>
+<li><strong>Cover letter template</strong> — that you can adapt in 5 minutes</li>
+<li><strong>Cold email template</strong> — ready to send</li>
+<li><strong>STAR stories</strong> — 3–5 examples you have practised</li>
+<li><strong>Application tracker</strong> — spreadsheet or Notion page</li>
+<li><strong>Interview questions</strong> — three to ask every employer</li>
+<li><strong>Salary number</strong> — target, walk-away, and range</li>
+</ol>
+<p>If any of these is missing, that is your next action.</p>
+<h2>The 30-day plan</h2>
+<h3>Week 1 — Build the assets</h3>
+<ul>
+<li>Day 1: Portfolio scorecard. Fix the top 3 gaps.</li>
+<li>Day 2: GitHub reviewer. Fix the top 3 gaps.</li>
+<li>Day 3: LinkedIn headline and About. Post your first update.</li>
+<li>Day 4: Rewrite your CV. One page.</li>
+<li>Day 5: Write 3 STAR stories. Practise them out loud.</li>
+<li>Day 6: Set up the application tracker.</li>
+<li>Day 7: Rest.</li>
+</ul>
+<h3>Week 2 — Start applying</h3>
+<ul>
+<li>Send 5 tailored applications</li>
+<li>Send 5 cold emails</li>
+<li>Connect with 20 people on LinkedIn</li>
+<li>Comment on 10 posts from companies you admire</li>
+</ul>
+<h3>Week 3 — Follow up and expand</h3>
+<ul>
+<li>Follow up on every application from week 2</li>
+<li>Send 5 more applications and 5 more cold emails</li>
+<li>Apply for 3 remote roles (Remote OK, We Work Remotely, Upwork)</li>
+<li>Post one update on LinkedIn about what you are building</li>
+</ul>
+<h3>Week 4 — Interview and close</h3>
+<ul>
+<li>Prepare for every interview using the STAR method</li>
+<li>Practise salary negotiation out loud</li>
+<li>Send thank-you emails after every interview</li>
+<li>Keep applying. Even mid-interview, do not stop.</li>
+</ul>
+<p>At the end of 30 days, you will have:</p>
+<ul>
+<li>15 applications sent</li>
+<li>15 cold emails sent</li>
+<li>At least 3 interviews scheduled</li>
+<li>At least 1 offer, or very close</li>
+</ul>
+<p>If you send this volume and do not get a single interview, something in your materials is not working. Come back to the tools, review your feedback, and adjust.</p>
+<h2>The honest truth</h2>
+<p>Some of you will get a job in 4 weeks. Most will take 2–4 months. Some will take 6. It depends on the market, your target, and luck.</p>
+<p>What is in your control:</p>
+<ul>
+<li>The number of applications you send</li>
+<li>The quality of your materials</li>
+<li>How well you communicate</li>
+<li>How you handle rejection</li>
+<li>Whether you keep going</li>
+</ul>
+<p>Everyone who gets hired has one thing in common: <strong>they did not stop.</strong></p>
+<h2>After you are hired</h2>
+<ul>
+<li><strong>Keep learning.</strong> The job is not the destination — it is the platform.</li>
+<li><strong>Write down what you learn.</strong> Every problem you solve is a future interview story.</li>
+<li><strong>Help the next person.</strong> Someone helped you. Pass it on.</li>
+<li><strong>Update your portfolio monthly.</strong> Your next job search starts the day you start this one.</li>
+</ul>
+<div class="challenge" style="margin-top:22px;">
+<strong>Complete the Launchpad Checklist</strong>
+Go to the Tools tab. Tick every milestone you have actually completed. When all 10 are ticked, you have done everything in this course. Now go get the job.
+</div>
+<blockquote><strong>You have finished the course.</strong> You now know what employers want, how to present yourself online, how to write applications that get read, how to interview well, and how to negotiate for the salary you deserve. The rest is execution. Go execute.</blockquote>
+</div>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'career_launchpad_progress_v1';
+var CAPSTONE_KEY = 'career_launchpad_milestones_v1';
+
+var course = {
+  modules: [
+    {
+      id: 'foundation', icon: '🎯', title: 'Foundation',
+      lessons: [
+        { id:'c1', title:'What Employers Actually Want', time:'18 min', tool:null,
+          challenge:'Write down three tech roles you are targeting. For each one, note the realistic salary range in Malawi (or USD for remote). Then write the one sentence you want a hiring manager to remember about you.',
+          quiz:[
+            { q:'What makes a candidate the "lowest-risk hire"?', options:['Highest coding skill','Someone who communicates, shows up, and ships work','Most years of experience','Best university'], correct:1 },
+            { q:'Roughly how many applications does a first-time job seeker send to land one offer in Malawi?', options:['1-3','5-10','30-50','200+'], correct:2 },
+            { q:'Why is remote work important for Malawian developers?', options:['It is easier','It pays 3-10x local salaries for the same skills','It requires less skill','It is a trend'], correct:1 }
+          ]},
+        { id:'c2', title:'Building Your Portfolio', time:'28 min', tool:'portfolio',
+          challenge:'Use the Portfolio Scorecard in this lesson. Tick every element you currently have. Anything critical that is missing is your next action.',
+          quiz:[
+            { q:'How many projects should a portfolio feature?', options:['As many as possible','3-5 strong ones with live URLs','1','10+'], correct:1 },
+            { q:'What is the single fastest way to be ignored by a recruiter?', options:['No live URL for a project','Too many projects','Slow animations','Bad typography'], correct:0 },
+            { q:'What do the best project descriptions include?', options:['Only the tech stack','What it does, what problem it solves, what was hard','Just a screenshot','Only the client name'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'presence', icon: '🌐', title: 'Online Presence',
+      lessons: [
+        { id:'c3', title:'GitHub That Gets You Hired', time:'26 min', tool:'github',
+          challenge:'Use the GitHub Reviewer tool. Score your profile across all 10 signals. Fix the three lowest scores this week.',
+          quiz:[
+            { q:'What should your GitHub profile README contain?', options:['A long CV','Name, what you do, projects, contact — in about 5 lines','Just a photo','Nothing'], correct:1 },
+            { q:'How many repos should you pin?', options:['4-6 best','All of them','1','20+'], correct:0 },
+            { q:'Which commit message is best?', options:['fix','asdf','Add search bar to header','update stuff'], correct:2 }
+          ]},
+        { id:'c4', title:'LinkedIn & Personal Brand', time:'24 min', tool:'headline',
+          challenge:'Use the Headline Builder to generate 5 options. Pick your favourite, paste it into LinkedIn, then update your About section using the structure from this lesson.',
+          quiz:[
+            { q:'What are the three most important things on your LinkedIn?', options:['Photo, headline, first two lines of About','Education, skills, endorsements','Followers, posts, groups','Company, title, location'], correct:0 },
+            { q:'What is a good headline pattern?', options:['Just your job title','[What you do] | [Who for] | [What makes you different]','Your name repeated','A quote'], correct:1 },
+            { q:'How often should you post on LinkedIn?', options:['Never','Once a week','Every hour','Once a year'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'applications', icon: '✉️', title: 'Applications',
+      lessons: [
+        { id:'c5', title:'CVs, Cover Letters & Cold Email', time:'28 min', tool:'email',
+          challenge:'Use the Cold Email Composer to write a real cold email to a company you admire. Aim for a score above 85%. Then send it.',
+          quiz:[
+            { q:'How long should a junior CV be?', options:['1 page','2-3 pages','5+ pages','As long as needed'], correct:0 },
+            { q:'What should a cover letter lead with?', options:['Your biography','A specific thing you noticed about them','Your education','A quote from their website'], correct:1 },
+            { q:'How many cold emails should you send per week?', options:['0','1','5-10','100+'], correct:2 }
+          ]},
+        { id:'c6', title:'The Interview', time:'30 min', tool:'star',
+          challenge:'Use the STAR Builder. Write out three real stories from your projects (one about solving a hard problem, one about learning something new, one about collaboration). Practise saying each one in under 90 seconds.',
+          quiz:[
+            { q:'What does STAR stand for in interviews?', options:['Skill, Task, Answer, Result','Situation, Task, Action, Result','Story, Talking, Asking, Replying','Start, Test, Ask, Reflect'], correct:1 },
+            { q:'What should you do while live coding?', options:['Work in silence','Think out loud, start simple, test as you go','Write the perfect answer first try','Refuse the exercise'], correct:1 },
+            { q:'What should you do after an interview?', options:['Nothing','Send a short thank-you email within 24 hours','Call them daily','Post about it on social media'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'negotiation', icon: '💰', title: 'Negotiation & Closing',
+      lessons: [
+        { id:'c7', title:'Salary Negotiation', time:'26 min', tool:'negotiation',
+          challenge:'Run the Negotiation Simulator at least twice, trying different paths each time. Then write down your target salary, your walk-away number, and the exact script you would use.',
+          quiz:[
+            { q:'Why should you always negotiate?', options:['It is polite','The first offer is rarely the best, and the number compounds over your career','Required by law','To seem difficult'], correct:1 },
+            { q:'What should you do when you receive an offer?', options:['Accept immediately','Thank them and ask for 24 hours to review','Reject it','Ask for double'], correct:1 },
+            { q:'What is the right way to frame your counter?', options:['"I want more money"','"Based on my research, I was expecting X–Y. Is there flexibility?"','"That is too low"','"My friend earns more"'], correct:1 }
+          ]},
+        { id:'c8', title:'Capstone — Complete Job Search Kit', time:'35 min', tool:'checklist',
+          challenge:'Open the Tools tab. Tick every milestone you have actually completed. Whatever is unticked becomes your 30-day action plan. Start today.',
+          quiz:[
+            { q:'How many applications should you aim for in a 30-day job search?', options:['1-2','5','15+','500'], correct:2 },
+            { q:'What is the single most important trait of people who get hired?', options:['Genius','They do not stop','Connections','Luck'], correct:1 },
+            { q:'What should you do after you get hired?', options:['Stop learning','Keep learning, help others, update your portfolio monthly','Delete your GitHub','Only focus on your job'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, tool: l.tool || null,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+})();
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'cl::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I have identified 3 target roles and their salary ranges' },
+  { id: 'm2', text: 'My portfolio is live at a URL with at least 3 projects' },
+  { id: 'm3', text: 'My GitHub profile has a README and 4-6 pinned repos' },
+  { id: 'm4', text: 'My LinkedIn headline and About section are updated' },
+  { id: 'm5', text: 'My CV is 1 page and tailored for my target roles' },
+  { id: 'm6', text: 'I have sent at least 5 tailored job applications' },
+  { id: 'm7', text: 'I have sent at least 5 cold outreach emails' },
+  { id: 'm8', text: 'I have 3 STAR stories practised out loud' },
+  { id: 'm9', text: 'I know my target salary, walk-away number, and negotiation script' },
+  { id: 'm10', text: 'I have set up an application tracker and check it weekly' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'c1';
+var currentView = 'lessons';
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'tools') renderTools();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>🎯 Career</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (lesson.tool) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Interactive Tool</span></h2>';
+    html += '<p class="ed-s">Use the tool below to work through this lesson\'s exercise.</p>';
+    html += '<div id="toolArea"></div>';
+    html += '<div class="challenge" style="margin-top:16px;"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  } else {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Your Exercise</h2>';
+    html += '<div class="challenge"><strong>Do this now</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Do the exercise, take the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (lesson.tool === 'portfolio' && $('toolArea')) renderPortfolioTool($('toolArea'));
+  else if (lesson.tool === 'github' && $('toolArea')) renderGitHubTool($('toolArea'));
+  else if (lesson.tool === 'headline' && $('toolArea')) renderHeadlineTool($('toolArea'));
+  else if (lesson.tool === 'email' && $('toolArea')) renderEmailTool($('toolArea'));
+  else if (lesson.tool === 'star' && $('toolArea')) renderStarTool($('toolArea'));
+  else if (lesson.tool === 'negotiation' && $('toolArea')) renderNegotiationTool($('toolArea'));
+  else if (lesson.tool === 'checklist' && $('toolArea')) renderChecklistTool($('toolArea'));
+
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+}
+
+/* ============================================================
+   TOOL: PORTFOLIO SCORECARD
+   ============================================================ */
+function renderPortfolioTool(container) {
+  var items = [
+    { id: 'p1', label: 'I have a live portfolio site at a real URL', critical: true },
+    { id: 'p2', label: 'I have at least 3 projects with live URLs', critical: true },
+    { id: 'p3', label: 'Each project has a short description (what it does, what was hard)', critical: true },
+    { id: 'p4', label: 'There is a link to my GitHub profile', critical: true },
+    { id: 'p5', label: 'There is a clear way to contact me (email or LinkedIn)', critical: true },
+    { id: 'p6', label: 'The site loads in under 2 seconds on a phone', critical: false },
+    { id: 'p7', label: 'The site looks good on mobile (tested)', critical: false },
+    { id: 'p8', label: 'There is a short bio (2-3 sentences)', critical: false },
+    { id: 'p9', label: 'There is a downloadable CV in PDF', critical: false },
+    { id: 'p10', label: 'The projects are recent (within the last year)', critical: false }
+  ];
+
+  var checked = {};
+  try {
+    var saved = JSON.parse(localStorage.getItem('cl_portfolio_tool') || '{}');
+    checked = saved;
+  } catch (e) { checked = {}; }
+
+  function save() {
+    try { localStorage.setItem('cl_portfolio_tool', JSON.stringify(checked)); } catch (e) {}
+  }
+
+  function render() {
+    var passed = 0;
+    items.forEach(function(it) { if (checked[it.id]) passed++; });
+    var pct = Math.round((passed / items.length) * 100);
+    var criticalMissed = items.filter(function(it) { return it.critical && !checked[it.id]; }).length;
+    var cls = passed >= 9 ? 'good' : passed >= 6 ? 'warn' : 'bad';
+    var label = passed >= 9 ? 'Excellent portfolio' : passed >= 6 ? 'Good start — keep going' : 'Significant gaps';
+    var hint = criticalMissed === 0
+      ? 'You have all the critical elements. Focus on the nice-to-haves.'
+      : criticalMissed + ' critical element' + (criticalMissed !== 1 ? 's' : '') + ' missing. Fix those first.';
+
+    var r = 34;
+    var c = 2 * Math.PI * r;
+    var dash = (pct / 100) * c;
+
+    var html = '';
+    html += '<div class="ex-card">';
+    html += '<h4>Portfolio Scorecard</h4>';
+    html += '<p class="hint">Tick every element your portfolio currently has. The score updates in real time.</p>';
+
+    html += '<div class="score-ring">';
+    html += '<div class="score-ring-circle" aria-hidden="true">';
+    html += '<svg width="88" height="88" viewBox="0 0 88 88">';
+    html += '<circle class="bg" cx="44" cy="44" r="' + r + '"></circle>';
+    html += '<circle class="fg" cx="44" cy="44" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+    html += '</svg>';
+    html += '<div class="score-ring-num">' + pct + '%</div>';
+    html += '</div>';
+    html += '<div class="score-ring-info">';
+    html += '<h5>' + label + '</h5>';
+    html += '<p>' + hint + '</p>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<ul class="checklist">';
+    items.forEach(function(it) {
+      var isChecked = !!checked[it.id];
+      html += '<li class="' + (isChecked ? 'checked' : '') + (it.critical ? ' critical' : '') + '">';
+      html += '<input type="checkbox" id="' + it.id + '" data-id="' + it.id + '"' + (isChecked ? ' checked' : '') + '>';
+      html += '<label for="' + it.id + '">' + esc(it.label) + (it.critical ? ' <span style="font-size:11px;color:var(--danger);font-weight:700;margin-left:6px">CRITICAL</span>' : '') + '</label>';
+      html += '</li>';
+    });
+    html += '</ul>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    container.querySelectorAll('input[type=checkbox]').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        checked[cb.getAttribute('data-id')] = cb.checked;
+        save();
+        render();
+      });
+    });
+  }
+
+  render();
+}
+
+/* ============================================================
+   TOOL: GITHUB REVIEWER
+   ============================================================ */
+function renderGitHubTool(container) {
+  var items = [
+    { id: 'g1', label: 'I have a profile README (repo named after my username)' },
+    { id: 'g2', label: 'My profile README says what I do and how to reach me' },
+    { id: 'g3', label: 'I have 4-6 pinned repositories' },
+    { id: 'g4', label: 'Every pinned repo has a real README (not empty)' },
+    { id: 'g5', label: 'Every pinned repo has a live URL or demo link' },
+    { id: 'g6', label: 'My commit messages are meaningful (no "asdf")' },
+    { id: 'g7', label: 'I have committed something in the last 30 days' },
+    { id: 'g8', label: 'My repos are named clearly (not "test" or "project1")' },
+    { id: 'g9', label: 'I have no .env or secrets accidentally committed' },
+    { id: 'g10', label: 'My repos have a .gitignore for node_modules and build output' }
+  ];
+
+  var checked = {};
+  try { checked = JSON.parse(localStorage.getItem('cl_github_tool') || '{}'); } catch (e) {}
+
+  function save() { try { localStorage.setItem('cl_github_tool', JSON.stringify(checked)); } catch (e) {} }
+
+  function render() {
+    var passed = 0;
+    items.forEach(function(it) { if (checked[it.id]) passed++; });
+    var pct = Math.round((passed / items.length) * 100);
+    var cls = passed >= 8 ? 'good' : passed >= 5 ? 'warn' : 'bad';
+    var label = passed >= 8 ? 'Strong GitHub profile' : passed >= 5 ? 'Solid foundation — improve the rest' : 'Needs work';
+    var hint = passed >= 8
+      ? 'Recruiters will find what they need. Keep shipping.'
+      : 'Start with the missing items at the top. Small fixes matter most.';
+
+    var r = 34;
+    var c = 2 * Math.PI * r;
+    var dash = (pct / 100) * c;
+
+    var html = '';
+    html += '<div class="ex-card">';
+    html += '<h4>GitHub Profile Reviewer</h4>';
+    html += '<p class="hint">Tick every signal recruiters check. Fix the lowest scores first.</p>';
+
+    html += '<div class="score-ring">';
+    html += '<div class="score-ring-circle" aria-hidden="true">';
+    html += '<svg width="88" height="88" viewBox="0 0 88 88">';
+    html += '<circle class="bg" cx="44" cy="44" r="' + r + '"></circle>';
+    html += '<circle class="fg" cx="44" cy="44" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+    html += '</svg>';
+    html += '<div class="score-ring-num">' + pct + '%</div>';
+    html += '</div>';
+    html += '<div class="score-ring-info">';
+    html += '<h5>' + label + '</h5>';
+    html += '<p>' + hint + '</p>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<ul class="checklist">';
+    items.forEach(function(it) {
+      var isChecked = !!checked[it.id];
+      html += '<li class="' + (isChecked ? 'checked' : '') + '">';
+      html += '<input type="checkbox" id="' + it.id + '" data-id="' + it.id + '"' + (isChecked ? ' checked' : '') + '>';
+      html += '<label for="' + it.id + '">' + esc(it.label) + '</label>';
+      html += '</li>';
+    });
+    html += '</ul>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    container.querySelectorAll('input[type=checkbox]').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        checked[cb.getAttribute('data-id')] = cb.checked;
+        save();
+        render();
+      });
+    });
+  }
+
+  render();
+}
+
+/* ============================================================
+   TOOL: LINKEDIN HEADLINE BUILDER
+   ============================================================ */
+function renderHeadlineTool(container) {
+  var html = '';
+  html += '<div class="ex-card">';
+  html += '<h4>LinkedIn Headline Builder</h4>';
+  html += '<p class="hint">Fill in the three fields. Get 5 headline options you can paste directly into LinkedIn.</p>';
+  html += '<div class="field-row">';
+  html += '<div class="field"><label for="hlRole">What you do</label><input id="hlRole" type="text" placeholder="e.g. Frontend developer"></div>';
+  html += '<div class="field"><label for="hlAudience">Who you do it for</label><input id="hlAudience" type="text" placeholder="e.g. small businesses in Malawi"></div>';
+  html += '</div>';
+  html += '<div class="field"><label for="hlDiff">What makes you different (optional)</label><input id="hlDiff" type="text" placeholder="e.g. I build for slow connections first"></div>';
+  html += '<button class="btn btn-p" id="hlBuild" type="button" style="margin-top:6px">✨ Generate headlines</button>';
+  html += '<ul class="headline-list" id="hlList"></ul>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('hlBuild').addEventListener('click', function() {
+    var role = $('hlRole').value.trim();
+    var aud = $('hlAudience').value.trim();
+    var diff = $('hlDiff').value.trim();
+    if (!role || !aud) {
+      alert('Please fill in at least the first two fields.');
+      return;
+    }
+
+    var options = [];
+    options.push(role + ' | ' + aud);
+    if (diff) options.push(role + ' | ' + aud + ' | ' + diff);
+    options.push(role + ' building for ' + aud);
+    options.push(role + ' for ' + aud + (diff ? '. ' + diff : ''));
+    options.push('Building ' + role.toLowerCase() + ' for ' + aud + (diff ? ' — ' + diff : ''));
+
+    var list = $('hlList');
+    list.innerHTML = '';
+    options.forEach(function(opt, i) {
+      var li = document.createElement('li');
+      li.className = 'headline-option';
+      var p = document.createElement('p');
+      p.textContent = opt;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = '📋 Copy';
+      btn.addEventListener('click', function() {
+        try {
+          navigator.clipboard.writeText(opt);
+          btn.textContent = '✓ Copied!';
+          setTimeout(function() { btn.textContent = '📋 Copy'; }, 1500);
+        } catch (e) {
+          var ta = document.createElement('textarea');
+          ta.value = opt;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); btn.textContent = '✓ Copied!'; } catch (e2) { btn.textContent = 'Select manually'; }
+          document.body.removeChild(ta);
+          setTimeout(function() { btn.textContent = '📋 Copy'; }, 1500);
+        }
+      });
+      li.appendChild(p);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+  });
+}
+
+/* ============================================================
+   TOOL: COLD EMAIL COMPOSER
+   ============================================================ */
+function renderEmailTool(container) {
+  var html = '';
+  html += '<div class="ex-card">';
+  html += '<h4>Cold Email Composer</h4>';
+  html += '<p class="hint">Write a cold email to a company you admire. Aim for a score above 85%. Then actually send it.</p>';
+  html += '<div class="field"><label for="emSubject">Subject line</label><input id="emSubject" type="text" placeholder="Quick observation about your site"></div>';
+  html += '<div class="field"><label for="emBody">Email body</label><textarea id="emBody" rows="10" placeholder="Hi [Name],&#10;&#10;I was looking at [their business] and noticed [specific thing]..."></textarea></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">';
+  html += '<button class="btn btn-p" id="emCheck" type="button">Score my email</button>';
+  html += '<button class="btn btn-g" id="emPreview" type="button">Preview as sent</button>';
+  html += '<button class="btn btn-g" id="emTemplate" type="button">Load template</button>';
+  html += '</div>';
+  html += '<div class="email-preview" id="emPreviewBox"></div>';
+  html += '<div class="email-score" id="emScoreBox"></div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('emTemplate').addEventListener('click', function() {
+    $('emSubject').value = 'Quick observation about your website';
+    $('emBody').value = "Hi there,\n\nI was looking at your site and noticed the images load slowly on mobile — I tested it just now and it takes about 6 seconds on 3G.\n\nI build fast, low-bandwidth websites. Here is a recent project: https://your-portfolio.com\n\nIf you would like, I can send a free 5-minute video showing what I would change first. No obligation.\n\nBest,\nChisomo\n+265 999 555 123";
+  });
+
+  $('emPreview').addEventListener('click', function() {
+    var subj = $('emSubject').value.trim();
+    var body = $('emBody').value.trim();
+    var box = $('emPreviewBox');
+    box.textContent = 'Subject: ' + (subj || '(no subject)') + '\n\n' + (body || '(empty body)');
+    box.classList.add('show');
+  });
+
+  $('emCheck').addEventListener('click', function() {
+    var subj = $('emSubject').value.trim();
+    var body = $('emBody').value.trim();
+    var words = body.split(/\s+/).filter(Boolean).length;
+
+    var checks = [];
+
+    if (!subj) checks.push({ ok: false, text: 'Add a subject line. Emails without a subject are deleted unread.' });
+    else if (subj.length < 15) checks.push({ ok: false, text: 'Subject is very short. Make it more specific.' });
+    else if (/^(business proposal|hello|hi|job|application)$/i.test(subj)) checks.push({ ok: false, text: 'Subject is too generic. Mention something specific about their business.' });
+    else checks.push({ ok: true, text: 'Subject line is specific and reasonable length.' });
+
+    if (words < 40) checks.push({ ok: false, text: 'Body is short (' + words + ' words). Aim for 60-120 words.' });
+    else if (words > 200) checks.push({ ok: false, text: 'Body is long (' + words + ' words). Trim to under 150.' });
+    else checks.push({ ok: true, text: 'Length is good (' + words + ' words).' });
+
+    if (/^\s*dear sir\/madam/i.test(body)) checks.push({ ok: false, text: 'Avoid "Dear Sir/Madam". Use the person\'s name if you can find it, or "Hi there".' });
+    else if (/^\s*(hi|hello|hey)\b/i.test(body)) checks.push({ ok: true, text: 'Opens with a friendly, direct greeting.' });
+    else checks.push({ ok: false, text: 'Open with a greeting like "Hi [name]" or "Hello".' });
+
+    if (/\b(passionate|i am writing to|i would like to introduce myself)\b/i.test(body)) checks.push({ ok: false, text: 'Avoid "passionate" and other clichés. Be specific.' });
+    else checks.push({ ok: true, text: 'No obvious clichés.' });
+
+    if (/(http|link|portfolio|github)/i.test(body)) checks.push({ ok: true, text: 'Includes a link to your work.' });
+    else checks.push({ ok: false, text: 'Include a link to a relevant project or your portfolio.' });
+
+    if (/(\?|would you|happy to|let me know|free|no obligation)/i.test(body)) checks.push({ ok: true, text: 'Ends with a clear, low-pressure call to action.' });
+    else checks.push({ ok: false, text: 'End with a question or low-pressure next step.' });
+
+    if (/^\s*(best|regards|sincerely|thanks|yours)/im.test(body)) checks.push({ ok: true, text: 'Has a sign-off.' });
+    else checks.push({ ok: false, text: 'End with a sign-off like "Best," or "Kind regards,".' });
+
+    var passes = checks.filter(function(c) { return c.ok; }).length;
+    var pct = Math.round((passes / checks.length) * 100);
+    var cls = pct >= 85 ? 'good' : pct >= 60 ? 'warn' : 'bad';
+
+    var box = $('emScoreBox');
+    box.className = 'email-score ' + cls + ' show';
+    var h = '<h5>Email score <span class="pct">' + pct + '%</span></h5>';
+    h += '<ul>';
+    checks.forEach(function(c) {
+      h += '<li><span class="check ' + (c.ok ? 'good' : 'bad') + '">' + (c.ok ? '✓' : '✕') + '</span><span>' + esc(c.text) + '</span></li>';
+    });
+    h += '</ul>';
+    if (pct >= 85) h += '<p style="margin-top:12px;color:var(--green2);font-weight:600">Ready to send. Paste it into your email client and go.</p>';
+    else if (pct >= 60) h += '<p style="margin-top:12px;color:var(--warn);font-weight:600">Close — fix the flagged items and check again.</p>';
+    else h += '<p style="margin-top:12px;color:var(--danger);font-weight:600">Needs work. Fix the issues above before sending.</p>';
+    box.innerHTML = h;
+  });
+}
+
+/* ============================================================
+   TOOL: STAR BUILDER
+   ============================================================ */
+function renderStarTool(container) {
+  var html = '';
+  html += '<div class="ex-card">';
+  html += '<h4>STAR Answer Builder</h4>';
+  html += '<p class="hint">Pick a real project. Write out each part of the STAR structure. Then check your answer for specificity.</p>';
+  html += '<div class="star-grid">';
+  html += '<div class="star-field"><label>Situation</label><textarea id="starS" placeholder="One sentence setting the scene — where, when, what was the context"></textarea></div>';
+  html += '<div class="star-field"><label>Task</label><textarea id="starT" placeholder="What you specifically had to do"></textarea></div>';
+  html += '<div class="star-field"><label>Action</label><textarea id="starA" placeholder="What you actually did — concrete steps"></textarea></div>';
+  html += '<div class="star-field"><label>Result</label><textarea id="starR" placeholder="What happened — numbers, outcomes if possible"></textarea></div>';
+  html += '</div>';
+  html += '<div style="margin-top:14px"><button class="btn btn-p" id="starCheck" type="button">Check my STAR answer</button></div>';
+  html += '<div class="star-feedback" id="starFeedback"></div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('starCheck').addEventListener('click', function() {
+    var s = $('starS').value.trim();
+    var t = $('starT').value.trim();
+    var a = $('starA').value.trim();
+    var r = $('starR').value.trim();
+
+    var issues = [];
+    var passes = [];
+
+    if (s.length < 20) issues.push('Situation is short. Add context: where, when, what.'); else passes.push('Situation has enough context.');
+    if (s.split(/[.!?]/).filter(Boolean).length > 3) issues.push('Situation is long. Keep it to one sentence — set the scene, not the whole story.');
+
+    if (t.length < 15) issues.push('Task is short. What were you specifically asked to do?');
+    else passes.push('Task is clear.');
+
+    if (a.length < 30) issues.push('Action is short. This is the most important part — describe what you actually did, step by step.');
+    else passes.push('Action has enough detail.');
+    if (a.split(/\s+/).filter(Boolean).length < 30) issues.push('Action feels thin. Aim for 40-80 words describing concrete steps.');
+    else passes.push('Action has good depth.');
+
+    if (r.length < 15) issues.push('Result is short. What was the outcome — a metric, a user reaction, a shipped feature?');
+    else passes.push('Result states an outcome.');
+    if (/\d/.test(r)) passes.push('Result includes specific numbers — great.');
+    else issues.push('Add numbers if you can — "faster", "more users", "in 3 days". Specificity is memorable.');
+
+    var feedback = $('starFeedback');
+    feedback.className = 'star-feedback show';
+    var pct = Math.round((passes.length / (passes.length + issues.length)) * 100);
+    var h = '<strong>Feedback (' + pct + '% structural match)</strong>';
+    h += '<ul>';
+    passes.forEach(function(p) { h += '<li style="color:var(--green2)">✓ ' + esc(p) + '</li>'; });
+    issues.forEach(function(p) { h += '<li style="color:var(--warn)">⚠ ' + esc(p) + '</li>'; });
+    h += '</ul>';
+    if (issues.length === 0) h += '<p style="margin-top:10px;color:var(--green2);font-weight:600">This is a strong STAR answer. Practise saying it in under 90 seconds.</p>';
+    feedback.innerHTML = h;
+  });
+}
+
+/* ============================================================
+   TOOL: NEGOTIATION SIMULATOR
+   ============================================================ */
+function renderNegotiationTool(container) {
+  var state = {
+    step: 0,
+    transcript: []
+  };
+
+  var rounds = [
+    {
+      // Round 0: Initial offer
+      offer: {
+        type: 'them',
+        text: 'Hi Chisomo, we are pleased to offer you the Junior Developer position. The starting salary is MK 500,000 per month, with a six-month review. Let us know what you think.'
+      },
+      prompt: 'How do you respond?',
+      choices: [
+        {
+          label: '"Thank you so much! I accept!"',
+          next: 'accept-immediate',
+          good: false
+        },
+        {
+          label: '"Thank you — I am excited. Can I have 24 hours to review the details?"',
+          next: 'ask-time',
+          good: true
+        },
+        {
+          label: '"That is too low. I want 800,000 or I walk."',
+          next: 'demand-high',
+          good: false
+        },
+        {
+          label: '"500k is fine I guess, when do I start?"',
+          next: 'accept-low',
+          good: false
+        }
+      ]
+    }
+  ];
+
+  var outcomes = {
+    'accept-immediate': {
+      cls: 'warn',
+      title: 'You accepted too quickly',
+      text: 'Accepting immediately signals you did not think about it. You probably left MK 50,000–150,000 per month on the table. Employers expect a short pause. In the local market, a 10–20% raise over the first offer is routine for anyone who asks politely.',
+      restart: true
+    },
+    'accept-low': {
+      cls: 'bad',
+      title: 'You left money on the table',
+      text: 'You accepted below what they were prepared to pay. Many companies build in 10–25% negotiation room. Saying "I guess" also signals low confidence. This number will anchor every future raise for years.',
+      restart: true
+    },
+    'demand-high': {
+      cls: 'bad',
+      title: 'You came on too strong',
+      text: 'Asking for 60% above their offer without justification reads as unrealistic. It can damage the relationship even if they eventually hire you. The good move is to give a range, not a demand, and to ground it in market research.',
+      restart: true
+    },
+    'ask-time': {
+      cls: 'good',
+      title: 'Excellent first move',
+      text: 'Asking for 24 hours is always correct. It signals maturity, gives you time to prepare your counter, and buys you leverage. The recruiter almost always says yes. Now for the counter.',
+      continue: true
+    }
+  };
+
+  var counterRound = {
+    offer: {
+      type: 'them',
+      text: 'Of course, take your time. Let us know tomorrow.'
+    },
+    prompt: 'You have 24 hours. Tomorrow, what do you say?',
+    choices: [
+      {
+        label: '"Based on my research and the local market for junior developers, I was expecting something in the range of 550,000–650,000. Is there flexibility to get closer to that?"',
+        next: 'counter-range',
+        good: true
+      },
+      {
+        label: '"I want 700,000, take it or leave it."',
+        next: 'ultimatum',
+        good: false
+      },
+      {
+        label: '"Actually 500,000 is fine. Sorry to bother you."',
+        next: 'apologise',
+        good: false
+      },
+      {
+        label: '"I have another offer for 600,000, so match that or I am gone."',
+        next: 'bluff',
+        good: false
+      }
+    ]
+  };
+
+  var finalOutcomes = {
+    'counter-range': {
+      cls: 'good',
+      title: 'This is how it is done',
+      text: 'You gave a range, you anchored it in research, and you asked a question instead of making a demand. Most employers will either accept, meet you in the middle, or offer an alternative like a signing bonus or a 6-month review. Even if they say no, they respect the ask.',
+      detailed: true,
+      response: {
+        type: 'them',
+        text: 'We appreciate you being upfront. We can go to MK 575,000 per month, plus a review at 3 months instead of 6. Does that work?'
+      }
+    },
+    'ultimatum': {
+      cls: 'bad',
+      title: 'Ultimatums rarely work',
+      text: 'Take it or leave it only works when you actually have leverage — and for a junior role, you probably do not. Even if they accept, you have created friction before day one.',
+      restart: true
+    },
+    'apologise': {
+      cls: 'bad',
+      title: 'Do not apologise for negotiating',
+      text: 'Negotiating is normal and expected. Apologising signals you think you are asking for a favour. You are not — you are discussing business terms.',
+      restart: true
+    },
+    'bluff': {
+      cls: 'bad',
+      title: 'Never bluff',
+      text: 'If they call your bluff and ask to see the other offer, you are done. Never invent a competing offer. If you have a real one, mention it. If you do not, do not pretend.',
+      restart: true
+    }
+  };
+
+  function render() {
+    var html = '';
+    html += '<div class="neg-window">';
+    html += '<div class="neg-hd">';
+    html += '<div class="neg-hd-avatar">HR</div>';
+    html += '<div class="neg-hd-info">';
+    html += '<div class="neg-hd-name">HR Manager</div>';
+    html += '<div class="neg-hd-sub">Junior Developer offer · MK 500,000/month</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="neg-body" id="negBody">';
+    state.transcript.forEach(function(m) {
+      if (m.type === 'outcome') {
+        html += '<div class="neg-msg outcome ' + (m.cls || '') + '">';
+        html += '<strong style="display:block;margin-bottom:6px;color:inherit">' + esc(m.title) + '</strong>';
+        html += esc(m.text);
+        html += '</div>';
+      } else {
+        html += '<div class="neg-msg ' + m.type + '">' + esc(m.text) + '</div>';
+      }
+    });
+    html += '</div>';
+
+    // Determine what controls to show
+    var lastEntry = state.transcript[state.transcript.length - 1];
+    var showRestart = false;
+    var currentRound = null;
+
+    if (!lastEntry) {
+      currentRound = rounds[0];
+    } else if (lastEntry.type === 'outcome') {
+      if (lastEntry.continue) {
+        currentRound = counterRound;
+      } else if (lastEntry.restart) {
+        showRestart = true;
+      } else if (lastEntry.detailed) {
+        showRestart = true;
+      }
+    }
+
+    if (currentRound) {
+      html += '<div class="neg-choices" id="negChoices">';
+      html += '<p style="font-size:13px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">' + esc(currentRound.prompt) + '</p>';
+      currentRound.choices.forEach(function(c, i) {
+        html += '<button class="neg-choice" data-i="' + i + '" type="button">' + esc(c.label) + '</button>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="neg-restart' + (showRestart ? ' show' : '') + '" id="negRestart">';
+    html += '<button class="btn btn-p" id="negRestartBtn" type="button">↺ Try again with different choices</button>';
+    html += '</div>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    if (currentRound) {
+      container.querySelectorAll('.neg-choice').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var i = parseInt(btn.getAttribute('data-i'), 10);
+          var choice = currentRound.choices[i];
+          handleChoice(choice, currentRound);
+        });
+      });
+    }
+
+    var restartBtn = $('negRestartBtn');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', function() {
+        state.transcript = [];
+        render();
+      });
+    }
+
+    // Scroll negotiation body to bottom
+    var body = $('negBody');
+    if (body) body.scrollTop = body.scrollHeight;
+  }
+
+  function handleChoice(choice, round) {
+    // Add the user's message
+    state.transcript.push({ type: 'me', text: choice.label });
+
+    // Handle based on next
+    if (choice.next === 'ask-time') {
+      var outcome = outcomes['ask-time'];
+      state.transcript.push({
+        type: 'outcome',
+        cls: outcome.cls,
+        title: outcome.title,
+        text: outcome.text,
+        continue: true
+      });
+      state.transcript.push({ type: 'them', text: counterRound.offer.text });
+      render();
+      return;
+    }
+
+    if (choice.next === 'counter-range') {
+      var fo = finalOutcomes['counter-range'];
+      state.transcript.push({ type: 'them', text: fo.response.text });
+      state.transcript.push({
+        type: 'outcome',
+        cls: fo.cls,
+        title: fo.title,
+        text: fo.text,
+        detailed: true
+      });
+      render();
+      return;
+    }
+
+    var o = outcomes[choice.next] || finalOutcomes[choice.next];
+    if (o) {
+      state.transcript.push({
+        type: 'outcome',
+        cls: o.cls,
+        title: o.title,
+        text: o.text,
+        restart: !!o.restart,
+        detailed: !!o.detailed
+      });
+    }
+    render();
+  }
+
+  // Initial transcript: first offer
+  state.transcript.push({ type: 'them', text: rounds[0].offer.text });
+  render();
+}
+
+/* ============================================================
+   TOOL: CHECKLIST
+   ============================================================ */
+function renderChecklistTool(container) {
+  var ms = loadMilestones();
+
+  function render() {
+    var html = '';
+    html += '<div class="ex-card">';
+    html += '<h4>Launchpad Checklist</h4>';
+    html += '<p class="hint">Tick every milestone you have actually completed in real life — not just read about. When all 10 are ticked, you have done everything in this course.</p>';
+    html += '<ul class="checklist">';
+    MILESTONES.forEach(function(m) {
+      var on = !!ms[m.id];
+      html += '<li class="' + (on ? 'checked' : '') + '">';
+      html += '<input type="checkbox" id="tl_' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+      html += '<label for="tl_' + m.id + '">' + esc(m.text) + '</label>';
+      html += '</li>';
+    });
+    html += '</ul>';
+
+    var count = 0;
+    MILESTONES.forEach(function(m) { if (ms[m.id]) count++; });
+    var pct = Math.round((count / MILESTONES.length) * 100);
+    var msg = count === 10
+      ? '🎉 You have completed every milestone. You are ready. Now go get the job.'
+      : count >= 7
+        ? '✓ Strong progress. Finish the remaining milestones.'
+        : count >= 4
+          ? 'Good start. Keep going — the harder work is what gets you hired.'
+          : 'Start with the top milestones. Small actions compound fast.';
+    html += '<div style="margin-top:16px;padding:14px 16px;background:' + (count === 10 ? 'var(--gsoft)' : 'var(--bg)') + ';border-radius:var(--r);border-left:3px solid ' + (count === 10 ? 'var(--green)' : 'var(--info)') + ';font-size:14px;color:var(--navy);line-height:1.6">';
+    html += '<strong>' + count + '/' + MILESTONES.length + ' (' + pct + '%)</strong> — ' + msg;
+    html += '</div>';
+    html += '</div>';
+
+    container.innerHTML = html;
+
+    container.querySelectorAll('input[type=checkbox]').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        ms[cb.getAttribute('data-msid')] = cb.checked;
+        saveMilestones(ms);
+        render();
+      });
+    });
+  }
+
+  render();
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Tech Career Launchpad</h1>';
+  html += '<p class="pg-sub">You have the skills. This course is about the last mile — everything between "I can build things" and "I have a paycheck." Portfolio, GitHub, LinkedIn, CVs, cold email, interviews, and salary negotiation, with five practical tools you can use today.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>4 weeks</h3><p>8 lessons across 4 modules. About 4 hours of learning plus real-world action.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Beginner</h3><p>For any tech learner who has finished at least one technical course and wants a job.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🎯</span>Practical tools</h3><p>Portfolio scorecard, GitHub reviewer, LinkedIn headline builder, cold email scorer, STAR builder, and a negotiation simulator.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Portfolio</h3><p>A live portfolio that passes the 5-second test on a phone.</p></div>';
+  html += '<div class="ov-card"><h3>GitHub &amp; LinkedIn</h3><p>Profiles that recruiters find, read, and act on.</p></div>';
+  html += '<div class="ov-card"><h3>CV &amp; applications</h3><p>A 1-page CV, tailored applications, and cold emails that get replies.</p></div>';
+  html += '<div class="ov-card"><h3>Interviews</h3><p>STAR stories, technical frameworks, and questions that impress.</p></div>';
+  html += '<div class="ov-card"><h3>Negotiation</h3><p>A target salary, walk-away number, and a script you have practised.</p></div>';
+  html += '<div class="ov-card"><h3>30-day plan</h3><p>A week-by-week schedule that turns preparation into offers.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Foundation', 'What employers want. Building a portfolio that gets read.'],
+    ['W2', 'Online Presence', 'GitHub that gets you hired. LinkedIn and personal brand.'],
+    ['W3', 'Applications', 'CVs, cover letters, cold outreach, and interviews.'],
+    ['W4', 'Negotiation &amp; Closing', 'Salary negotiation and the complete job search kit.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to get hired?</h2>';
+  html += '<p>The end goal is a signed offer. Jump into lesson 1, work through every tool, and follow the 30-day plan.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('c1');
+    switchView('lessons');
+  });
+}
+
+/* ============================================================
+   TOOLS TAB
+   ============================================================ */
+function renderTools() {
+  var container = $('viewTools');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Tools &amp; Checklist</h1>';
+  html += '<p class="pg-sub">All six interactive tools from the course in one place, plus your real-world launchpad checklist. Tick each milestone only when you have actually done it.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' real-world milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">🛠 Interactive Tools</h2>';
+  html += '<div class="grid-3">';
+  var tools = [
+    { id: 'c2', icon: '📂', name: 'Portfolio Scorecard', desc: 'Score your portfolio across 10 signals.' },
+    { id: 'c3', icon: '🐙', name: 'GitHub Reviewer', desc: 'Check your GitHub profile against what recruiters see.' },
+    { id: 'c4', icon: '💼', name: 'LinkedIn Headline Builder', desc: 'Generate 5 headline options in seconds.' },
+    { id: 'c5', icon: '✉️', name: 'Cold Email Composer', desc: 'Write and score cold outreach emails.' },
+    { id: 'c6', icon: '⭐', name: 'STAR Answer Builder', desc: 'Structure your interview stories.' },
+    { id: 'c7', icon: '💰', name: 'Negotiation Simulator', desc: 'Practise salary negotiation safely.' }
+  ];
+  tools.forEach(function(t) {
+    html += '<button class="ov-card" style="text-align:left;cursor:pointer" data-lesson="' + t.id + '">';
+    html += '<h3><span class="ov-ic">' + t.icon + '</span>' + esc(t.name) + '</h3>';
+    html += '<p>' + esc(t.desc) + '</p>';
+    html += '</button>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Launchpad Checklist <span class="badge">Real-world</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick every milestone you have actually completed in real life — not just read about.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('button[data-lesson]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      selectLesson(b.getAttribute('data-lesson'));
+      switchView('lessons');
+    });
+  });
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+/* ============================================================
+   RESOURCES
+   ============================================================ */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your job search.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📂', 'Portfolio examples', 'A collection of strong junior developer portfolios.', 'https://github.com/emmabostian/developer-portfolios'],
+    ['💼', 'LinkedIn for developers', 'Practical LinkedIn advice for technical people.', 'https://www.linkedin.com/pulse/'],
+    ['🎯', 'Tech interview handbook', 'Free guide to technical and behavioural interviews.', 'https://www.techinterviewhandbook.org/'],
+    ['💰', 'Salary negotiation guide', 'From the classic "Fearless Salary Negotiation" author.', 'https://fearlesssalarynegotiation.com/'],
+    ['🚀', 'Remote OK', 'Remote job board — mostly full-time, some contract.', 'https://remoteok.com/'],
+    ['✉️', 'Cold email templates', 'A free library of outreach templates that work.', 'https://www.coldemailtemplates.com/']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCvBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">1-Page CV Template</div><div class="res-d">A plain, ATS-friendly CV template you can adapt in 10 minutes.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadTemplatesBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">✉️</span>';
+  html += '<div><div class="res-t">Email &amp; Cover Letter Templates</div><div class="res-d">Ready-to-edit templates for applications, cold outreach, follow-ups, and thank-yous.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadTrackerBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📊</span>';
+  html += '<div><div class="res-t">Application Tracker</div><div class="res-d">A simple CSV you can open in Excel or Google Sheets to track every application.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Platforms to join</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['🇲🇼', 'MyJobo Malawi', 'Local job board for Malawi.', 'https://myjobo.com/'],
+    ['🌍', 'Remote OK', 'Remote jobs worldwide.', 'https://remoteok.com/'],
+    ['💼', 'LinkedIn Jobs', 'Filter by location and remote.', 'https://www.linkedin.com/jobs/'],
+    ['🚀', 'We Work Remotely', 'The largest remote job board.', 'https://weworkremotely.com/'],
+    ['🐙', 'GitHub Jobs', 'Developer jobs from tech companies.', 'https://github.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCvBtn').addEventListener('click', downloadCv);
+  $('downloadTemplatesBtn').addEventListener('click', downloadTemplates);
+  $('downloadTrackerBtn').addEventListener('click', downloadTracker);
+}
+
+function downloadCv() {
+  var lines = [
+    '============================================',
+    '  1-PAGE CV TEMPLATE',
+    '  Replace [bracketed] parts and delete sections you do not need.',
+    '============================================',
+    '',
+    '[YOUR FULL NAME]',
+    '[City, Malawi] · [Phone] · [Email]',
+    '[LinkedIn URL] · [Portfolio URL] · [GitHub URL]',
+    '',
+    '--- SUMMARY (2 lines) ---',
+    '',
+    '[Junior Frontend Developer with 6 production projects.',
+    'Comfortable with HTML, CSS, JavaScript and React.]',
+    '',
+    '',
+    '--- PROJECTS (most important section for juniors) ---',
+    '',
+    '[Project Name] — [Live URL]',
+    '  · Built with [tech stack]',
+    '  · [What it does in one sentence]',
+    '  · [One specific technical thing you solved]',
+    '',
+    '[Project Name] — [Live URL]',
+    '  · Built with [tech stack]',
+    '  · [What it does in one sentence]',
+    '  · [One specific technical thing you solved]',
+    '',
+    '[Project Name] — [Live URL]',
+    '  · Built with [tech stack]',
+    '  · [What it does in one sentence]',
+    '  · [One specific technical thing you solved]',
+    '',
+    '',
+    '--- SKILLS ---',
+    '',
+    'Frontend:  HTML, CSS, JavaScript, React, Responsive design',
+    'Backend:   Node.js, Express, PostgreSQL',
+    'Tools:     Git, GitHub, VS Code, Figma',
+    '',
+    '',
+    '--- EDUCATION ---',
+    '',
+    '[Highest qualification] — [Institution] — [Year]',
+    '',
+    '',
+    '--- EXPERIENCE (if any) ---',
+    '',
+    '[Job title] — [Company] — [Dates]',
+    '  · [One achievement in that role]',
+    '  · [Another achievement]',
+    '',
+    '',
+    '--- LANGUAGES ---',
+    '',
+    'English (fluent), Chichewa (native)',
+    '',
+    '============================================',
+    '  Tips:',
+    '  · Keep this to 1 page. Delete anything you do not need.',
+    '  · Tailor the Summary and top projects for each role.',
+    '  · Save as PDF: YourName-CV.pdf',
+    '  · Never include photo, DOB, marital status, or references.',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([lines], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'cv-template.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadTemplates() {
+  var text = [
+    '============================================',
+    '  EMAIL & COVER LETTER TEMPLATES',
+    '  Replace [bracketed] parts.',
+    '============================================',
+    '',
+    '',
+    '--- 1. JOB APPLICATION COVER LETTER ---',
+    'Subject: Application for [Job Title] position',
+    '',
+    'Dear [Hiring Manager name if you know it, otherwise Sir/Madam],',
+    '',
+    'I am applying for the [Job Title] role advertised on',
+    '[where you saw it] on [date].',
+    '',
+    '[One specific thing you noticed about them — their site,',
+    'their mission, or a recent post.]',
+    '',
+    'I have built [number] production projects, including',
+    '[one specific relevant example]. You can see them at',
+    '[portfolio URL].',
+    '',
+    'My CV is attached. I am available for an interview at',
+    'any time.',
+    '',
+    'Yours faithfully,',
+    '[Your name]',
+    '[Phone]',
+    '[Email]',
+    '',
+    '',
+    '--- 2. COLD EMAIL TO A COMPANY ---',
+    'Subject: Quick observation about [their site]',
+    '',
+    'Hi [Name],',
+    '',
+    'I was looking at [company site] and noticed [specific',
+    'issue or opportunity].',
+    '',
+    'I build [your niche]. Here is a recent project:',
+    '[portfolio link].',
+    '',
+    'If you would like, I can send a free 5-minute video',
+    'showing what I would change first. No obligation.',
+    '',
+    'Best,',
+    '[Your name]',
+    '[Phone]',
+    '',
+    '',
+    '--- 3. FOLLOW-UP (no reply after 7 days) ---',
+    'Subject: Re: [original subject]',
+    '',
+    'Hi [Name],',
+    '',
+    'Just following up on my application for [role] sent on',
+    '[date]. I am still very interested and would love to',
+    'hear if there are next steps.',
+    '',
+    'Best regards,',
+    '[Your name]',
+    '',
+    '',
+    '--- 4. INTERVIEW THANK-YOU ---',
+    'Subject: Thank you',
+    '',
+    'Hi [Name],',
+    '',
+    'Thank you for taking the time to meet with me today.',
+    'I enjoyed learning about [specific thing you discussed].',
+    '',
+    'I am very interested in the role and happy to answer',
+    'any follow-up questions.',
+    '',
+    'Best regards,',
+    '[Your name]',
+    '',
+    '',
+    '--- 5. SALARY COUNTER ---',
+    '',
+    '"Thank you — I am excited about this role. Before I',
+    'accept, I would like to discuss the salary. Based on',
+    'my research and the local market for this role, I was',
+    'expecting something in the range of [X] to [Y]. Is',
+    'there flexibility to get closer to that?"',
+    '',
+    '',
+    '--- 6. WHEN THEY SAY "FINAL OFFER" ---',
+    '',
+    '"I understand. Before I accept, is there anything else',
+    'negotiable — a signing bonus, a 3-month salary review,',
+    'or a training budget? I am otherwise happy to accept."',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'application-templates.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadTracker() {
+  var csv = [
+    'Date Applied,Company,Role,Source,Status,Follow-up Date,Notes',
+    ',Example Company Ltd,Junior Developer,LinkedIn,Applied,,Sent CV and cover letter',
+    ',NGO Example Malawi,Data Analyst,Referral,Interview,,' + new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10) + ',First interview scheduled',
+    ',,,Cold Email,Replied,,HR asked for portfolio link',
+    ',,,Upwork,Applied,,Submitted proposal for WordPress project'
+  ].join('\n');
+  var blob = new Blob([csv], { type: 'text/csv' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'application-tracker.csv';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ============================================================
+   COMMUNITY
+   ============================================================ */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Job hunting is lonely and rejection is normal. You are not the only person going through it. Join other Malawian learners on the same path.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>Job Hunters WhatsApp</h3><p>Share applications, get CV feedback, celebrate offers.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265897621195" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer discussions, mock interviews, salary talk.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>Alumni Showcase</h3><p>See where past learners are working now.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Real talk about the job hunt</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Rejection is data</h3><p>After 5 rejections with no replies, something in your materials is not working. Revisit the tools, ask for feedback, adjust. After 20 rejections, you are close to something.</p></div>';
+  html += '<div class="ov-card"><h3>Volume beats perfection</h3><p>5 tailored applications a week beats 1 perfect one a month. The market rewards persistence, not perfection.</p></div>';
+  html += '<div class="ov-card"><h3>Referrals skip the queue</h3><p>One introduction from someone inside a company is worth 20 cold applications. Ask everyone you know — classmates, instructors, family friends.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:36px">';
+  html += '<h2>Need feedback on your CV or portfolio?</h2>';
+  html += '<p>Post it in the WhatsApp group. Other learners and instructors give specific, honest feedback — usually within an hour.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265897621195" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   CERTIFICATE
+   ============================================================ */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">You unlock the certificate when you have completed every lesson and ticked at least 7 real-world milestones on the Tools tab.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Real-world milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Tech Career Launchpad</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">4 Weeks · Beginner</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Tech Career Launchpad, demonstrating proficiency in portfolio building, GitHub presence, LinkedIn branding, application writing, interview technique, and salary negotiation.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Tech Career Launchpad</h1>' +
+        '<div class="t">4 Weeks · Beginner</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Tech Career Launchpad,<br>demonstrating proficiency in portfolio building, GitHub presence,<br>LinkedIn branding, application writing, interview technique,<br>and salary negotiation.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

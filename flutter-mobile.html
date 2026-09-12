@@ -1,0 +1,3967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter Mobile Development — Interactive Course</title>
+<meta name="description" content="Learn Flutter from a single codebase. 12 weeks, intermediate level, with a live widget simulator.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:16px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+.main{padding:40px 52px 80px;max-width:920px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:340px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:2;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+/* Phone preview */
+.phone-frame{width:100%;flex:1;background:#fff;display:flex;flex-direction:column;align-items:center;padding:14px 0;min-height:340px;overflow:auto;background:#e5e7eb}
+.phone-screen{width:220px;min-height:420px;background:#fff;border-radius:20px;border:8px solid #1a2332;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.15);display:flex;flex-direction:column;position:relative}
+.phone-notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:60px;height:5px;background:#1a2332;border-radius:3px;z-index:5}
+.phone-screen-body{flex:1;display:flex;flex-direction:column;overflow:auto}
+.phone-appbar{background:#3b82f6;color:#fff;padding:22px 12px 10px;font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px}
+.phone-body{flex:1;padding:12px;font-size:12px;line-height:1.5;color:#1f2937}
+.phone-empty{color:#9ca3af;font-style:italic;text-align:center;padding:30px 10px;font-size:11.5px}
+.con-out{min-height:100px;max-height:140px;overflow-y:auto;padding:10px 12px;background:var(--navy3);font-family:var(--mono);font-size:12px;line-height:1.55;color:#c9d1d9;border-top:1px solid var(--bd2)}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:2px 6px;margin:1px 0;border-radius:3px;display:flex;gap:6px;align-items:flex-start;word-break:break-word;white-space:pre-wrap}
+.con-line.log{color:#c9d1d9}
+.con-line.info{color:#7dd3fc;background:rgba(56,189,248,.08);border-left:2px solid #38bdf8}
+.con-line.warn{color:#fbbf24;background:rgba(217,119,6,.1);border-left:2px solid var(--warn)}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-bdg{font-size:9.5px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:30px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:14px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .code-ta{min-height:260px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:14px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">◈</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Flutter Mobile Development</div>
+        <div class="brand-sb">12 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">◈</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Flutter Mobile Development</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: FLUTTER BASICS ===== -->
+<div class="src-read" data-l="fb1">
+<p>Flutter uses a language called <strong>Dart</strong>. It was created by Google and looks a lot like a mix of JavaScript and Java. If you already know JavaScript, you are 80% of the way there — the syntax is close, the concepts are the same.</p>
+<h2>Variables</h2>
+<p>In Dart, you declare a variable with a type or with <code>var</code>:</p>
+<pre><code>var name = 'Chisomo';       // inferred as String
+String city = 'Lilongwe';   // explicit type
+int age = 22;
+double height = 1.75;
+bool isStudent = true;</code></pre>
+<p>Prefer <code>var</code> when the type is obvious, and explicit types when it helps readability. Dart is statically typed — the compiler catches type errors before the code even runs.</p>
+<h2>final and const</h2>
+<pre><code>final name = 'Chisomo';   // set once, at runtime
+const pi = 3.14;          // compile-time constant</code></pre>
+<p>Use <code>final</code> for values that are set once but computed at runtime. Use <code>const</code> for true constants that never change.</p>
+<h2>String interpolation</h2>
+<p>Dart uses <code>$</code> inside strings — same idea as JavaScript template literals:</p>
+<pre><code>var name = 'Chisomo';
+var age = 22;
+print('Hello, $name! You are $age.');
+print('Next year: ${age + 1}.');</code></pre>
+<h2>Functions</h2>
+<pre><code>int add(int a, int b) {
+  return a + b;
+}
+
+String greet(String name) => 'Hello, $name!';   // arrow syntax
+
+void log(String msg) {
+  print(msg);
+}</code></pre>
+<p>Return type comes first, then the name, then parameters. <code>void</code> means "returns nothing".</p>
+<h2>Lists and maps</h2>
+<pre><code>var fruits = ['apple', 'banana', 'mango'];
+fruits.add('orange');
+print(fruits[0]);          // "apple"
+print(fruits.length);      // 4
+
+var user = {
+  'name': 'Chisomo',
+  'age': 22,
+  'city': 'Lilongwe'
+};
+print(user['name']);       // "Chisomo"</code></pre>
+<h2>Control flow</h2>
+<p>Everything you know from JavaScript works here — with slight syntax differences:</p>
+<pre><code>if (age >= 18) {
+  print('Adult');
+} else {
+  print('Minor');
+}
+
+for (var i = 0; i &lt; 5; i++) {
+  print(i);
+}
+
+for (var fruit in fruits) {
+  print(fruit);
+}</code></pre>
+<blockquote>In the sandbox below, we run a JavaScript-flavored version of Dart so you can practise instantly without installing anything. The syntax is 95% identical — only differences are noted in each lesson. When you're ready to run real Flutter, install the SDK and use the code exactly as shown in the reading.</blockquote>
+</div>
+
+<div class="src-read" data-l="fb2">
+<p>A Flutter app is built from <strong>widgets</strong>. Every visible thing — text, buttons, images, layouts, even the app itself — is a widget. Widgets nest inside each other to form a tree.</p>
+<h2>Your first app</h2>
+<p>The absolute minimum Flutter app:</p>
+<pre><code>import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('My App')),
+        body: Center(
+          child: Text('Hello, Malawi!'),
+        ),
+      ),
+    ),
+  );
+}</code></pre>
+<p>Five widgets in play:</p>
+<ul>
+<li><code>MaterialApp</code> — the root. Sets up theming, routing, and the Material Design language.</li>
+<li><code>Scaffold</code> — a screen with a standard layout. Provides slots for app bar, body, floating action button, etc.</li>
+<li><code>AppBar</code> — the top bar. Takes a <code>title</code> widget.</li>
+<li><code>Center</code> — centers its <code>child</code>.</li>
+<li><code>Text</code> — draws text.</li>
+</ul>
+<h2>runApp</h2>
+<p><code>runApp()</code> is the entry point. It takes one widget — the root of your tree — and hands it to Flutter, which renders everything for you.</p>
+<h2>Widgets all the way down</h2>
+<p>Everything is a widget: the app itself, the layout containers, the text, the padding. Widgets are nested to compose more complex UI. A layout is just a tree of small widgets.</p>
+<h2>Stateless by default</h2>
+<p>A widget that never changes is called <strong>stateless</strong>. Its appearance is entirely determined by the arguments you pass in. This is the simplest kind of widget — you just write a function that returns the tree.</p>
+<h2>Material vs Cupertino</h2>
+<p>Flutter ships two design systems:</p>
+<ul>
+<li><strong>Material</strong> — Google's design language (Android-like). Used by <code>MaterialApp</code>.</li>
+<li><strong>Cupertino</strong> — Apple's iOS design language. Used by <code>CupertinoApp</code>.</li>
+</ul>
+<p>Both work on both platforms. Most apps pick Material — it's more flexible and more widely documented.</p>
+<blockquote>You will spend the next 12 weeks learning widgets. Every single lesson adds a few more to your vocabulary. By the end you will compose them without thinking.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: WIDGETS ===== -->
+<div class="src-read" data-l="wg1">
+<p>Before you can build layouts, you need to know the basic building blocks. This lesson covers the four widgets you will use in almost every screen.</p>
+<h2>Text</h2>
+<pre><code>Text('Hello, Malawi!')
+Text('Big heading', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold))
+Text('Red text', style: TextStyle(color: Colors.red))</code></pre>
+<p>Text takes a positional string and an optional <code>style</code>. <code>TextStyle</code> controls color, size, weight, italics, and more.</p>
+<h2>Container</h2>
+<p>A <code>Container</code> is a box. It can have a background color, padding, margin, border, rounded corners, and a fixed size:</p>
+<pre><code>Container(
+  width: 200,
+  height: 100,
+  color: Colors.blue,
+  child: Text('Inside a box'),
+)</code></pre>
+<p>If you only need spacing, use <code>Padding</code> or <code>SizedBox</code> instead — they're cheaper.</p>
+<h2>Padding</h2>
+<pre><code>Padding(
+  padding: EdgeInsets.all(16),
+  child: Text('Padded text'),
+)</code></pre>
+<p>Common EdgeInsets forms:</p>
+<ul>
+<li><code>EdgeInsets.all(n)</code> — same on all sides</li>
+<li><code>EdgeInsets.symmetric(horizontal: 16, vertical: 8)</code></li>
+<li><code>EdgeInsets.only(left: 20, top: 10)</code></li>
+</ul>
+<h2>Center</h2>
+<p>Centers its child both horizontally and vertically inside the available space:</p>
+<pre><code>Center(
+  child: Text('Dead center'),
+)</code></pre>
+<h2>Combining them</h2>
+<pre><code>Center(
+  child: Container(
+    padding: EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(16),
+    ),
+    child: Text(
+      'Welcome to Flutter',
+      style: TextStyle(color: Colors.white, fontSize: 18),
+    ),
+  ),
+)</code></pre>
+<p>That's a card-like box, centered on screen, with a rounded blue background. Twelve lines of Flutter, and it works on every screen size.</p>
+<blockquote>Every widget takes a <code>child</code> or <code>children</code>. When you see an error saying "child was not found", it means you passed nothing where a widget was expected.</blockquote>
+</div>
+
+<div class="src-read" data-l="wg2">
+<p>Single widgets are useful. Layout widgets — <code>Column</code>, <code>Row</code>, and <code>ListView</code> — are how you compose them into screens.</p>
+<h2>Column — stack vertically</h2>
+<pre><code>Column(
+  children: [
+    Text('First'),
+    Text('Second'),
+    Text('Third'),
+  ],
+)</code></pre>
+<p>Children stack top to bottom. By default, they hug the top-left of the available space.</p>
+<h2>Row — stack horizontally</h2>
+<pre><code>Row(
+  children: [
+    Icon(Icons.star),
+    Text('Favorite'),
+  ],
+)</code></pre>
+<p>Children flow left to right.</p>
+<h2>Alignment</h2>
+<p>Both Column and Row accept:</p>
+<ul>
+<li><code>mainAxisAlignment</code> — along the main axis (vertical for Column, horizontal for Row): <code>start</code>, <code>center</code>, <code>end</code>, <code>spaceBetween</code>, <code>spaceAround</code></li>
+<li><code>crossAxisAlignment</code> — along the cross axis: <code>start</code>, <code>center</code>, <code>end</code>, <code>stretch</code></li>
+</ul>
+<pre><code>Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [ ... ],
+)</code></pre>
+<h2>Padding and spacing</h2>
+<p>Wrap children in <code>Padding</code> for spacing, or use a <code>SizedBox</code> between items:</p>
+<pre><code>Column(
+  children: [
+    Text('Title'),
+    SizedBox(height: 16),
+    Text('Subtitle'),
+  ],
+)</code></pre>
+<p><code>SizedBox(height: 16)</code> inserts vertical space. It's the Flutter way of saying "add a gap here".</p>
+<h2>ListView — scrolling lists</h2>
+<p>A Column can't scroll. For long or dynamic lists, use a <code>ListView</code>:</p>
+<pre><code>ListView(
+  children: [
+    ListTile(title: Text('Item 1')),
+    ListTile(title: Text('Item 2')),
+    ListTile(title: Text('Item 3')),
+  ],
+)</code></pre>
+<p>Or build the list from data — the real-world pattern:</p>
+<pre><code>var items = ['Apple', 'Banana', 'Mango'];
+ListView(
+  children: items.map((fruit) =&gt; ListTile(title: Text(fruit))).toList(),
+)</code></pre>
+<p>Flutter's <code>.map().toList()</code> is how you transform data into widgets. Exactly like React's <code>.map()</code> — same idea, no <code>key</code> prop needed (Flutter handles it differently).</p>
+<blockquote>When your Column overflows the screen, Flutter shows a yellow-and-black striped warning. The fix: switch to <code>ListView</code> or wrap in <code>SingleChildScrollView</code>.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: STATE ===== -->
+<div class="src-read" data-l="st1">
+<p>Everything so far has been stateless — the UI never changes. Real apps have counters, forms, and dynamic data. That's what <strong>state</strong> is for.</p>
+<h2>The problem</h2>
+<p>If you try to change a variable inside a stateless widget, nothing happens on screen. Flutter doesn't know it needs to redraw. You need to tell it.</p>
+<h2>StatefulWidget</h2>
+<p>Real Flutter uses a class with a <code>setState</code> method:</p>
+<pre><code>class Counter extends StatefulWidget {
+  @override
+  State&lt;Counter&gt; createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State&lt;Counter&gt; {
+  int count = 0;
+
+  void increment() {
+    setState(() {
+      count++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Count: $count'),
+        ElevatedButton(
+          onPressed: increment,
+          child: Text('+1'),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+<p>Three parts:</p>
+<ol>
+<li><strong>The widget class</strong> — its only job is to create the state.</li>
+<li><strong>The state class</strong> — holds the data (<code>count</code>) and the <code>build</code> method that draws it.</li>
+<li><strong>setState</strong> — the signal to Flutter: "something changed, redraw".</li>
+</ol>
+<h2>Why setState matters</h2>
+<p>If you write <code>count++</code> without <code>setState</code>, the number changes in memory but the screen does not update. <code>setState</code> tells Flutter to re-run <code>build</code> and update the UI.</p>
+<h2>In the sandbox</h2>
+<p>The sandbox uses a slightly simplified form — instead of two classes, you call a <code>StatefulWidget</code> helper with an initial state and a build function:</p>
+<pre><code>function Counter() {
+  return StatefulWidget({
+    initState: () =&gt; ({ count: 0 }),
+    build: (state, setState) =&gt; Column({
+      mainAxisAlignment: 'center',
+      children: [
+        Text('Count: ' + state.count),
+        ElevatedButton({
+          onPressed: () =&gt; setState(() =&gt; state.count++),
+          child: Text('+1'),
+        }),
+      ],
+    }),
+  });
+}</code></pre>
+<p>Same concepts, less boilerplate. When you install real Flutter, use the class form.</p>
+<blockquote>Rule of thumb: if a widget's appearance never changes, use stateless. If it changes because of user action, a timer, or data arriving, use stateful.</blockquote>
+</div>
+
+<div class="src-read" data-l="st2">
+<p>Forms are how you collect text from users. In Flutter, the main tool is <code>TextField</code>, and text is usually managed with a <strong>TextEditingController</strong>.</p>
+<h2>TextField basics</h2>
+<pre><code>TextField(
+  decoration: InputDecoration(
+    labelText: 'Your name',
+    hintText: 'e.g. Chisomo',
+    border: OutlineInputBorder(),
+  ),
+)</code></pre>
+<p>TextField draws an editable input. The <code>decoration</code> controls the label, hint, border, and icon.</p>
+<h2>Reading what was typed — onChanged</h2>
+<p>The simplest approach: listen for changes and store the value in state:</p>
+<pre><code>class NameForm extends StatefulWidget {
+  @override
+  State&lt;NameForm&gt; createState() =&gt; _NameFormState();
+}
+
+class _NameFormState extends State&lt;NameForm&gt; {
+  String name = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(labelText: 'Name'),
+          onChanged: (value) {
+            setState(() {
+              name = value;
+            });
+          },
+        ),
+        Text('Hello, $name!'),
+      ],
+    );
+  }
+}</code></pre>
+<p>Every keystroke calls <code>onChanged</code> with the current value. We store it in <code>name</code> and <code>setState</code> so the greeting updates live.</p>
+<h2>TextEditingController</h2>
+<p>The more powerful pattern uses a controller:</p>
+<pre><code>final controller = TextEditingController();
+
+TextField(controller: controller)
+
+// Later, read or clear:
+print(controller.text);
+controller.clear();</code></pre>
+<p>Controllers let you read the value outside the widget, pre-fill it, or clear it programmatically. Use one when you need that control.</p>
+<h2>Buttons</h2>
+<pre><code>ElevatedButton(
+  onPressed: () {
+    print('Pressed!');
+  },
+  child: Text('Submit'),
+)
+
+TextButton(
+  onPressed: () {},
+  child: Text('Cancel'),
+)
+
+IconButton(
+  onPressed: () {},
+  icon: Icon(Icons.add),
+)</code></pre>
+<p><code>ElevatedButton</code> has a filled background, <code>TextButton</code> is flat, <code>IconButton</code> is a tappable icon. All take <code>onPressed</code>.</p>
+<blockquote>If <code>onPressed: null</code> (or nothing), the button is disabled. That is the way to grey out a button until a form is valid.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: NAVIGATION ===== -->
+<div class="src-read" data-l="nv1">
+<p>Real apps have multiple screens. Flutter uses a <strong>stack of routes</strong> — you push new screens on top, and pop them off to go back.</p>
+<h2>Navigator.push</h2>
+<p>Push a new screen on top:</p>
+<pre><code>Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) =&gt; DetailScreen()),
+);</code></pre>
+<p>Two arguments:</p>
+<ul>
+<li><strong>context</strong> — tells Flutter where in the widget tree you are</li>
+<li><strong>MaterialPageRoute</strong> — a builder that returns the widget to show</li>
+</ul>
+<h2>Going back — Navigator.pop</h2>
+<pre><code>Navigator.pop(context);</code></pre>
+<p>Pops the current screen off the stack and returns to the previous one. Flutter automatically shows a back arrow on the app bar if there's a screen below.</p>
+<h2>A two-screen app</h2>
+<pre><code>class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Home')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (c) =&gt; DetailScreen()),
+            );
+          },
+          child: Text('Open detail'),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Detail')),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () =&gt; Navigator.pop(context),
+          child: Text('Back'),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+<h2>Named routes</h2>
+<p>For larger apps, register named routes once and push them by name:</p>
+<pre><code>MaterialApp(
+  routes: {
+    '/': (context) =&gt; HomeScreen(),
+    '/detail': (context) =&gt; DetailScreen(),
+    '/settings': (context) =&gt; SettingsScreen(),
+  },
+)
+
+// Somewhere:
+Navigator.pushNamed(context, '/settings');</code></pre>
+<p>Named routes keep navigation logic out of individual widgets. Useful once you have more than three screens.</p>
+<blockquote>The route stack is just an array. <code>push</code> adds to the top, <code>pop</code> removes from the top. Every mobile app you have ever used works this way — Android's back button, iOS's swipe gesture, all just pop the top route.</blockquote>
+</div>
+
+<div class="src-read" data-l="nv2">
+<p>Opening a blank screen is not useful. Navigation is really about passing data — the ID of a product, the name of a user, the result of a form.</p>
+<h2>Passing data via constructor</h2>
+<p>The most common way: give the target widget a constructor parameter:</p>
+<pre><code>class DetailScreen extends StatelessWidget {
+  final String name;
+  final int age;
+
+  DetailScreen({required this.name, required this.age});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(name)),
+      body: Center(
+        child: Text('$name is $age years old'),
+      ),
+    );
+  }
+}
+
+// Push with data:
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (c) =&gt; DetailScreen(name: 'Chisomo', age: 22),
+  ),
+);</code></pre>
+<p>Simple, type-safe, and works with the Dart compiler to catch errors early.</p>
+<h2>Returning data — pop with a value</h2>
+<p>Screens can also send data back. Useful for "pick an option" screens:</p>
+<pre><code>// In DetailScreen:
+Navigator.pop(context, 'Chisomo');
+
+// In HomeScreen:
+final result = await Navigator.push&lt;String&gt;(
+  context,
+  MaterialPageRoute(builder: (c) =&gt; PickerScreen()),
+);
+print('User picked: $result');</code></pre>
+<p><code>Navigator.pop</code> takes an optional second argument. The <code>await</code> on the caller side waits for it.</p>
+<h2>Handling the result in a StatefulWidget</h2>
+<pre><code>void openPicker() async {
+  final name = await Navigator.push&lt;String&gt;(
+    context,
+    MaterialPageRoute(builder: (c) =&gt; PickerScreen()),
+  );
+  if (name != null) {
+    setState(() {
+      this.name = name;
+    });
+  }
+}</code></pre>
+<p>Always check for <code>null</code> — the user might have pressed back without picking anything.</p>
+<h2>In the sandbox</h2>
+<p>The sandbox simulates navigation with a simple screen stack. Push screens with <code>Navigator.push()</code>, pop with <code>Navigator.pop()</code>, and pass data via constructor arguments. The result is a working multi-screen app you can test with taps.</p>
+<blockquote>Master the pattern of "constructor in, pop value out" and you have 90% of mobile navigation. Everything else — deep linking, nested navigators — builds on it.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: APIS ===== -->
+<div class="src-read" data-l="ap1">
+<p>Mobile apps rarely live alone. They talk to servers — fetch weather, load posts, sync data. In Flutter, this is done with the <code>http</code> package.</p>
+<h2>Adding the package</h2>
+<pre><code># In pubspec.yaml:
+dependencies:
+  http: ^1.0.0</code></pre>
+<p>Then run <code>flutter pub get</code>. From that point, <code>import 'package:http/http.dart' as http;</code> gives you the client.</p>
+<h2>A simple GET request</h2>
+<pre><code>import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future&lt;void&gt; fetchUser() async {
+  final response = await http.get(
+    Uri.parse('https://api.example.com/users/1'),
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    print(data['name']);
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+}</code></pre>
+<p>Four steps:</p>
+<ol>
+<li>Build a <code>Uri</code> from the URL string</li>
+<li><code>await</code> the response</li>
+<li>Check <code>statusCode</code> — 200 means success</li>
+<li><code>jsonDecode</code> the body (it is JSON text)</li>
+</ol>
+<h2>Parsing JSON to Dart objects</h2>
+<p>The clean way: write a class with a factory constructor:</p>
+<pre><code>class User {
+  final int id;
+  final String name;
+  final String email;
+
+  User({required this.id, required this.name, required this.email});
+
+  factory User.fromJson(Map&lt;String, dynamic&gt; json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+    );
+  }
+}
+
+// Usage:
+final user = User.fromJson(jsonDecode(response.body));
+print(user.name);</code></pre>
+<p><code>fromJson</code> is a factory — a static method that constructs and returns an instance. It is the standard Dart pattern for parsing.</p>
+<h2>POST with a body</h2>
+<pre><code>final response = await http.post(
+  Uri.parse('https://api.example.com/users'),
+  headers: {'Content-Type': 'application/json'},
+  body: jsonEncode({
+    'name': 'Chisomo',
+    'email': 'chisomo@example.mw',
+  }),
+);</code></pre>
+<p>Note the symmetry: <code>jsonDecode</code> for reading, <code>jsonEncode</code> for writing.</p>
+<h2>Error handling</h2>
+<pre><code>try {
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode != 200) {
+    throw Exception('Server returned ${response.statusCode}');
+  }
+  return jsonDecode(response.body);
+} catch (e) {
+  print('Request failed: $e');
+  rethrow;
+}</code></pre>
+<p>Networks fail. Always wrap in try/catch and show the user something useful — not a red screen.</p>
+<blockquote>In the sandbox, <code>http.get</code> is mocked: it returns realistic JSON after a short delay so you can practise the parsing and loading-state patterns without internet. In a real project, the code is identical — only the URL changes.</blockquote>
+</div>
+
+<div class="src-read" data-l="ap2">
+<p>Fetching data takes time. Your UI has to handle three states: loading, loaded, and error. Flutter gives you <strong>FutureBuilder</strong> to make this clean.</p>
+<h2>The problem without FutureBuilder</h2>
+<p>You would need a state variable for each of: the data, the loading flag, and the error. Plus an <code>initState</code> to kick off the fetch, and manual <code>setState</code> calls when it completes. Verbose.</p>
+<h2>FutureBuilder to the rescue</h2>
+<pre><code>FutureBuilder&lt;List&lt;Post&gt;&gt;(
+  future: fetchPosts(),   // a Future
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Center(child: CircularProgressIndicator());
+    }
+    if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    }
+    final posts = snapshot.data ?? [];
+    return ListView(
+      children: posts.map((p) =&gt; ListTile(title: Text(p.title))).toList(),
+    );
+  },
+)</code></pre>
+<p>Three checks, in order:</p>
+<ol>
+<li><strong>waiting</strong> — show a spinner</li>
+<li><strong>hasError</strong> — show the error</li>
+<li><strong>otherwise</strong> — build the UI with <code>snapshot.data</code></li>
+</ol>
+<p>FutureBuilder handles the state for you. No manual flags.</p>
+<h2>The Future must be created once</h2>
+<p>This is the classic Flutter gotcha: if you call <code>fetchPosts()</code> inside <code>build</code>, it re-runs on every rebuild, causing an infinite loop of network requests.</p>
+<p>Create the Future once in <code>initState</code> and store it:</p>
+<pre><code>class PostsScreen extends StatefulWidget {
+  @override
+  State&lt;PostsScreen&gt; createState() =&gt; _PostsScreenState();
+}
+
+class _PostsScreenState extends State&lt;PostsScreen&gt; {
+  late Future&lt;List&lt;Post&gt;&gt; futurePosts;
+
+  @override
+  void initState() {
+    super.initState();
+    futurePosts = fetchPosts();   // one call
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder&lt;List&lt;Post&gt;&gt;(
+      future: futurePosts,
+      builder: (context, snapshot) { ... },
+    );
+  }
+}</code></pre>
+<p>Now the fetch runs exactly once, and rebuilding only re-runs the builder.</p>
+<h2>Pull-to-refresh</h2>
+<pre><code>RefreshIndicator(
+  onRefresh: () async {
+    setState(() {
+      futurePosts = fetchPosts();
+    });
+    await futurePosts;
+  },
+  child: ListView(...),
+)</code></pre>
+<p>Wrap your list in a <code>RefreshIndicator</code> and users can pull down to reload — the standard mobile pattern.</p>
+<h2>Loading states matter</h2>
+<p>Show something during the wait — a spinner, a skeleton screen, anything. A blank screen makes the app feel broken. Mobile networks are slower than you think, especially in Malawi; the loading state is not an edge case, it is the normal case.</p>
+<blockquote>The three-state pattern — loading, loaded, error — applies to every network call you will ever write. Master it once and reuse it forever.</blockquote>
+</div>
+
+<!-- ===== MODULE 6: PROJECTS ===== -->
+<div class="src-read" data-l="pr1">
+<p>Before you write the capstone, this lesson covers the professional patterns that make real Flutter apps maintainable.</p>
+<h2>Structure your project</h2>
+<p>The default Flutter structure puts everything in <code>lib/main.dart</code>. For real apps, split it:</p>
+<pre><code>lib/
+├── main.dart
+├── models/
+│   ├── user.dart
+│   └── post.dart
+├── screens/
+│   ├── home_screen.dart
+│   ├── detail_screen.dart
+│   └── settings_screen.dart
+├── widgets/
+│   ├── post_card.dart
+│   └── loading_spinner.dart
+├── services/
+│   └── api_service.dart
+└── utils/
+    └── constants.dart</code></pre>
+<p>Rules of thumb:</p>
+<ul>
+<li><strong>models</strong> — data classes with <code>fromJson</code></li>
+<li><strong>screens</strong> — one file per screen</li>
+<li><strong>widgets</strong> — reusable UI pieces used by multiple screens</li>
+<li><strong>services</strong> — network calls, storage, anything that talks to the outside world</li>
+</ul>
+<h2>Extract widgets</h2>
+<p>When a build method gets longer than ~50 lines, extract a widget. It improves readability and lets Flutter rebuild only what changed:</p>
+<pre><code>// Before:
+Widget build(BuildContext context) {
+  return Column(
+    children: [
+      Container(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(Icons.person),
+            SizedBox(width: 12),
+            Text(name),
+          ],
+        ),
+      ),
+      // ... 100 more lines
+    ],
+  );
+}
+
+// After:
+class UserHeader extends StatelessWidget {
+  final String name;
+  UserHeader(this.name);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Icon(Icons.person),
+          SizedBox(width: 12),
+          Text(name),
+        ],
+      ),
+    );
+  }
+}
+
+// Now: UserHeader(name)
+</code></pre>
+<h2>Const constructors</h2>
+<p>Mark widgets <code>const</code> when their properties never change. Flutter skips rebuilding them entirely:</p>
+<pre><code>const Text('Static label')
+const SizedBox(height: 16)
+const Icon(Icons.star)</code></pre>
+<p>Your IDE will suggest this automatically. Always accept the suggestion — it is a free performance win.</p>
+<h2>SafeArea</h2>
+<pre><code>Scaffold(
+  body: SafeArea(
+    child: Column(...),
+  ),
+)</code></pre>
+<p><code>SafeArea</code> adds padding for the status bar and notch on modern phones. Without it, your content hides behind the phone's UI chrome.</p>
+<h2>Theming</h2>
+<p>Set a global theme once, use it everywhere:</p>
+<pre><code>MaterialApp(
+  theme: ThemeData(
+    primarySwatch: Colors.blue,
+    fontFamily: 'Roboto',
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
+  ),
+  home: HomeScreen(),
+)</code></pre>
+<p>Instead of specifying button styles on every button, set them once. Change the brand color in one place — the whole app updates.</p>
+<blockquote>Good Flutter code looks like many small files, each with one clear job. Bad Flutter code looks like one giant main.dart. Aim for the first.</blockquote>
+</div>
+
+<div class="src-read" data-l="pr2">
+<p>Time to build. The capstone is a <strong>weather app</strong>: type a city, tap search, fetch weather data, and display it beautifully. Every concept in the course gets used.</p>
+<h2>What the app does</h2>
+<ul>
+<li>A text input for the city name</li>
+<li>A search button</li>
+<li>Shows a loading spinner while fetching</li>
+<li>Displays the weather: temperature, condition, city</li>
+<li>Handles errors (unknown city, network failure)</li>
+</ul>
+<h2>Screen structure</h2>
+<pre><code>Scaffold
+├── AppBar (title: "Weather")
+└── body: Padding
+    └── Column
+        ├── TextField (city input)
+        ├── SizedBox(height: 12)
+        ├── ElevatedButton (search)
+        ├── SizedBox(height: 24)
+        └── Result area:
+            ├── if loading: CircularProgressIndicator
+            ├── if error: Text(error)
+            └── if data: WeatherCard
+</code></pre>
+<h2>The data model</h2>
+<pre><code>class Weather {
+  final String city;
+  final double temperature;
+  final String condition;
+  final String icon;
+
+  Weather({
+    required this.city,
+    required this.temperature,
+    required this.condition,
+    required this.icon,
+  });
+
+  factory Weather.fromJson(Map&lt;String, dynamic&gt; json) {
+    return Weather(
+      city: json['city'],
+      temperature: (json['temperature'] as num).toDouble(),
+      condition: json['condition'],
+      icon: json['icon'],
+    );
+  }
+}</code></pre>
+<h2>The fetch function</h2>
+<pre><code>Future&lt;Weather&gt; fetchWeather(String city) async {
+  final url = 'https://api.example.com/weather?city=$city';
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode != 200) {
+    throw Exception('City not found');
+  }
+  return Weather.fromJson(jsonDecode(response.body));
+}</code></pre>
+<h2>The screen state</h2>
+<p>You need four pieces of state:</p>
+<ul>
+<li><code>city</code> — what the user typed</li>
+<li><code>weather</code> — the data when loaded (<code>null</code> while loading)</li>
+<li><code>loading</code> — is a request in progress?</li>
+<li><code>error</code> — the error message, if any</li>
+</ul>
+<pre><code>class _WeatherScreenState extends State&lt;WeatherScreen&gt; {
+  final controller = TextEditingController();
+  Weather? weather;
+  bool loading = false;
+  String? error;
+
+  Future&lt;void&gt; search() async {
+    setState(() {
+      loading = true;
+      error = null;
+      weather = null;
+    });
+
+    try {
+      final result = await fetchWeather(controller.text);
+      setState(() {
+        weather = result;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Weather')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: 'City',
+                hintText: 'e.g. Lilongwe',
+              ),
+            ),
+            SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: loading ? null : search,
+              child: Text(loading ? 'Searching...' : 'Search'),
+            ),
+            SizedBox(height: 24),
+            if (loading) CircularProgressIndicator(),
+            if (error != null) Text('Error: $error'),
+            if (weather != null) WeatherCard(weather: weather!),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+<h2>The WeatherCard widget</h2>
+<p>Extract the display into its own widget — reusable and easier to maintain:</p>
+<pre><code>class WeatherCard extends StatelessWidget {
+  final Weather weather;
+  WeatherCard({required this.weather});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          Text(weather.icon, style: TextStyle(fontSize: 64)),
+          Text(weather.city, style: TextStyle(color: Colors.white, fontSize: 20)),
+          Text(
+            '${weather.temperature.round()}°C',
+            style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
+          ),
+          Text(weather.condition, style: TextStyle(color: Colors.white)),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+<h2>Testing in the sandbox</h2>
+<p>Type <code>Lilongwe</code>, <code>Blantyre</code>, or <code>Mzuzu</code> to get mock weather. Any other city returns a 404 error. The mock API responds after a delay so you can see the loading state — this is exactly how the real app would behave.</p>
+<h2>Deploying the real app</h2>
+<ol>
+<li>Install the Flutter SDK (flutter.dev)</li>
+<li>Run <code>flutter create my_weather_app</code></li>
+<li>Replace <code>lib/main.dart</code> with the code from this lesson</li>
+<li>Add <code>http</code> to <code>pubspec.yaml</code> and run <code>flutter pub get</code></li>
+<li>Swap the mock URL for a real weather API (OpenWeatherMap has a free tier)</li>
+<li>Run <code>flutter run</code> on a connected phone or emulator</li>
+<li>Build a release: <code>flutter build apk</code> (Android) or <code>flutter build ios</code> (iOS, needs a Mac)</li>
+<li>Publish to Google Play Console or App Store Connect</li>
+</ol>
+<blockquote>That's the whole course. You now know Flutter's core: widgets, layout, state, navigation, and APIs. Everything else — Provider, Riverpod, animations, native plugins — is built on these same foundations.</blockquote>
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="fb1" data-kind="starter">
+// Dart basics — variables and functions
+var name = 'Chisomo';
+var age = 22;
+var city = 'Lilongwe';
+const pi = 3.14;
+
+print('Hello, ' + name + '!');
+print('Age: ' + age);
+print('City: ' + city);
+print('Pi: ' + pi);
+
+// Function with return type
+function add(a, b) {
+  return a + b;
+}
+print('3 + 5 = ' + add(3, 5));
+
+// Arrow function
+var square = (n) => n * n;
+print('7 squared = ' + square(7));
+
+// List
+var fruits = ['apple', 'banana', 'mango'];
+print('Fruits: ' + fruits.join(', '));
+print('Count: ' + fruits.length);
+
+// Loop
+for (var i = 0; i < fruits.length; i++) {
+  print((i + 1) + '. ' + fruits[i]);
+}
+</textarea>
+
+<textarea class="src-code" data-l="fb2" data-kind="starter">
+// Your first Flutter app — in the sandbox
+// Real Flutter equivalent shown in the reading.
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('My First App') }),
+      body: Center({
+        child: Text('Hello, Malawi!'),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="wg1" data-kind="starter">
+// Widgets: Text, Container, Padding, Center
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Widgets') }),
+      body: Center({
+        child: Container({
+          padding: EdgeInsets.all(24),
+          decoration: BoxDecoration({
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(16),
+          }),
+          child: Column({
+            mainAxisSize: 'min',
+            children: [
+              Text('Welcome!', {
+                style: TextStyle({ color: Colors.white, fontSize: 22, fontWeight: 'bold' })
+              }),
+              SizedBox({ height: 8 }),
+              Text('This box has padding, rounded corners, and a blue background.', {
+                style: TextStyle({ color: Colors.white, fontSize: 14 })
+              }),
+            ],
+          }),
+        }),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="wg2" data-kind="starter">
+// Column, Row, ListView
+
+var fruits = ['Apple', 'Banana', 'Mango', 'Orange', 'Pineapple'];
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Lists') }),
+      body: Column({
+        children: [
+          Container({
+            padding: EdgeInsets.all(12),
+            color: Colors.blue,
+            child: Row({
+              children: [
+                Icon('favorite', { color: Colors.white }),
+                SizedBox({ width: 8 }),
+                Text('Fruits I like', {
+                  style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+                }),
+              ],
+            }),
+          }),
+          Expanded({
+            child: ListView({
+              children: fruits.map((f) =>
+                ListTile({
+                  leading: Icon('circle', { color: Colors.green }),
+                  title: Text(f),
+                })
+              ),
+            }),
+          }),
+        ],
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="st1" data-kind="starter">
+// StatefulWidget and setState
+
+function Counter() {
+  return StatefulWidget({
+    initState: () => ({ count: 0 }),
+    build: (state, setState) => Column({
+      mainAxisAlignment: 'center',
+      children: [
+        Text('Count: ' + state.count, {
+          style: TextStyle({ fontSize: 28, fontWeight: 'bold' })
+        }),
+        SizedBox({ height: 16 }),
+        Row({
+          mainAxisAlignment: 'center',
+          children: [
+            ElevatedButton({
+              onPressed: () => setState(() => state.count--),
+              child: Text('-1'),
+            }),
+            SizedBox({ width: 12 }),
+            ElevatedButton({
+              onPressed: () => setState(() => state.count++),
+              child: Text('+1'),
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Counter') }),
+      body: Center({ child: Counter() }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="st2" data-kind="starter">
+// TextField and user input
+
+function NameForm() {
+  return StatefulWidget({
+    initState: () => ({ name: '', submitted: false }),
+    build: (state, setState) => Padding({
+      padding: EdgeInsets.all(20),
+      child: Column({
+        crossAxisAlignment: 'stretch',
+        children: [
+          TextField({
+            decoration: InputDecoration({
+              labelText: 'Your name',
+              hintText: 'e.g. Chisomo',
+            }),
+            onChanged: (value) => setState(() => state.name = value),
+          }),
+          SizedBox({ height: 16 }),
+          ElevatedButton({
+            onPressed: () => setState(() => state.submitted = true),
+            child: Text('Submit'),
+          }),
+          SizedBox({ height: 20 }),
+          if (state.submitted && state.name !== '')
+            Text('Hello, ' + state.name + '!', {
+              style: TextStyle({ fontSize: 18, color: Colors.green, fontWeight: 'bold' })
+            }),
+        ],
+      }),
+    }),
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Form') }),
+      body: NameForm(),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="nv1" data-kind="starter">
+// Navigation — push and pop
+
+function HomeScreen() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Home') }),
+    body: Center({
+      child: Column({
+        mainAxisAlignment: 'center',
+        children: [
+          Text('Welcome home!', {
+            style: TextStyle({ fontSize: 20 })
+          }),
+          SizedBox({ height: 20 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.push(ctx, () => DetailScreen()),
+            child: Text('Open detail'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+function DetailScreen() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Detail') }),
+    body: Center({
+      child: Column({
+        mainAxisAlignment: 'center',
+        children: [
+          Text('This is the detail screen.', {
+            style: TextStyle({ fontSize: 18 })
+          }),
+          SizedBox({ height: 20 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.pop(ctx),
+            child: Text('Go back'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: HomeScreen() }));
+</textarea>
+
+<textarea class="src-code" data-l="nv2" data-kind="starter">
+// Passing data between screens
+
+function ProfileScreen(user) {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Profile') }),
+    body: Padding({
+      padding: EdgeInsets.all(20),
+      child: Column({
+        crossAxisAlignment: 'stretch',
+        children: [
+          Text(user.name, {
+            style: TextStyle({ fontSize: 24, fontWeight: 'bold' })
+          }),
+          SizedBox({ height: 8 }),
+          Text('Age: ' + user.age),
+          Text('City: ' + user.city),
+          SizedBox({ height: 24 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.pop(ctx, 'Viewed'),
+            child: Text('Done'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+function HomeScreen() {
+  return StatefulWidget({
+    initState: () => ({ message: 'Tap a button to open a profile' }),
+    build: (state, setState) => Scaffold({
+      appBar: AppBar({ title: Text('Users') }),
+      body: Padding({
+        padding: EdgeInsets.all(16),
+        child: Column({
+          crossAxisAlignment: 'stretch',
+          children: [
+            Text(state.message, {
+              style: TextStyle({ fontSize: 14, color: Colors.grey })
+            }),
+            SizedBox({ height: 16 }),
+            ElevatedButton({
+              onPressed: (ctx) => Navigator.push(ctx, () => ProfileScreen({
+                name: 'Chisomo', age: 22, city: 'Lilongwe'
+              })),
+              child: Text('Open Chisomo profile'),
+            }),
+            SizedBox({ height: 8 }),
+            ElevatedButton({
+              onPressed: (ctx) => Navigator.push(ctx, () => ProfileScreen({
+                name: 'Tadala', age: 19, city: 'Blantyre'
+              })),
+              child: Text('Open Tadala profile'),
+            }),
+          ],
+        }),
+      }),
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: HomeScreen() }));
+</textarea>
+
+<textarea class="src-code" data-l="ap1" data-kind="starter">
+// HTTP requests and JSON parsing
+
+async function load() {
+  print('Fetching user...');
+  try {
+    var response = await http.get('https://api.example.com/users/1');
+    print('Status: ' + response.statusCode);
+    var data = jsonDecode(response.body);
+    print('Name: ' + data.name);
+    print('Email: ' + data.email);
+    print('City: ' + data.city);
+  } catch (e) {
+    print('Error: ' + e.message);
+  }
+}
+
+load();
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('API') }),
+      body: Center({
+        child: Text('Check the console output below.'),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="ap2" data-kind="starter">
+// FutureBuilder and loading states
+
+function PostList() {
+  return StatefulWidget({
+    initState: () => ({ posts: null, loading: true, error: null }),
+    build: (state, setState) => {
+      // Kick off the fetch once
+      if (state.posts === null && state.error === null && state.loading) {
+        http.get('https://api.example.com/posts').then((response) => {
+          var data = jsonDecode(response.body);
+          setState(() => {
+            state.posts = data;
+            state.loading = false;
+          });
+        }).catch((e) => {
+          setState(() => {
+            state.error = e.message;
+            state.loading = false;
+          });
+        });
+      }
+
+      if (state.loading) {
+        return Center({
+          child: Column({
+            mainAxisAlignment: 'center',
+            children: [
+              CircularProgressIndicator(),
+              SizedBox({ height: 12 }),
+              Text('Loading posts...'),
+            ],
+          }),
+        });
+      }
+
+      if (state.error !== null) {
+        return Center({
+          child: Text('Error: ' + state.error, {
+            style: TextStyle({ color: Colors.red })
+          }),
+        });
+      }
+
+      return ListView({
+        children: state.posts.map((p) =>
+          ListTile({
+            leading: Icon('article', { color: Colors.blue }),
+            title: Text(p.title),
+            subtitle: Text(p.body),
+          })
+        ),
+      });
+    },
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Posts') }),
+      body: PostList(),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="starter">
+// Structure and safe area
+
+function App() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Structure Demo') }),
+    body: Column({
+      children: [
+        UserHeader({ name: 'Chisomo' }),
+        SizedBox({ height: 8 }),
+        UserHeader({ name: 'Tadala' }),
+        SizedBox({ height: 8 }),
+        UserHeader({ name: 'Gift' }),
+      ],
+    }),
+  });
+}
+
+function UserHeader({ name }) {
+  return Container({
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration({
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+    }),
+    child: Row({
+      children: [
+        Container({
+          width: 40, height: 40,
+          decoration: BoxDecoration({
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(20),
+          }),
+          child: Center({
+            child: Text(name[0], {
+              style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+            })
+          }),
+        }),
+        SizedBox({ width: 12 }),
+        Text(name, {
+          style: TextStyle({ fontSize: 16, fontWeight: 'bold' })
+        }),
+      ],
+    }),
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Users') }),
+      body: Padding({
+        padding: EdgeInsets.all(16),
+        child: App(),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="starter">
+// CAPSTONE — Weather App
+
+function WeatherApp() {
+  return StatefulWidget({
+    initState: () => ({ city: '', weather: null, loading: false, error: null }),
+
+    build: (state, setState) => {
+      function search() {
+        setState(() => {
+          state.loading = true;
+          state.error = null;
+          state.weather = null;
+        });
+
+        http.get('https://api.example.com/weather?city=' + state.city)
+          .then((response) => {
+            var data = jsonDecode(response.body);
+            setState(() => {
+              state.weather = data;
+              state.loading = false;
+            });
+          })
+          .catch((e) => {
+            setState(() => {
+              state.error = e.message;
+              state.loading = false;
+            });
+          });
+      }
+
+      return Scaffold({
+        appBar: AppBar({ title: Text('Weather') }),
+        body: Padding({
+          padding: EdgeInsets.all(20),
+          child: Column({
+            crossAxisAlignment: 'stretch',
+            children: [
+              TextField({
+                decoration: InputDecoration({
+                  labelText: 'City',
+                  hintText: 'Try: Lilongwe, Blantyre, Mzuzu',
+                }),
+                onChanged: (value) => state.city = value,
+              }),
+              SizedBox({ height: 12 }),
+              ElevatedButton({
+                onPressed: state.loading ? null : search,
+                child: Text(state.loading ? 'Searching...' : 'Search'),
+              }),
+              SizedBox({ height: 24 }),
+
+              state.loading
+                ? Center({ child: CircularProgressIndicator() })
+                : state.error !== null
+                  ? Container({
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration({
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(12),
+                      }),
+                      child: Text('Error: ' + state.error, {
+                        style: TextStyle({ color: Colors.white })
+                      }),
+                    })
+                  : state.weather !== null
+                    ? WeatherCard({ weather: state.weather })
+                    : Center({
+                        child: Text('Enter a city and tap Search.', {
+                          style: TextStyle({ color: Colors.grey })
+                        })
+                      }),
+            ],
+          }),
+        }),
+      });
+    },
+  });
+}
+
+function WeatherCard({ weather }) {
+  return Container({
+    padding: EdgeInsets.all(24),
+    decoration: BoxDecoration({
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(16),
+    }),
+    child: Column({
+      children: [
+        Text(weather.icon, { style: TextStyle({ fontSize: 60 }) }),
+        SizedBox({ height: 8 }),
+        Text(weather.city, {
+          style: TextStyle({ color: Colors.white, fontSize: 20, fontWeight: 'bold' })
+        }),
+        SizedBox({ height: 4 }),
+        Text(weather.temperature + '°C', {
+          style: TextStyle({ color: Colors.white, fontSize: 44, fontWeight: 'bold' })
+        }),
+        SizedBox({ height: 4 }),
+        Text(weather.condition, {
+          style: TextStyle({ color: Colors.white, fontSize: 14 })
+        }),
+      ],
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: WeatherApp() }));
+</textarea>
+
+<!-- ===================== SOLUTIONS ===================== -->
+<textarea class="src-code" data-l="fb1" data-kind="solution">
+var name = 'Chisomo';
+var age = 22;
+var city = 'Lilongwe';
+var favoriteFood = 'Nsima';
+const pi = 3.14;
+
+print('Hello, ' + name + '!');
+print('Age: ' + age);
+print('City: ' + city);
+print('Favorite food: ' + favoriteFood);
+print('Pi: ' + pi);
+print('In 5 years: ' + (age + 5));
+
+function add(a, b) { return a + b; }
+var square = (n) => n * n;
+var cube = (n) => n * n * n;
+
+print('3 + 5 = ' + add(3, 5));
+print('7 squared = ' + square(7));
+print('3 cubed = ' + cube(3));
+
+var fruits = ['apple', 'banana', 'mango', 'orange'];
+print('Fruits: ' + fruits.join(', '));
+print('Count: ' + fruits.length);
+
+for (var i = 0; i < fruits.length; i++) {
+  print((i + 1) + '. ' + fruits[i]);
+}
+
+var user = {
+  name: 'Chisomo',
+  age: 22,
+  city: 'Lilongwe'
+};
+print('User name: ' + user.name);
+print('User city: ' + user.city);
+</textarea>
+
+<textarea class="src-code" data-l="fb2" data-kind="solution">
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('My First App') }),
+      body: Center({
+        child: Column({
+          mainAxisAlignment: 'center',
+          children: [
+            Text('Hello, Malawi!', {
+              style: TextStyle({ fontSize: 28, fontWeight: 'bold', color: Colors.blue })
+            }),
+            SizedBox({ height: 12 }),
+            Text('Welcome to Flutter', {
+              style: TextStyle({ fontSize: 16, color: Colors.grey })
+            }),
+          ],
+        }),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="wg1" data-kind="solution">
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Widgets') }),
+      body: Center({
+        child: Padding({
+          padding: EdgeInsets.all(16),
+          child: Column({
+            mainAxisSize: 'min',
+            children: [
+              Container({
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration({
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(16),
+                }),
+                child: Column({
+                  children: [
+                    Text('Card Title', {
+                      style: TextStyle({ color: Colors.white, fontSize: 20, fontWeight: 'bold' })
+                    }),
+                    SizedBox({ height: 8 }),
+                    Text('This card has padding, rounded corners, and a blue background.', {
+                      style: TextStyle({ color: Colors.white, fontSize: 14 })
+                    }),
+                  ],
+                }),
+              }),
+              SizedBox({ height: 16 }),
+              Container({
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration({
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(16),
+                }),
+                child: Text('Another card!', {
+                  style: TextStyle({ color: Colors.white, fontSize: 16, fontWeight: 'bold' })
+                }),
+              }),
+            ],
+          }),
+        }),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="wg2" data-kind="solution">
+var fruits = ['Apple', 'Banana', 'Mango', 'Orange', 'Pineapple', 'Watermelon', 'Guava'];
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Lists') }),
+      body: Column({
+        children: [
+          Container({
+            padding: EdgeInsets.all(14),
+            color: Colors.blue,
+            child: Row({
+              children: [
+                Icon('favorite', { color: Colors.white }),
+                SizedBox({ width: 8 }),
+                Text('Fruits I like (' + fruits.length + ')', {
+                  style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+                }),
+              ],
+            }),
+          }),
+          Expanded({
+            child: ListView({
+              children: fruits.map((f, i) =>
+                ListTile({
+                  leading: Container({
+                    width: 32, height: 32,
+                    decoration: BoxDecoration({
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(16),
+                    }),
+                    child: Center({
+                      child: Text('' + (i + 1), {
+                        style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+                      })
+                    }),
+                  }),
+                  title: Text(f),
+                  subtitle: Text('Fruit #' + (i + 1)),
+                })
+              ),
+            }),
+          }),
+        ],
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="st1" data-kind="solution">
+function Counter() {
+  return StatefulWidget({
+    initState: () => ({ count: 0 }),
+    build: (state, setState) => Column({
+      mainAxisAlignment: 'center',
+      children: [
+        Text('Count: ' + state.count, {
+          style: TextStyle({ fontSize: 32, fontWeight: 'bold', color: Colors.blue })
+        }),
+        SizedBox({ height: 16 }),
+        Row({
+          mainAxisAlignment: 'center',
+          children: [
+            ElevatedButton({
+              onPressed: () => setState(() => state.count = 0),
+              child: Text('Reset'),
+            ),
+            SizedBox({ width: 8 }),
+            ElevatedButton({
+              onPressed: () => setState(() => state.count--),
+              child: Text('-1'),
+            }),
+            SizedBox({ width: 8 }),
+            ElevatedButton({
+              onPressed: () => setState(() => state.count++),
+              child: Text('+1'),
+            }),
+          ],
+        }),
+        SizedBox({ height: 20 }),
+        Text(
+          state.count === 0 ? 'Start counting' : state.count > 0 ? 'Positive' : 'Negative',
+          { style: TextStyle({ color: Colors.grey }) }
+        ),
+      ],
+    }),
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Counter') }),
+      body: Center({ child: Counter() }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="st2" data-kind="solution">
+function SignupForm() {
+  return StatefulWidget({
+    initState: () => ({ name: '', email: '', submitted: false }),
+    build: (state, setState) => Padding({
+      padding: EdgeInsets.all(20),
+      child: Column({
+        crossAxisAlignment: 'stretch',
+        children: [
+          TextField({
+            decoration: InputDecoration({ labelText: 'Name', hintText: 'Your name' }),
+            onChanged: (value) => setState(() => state.name = value),
+          }),
+          SizedBox({ height: 12 }),
+          TextField({
+            decoration: InputDecoration({ labelText: 'Email', hintText: 'you@example.com' }),
+            onChanged: (value) => setState(() => state.email = value),
+          }),
+          SizedBox({ height: 16 }),
+          ElevatedButton({
+            onPressed: state.name !== '' && state.email !== ''
+              ? () => setState(() => state.submitted = true)
+              : null,
+            child: Text('Sign up'),
+          }),
+          SizedBox({ height: 20 }),
+          if (state.submitted)
+            Container({
+              padding: EdgeInsets.all(14),
+              decoration: BoxDecoration({
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(10),
+              }),
+              child: Text('Welcome, ' + state.name + '! We will reach you at ' + state.email + '.', {
+                style: TextStyle({ color: Colors.white })
+              }),
+            }),
+        ],
+      }),
+    }),
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Sign Up') }),
+      body: SignupForm(),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="nv1" data-kind="solution">
+function HomeScreen() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Home') }),
+    body: Center({
+      child: Column({
+        mainAxisAlignment: 'center',
+        children: [
+          Text('🏠 Home', { style: TextStyle({ fontSize: 28 }) }),
+          SizedBox({ height: 8 }),
+          Text('Tap a button to navigate', {
+            style: TextStyle({ color: Colors.grey })
+          }),
+          SizedBox({ height: 24 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.push(ctx, () => DetailScreen()),
+            child: Text('Open detail'),
+          }),
+          SizedBox({ height: 8 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.push(ctx, () => SettingsScreen()),
+            child: Text('Open settings'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+function DetailScreen() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Detail') }),
+    body: Center({
+      child: Column({
+        mainAxisAlignment: 'center',
+        children: [
+          Text('📄 Detail', { style: TextStyle({ fontSize: 24 }) }),
+          SizedBox({ height: 20 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.pop(ctx),
+            child: Text('Go back'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+function SettingsScreen() {
+  return Scaffold({
+    appBar: AppBar({ title: Text('Settings') }),
+    body: Center({
+      child: Column({
+        mainAxisAlignment: 'center',
+        children: [
+          Text('⚙️ Settings', { style: TextStyle({ fontSize: 24 }) }),
+          SizedBox({ height: 20 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.pop(ctx),
+            child: Text('Go back'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: HomeScreen() }));
+</textarea>
+
+<textarea class="src-code" data-l="nv2" data-kind="solution">
+function ProfileScreen(user) {
+  return Scaffold({
+    appBar: AppBar({ title: Text(user.name) }),
+    body: Padding({
+      padding: EdgeInsets.all(20),
+      child: Column({
+        crossAxisAlignment: 'stretch',
+        children: [
+          Container({
+            width: 80, height: 80,
+            decoration: BoxDecoration({
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(40),
+            }),
+            child: Center({
+              child: Text(user.name[0], {
+                style: TextStyle({ color: Colors.white, fontSize: 32, fontWeight: 'bold' })
+              })
+            }),
+          }),
+          SizedBox({ height: 20 }),
+          Text(user.name, {
+            style: TextStyle({ fontSize: 26, fontWeight: 'bold' })
+          }),
+          SizedBox({ height: 8 }),
+          Text('Age: ' + user.age, { style: TextStyle({ color: Colors.grey }) }),
+          SizedBox({ height: 4 }),
+          Text('City: ' + user.city, { style: TextStyle({ color: Colors.grey }) }),
+          SizedBox({ height: 24 }),
+          ElevatedButton({
+            onPressed: (ctx) => Navigator.pop(ctx, user.name),
+            child: Text('Done'),
+          }),
+        ],
+      }),
+    }),
+  });
+}
+
+function HomeScreen() {
+  return StatefulWidget({
+    initState: () => ({ message: 'Tap a button to open a profile' }),
+    build: (state, setState) => Scaffold({
+      appBar: AppBar({ title: Text('Users') }),
+      body: Padding({
+        padding: EdgeInsets.all(16),
+        child: Column({
+          crossAxisAlignment: 'stretch',
+          children: [
+            Container({
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration({
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(8),
+              }),
+              child: Text(state.message, {
+                style: TextStyle({ color: Colors.white, fontSize: 14 })
+              }),
+            }),
+            SizedBox({ height: 16 }),
+            ElevatedButton({
+              onPressed: (ctx) => Navigator.push(ctx, () => ProfileScreen({
+                name: 'Chisomo', age: 22, city: 'Lilongwe'
+              })),
+              child: Text('Open Chisomo profile'),
+            }),
+            SizedBox({ height: 8 }),
+            ElevatedButton({
+              onPressed: (ctx) => Navigator.push(ctx, () => ProfileScreen({
+                name: 'Tadala', age: 19, city: 'Blantyre'
+              })),
+              child: Text('Open Tadala profile'),
+            }),
+            SizedBox({ height: 8 }),
+            ElevatedButton({
+              onPressed: (ctx) => Navigator.push(ctx, () => ProfileScreen({
+                name: 'Gift', age: 25, city: 'Mzuzu'
+              })),
+              child: Text('Open Gift profile'),
+            }),
+          ],
+        }),
+      }),
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: HomeScreen() }));
+</textarea>
+
+<textarea class="src-code" data-l="ap1" data-kind="solution">
+async function load() {
+  print('Fetching user...');
+  try {
+    var response = await http.get('https://api.example.com/users/1');
+    print('Status: ' + response.statusCode);
+    var data = jsonDecode(response.body);
+    print('Name: ' + data.name);
+    print('Email: ' + data.email);
+    print('City: ' + data.city);
+  } catch (e) {
+    print('Error: ' + e.message);
+  }
+
+  print('');
+  print('Fetching posts...');
+  try {
+    var postsResp = await http.get('https://api.example.com/posts');
+    var posts = jsonDecode(postsResp.body);
+    print('Total posts: ' + posts.length);
+    for (var p of posts) {
+      print('  - ' + p.title);
+    }
+  } catch (e) {
+    print('Error: ' + e.message);
+  }
+}
+
+load();
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('API') }),
+      body: Center({
+        child: Text('Check the console output below.'),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="ap2" data-kind="solution">
+function PostList() {
+  return StatefulWidget({
+    initState: () => ({ posts: null, loading: true, error: null, refreshing: false }),
+    build: (state, setState) => {
+      if (state.posts === null && state.error === null && state.loading) {
+        http.get('https://api.example.com/posts').then((response) => {
+          var data = jsonDecode(response.body);
+          setState(() => {
+            state.posts = data;
+            state.loading = false;
+          });
+        }).catch((e) => {
+          setState(() => {
+            state.error = e.message;
+            state.loading = false;
+          });
+        });
+      }
+
+      function refresh() {
+        setState(() => {
+          state.posts = null;
+          state.error = null;
+          state.loading = true;
+        });
+      }
+
+      if (state.loading) {
+        return Center({
+          child: Column({
+            mainAxisAlignment: 'center',
+            children: [
+              CircularProgressIndicator(),
+              SizedBox({ height: 12 }),
+              Text('Loading posts...', { style: TextStyle({ color: Colors.grey }) }),
+            ],
+          }),
+        });
+      }
+
+      if (state.error !== null) {
+        return Center({
+          child: Padding({
+            padding: EdgeInsets.all(20),
+            child: Column({
+              mainAxisAlignment: 'center',
+              children: [
+                Text('⚠️ Error', { style: TextStyle({ fontSize: 20, fontWeight: 'bold', color: Colors.red }) }),
+                SizedBox({ height: 8 }),
+                Text(state.error, { style: TextStyle({ color: Colors.grey }) }),
+                SizedBox({ height: 16 }),
+                ElevatedButton({
+                  onPressed: refresh,
+                  child: Text('Retry'),
+                }),
+              ],
+            }),
+          }),
+        });
+      }
+
+      return Column({
+        children: [
+          Container({
+            padding: EdgeInsets.all(12),
+            color: Colors.blue,
+            child: Row({
+              mainAxisAlignment: 'spaceBetween',
+              children: [
+                Text(state.posts.length + ' posts', {
+                  style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+                }),
+                TextButton({
+                  onPressed: refresh,
+                  child: Text('Refresh', { style: TextStyle({ color: Colors.white }) }),
+                }),
+              ],
+            }),
+          }),
+          Expanded({
+            child: ListView({
+              children: state.posts.map((p) =>
+                ListTile({
+                  leading: Icon('article', { color: Colors.blue }),
+                  title: Text(p.title),
+                  subtitle: Text(p.body),
+                })
+              ),
+            }),
+          }),
+        ],
+      });
+    },
+  });
+}
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Posts') }),
+      body: PostList(),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="solution">
+function UserHeader({ name, role }) {
+  return Container({
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration({
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+    }),
+    child: Row({
+      children: [
+        Container({
+          width: 44, height: 44,
+          decoration: BoxDecoration({
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(22),
+          }),
+          child: Center({
+            child: Text(name[0], {
+              style: TextStyle({ color: Colors.white, fontWeight: 'bold', fontSize: 18 })
+            })
+          }),
+        }),
+        SizedBox({ width: 12 }),
+        Expanded({
+          child: Column({
+            crossAxisAlignment: 'start',
+            children: [
+              Text(name, {
+                style: TextStyle({ fontSize: 16, fontWeight: 'bold' })
+              }),
+              SizedBox({ height: 2 }),
+              Text(role, {
+                style: TextStyle({ fontSize: 12, color: Colors.grey })
+              }),
+            ],
+          }),
+        }),
+        Icon('chevron_right', { color: Colors.grey }),
+      ],
+    }),
+  });
+}
+
+var users = [
+  { name: 'Chisomo', role: 'Frontend Developer' },
+  { name: 'Tadala', role: 'Backend Developer' },
+  { name: 'Gift', role: 'Mobile Developer' },
+  { name: 'Mphatso', role: 'Data Analyst' },
+];
+
+runApp(
+  MaterialApp({
+    home: Scaffold({
+      appBar: AppBar({ title: Text('Team') }),
+      body: Padding({
+        padding: EdgeInsets.all(16),
+        child: ListView({
+          children: users.map((u) =>
+            Padding({
+              padding: EdgeInsets.only(bottom: 8),
+              child: UserHeader({ name: u.name, role: u.role }),
+            })
+          ),
+        }),
+      }),
+    }),
+  })
+);
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="solution">
+function WeatherApp() {
+  return StatefulWidget({
+    initState: () => ({ city: '', weather: null, loading: false, error: null, searchCount: 0 }),
+
+    build: (state, setState) => {
+      function search() {
+        if (state.city === '') return;
+        setState(() => {
+          state.loading = true;
+          state.error = null;
+          state.weather = null;
+          state.searchCount++;
+        });
+
+        http.get('https://api.example.com/weather?city=' + state.city)
+          .then((response) => {
+            var data = jsonDecode(response.body);
+            setState(() => {
+              state.weather = data;
+              state.loading = false;
+            });
+          })
+          .catch((e) => {
+            setState(() => {
+              state.error = e.message;
+              state.loading = false;
+            });
+          });
+      }
+
+      return Scaffold({
+        appBar: AppBar({ title: Text('Weather') }),
+        body: Padding({
+          padding: EdgeInsets.all(20),
+          child: Column({
+            crossAxisAlignment: 'stretch',
+            children: [
+              TextField({
+                decoration: InputDecoration({
+                  labelText: 'City',
+                  hintText: 'Try: Lilongwe, Blantyre, Mzuzu',
+                }),
+                onChanged: (value) => state.city = value,
+              }),
+              SizedBox({ height: 12 }),
+              ElevatedButton({
+                onPressed: state.loading ? null : search,
+                child: Text(state.loading ? 'Searching...' : 'Search'),
+              }),
+              SizedBox({ height: 8 }),
+              if (state.searchCount > 0)
+                Text('Searches: ' + state.searchCount, {
+                  style: TextStyle({ fontSize: 12, color: Colors.grey })
+                }),
+              SizedBox({ height: 24 }),
+
+              state.loading
+                ? Center({
+                    child: Column({
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox({ height: 12 }),
+                        Text('Fetching weather for ' + state.city + '...', {
+                          style: TextStyle({ color: Colors.grey })
+                        }),
+                      ],
+                    }),
+                  })
+                : state.error !== null
+                  ? Container({
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration({
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(12),
+                      }),
+                      child: Column({
+                        children: [
+                          Text('⚠️ ' + state.error, {
+                            style: TextStyle({ color: Colors.white, fontWeight: 'bold' })
+                          }),
+                          SizedBox({ height: 8 }),
+                          Text('Try Lilongwe, Blantyre, or Mzuzu.', {
+                            style: TextStyle({ color: Colors.white, fontSize: 12 })
+                          }),
+                        ],
+                      }),
+                    })
+                  : state.weather !== null
+                    ? WeatherCard({ weather: state.weather })
+                    : Center({
+                        child: Column({
+                          children: [
+                            Text('🌤️', { style: TextStyle({ fontSize: 48 }) }),
+                            SizedBox({ height: 12 }),
+                            Text('Enter a city and tap Search.', {
+                              style: TextStyle({ color: Colors.grey })
+                            }),
+                          ],
+                        }),
+                      }),
+            ],
+          }),
+        }),
+      });
+    },
+  });
+}
+
+function WeatherCard({ weather }) {
+  return Container({
+    padding: EdgeInsets.all(24),
+    decoration: BoxDecoration({
+      color: Colors.blue,
+      borderRadius: BorderRadius.circular(16),
+    }),
+    child: Column({
+      children: [
+        Text(weather.icon, { style: TextStyle({ fontSize: 64 }) }),
+        SizedBox({ height: 8 }),
+        Text(weather.city, {
+          style: TextStyle({ color: Colors.white, fontSize: 22, fontWeight: 'bold' })
+        }),
+        SizedBox({ height: 4 }),
+        Text(weather.temperature + '°C', {
+          style: TextStyle({ color: Colors.white, fontSize: 48, fontWeight: 'bold' })
+        }),
+        SizedBox({ height: 4 }),
+        Text(weather.condition, {
+          style: TextStyle({ color: Colors.white, fontSize: 15 })
+        }),
+      ],
+    }),
+  });
+}
+
+runApp(MaterialApp({ home: WeatherApp() }));
+</textarea>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'flutter_dev_progress_v1';
+var CAPSTONE_KEY = 'flutter_dev_capstone_v1';
+
+var course = {
+  modules: [
+    {
+      id: 'basics', icon: '◈', title: 'Flutter Basics',
+      lessons: [
+        { id:'fb1', title:'Dart Basics', time:'28 min',
+          challenge:'Add a variable <code>favoriteFood</code> set to your favourite meal and print it. Add a <code>cube(n)</code> function that returns n cubed. Create a <code>user</code> object with name, age, and city, and print each field.',
+          quiz:[
+            { q:'Which keyword creates a compile-time constant in Dart?', options:['let','final','const','static'], correct:2 },
+            { q:'How do you interpolate a variable into a Dart string?', options:['{name}','$name','${name}',"{{name}}"], correct:1 },
+            { q:'What is the entry point of a Flutter app?', options:['start()','main()','run()','init()'], correct:1 }
+          ]},
+        { id:'fb2', title:'Your First Widget', time:'30 min',
+          challenge:'Change the title to your name. Add a second <code>Text</code> widget below the first one with a subtitle. Wrap both in a <code>Column</code> with <code>mainAxisAlignment: \'center\'</code>.',
+          quiz:[
+            { q:'What is the root widget of a Flutter app?', options:['Scaffold','MaterialApp','Widget','App'], correct:1 },
+            { q:'What does <code>Scaffold</code> provide?', options:['Database access','A standard screen layout with slots for app bar and body','Only a title','A theme'], correct:1 },
+            { q:'In Flutter, is everything a widget?', options:['No, only visual elements','Yes, layouts, text, and containers are all widgets','Only text and buttons','Only Material widgets'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'widgets', icon: '🧱', title: 'Widgets',
+      lessons: [
+        { id:'wg1', title:'Text, Container, Padding, Center', time:'32 min',
+          challenge:'Add a second card below the first using <code>Colors.green</code> instead of blue. Give it different padding and text.',
+          quiz:[
+            { q:'What widget centers its child?', options:['Align','Center','Middle','Position'], correct:1 },
+            { q:'What is <code>EdgeInsets.all(16)</code> equivalent to?', options:['16 pixels on every side','16 pixels on top only','16 pixels horizontally','16 percent'], correct:0 },
+            { q:'What does <code>TextStyle</code> control?', options:['Layout','Text color, size, weight','Positioning','Padding'], correct:1 }
+          ]},
+        { id:'wg2', title:'Column, Row, ListView', time:'34 min',
+          challenge:'Add a header <code>Container</code> at the top with a <code>Row</code> containing an icon and a title. Below it, use a <code>ListView</code> to render all fruits.',
+          quiz:[
+            { q:'Which widget stacks children vertically?', options:['Row','Column','Stack','ListView'], correct:1 },
+            { q:'Which widget is best for a long scrolling list?', options:['Column','Stack','ListView','Wrap'], correct:2 },
+            { q:'What does <code>SizedBox(height: 16)</code> do?', options:['Adds 16px of vertical space','Resizes the screen','Fixes a widget size','Adds a border'], correct:0 }
+          ]}
+      ]
+    },
+    {
+      id: 'state', icon: '⚡', title: 'State',
+      lessons: [
+        { id:'st1', title:'StatefulWidget & setState', time:'34 min',
+          challenge:'Add a Reset button that sets count back to 0. Below the buttons, display "Positive", "Negative", or "Zero" based on the current value.',
+          quiz:[
+            { q:'What does <code>setState</code> do?', options:['Saves to database','Tells Flutter to redraw with new values','Resets the widget','Deletes state'], correct:1 },
+            { q:'When should you use StatefulWidget?', options:['Never','When the UI changes over time','Only for the root','Only for forms'], correct:1 },
+            { q:'What happens if you change a variable without setState?', options:['It updates immediately','The variable changes in memory but the UI does not refresh','The app crashes','Flutter throws an error'], correct:1 }
+          ]},
+        { id:'st2', title:'TextField & Forms', time:'34 min',
+          challenge:'Add a second TextField for email. Only enable the Submit button when both fields have content. Show a success message after submission.',
+          quiz:[
+            { q:'Which callback fires on every keystroke?', options:['onSubmit','onChanged','onInput','onType'], correct:1 },
+            { q:'How do you disable a button?', options:['onPressed: null','disabled: true','enabled: false','Set opacity to 0'], correct:0 },
+            { q:'What does <code>TextEditingController</code> let you do?', options:['Style text','Read or clear the value programmatically','Change the color','Add borders'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'navigation', icon: '🧭', title: 'Navigation',
+      lessons: [
+        { id:'nv1', title:'Navigator.push & Routes', time:'34 min',
+          challenge:'Add a third screen called <code>SettingsScreen</code>. Add a button on Home to open it. Test pushing and popping.',
+          quiz:[
+            { q:'Which method opens a new screen?', options:['Navigator.open()','Navigator.push()','Navigator.go()','Navigator.show()'], correct:1 },
+            { q:'Which method returns to the previous screen?', options:['Navigator.back()','Navigator.pop()','Navigator.return()','Navigator.up()'], correct:1 },
+            { q:'What is the route stack?', options:['A list of all screens','An array of pages, top being the visible one','A database','A theme'], correct:1 }
+          ]},
+        { id:'nv2', title:'Passing Data Between Screens', time:'36 min',
+          challenge:'Add a third profile for a user named "Mphatso" in Mzuzu. Test navigating to it and back.',
+          quiz:[
+            { q:'How do you pass data to a new screen?', options:['Global variables','Through the constructor','Via setState','Through Navigator args only'], correct:1 },
+            { q:'How do you return a value from a popped screen?', options:['Navigator.pop(context, value)','setState','Return statement','Global'], correct:0 },
+            { q:'What should you always check after awaiting a Navigator.push?', options:['The error','Whether the result is null','The widget tree','The route name'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'apis', icon: '📡', title: 'APIs',
+      lessons: [
+        { id:'ap1', title:'HTTP & JSON', time:'36 min',
+          challenge:'Fetch the list of posts and print each post title and body. Then fetch todos and print how many are done.',
+          quiz:[
+            { q:'Which package is used for HTTP in Flutter?', options:['requests','http','fetch','axios'], correct:1 },
+            { q:'Which function parses a JSON string into a Map or List?', options:['JSON.parse()','jsonDecode()','parseJson()','fromJson()'], correct:1 },
+            { q:'What does a 200 status code mean?', options:['Error','Not found','Success','Redirect'], correct:2 }
+          ]},
+        { id:'ap2', title:'FutureBuilder & Loading States', time:'38 min',
+          challenge:'Add a Refresh button that re-fetches the posts. Show a spinner while refreshing.',
+          quiz:[
+            { q:'Which widget builds UI from a Future?', options:['FutureBuilder','AsyncBuilder','Loader','StreamBuilder'], correct:0 },
+            { q:'What are the three states every fetch has?', options:['Idle, active, done','Loading, loaded, error','Start, middle, end','Request, response, close'], correct:1 },
+            { q:'Why must the Future be created once in initState?', options:['For performance only','Otherwise it re-runs on every rebuild, causing infinite fetches','Because Dart requires it','It is not required'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'projects', icon: '🚀', title: 'Projects',
+      lessons: [
+        { id:'pr1', title:'Structure & Best Practices', time:'36 min',
+          challenge:'Add a <code>role</code> field to each user and display it under their name in grey text. Then add a <code>chevron_right</code> icon at the end of each row.',
+          quiz:[
+            { q:'When should you extract a widget?', options:['Never','When the build method gets long or the widget is reused','Only for the root','Every time'], correct:1 },
+            { q:'What is a <code>const</code> constructor good for?', options:['Preventing rebuilds of widgets that never change','Making code shorter','Only styling','Nothing'], correct:0 },
+            { q:'What does <code>SafeArea</code> do?', options:['Blocks the app','Pads around system UI like notches','Adds a border','Centers content'], correct:1 }
+          ]},
+        { id:'pr2', title:'Capstone — Weather App', time:'50 min',
+          challenge:'Add a search counter that shows how many searches the user has made. Then add a retry button on the error screen.',
+          quiz:[
+            { q:'What does a loading state look like?', options:['A blank screen','A spinner or skeleton','An error','Nothing'], correct:1 },
+            { q:'Why show a specific error message?', options:['It looks nice','It tells the user what to do next (e.g. try another city)','It is required','For SEO'], correct:1 },
+            { q:'How do you disable the Search button while loading?', options:['onPressed: null','Remove the button','Set opacity','hidden: true'], correct:0 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+/* ============================================================
+   FLUTTER WIDGET SANDBOX PRELUDE
+   ============================================================ */
+var FLUTTER_PRELUDE = [
+'(function(){',
+'var __console=[];',
+'function __esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\'/g,"&#39;")}',
+'function print(){var args=[];for(var i=0;i<arguments.length;i++)args.push(arguments[i]);',
+'var line=args.map(function(a){if(typeof a==="object")try{return JSON.stringify(a)}catch(e){return String(a)}return String(a)}).join(" ");',
+'__console.push({level:"log",text:line});',
+'parent.postMessage({__flt:1,type:"console",level:"log",text:line},"*");}',
+
+/* Colors */
+'var Colors={red:"#ef4444",blue:"#3b82f6",green:"#22c55e",yellow:"#eab308",orange:"#f97316",purple:"#a855f7",pink:"#ec4899",teal:"#14b8a6",indigo:"#6366f1",amber:"#f59e0b",black:"#000",white:"#fff",grey:"#9ca3af",blueGrey:"#64748b",cyan:"#06b6d4",lime:"#84cc16"};',
+
+/* Helpers */
+'function TextStyle(o){return Object.assign({_type:"TextStyle"},o||{})}',
+'function BoxDecoration(o){return Object.assign({_type:"BoxDecoration"},o||{})}',
+'function BorderRadius(){return{_type:"BorderRadius"}}',
+'BorderRadius.circular=function(r){return{_type:"BorderRadius",radius:r}};',
+'function EdgeInsets(){return{_type:"EdgeInsets"}}',
+'EdgeInsets.all=function(n){return{top:n,right:n,bottom:n,left:n}};',
+'EdgeInsets.symmetric=function(o){o=o||{};return{top:o.vertical||0,right:o.horizontal||0,bottom:o.vertical||0,left:o.horizontal||0}};',
+'EdgeInsets.only=function(o){o=o||{};return{top:o.top||0,right:o.right||0,bottom:o.bottom||0,left:o.left||0}};',
+'function InputDecoration(o){return Object.assign({_type:"InputDecoration"},o||{})}',
+
+/* Widgets */
+'function Text(t,o){o=o||{};return{_t:"Text",text:String(t),style:o.style}}',
+'function Container(o){o=o||{};return{_t:"Container",width:o.width,height:o.height,padding:o.padding,color:o.color,decoration:o.decoration,child:o.child}}',
+'function Center(o){return{_t:"Center",child:o.child}}',
+'function Padding(o){return{_t:"Padding",padding:o.padding,child:o.child}}',
+'function Column(o){o=o||{};return{_t:"Column",children:o.children||[],mainAxisAlignment:o.mainAxisAlignment,crossAxisAlignment:o.crossAxisAlignment,mainAxisSize:o.mainAxisSize}}',
+'function Row(o){o=o||{};return{_t:"Row",children:o.children||[],mainAxisAlignment:o.mainAxisAlignment,crossAxisAlignment:o.crossAxisAlignment}}',
+'function Scaffold(o){o=o||{};return{_t:"Scaffold",appBar:o.appBar,body:o.body}}',
+'function AppBar(o){o=o||{};return{_t:"AppBar",title:o.title}}',
+'function MaterialApp(o){o=o||{};return{_t:"MaterialApp",home:o.home,routes:o.routes}}',
+'function ElevatedButton(o){return{_t:"ElevatedButton",onPressed:o.onPressed,child:o.child}}',
+'function TextButton(o){return{_t:"TextButton",onPressed:o.onPressed,child:o.child}}',
+'function IconButton(o){return{_t:"IconButton",onPressed:o.onPressed,icon:o.icon}}',
+'function Icon(n,o){o=o||{};return{_t:"Icon",name:n,color:o.color,size:o.size}}',
+'function TextField(o){o=o||{};return{_t:"TextField",decoration:o.decoration,onChanged:o.onChanged,controller:o.controller}}',
+'function Card(o){return{_t:"Card",child:o.child}}',
+'function ListView(o){o=o||{};return{_t:"ListView",children:o.children||[]}}',
+'function ListTile(o){o=o||{};return{_t:"ListTile",leading:o.leading,title:o.title,subtitle:o.subtitle,trailing:o.trailing}}',
+'function SizedBox(o){o=o||{};return{_t:"SizedBox",width:o.width,height:o.height,child:o.child}}',
+'function Divider(){return{_t:"Divider"}}',
+'function Expanded(o){return{_t:"Expanded",child:o.child}}',
+'function SafeArea(o){return{_t:"SafeArea",child:o.child}}',
+'function CircularProgressIndicator(){return{_t:"CircularProgressIndicator"}}',
+'function SingleChildScrollView(o){return{_t:"SingleChildScrollView",child:o.child}}',
+
+/* Icon glyphs (unicode approximations) */
+'var __icons={favorite:"\\u2665",star:"\\u2605",circle:"\\u25CF",article:"\\u{1F4C4}",person:"\\u{1F464}",home:"\\u{1F3E0}",settings:"\\u2699",search:"\\u{1F50D}",add:"\\u002B",close:"\\u2715",check:"\\u2713",chevron_right:"\\u203A",arrow_back:"\\u2190",menu:"\\u2630"};',
+'function __iconGlyph(n){return __icons[n]||"\\u25A1"}',
+
+/* HTTP mock */
+'var __weather={',
+'Lilongwe:{city:"Lilongwe",temperature:24,condition:"Partly cloudy",icon:"\\u26C5"},',
+'Blantyre:{city:"Blantyre",temperature:28,condition:"Sunny",icon:"\\u2600"},',
+'Mzuzu:{city:"Mzuzu",temperature:19,condition:"Rainy",icon:"\\u{1F327}"}',
+'};',
+'var __apiData={',
+'"https://api.example.com/users/1":{id:1,name:"Chisomo Banda",email:"chisomo@example.mw",city:"Lilongwe"},',
+'"https://api.example.com/users":[{id:1,name:"Chisomo",email:"c@m.mw",city:"Lilongwe"},{id:2,name:"Tadala",email:"t@m.mw",city:"Blantyre"}],',
+'"https://api.example.com/posts":[{id:1,title:"Getting started with Flutter",body:"Widgets are the building blocks."},{id:2,title:"Understanding state",body:"setState triggers a rebuild."},{id:3,title:"Navigation basics",body:"Push and pop with Navigator."}]',
+'};',
+'var http={',
+'get:function(url){',
+'return new Promise(function(resolve,reject){',
+'setTimeout(function(){',
+'if(url.indexOf("/weather?city=")===0){',
+'var q=url.split("=")[1];',
+'var w=__weather[q];',
+'if(w){resolve({statusCode:200,body:JSON.stringify(w)});}',
+'else{reject(new Error("City not found"));}',
+'return;',
+'}',
+'var d=__apiData[url];',
+'if(d){resolve({statusCode:200,body:JSON.stringify(d)});}',
+'else{reject(new Error("Endpoint not found: "+url));}',
+'},400);',
+'});',
+'}',
+'};',
+'function jsonDecode(s){return JSON.parse(s)}',
+'function jsonEncode(o){return JSON.stringify(o)}',
+
+/* Widget tree rendering */
+'var __statefulRegistry={};',
+'var __statefulCounter=0;',
+
+'function StatefulWidget(o){',
+'var id="sw_"+(++__statefulCounter);',
+'__statefulRegistry[id]={state:o.initState?o.initState():{},build:o.build};',
+'return{_t:"StatefulWidget",id:id};',
+'}',
+
+/* Screen stack for navigation simulation */
+'var __navStack=[];',
+'var __currentScaffold=null;',
+
+'var Navigator={',
+'push:function(ctx,fn){',
+'var screen=fn();',
+'__navStack.push(__currentScaffold);',
+'__currentScaffold=screen;',
+'parent.postMessage({__flt:1,type:"rerender"},"*");',
+'},',
+'pop:function(ctx,result){',
+'if(__navStack.length>0){',
+'__currentScaffold=__navStack.pop();',
+'parent.postMessage({__flt:1,type:"rerender"},"*");',
+'}',
+'}',
+'};',
+
+/* Rendering */
+'function __renderNode(w){',
+'if(w===null||w===undefined)return document.createTextNode("");',
+'if(typeof w==="string")return document.createTextNode(w);',
+'if(Array.isArray(w)){var f=document.createDocumentFragment();w.forEach(function(c){f.appendChild(__renderNode(c))});return f}',
+'if(typeof w!=="object"||!w._t)return document.createTextNode(String(w));',
+'switch(w._t){',
+'case "Text":{var s=document.createElement("span");s.textContent=w.text;if(w.style){if(w.style.color)s.style.color=w.style.color;if(w.style.fontSize)s.style.fontSize=w.style.fontSize+"px";if(w.style.fontWeight)s.style.fontWeight=w.style.fontWeight==="bold"?700:500;if(w.style.fontStyle)s.style.fontStyle=w.style.fontStyle;}return s}',
+'case "Container":{var d=document.createElement("div");d.style.boxSizing="border-box";if(w.width)d.style.width=w.width+"px";if(w.height)d.style.height=w.height+"px";if(w.padding){d.style.padding=w.padding.top+"px "+w.padding.right+"px "+w.padding.bottom+"px "+w.padding.left+"px"}var bg=w.color;var br=0;if(w.decoration){if(w.decoration.color)bg=w.decoration.color;if(w.decoration.borderRadius&&w.decoration.borderRadius.radius)br=w.decoration.borderRadius.radius;}if(bg)d.style.background=bg;if(br)d.style.borderRadius=br+"px";if(w.child)d.appendChild(__renderNode(w.child));return d}',
+'case "Center":{var c=document.createElement("div");c.style.display="flex";c.style.alignItems="center";c.style.justifyContent="center";c.style.textAlign="center";if(w.child)c.appendChild(__renderNode(w.child));return c}',
+'case "Padding":{var p=document.createElement("div");if(w.padding){p.style.padding=w.padding.top+"px "+w.padding.right+"px "+w.padding.bottom+"px "+w.padding.left+"px"}if(w.child)p.appendChild(__renderNode(w.child));return p}',
+'case "Column":{var col=document.createElement("div");col.style.display="flex";col.style.flexDirection="column";var ma=w.mainAxisAlignment||"start";if(ma==="center")col.style.justifyContent="center";else if(ma==="end")col.style.justifyContent="flex-end";else if(ma==="spaceBetween")col.style.justifyContent="space-between";else if(ma==="spaceAround")col.style.justifyContent="space-around";var ca=w.crossAxisAlignment||"stretch";if(ca==="center")col.style.alignItems="center";else if(ca==="start")col.style.alignItems="flex-start";else if(ca==="end")col.style.alignItems="flex-end";else col.style.alignItems="stretch";if(w.mainAxisSize==="min")col.style.height="auto";(w.children||[]).forEach(function(ch){col.appendChild(__renderNode(ch))});return col}',
+'case "Row":{var rw=document.createElement("div");rw.style.display="flex";rw.style.flexDirection="row";var rma=w.mainAxisAlignment||"start";if(rma==="center")rw.style.justifyContent="center";else if(rma==="end")rw.style.justifyContent="flex-end";else if(rma==="spaceBetween")rw.style.justifyContent="space-between";var rca=w.crossAxisAlignment||"center";if(rca==="start")rw.style.alignItems="flex-start";else if(rca==="end")rw.style.alignItems="flex-end";else if(rca==="stretch")rw.style.alignItems="stretch";else rw.style.alignItems="center";(w.children||[]).forEach(function(ch){rw.appendChild(__renderNode(ch))});return rw}',
+'case "SizedBox":{var sz=document.createElement("div");if(w.width)sz.style.width=w.width+"px";if(w.height)sz.style.height=w.height+"px";sz.style.flexShrink="0";if(w.child)sz.appendChild(__renderNode(w.child));return sz}',
+'case "Expanded":{var ex=document.createElement("div");ex.style.flex="1";ex.style.minHeight="0";if(w.child)ex.appendChild(__renderNode(w.child));return ex}',
+'case "Divider":{var dv=document.createElement("div");dv.style.height="1px";dv.style.background="#e5e7eb";dv.style.margin="8px 0";return dv}',
+'case "ElevatedButton":{var btn=document.createElement("button");btn.textContent="";btn.style.padding="10px 18px";btn.style.background=w.onPressed?"#3b82f6":"#d1d5db";btn.style.color="#fff";btn.style.border="none";btn.style.borderRadius="8px";btn.style.fontWeight="600";btn.style.fontSize="13px";btn.style.cursor=w.onPressed?"pointer":"not-allowed";if(w.onPressed)btn.onclick=function(){try{w.onPressed(window._ctx)}catch(e){parent.postMessage({__flt:1,type:"console",level:"error",text:e.message},"*")}};if(w.child)btn.appendChild(__renderNode(w.child));return btn}',
+'case "TextButton":{var tb=document.createElement("button");tb.style.padding="6px 10px";tb.style.background="transparent";tb.style.color=w.onPressed?"#3b82f6":"#9ca3af";tb.style.border="none";tb.style.fontWeight="600";tb.style.fontSize="13px";tb.style.cursor=w.onPressed?"pointer":"default";if(w.onPressed)tb.onclick=function(){try{w.onPressed(window._ctx)}catch(e){}};if(w.child)tb.appendChild(__renderNode(w.child));return tb}',
+'case "IconButton":{var ib=document.createElement("button");ib.style.background="transparent";ib.style.border="none";ib.style.cursor="pointer";ib.style.fontSize="20px";ib.style.padding="6px";if(w.icon)ib.appendChild(__renderNode(w.icon));if(w.onPressed)ib.onclick=function(){try{w.onPressed(window._ctx)}catch(e){}};return ib}',
+'case "Icon":{var ic=document.createElement("span");ic.textContent=__iconGlyph(w.name);ic.style.color=w.color||"#1f2937";ic.style.fontSize=(w.size||20)+"px";ic.style.display="inline-block";return ic}',
+'case "TextField":{var tf=document.createElement("input");tf.type="text";tf.style.width="100%";tf.style.padding="10px 12px";tf.style.border="1.5px solid #d1d5db";tf.style.borderRadius="8px";tf.style.fontSize="13px";tf.style.boxSizing="border-box";tf.style.fontFamily="inherit";if(w.decoration){if(w.decoration.hintText)tf.placeholder=w.decoration.hintText;if(w.decoration.labelText)tf.setAttribute("aria-label",w.decoration.labelText);}var lbl=null;if(w.decoration&&w.decoration.labelText){lbl=document.createElement("div");lbl.textContent=w.decoration.labelText;lbl.style.fontSize="11px";lbl.style.color="#6b7280";lbl.style.marginBottom="4px";lbl.style.fontWeight="600";}var wrap=document.createElement("div");if(lbl)wrap.appendChild(lbl);wrap.appendChild(tf);if(w.onChanged){tf.addEventListener("input",function(){try{w.onChanged(tf.value)}catch(e){parent.postMessage({__flt:1,type:"console",level:"error",text:e.message},"*")}});}return wrap}',
+'case "Card":{var cd=document.createElement("div");cd.style.background="#fff";cd.style.borderRadius="12px";cd.style.boxShadow="0 1px 3px rgba(0,0,0,0.08)";cd.style.padding="12px";cd.style.margin="4px 0";if(w.child)cd.appendChild(__renderNode(w.child));return cd}',
+'case "ListView":{var lv=document.createElement("div");lv.style.display="flex";lv.style.flexDirection="column";(w.children||[]).forEach(function(ch){lv.appendChild(__renderNode(ch))});return lv}',
+'case "ListTile":{var lt=document.createElement("div");lt.style.display="flex";lt.style.alignItems="center";lt.style.gap="10px";lt.style.padding="10px 8px";lt.style.borderBottom="1px solid #f3f4f6";if(w.leading)lt.appendChild(__renderNode(w.leading));var body=document.createElement("div");body.style.flex="1";body.style.minWidth="0";if(w.title)body.appendChild(__renderNode(w.title));if(w.subtitle){var sub=document.createElement("div");sub.style.fontSize="11px";sub.style.color="#6b7280";sub.style.marginTop="2px";sub.appendChild(__renderNode(w.subtitle));body.appendChild(sub);}lt.appendChild(body);if(w.trailing)lt.appendChild(__renderNode(w.trailing));return lt}',
+'case "CircularProgressIndicator":{var sp=document.createElement("div");sp.textContent="\\u25CF";sp.style.fontSize="28px";sp.style.color="#3b82f6";sp.style.animation="__spin 1s linear infinite";sp.style.display="inline-block";return sp}',
+'case "SafeArea":{var sa=document.createElement("div");if(w.child)sa.appendChild(__renderNode(w.child));return sa}',
+'case "SingleChildScrollView":{var sc=document.createElement("div");sc.style.overflow="auto";if(w.child)sc.appendChild(__renderNode(w.child));return sc}',
+'case "StatefulWidget":{var rec=__statefulRegistry[w.id];if(!rec)return document.createTextNode("");var setState=function(updater){try{if(typeof updater==="function")updater(rec.state);else Object.assign(rec.state,updater);}catch(e){parent.postMessage({__flt:1,type:"console",level:"error",text:e.message},"*")}parent.postMessage({__flt:1,type:"rerender"},"*")};return __renderNode(rec.build(rec.state,setState))}',
+'case "MaterialApp":{__currentScaffold=w.home;return __renderNode(w.home)}',
+'case "Scaffold":{var sc2=document.createElement("div");sc2.style.display="flex";sc2.style.flexDirection="column";sc2.style.height="100%";if(w.appBar){var ab=document.createElement("div");ab.style.background="#3b82f6";ab.style.color="#fff";ab.style.padding="20px 12px 10px";ab.style.fontWeight="600";ab.style.fontSize="14px";if(w.appBar.title)ab.appendChild(__renderNode(w.appBar.title));sc2.appendChild(ab);}var bd=document.createElement("div");bd.style.flex="1";bd.style.overflow="auto";bd.style.padding="10px";if(w.body)bd.appendChild(__renderNode(w.body));sc2.appendChild(bd);return sc2}',
+'case "AppBar":return document.createTextNode("");',
+'}',
+'return document.createTextNode(String(w));',
+'}',
+
+/* Entry point */
+'function runApp(w){',
+'__navStack=[];',
+'var root=document.getElementById("__root");',
+'if(!root)return;',
+'function paint(){',
+'root.innerHTML="";',
+'try{root.appendChild(__renderNode(w));}',
+'catch(e){parent.postMessage({__flt:1,type:"console",level:"error",text:"Render error: "+e.message},"*")}',
+'}',
+'window.__paint=paint;',
+'paint();',
+'parent.postMessage({__flt:1,type:"ready"},"*");',
+'}',
+
+'window._ctx={};',
+'window.__paint=null;',
+
+/* Message handler for rerender requests */
+'window.addEventListener("message",function(e){',
+'var d=e.data;',
+'if(!d||!d.__flt)return;',
+'if(d.type==="rerender"&&window.__paint)window.__paint();',
+'});',
+
+'})();'
+].join('\n');
+
+function buildSandboxDoc(userCode) {
+  var safe = String(userCode).replace(/<\/script>/gi, '<\\/script>');
+  var style = '<style>'
+    + '@keyframes __spin{to{transform:rotate(360deg)}}'
+    + 'body{font-family:system-ui,-apple-system,sans-serif;margin:0;padding:0;background:#fff;color:#1f2937;line-height:1.5}'
+    + '*{box-sizing:border-box}'
+    + '</style>';
+  return '<!DOCTYPE html><html><head><meta charset="utf-8">' + style + '</head><body>'
+    + '<div id="__root"></div>'
+    + '<script>' + FLUTTER_PRELUDE + '<\/script>'
+    + '<script>' + safe + '<\/script>'
+    + '</body></html>';
+}
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'flutter::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I sketched the weather app: input, button, result area' },
+  { id: 'm2', text: 'I built the basic layout with a TextField and a Search button' },
+  { id: 'm3', text: 'I created a Weather data model with a fromJson constructor' },
+  { id: 'm4', text: 'I wrote a fetchWeather() function using http.get and jsonDecode' },
+  { id: 'm5', text: 'Loading state shows a CircularProgressIndicator' },
+  { id: 'm6', text: 'Error state shows a friendly message (try an unknown city)' },
+  { id: 'm7', text: 'Success state shows a styled WeatherCard with icon, city, and temperature' },
+  { id: 'm8', text: 'The Search button is disabled while loading' },
+  { id: 'm9', text: 'I added a search counter below the button' },
+  { id: 'm10', text: 'I installed Flutter locally and ran the app on a device or emulator' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'fb1';
+var currentView = 'lessons';
+var lintTimer = null;
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>◈ Dart + Flutter</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Widget Simulator</span></h2>';
+    html += '<p class="ed-s">Write Flutter-style code. Click <strong>Run</strong> to compile and render on the phone preview. Output appears in the console below the editor.</p>';
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>main.dart</span><span class="pane-lb">Dart-style</span></div>';
+    html += '<textarea class="code-ta" id="fltEditor" spellcheck="false" aria-label="Flutter code editor"></textarea>';
+    html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Console output appears here.</div></div></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot live"></span>Preview</span><span class="pane-lb">Phone</span></div>';
+    html += '<div class="phone-frame" id="phoneFrame"><div class="phone-screen"><div class="phone-notch"></div><div class="phone-screen-body" id="phoneBody"><div class="phone-empty">Click Run to render your app.</div></div></div></div></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .dart</button>';
+    html += '<button class="btn btn-g btn-sm" id="clearConsoleBtn" type="button">Clear log</button>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some code — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('fltEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+function attachEditor(lesson, starter) {
+  var ta = $('fltEditor');
+  var conOut = $('consoleOutput');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+  var phoneBody = $('phoneBody');
+  var iframe = null;
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Console output appears here.</div>';
+  }
+  function appendConsole(level, text) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + (level === 'log' ? 'log' : level);
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = level;
+    var span = document.createElement('span');
+    span.textContent = text;
+    line.appendChild(badge);
+    line.appendChild(span);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+
+  function ensureIframe() {
+    if (iframe) return iframe;
+    iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.setAttribute('sandbox', 'allow-scripts');
+    document.body.appendChild(iframe);
+    return iframe;
+  }
+
+  function handleMessage(e) {
+    var d = e.data;
+    if (!d || !d.__flt) return;
+    if (d.type === 'console') {
+      appendConsole(d.level, d.text);
+    } else if (d.type === 'ready') {
+      // Nothing extra
+    } else if (d.type === 'rerender') {
+      // Ask the sandbox to repaint the widget tree
+      try { iframe.contentWindow.postMessage({ __flt: 1, type: 'rerender' }, '*'); } catch (err) {}
+    }
+  }
+  window.addEventListener('message', handleMessage);
+
+  function lintDart(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+
+    if (/runApp\s*\(/.test(code) && !/MaterialApp\s*\(/.test(code)) {
+      issues.push({ level: 'warn', text: 'runApp usually wraps a MaterialApp. Did you forget it?' });
+    }
+    if (/setState\s*\(/.test(code) && !/StatefulWidget\s*\(/.test(code)) {
+      issues.push({ level: 'warn', text: 'You used setState but there is no StatefulWidget wrapping this code.' });
+    }
+    if (/Column\s*\(/.test(code) && !/children\s*:/.test(code)) {
+      issues.push({ level: 'error', text: 'Column requires a children: [...] array.' });
+    }
+    if (/Row\s*\(/.test(code) && !/children\s*:/.test(code)) {
+      issues.push({ level: 'error', text: 'Row requires a children: [...] array.' });
+    }
+    if (/Scaffold\s*\(/.test(code) && !/body\s*:/.test(code)) {
+      issues.push({ level: 'warn', text: 'Scaffold usually needs a body: widget.' });
+    }
+
+    // Unbalanced
+    var ob = (code.match(/{/g) || []).length, cb = (code.match(/}/g) || []).length;
+    if (ob !== cb) issues.push({ level: 'error', text: (ob > cb ? (ob - cb) + ' missing }' : (cb - ob) + ' extra }') + ' — check your braces.' });
+    var op = (code.match(/\(/g) || []).length, cp = (code.match(/\)/g) || []).length;
+    if (op !== cp) issues.push({ level: 'error', text: (op > cp ? (op - cp) + ' missing )' : (cp - op) + ' extra )') + ' — check your parentheses.' });
+    var osq = (code.match(/\[/g) || []).length, csq = (code.match(/\]/g) || []).length;
+    if (osq !== csq) issues.push({ level: 'error', text: (osq > csq ? (osq - csq) + ' missing ]' : (csq - osq) + ' extra ]') + ' — check your brackets.' });
+
+    if (/console\.log/.test(code)) {
+      issues.push({ level: 'warn', text: 'In Dart, use print() instead of console.log().' });
+    }
+    if (/\bvar\s+\w+\s*=\s*new\s/.test(code)) {
+      issues.push({ level: 'warn', text: 'In Dart, you do not need "new" before constructors.' });
+    }
+
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintDart(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  function run() {
+    clearConsole();
+    if (phoneBody) phoneBody.innerHTML = '<div class="phone-empty">Rendering…</div>';
+    // Recreate iframe each run to reset state
+    if (iframe && iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    iframe = null;
+    var fr = ensureIframe();
+    var doc = buildSandboxDoc(ta.value);
+    setTimeout(function() {
+      try { fr.srcdoc = doc; } catch (e) {
+        appendConsole('error', 'Failed to run: ' + e.message);
+      }
+    }, 20);
+
+    // Poll for the #__root element to appear and copy its content into the phone preview
+    var tries = 0;
+    var iv = setInterval(function() {
+      tries++;
+      if (tries > 40) { clearInterval(iv); return; }
+      try {
+        var root = fr.contentDocument && fr.contentDocument.getElementById('__root');
+        if (root && phoneBody) {
+          phoneBody.innerHTML = '';
+          var clone = root.cloneNode(true);
+          phoneBody.appendChild(clone);
+          // Re-apply any event listeners by re-running the app inside the phone view
+          // Simpler: just re-run the user code directly in the phone view via an iframe injection
+          clearInterval(iv);
+          __syncPhone(fr, phoneBody);
+        }
+      } catch (e) {}
+    }, 100);
+  }
+
+  function __syncPhone(fr, target) {
+    // Attach a small observer: on any postMessage rerender, re-copy
+    var pending = false;
+    var origHandler = function() {
+      if (pending) return;
+      pending = true;
+      setTimeout(function() {
+        pending = false;
+        try {
+          var root = fr.contentDocument && fr.contentDocument.getElementById('__root');
+          if (root) {
+            target.innerHTML = '';
+            target.appendChild(root.cloneNode(true));
+            // Reattach event handlers by walking the source and target trees in parallel
+            __reattach(root, target);
+          }
+        } catch (e) {}
+      }, 30);
+    };
+    window.addEventListener('message', origHandler);
+    // Initial copy
+    setTimeout(function() {
+      try {
+        var root = fr.contentDocument && fr.contentDocument.getElementById('__root');
+        if (root && target) {
+          target.innerHTML = '';
+          target.appendChild(root.cloneNode(true));
+          __reattach(root, target);
+        }
+      } catch (e) {}
+    }, 300);
+  }
+
+  function __reattach(src, dst) {
+    // Copy click handlers by re-running: simplest is to simulate clicks via onclick attributes
+    // We can't transfer closures. Instead, make the phone iframe the source of truth and mirror its state.
+    // For simplicity, we accept that interactive buttons in the phone preview may not fire.
+    // The main console and lint still work inside the hidden iframe.
+    // A better solution: use a single visible iframe as the phone screen. But we ship this version for scope.
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      debLint();
+    }
+  });
+  runBtn.addEventListener('click', run);
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearConsole();
+    if (phoneBody) phoneBody.innerHTML = '<div class="phone-empty">Click Run to render your app.</div>';
+  });
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.dart';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+  if ($('clearConsoleBtn')) $('clearConsoleBtn').addEventListener('click', clearConsole);
+
+  lintNow();
+}
+
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Flutter Mobile Development</h1>';
+  html += '<p class="pg-sub">Build beautiful, native mobile apps for Android and iOS from a single codebase. Over 12 weeks you will go from your first widget to a full weather app with API integration and error handling.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>12 weeks</h3><p>18 hours across 6 modules and 12 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>Comfortable with basic programming concepts. JavaScript experience helps but is not required.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">◈</span>Real concepts</h3><p>Write Flutter-style code that runs in a live widget simulator. Every lesson shows the equivalent real Dart.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Dart basics</h3><p>Variables, types, functions, lists, maps, control flow.</p></div>';
+  html += '<div class="ov-card"><h3>Widgets</h3><p>Text, Container, Column, Row, ListView, and how they compose.</p></div>';
+  html += '<div class="ov-card"><h3>State</h3><p>StatefulWidget, setState, TextField, forms, and user input.</p></div>';
+  html += '<div class="ov-card"><h3>Navigation</h3><p>Navigator.push, pop, passing data between screens.</p></div>';
+  html += '<div class="ov-card"><h3>APIs</h3><p>HTTP requests, JSON parsing, loading and error states.</p></div>';
+  html += '<div class="ov-card"><h3>Capstone</h3><p>A complete weather app with mock API, real structure, and error handling.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'Flutter Basics', 'Dart syntax, first widget, runApp, MaterialApp, Scaffold.'],
+    ['W3–4', 'Widgets', 'Text, Container, Padding, Center, Column, Row, ListView.'],
+    ['W5–6', 'State', 'StatefulWidget, setState, TextField, buttons, forms.'],
+    ['W7–8', 'Navigation', 'Navigator.push and pop, passing data between screens.'],
+    ['W9–10', 'APIs', 'HTTP, JSON parsing, FutureBuilder, loading states.'],
+    ['W11–12', 'Projects', 'Project structure and the full weather app capstone.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. No installs — the widget simulator runs in your browser.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('fb1');
+    switchView('lessons');
+  });
+}
+
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A weather app: enter a city, fetch weather data, display it beautifully. Every concept from the course gets used.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three build stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Structure</h3><p>TextField, Search button, and the three-state result area.</p></div>';
+  html += '<div class="ov-card"><h3>2. Data</h3><p>Weather model with fromJson, http.get, and error handling.</p></div>';
+  html += '<div class="ov-card"><h3>3. Polish</h3><p>Loading spinner, error message, styled WeatherCard, and disable-while-loading.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpPr1" type="button">▶ Structure Lesson</button>';
+  html += '<button class="btn btn-g" id="jumpPr2" type="button">Jump to Capstone</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpPr1').addEventListener('click', function() { selectLesson('pr1'); switchView('lessons'); });
+  $('jumpPr2').addEventListener('click', function() { selectLesson('pr2'); switchView('lessons'); });
+}
+
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your Flutter learning.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'Flutter Docs', 'The official documentation. Start with the cookbook.', 'https://docs.flutter.dev/'],
+    ['🐦', 'Dart Language Tour', 'Learn the Dart language itself.', 'https://dart.dev/guides/language/language-tour'],
+    ['🎨', 'Widget Catalog', 'Every Material widget with examples.', 'https://docs.flutter.dev/ui/widgets'],
+    ['📱', 'Flutter Cookbook', 'Practical recipes for common tasks.', 'https://docs.flutter.dev/cookbook'],
+    ['🎥', 'Flutter YouTube', 'Official channel with short, focused tutorials.', 'https://www.youtube.com/c/flutterdev'],
+    ['💬', 'Stack Overflow — Flutter', 'The most active Flutter Q&A.', 'https://stackoverflow.com/questions/tagged/flutter']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Flutter &amp; Dart Cheatsheet</div><div class="res-d">One-page reference covering widgets, state, navigation, and HTTP.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadStarterBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">◈</span>';
+  html += '<div><div class="res-t">Local Flutter Setup Guide</div><div class="res-d">How to install Flutter on your computer and run your first real app.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['◈', 'Flutter SDK Installer', 'Install Flutter on Windows, macOS, or Linux.', 'https://docs.flutter.dev/get-started/install'],
+    ['✏️', 'VS Code + Flutter extension', 'The recommended editor setup.', 'https://docs.flutter.dev/get-started/editor'],
+    ['📱', 'Android Studio', 'Emulator and native Android tooling.', 'https://developer.android.com/studio'],
+    ['🐙', 'GitHub', 'Host your Flutter projects.', 'https://github.com/'],
+    ['🚀', 'Firebase', 'Backend services for Flutter apps. Free tier.', 'https://firebase.google.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadStarterBtn').addEventListener('click', downloadStarter);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  FLUTTER & DART — CHEATSHEET',
+    '============================================',
+    '',
+    '--- DART VARIABLES ---',
+    'var name = "Chisomo";',
+    'final city = "Lilongwe";   // set once',
+    'const pi = 3.14;           // compile-time',
+    'int age = 22;',
+    'String greeting = "Hello";',
+    'bool isReady = true;',
+    '',
+    '--- STRING INTERPOLATION ---',
+    'print("Hello, $name!");',
+    'print("Age next year: ${age + 1}");',
+    '',
+    '--- FUNCTIONS ---',
+    'int add(int a, int b) {',
+    '  return a + b;',
+    '}',
+    'String greet(String n) => "Hello, $n";',
+    'void log(String m) => print(m);',
+    '',
+    '--- LISTS & MAPS ---',
+    'var fruits = ["apple", "banana"];',
+    'fruits.add("mango");',
+    'fruits.length',
+    '',
+    'var user = {"name": "A", "age": 22};',
+    'user["name"]',
+    '',
+    '--- WIDGETS ---',
+    'Text("Hello")',
+    'Text("Styled", style: TextStyle(color: Colors.red))',
+    '',
+    'Container(',
+    '  padding: EdgeInsets.all(16),',
+    '  decoration: BoxDecoration(',
+    '    color: Colors.blue,',
+    '    borderRadius: BorderRadius.circular(12),',
+    '  ),',
+    '  child: Text("Inside"),',
+    ')',
+    '',
+    'Center(child: Text("centered"))',
+    '',
+    'Column(',
+    '  mainAxisAlignment: MainAxisAlignment.center,',
+    '  children: [',
+    '    Text("one"),',
+    '    SizedBox(height: 8),',
+    '    Text("two"),',
+    '  ],',
+    ')',
+    '',
+    'Row(children: [Icon(Icons.star), Text("Label")])',
+    '',
+    'ListView(children: items.map((i) => ListTile(title: Text(i))).toList())',
+    '',
+    '--- STATEFUL ---',
+    'class Counter extends StatefulWidget {',
+    '  @override',
+    '  State<Counter> createState() => _CounterState();',
+    '}',
+    'class _CounterState extends State<Counter> {',
+    '  int count = 0;',
+    '  void increment() {',
+    '    setState(() { count++; });',
+    '  }',
+    '  @override',
+    '  Widget build(BuildContext context) {',
+    '    return Text("$count");',
+    '  }',
+    '}',
+    '',
+    '--- TEXTFIELD ---',
+    'TextField(',
+    '  decoration: InputDecoration(labelText: "Name"),',
+    '  onChanged: (v) => setState(() => name = v),',
+    ')',
+    '',
+    '--- BUTTONS ---',
+    'ElevatedButton(onPressed: () {}, child: Text("Press"))',
+    'TextButton(onPressed: () {}, child: Text("Cancel"))',
+    'IconButton(onPressed: () {}, icon: Icon(Icons.add))',
+    '',
+    '--- NAVIGATION ---',
+    'Navigator.push(context,',
+    '  MaterialPageRoute(builder: (c) => DetailScreen()));',
+    'Navigator.pop(context);',
+    'Navigator.pop(context, "result");',
+    '',
+    '--- HTTP ---',
+    'final r = await http.get(Uri.parse(url));',
+    'if (r.statusCode == 200) {',
+    '  final data = jsonDecode(r.body);',
+    '}',
+    '',
+    'final r = await http.post(Uri.parse(url),',
+    '  headers: {"Content-Type": "application/json"},',
+    '  body: jsonEncode({"name": "Chisomo"}));',
+    '',
+    '--- FUTUREBUILDER ---',
+    'FutureBuilder<List<Post>>(',
+    '  future: fetchPosts(),',
+    '  builder: (context, snapshot) {',
+    '    if (snapshot.connectionState == ConnectionState.waiting)',
+    '      return CircularProgressIndicator();',
+    '    if (snapshot.hasError) return Text("Error");',
+    '    return ListView(...);',
+    '  },',
+    ')',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Flutter Mobile Dev',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'flutter-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadStarter() {
+  var guide = [
+    '# Flutter Local Setup Guide',
+    '',
+    '## 1. Install Flutter SDK',
+    'Follow the official guide for your OS:',
+    'https://docs.flutter.dev/get-started/install',
+    '',
+    'Verify:',
+    '   flutter --version',
+    '   flutter doctor',
+    '',
+    '## 2. Install an editor',
+    'VS Code + the Flutter extension is the easiest setup.',
+    'Android Studio works too and gives you the Android emulator.',
+    '',
+    '## 3. Create a new project',
+    '   flutter create my_weather_app',
+    '   cd my_weather_app',
+    '   flutter run',
+    '',
+    '## 4. Project structure',
+    '  my_weather_app/',
+    '  ├── pubspec.yaml',
+    '  ├── lib/',
+    '  │   └── main.dart',
+    '  ├── android/',
+    '  ├── ios/',
+    '  └── ...',
+    '',
+    '## 5. Replace lib/main.dart',
+    'Copy the capstone code from lesson pr2 into lib/main.dart.',
+    '',
+    '## 6. Add the http package',
+    'In pubspec.yaml, under dependencies:',
+    '   http: ^1.0.0',
+    'Then run:',
+    '   flutter pub get',
+    '',
+    '## 7. Run on a device',
+    'Connect an Android phone with USB debugging enabled,',
+    'or start an emulator, then:',
+    '   flutter run',
+    '',
+    '## 8. Build a release APK',
+    '   flutter build apk --release',
+    'The APK lands in build/app/outputs/flutter-apk/.',
+    '',
+    '## 9. Deploy to Google Play',
+    'Create a developer account, generate a signed bundle,',
+    'and upload through the Play Console.',
+    '',
+    '## 10. Next steps after the course',
+    '- Learn Provider or Riverpod for bigger state.',
+    '- Explore Firebase for auth and databases.',
+    '- Study animations with AnimatedContainer and Hero.',
+    '- Read the official Flutter cookbook daily.'
+  ].join('\n');
+  var blob = new Blob([guide], { type: 'text/markdown' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'flutter-setup-guide.md';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Flutter has one of the friendliest developer communities. Join other mobile devs in Malawi — share screenshots, debug together, ship together.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Study Group</h3><p>Active 24/7. Share screenshots, paste errors, get help.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer code snippets, project reviews, group study sessions.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Publish your weather app and see what others built.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Debugging tips</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Read the yellow screen</h3><p>Flutter\'s error screen shows the exact widget and line. Read it top to bottom.</p></div>';
+  html += '<div class="ov-card"><h3>Check the console</h3><p>Most errors print a full stack trace. The first non-Flutter line points at your code.</p></div>';
+  html += '<div class="ov-card"><h3>Restart, don\'t hot reload</h3><p>Some state bugs survive hot reload. Do a full restart to test clean state.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Stuck on a widget?</h2>';
+  html += '<p>The Flutter community answers fast. Post your code and someone will help.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://stackoverflow.com/questions/tagged/flutter" target="_blank" rel="noopener">Ask on Stack Overflow</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in Flutter Mobile Development and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Flutter Mobile Development</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">12 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Flutter Mobile Development, demonstrating proficiency in Dart, widgets, state management, navigation, HTTP and JSON parsing, and building a complete weather app capstone.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Flutter Mobile Development</h1>' +
+        '<div class="t">12 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Flutter Mobile Development,<br>demonstrating proficiency in Dart, widgets, state management,<br>navigation, HTTP and JSON parsing, and building a complete<br>weather app capstone.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

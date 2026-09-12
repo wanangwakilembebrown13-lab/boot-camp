@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Essentials — Interactive Course</title>
+<meta name="description" content="Learn JavaScript from variables to a full capstone project. 8 weeks, beginner to intermediate, with a live code editor and console.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+/* Header */
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:14px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+
+/* Sidebar */
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+/* Main */
+.main{padding:40px 52px 80px;max-width:900px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Lesson hero */
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+/* Reading */
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+/* Editor */
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ed-grid.js-only{grid-template-columns:1fr 1fr}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:220px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.6;resize:vertical;tab-size:2;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+.prev-fr{width:100%;min-height:220px;flex:1;background:#fff;border:none}
+.con-out{min-height:220px;max-height:400px;overflow-y:auto;padding:12px 14px;background:var(--navy3);font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#c9d1d9}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:4px 8px;margin:2px 0;border-radius:4px;display:flex;gap:8px;align-items:flex-start;word-break:break-word}
+.con-line.log{color:#c9d1d9;background:rgba(255,255,255,.02)}
+.con-line.warn{color:#fbbf24;background:rgba(217,119,6,.1);border-left:2px solid var(--warn)}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-bdg{font-size:10px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:34px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ed-auto{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t3);margin-left:auto}
+.ed-auto input{accent-color:var(--green)}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+/* Quiz */
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+/* Complete bar */
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+/* Overview / Resources / Q&A */
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+/* Accordion */
+.acc{display:flex;flex-direction:column;gap:8px}
+.acc-item{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.acc-item summary{padding:15px 20px;font-weight:600;color:var(--navy);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:10px;list-style:none;transition:background .15s}
+.acc-item summary::-webkit-details-marker{display:none}
+.acc-item summary::before{content:'+';font-family:var(--mono);font-weight:800;color:var(--green2);font-size:16px;width:16px;display:inline-block}
+.acc-item[open] summary::before{content:'−'}
+.acc-item summary:hover{background:var(--gsoft)}
+.acc-body{padding:0 20px 18px 46px;font-size:14.5px;color:var(--t2);line-height:1.7}
+
+/* Resources */
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+/* Projects / Capstone */
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+/* Certificate */
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+
+/* Field */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field textarea{min-height:80px;resize:vertical}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* Footer */
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:12px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+/* Responsive */
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid,.ed-grid.js-only{grid-template-columns:1fr}
+  .code-ta,.prev-fr,.con-out{min-height:200px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:12px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">{ }</div>
+      <div class="brand-tx">
+        <div class="brand-nm">JavaScript Essentials</div>
+        <div class="brand-sb">8 weeks · Beginner–Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="qa" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="tab-tx">Q&amp;A</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r">
+        <span class="spg-l">Progress</span>
+        <span class="spg-p" id="sidePct">0%</span>
+      </div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewQa"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">{ }</div>
+      <div class="footer-tx">
+        <div class="footer-nm">JavaScript Essentials</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2025 TechMountain Bootcamp · Built for low-bandwidth learners
+    </div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<!-- ============================================================
+     HIDDEN SOURCE CONTENT
+     ============================================================ -->
+<div hidden>
+
+<!-- ===================== BEGINNER READINGS ===================== -->
+<div class="src-read" data-l="b1">
+<p>Every JavaScript program you will ever write — from a simple calculator to the entire Facebook interface — is built on <strong>variables</strong>. They are the containers that hold your data.</p>
+<h2>What is a variable?</h2>
+<p>Think of a variable as a labelled box. You put a value inside, and later you can look inside by using the label.</p>
+<pre><code>let name = "Chisomo";
+let age = 22;
+let isStudent = true;</code></pre>
+<h2>The three keywords</h2>
+<ul>
+<li><code>let</code> — a variable that can change (use this most of the time)</li>
+<li><code>const</code> — a variable that cannot be reassigned (use this for values that stay fixed)</li>
+<li><code>var</code> — the old way. <em>Avoid it.</em> It has confusing scoping rules.</li>
+</ul>
+<pre><code>let score = 10;
+score = 20;          // OK
+
+const pi = 3.14;
+pi = 3.15;           // ERROR — can't reassign const</code></pre>
+<h2>Data types</h2>
+<p>JavaScript has several built-in types. The ones you'll use daily:</p>
+<ul>
+<li><strong>String</strong> — text, wrapped in quotes: <code>"hello"</code>, <code>'world'</code>, <code>`template`</code></li>
+<li><strong>Number</strong> — <code>42</code>, <code>3.14</code>, <code>-7</code> (no separate integer type)</li>
+<li><strong>Boolean</strong> — <code>true</code> or <code>false</code></li>
+<li><strong>null</strong> — intentionally "no value"</li>
+<li><strong>undefined</strong> — a variable declared but not assigned yet</li>
+</ul>
+<h2>Seeing your values — console.log</h2>
+<p>The console is your best friend. Use <code>console.log()</code> to print anything:</p>
+<pre><code>console.log("Hello, Malawi!");
+console.log("Age:", age);
+console.log(2 + 3);      // 5</code></pre>
+<blockquote>Open your browser's developer tools (F12) → Console tab to see output. In this course, we capture the console for you below the editor.</blockquote>
+</div>
+
+<div class="src-read" data-l="b2">
+<p>Programs need to make decisions and repeat tasks. That's what <strong>control flow</strong> means: telling your code when to do something, and how many times.</p>
+<h2>if / else if / else</h2>
+<pre><code>let score = 75;
+
+if (score >= 80) {
+  console.log("Grade: A");
+} else if (score >= 70) {
+  console.log("Grade: B");
+} else if (score >= 60) {
+  console.log("Grade: C");
+} else {
+  console.log("Grade: F");
+}</code></pre>
+<p>JavaScript checks each condition top to bottom, and runs the first block that is <code>true</code>.</p>
+<h2>Comparison operators</h2>
+<ul>
+<li><code>===</code> — strictly equal (same value AND same type) — <strong>always use this</strong></li>
+<li><code>!==</code> — strictly not equal</li>
+<li><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> — greater / less than</li>
+</ul>
+<blockquote>Avoid <code>==</code> and <code>!=</code> (double equals). They do type coercion, which causes bugs: <code>"5" == 5</code> is <code>true</code>, but <code>"5" === 5</code> is <code>false</code>.</blockquote>
+<h2>Logical operators</h2>
+<ul>
+<li><code>&amp;&amp;</code> — AND (both must be true)</li>
+<li><code>||</code> — OR (at least one must be true)</li>
+<li><code>!</code> — NOT (flips true/false)</li>
+</ul>
+<pre><code>let age = 20;
+let hasID = true;
+
+if (age >= 18 && hasID) {
+  console.log("You may enter.");
+}</code></pre>
+<h2>Loops</h2>
+<p>A <strong>for loop</strong> is the most common. It runs a block a specific number of times:</p>
+<pre><code>for (let i = 1; i &lt;= 5; i++) {
+  console.log("Count:", i);
+}</code></pre>
+<p>The three parts: <em>start</em> (<code>let i = 1</code>), <em>condition</em> (<code>i &lt;= 5</code>), <em>step</em> (<code>i++</code>).</p>
+<p>A <strong>while loop</strong> runs as long as a condition is true:</p>
+<pre><code>let n = 0;
+while (n &lt; 3) {
+  console.log(n);
+  n++;
+}</code></pre>
+</div>
+
+<div class="src-read" data-l="b3">
+<p>Functions are reusable blocks of code. They let you write logic once and run it as many times as you need.</p>
+<h2>Declaring a function</h2>
+<pre><code>function greet(name) {
+  return "Hello, " + name + "!";
+}
+
+console.log(greet("Malawi"));   // "Hello, Malawi!"
+console.log(greet("Chisomo"));  // "Hello, Chisomo!"</code></pre>
+<p>Parts of a function:</p>
+<ul>
+<li><code>function</code> — the keyword</li>
+<li><code>greet</code> — the function name</li>
+<li><code>(name)</code> — the parameter list (input)</li>
+<li><code>return</code> — the output. Stops the function and sends a value back</li>
+</ul>
+<h2>Arrow functions (modern style)</h2>
+<pre><code>const add = (a, b) =&gt; a + b;
+console.log(add(3, 5));   // 8
+
+const square = n =&gt; n * n;
+console.log(square(4));   // 16</code></pre>
+<p>If the body is a single expression, you can skip the braces and the <code>return</code> keyword — the expression is returned automatically.</p>
+<h2>Scope</h2>
+<p>Variables declared inside a function are <strong>local</strong> — they disappear when the function finishes.</p>
+<pre><code>function test() {
+  let secret = "hidden";
+  console.log(secret);   // works
+}
+
+test();
+console.log(secret);     // ERROR — secret is not defined here</code></pre>
+<blockquote>Always give your functions clear names that describe what they <em>do</em>: <code>calculateTotal</code>, <code>formatDate</code>, <code>isValidEmail</code> — not <code>doStuff</code> or <code>fn1</code>.</blockquote>
+</div>
+
+<!-- ===================== INTERMEDIATE READINGS ===================== -->
+<div class="src-read" data-l="i1">
+<p>The <strong>DOM</strong> (Document Object Model) is the browser's live representation of your HTML. JavaScript can read it, change it, add to it, and remove from it — all while the page is running.</p>
+<h2>Selecting elements</h2>
+<p>The main tool is <code>document.querySelector()</code>, which uses CSS selectors:</p>
+<pre><code>let title = document.querySelector("#title");       // by id
+let para = document.querySelector(".msg");          // by class
+let buttons = document.querySelectorAll("button");  // ALL matching</code></pre>
+<blockquote><code>querySelector</code> returns the <em>first</em> match. <code>querySelectorAll</code> returns <em>all</em> matches as a list you can loop over.</blockquote>
+<h2>Changing text</h2>
+<pre><code>title.textContent = "New title";     // safe, plain text
+title.innerHTML = "&lt;em&gt;New&lt;/em&gt;";     // parses HTML (use carefully)</code></pre>
+<h2>Changing styles and classes</h2>
+<pre><code>title.style.color = "#00c853";
+title.style.fontSize = "28px";
+
+para.classList.add("highlight");
+para.classList.remove("old-class");
+para.classList.toggle("active");</code></pre>
+<p>Using <code>classList</code> is preferred over setting styles directly, because your CSS stays in one place.</p>
+<h2>Creating and adding elements</h2>
+<pre><code>let newPara = document.createElement("p");
+newPara.textContent = "I was added by JavaScript!";
+document.body.appendChild(newPara);</code></pre>
+</div>
+
+<div class="src-read" data-l="i2">
+<p>Websites are boring without interaction. <strong>Events</strong> are how your code reacts to clicks, typing, scrolling, and more.</p>
+<h2>The pattern: select → listen</h2>
+<pre><code>let btn = document.querySelector("#myBtn");
+
+btn.addEventListener("click", function() {
+  console.log("Button clicked!");
+});</code></pre>
+<p>Two steps: (1) find the element, (2) attach a listener for an event type.</p>
+<h2>Common event types</h2>
+<ul>
+<li><code>click</code> — user clicks the element</li>
+<li><code>input</code> — user types in a text field (fires on every keystroke)</li>
+<li><code>submit</code> — a form is submitted</li>
+<li><code>keydown</code> — user presses a key</li>
+<li><code>mouseover</code> / <code>mouseout</code> — mouse enters or leaves</li>
+</ul>
+<h2>Reading input</h2>
+<pre><code>let input = document.querySelector("#nameInput");
+input.addEventListener("input", function() {
+  console.log("Current value:", input.value);
+});</code></pre>
+<p>For form inputs, <code>.value</code> gives you the current text.</p>
+<h2>The event object</h2>
+<p>Every listener receives an <strong>event object</strong> with useful details:</p>
+<pre><code>document.querySelector("a").addEventListener("click", function(event) {
+  event.preventDefault();   // stop the default behaviour
+  console.log("Link clicked");
+});</code></pre>
+<p><code>event.preventDefault()</code> is essential for forms — it stops the browser from reloading the page when a form is submitted.</p>
+<blockquote>A common mistake: writing <code>myBtn.addEventListener("click", myFunc())</code> — with parentheses. That <em>calls</em> the function immediately. Without parentheses, you <em>pass</em> the function as a value, which is what you want.</blockquote>
+</div>
+
+<div class="src-read" data-l="i3">
+<p>Almost every real app deals with <strong>lists of things</strong> — todos, messages, products, users. JavaScript gives you arrays and objects to handle them.</p>
+<h2>Arrays</h2>
+<pre><code>let todos = ["Learn HTML", "Learn CSS"];
+todos.push("Learn JavaScript");   // add to end
+todos.pop();                      // remove from end
+console.log(todos.length);        // 2
+console.log(todos[0]);            // "Learn HTML"</code></pre>
+<h2>Looping over arrays</h2>
+<pre><code>todos.forEach(function(todo, index) {
+  console.log((index + 1) + ". " + todo);
+});</code></pre>
+<p><code>forEach</code> runs a function once for every item. It receives the item and its index.</p>
+<h2>map and filter</h2>
+<p><code>map</code> transforms every item into a new array:</p>
+<pre><code>let lengths = todos.map(function(todo) {
+  return todo.length;
+});
+// [10, 9, 16]</code></pre>
+<p><code>filter</code> keeps only the items that pass a test:</p>
+<pre><code>let short = todos.filter(function(todo) {
+  return todo.length &lt; 10;
+});
+// ["Learn CSS"]</code></pre>
+<h2>Objects</h2>
+<p>An object groups related values under named keys:</p>
+<pre><code>let user = {
+  name: "Chisomo",
+  age: 22,
+  isStudent: true
+};
+
+console.log(user.name);       // "Chisomo"
+user.age = 23;                // update a field
+user.email = "c@example.com"; // add a new field</code></pre>
+<h2>Arrays of objects</h2>
+<p>The most common data shape in real apps:</p>
+<pre><code>let tasks = [
+  { text: "Buy groceries", done: false },
+  { text: "Study JavaScript", done: true }
+];
+
+tasks.forEach(function(task) {
+  console.log(task.text, "-", task.done ? "✓" : "○");
+});</code></pre>
+</div>
+
+<!-- ===================== PROJECT READINGS ===================== -->
+<div class="src-read" data-l="pr1">
+<p>Time to build something real. Over the next three lessons, you'll build a <strong>fully functional to-do app</strong> with add, delete, toggle, and localStorage persistence. This is the kind of project you can put on your portfolio.</p>
+<h2>What is a to-do app?</h2>
+<p>A to-do app lets users:</p>
+<ul>
+<li>Type a task and add it to a list</li>
+<li>See all their tasks</li>
+<li>Delete tasks they no longer need</li>
+<li>Mark tasks as done</li>
+<li>Come back later and find their tasks still there</li>
+</ul>
+<h2>The plan</h2>
+<p>We'll build it in three stages:</p>
+<ol>
+<li><strong>This lesson:</strong> structure — HTML, form, empty list, selecting elements</li>
+<li><strong>Next lesson:</strong> interactivity — add, render, delete</li>
+<li><strong>Final lesson:</strong> persistence — save and load from localStorage</li>
+</ol>
+<h2>Step 1: Find your elements</h2>
+<p>Before you can change anything in the DOM, you have to grab a reference to it. The starter code below selects the form, the input, and the list, and logs each one to the console so you can verify they exist.</p>
+<blockquote>Rule of thumb: if you get <code>null</code> from a <code>querySelector</code>, your selector is wrong. Check for typos in IDs and classes — and remember that <code>#id</code> targets an ID, while <code>.class</code> targets a class.</blockquote>
+<h2>Step 2: Understand the shape of the data</h2>
+<p>We'll keep an array called <code>todos</code>. Each item will eventually be an object with <code>text</code> and <code>done</code>:</p>
+<pre><code>let todos = [
+  { text: "Learn HTML", done: true },
+  { text: "Learn CSS", done: false }
+];</code></pre>
+<p>For now, it's empty. Later lessons will populate it.</p>
+</div>
+
+<div class="src-read" data-l="pr2">
+<p>Your UI is set up. Now let's make it <strong>do something</strong>.</p>
+<h2>Step 1: A render function</h2>
+<p>The most important pattern in app development: <strong>the state drives the UI</strong>. Whenever <code>todos</code> changes, we call <code>render()</code> and the screen updates to match.</p>
+<pre><code>function render() {
+  list.innerHTML = "";     // clear the list
+  todos.forEach(function(todo, index) {
+    let li = document.createElement("li");
+    li.textContent = todo;
+    list.appendChild(li);
+  });
+}</code></pre>
+<p>Notice we rebuild the list from scratch every time. This is simple and fast enough for our small app.</p>
+<h2>Step 2: Handle the form submit</h2>
+<pre><code>form.addEventListener("submit", function(event) {
+  event.preventDefault();          // stop the page from reloading
+  let text = input.value.trim();
+  if (text === "") return;         // ignore empty input
+  todos.push(text);
+  input.value = "";                // clear the input
+  render();
+});</code></pre>
+<p>The <code>event.preventDefault()</code> is critical. Without it, the browser will try to submit the form to a server and reload the page.</p>
+<h2>Step 3: Delete buttons</h2>
+<p>For each todo, create a delete button. When clicked, remove that item from the array and re-render:</p>
+<pre><code>let delBtn = document.createElement("button");
+delBtn.textContent = "Delete";
+delBtn.addEventListener("click", function() {
+  todos.splice(index, 1);   // remove 1 item at position `index`
+  render();
+});</code></pre>
+<p><code>splice(index, 1)</code> removes exactly one item from the array at that position. All items after it shift down.</p>
+<blockquote>Be careful with closures inside loops. Because <code>index</code> is declared with <code>forEach</code>'s callback, each iteration gets its own copy — so the delete button always knows which item it belongs to.</blockquote>
+</div>
+
+<div class="src-read" data-l="pr3">
+<p>Right now your app forgets everything when the page reloads. Let's fix that with <strong>localStorage</strong>.</p>
+<h2>What is localStorage?</h2>
+<p>localStorage is a simple key-value store built into every browser. It survives page reloads and browser restarts.</p>
+<pre><code>localStorage.setItem("key", "value");
+let v = localStorage.getItem("key");    // "value"
+localStorage.removeItem("key");</code></pre>
+<h2>The catch: it only stores strings</h2>
+<p>You can't save an array or object directly. You have to convert it to a string first, and convert it back when loading. JavaScript gives us two tools for this:</p>
+<ul>
+<li><code>JSON.stringify(value)</code> — turns any value into a JSON string</li>
+<li><code>JSON.parse(string)</code> — turns a JSON string back into a value</li>
+</ul>
+<pre><code>let todos = [{ text: "Learn JS", done: false }];
+
+// Save
+localStorage.setItem("todos", JSON.stringify(todos));
+
+// Load
+let raw = localStorage.getItem("todos");
+let loaded = raw ? JSON.parse(raw) : [];
+console.log(loaded);   // [{ text: "Learn JS", done: false }]</code></pre>
+<h2>Wrap in functions</h2>
+<p>It's cleaner to hide the JSON work in helper functions:</p>
+<pre><code>function loadTodos() {
+  try {
+    let raw = localStorage.getItem("todos");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveTodos() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}</code></pre>
+<p>Now you call <code>saveTodos()</code> any time the array changes, and <code>loadTodos()</code> once at startup.</p>
+<blockquote>Always wrap <code>JSON.parse</code> in a try-catch. If the stored string is corrupted, parsing throws and crashes your app.</blockquote>
+<h2>You did it</h2>
+<p>Your app now persists. Close the tab, come back, and your tasks are still there. This is the exact pattern used by real apps — just at a larger scale.</p>
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="b1" data-kind="starter">
+// Declare some variables
+let name = "Chisomo";
+const age = 22;
+let isStudent = true;
+
+console.log("Name:", name);
+console.log("Age:", age);
+console.log("Student:", isStudent);
+console.log(2 + 3);
+</textarea>
+
+<textarea class="src-code" data-l="b2" data-kind="starter">
+// Grade calculator
+let score = 75;
+
+if (score >= 80) {
+  console.log("Grade: A");
+} else if (score >= 70) {
+  console.log("Grade: B");
+} else if (score >= 60) {
+  console.log("Grade: C");
+} else {
+  console.log("Grade: F");
+}
+
+// Loop from 1 to 5
+for (let i = 1; i <= 5; i++) {
+  console.log("Count:", i);
+}
+</textarea>
+
+<textarea class="src-code" data-l="b3" data-kind="starter">
+// A simple function
+function greet(name) {
+  return "Hello, " + name + "!";
+}
+
+console.log(greet("Malawi"));
+console.log(greet("Chisomo"));
+
+// Arrow function
+const add = (a, b) => a + b;
+console.log("3 + 5 =", add(3, 5));
+
+const square = n => n * n;
+console.log("4 squared =", square(4));
+</textarea>
+
+<textarea class="src-code" data-l="i1" data-kind="starter">
+// Select elements
+let title = document.querySelector("#title");
+let msg = document.querySelector(".msg");
+
+console.log("Title text:", title.textContent);
+console.log("Message:", msg.textContent);
+
+// Change things
+title.textContent = "Hello, DOM!";
+title.style.color = "#00c853";
+
+msg.classList.add("highlight");
+msg.style.fontWeight = "bold";
+
+// Create a new element
+let newPara = document.createElement("p");
+newPara.textContent = "This paragraph was created by JavaScript.";
+document.querySelector("#app").appendChild(newPara);
+</textarea>
+
+<textarea class="src-code" data-l="i2" data-kind="starter">
+let count = 0;
+let countEl = document.querySelector("#count");
+
+document.querySelector("#incBtn").addEventListener("click", function() {
+  count = count + 1;
+  countEl.textContent = count;
+  console.log("Count is now", count);
+});
+
+document.querySelector("#resetBtn").addEventListener("click", function() {
+  count = 0;
+  countEl.textContent = 0;
+  console.log("Reset to 0");
+});
+</textarea>
+
+<textarea class="src-code" data-l="i3" data-kind="starter">
+let todos = ["Learn HTML", "Learn CSS"];
+
+todos.push("Learn JavaScript");
+console.log("All todos:", todos);
+console.log("Total:", todos.length);
+
+// An object
+let user = {
+  name: "Chisomo",
+  age: 22,
+  isStudent: true
+};
+
+console.log("User:", user.name, "is", user.age);
+
+// Loop through the array
+todos.forEach(function(todo, index) {
+  console.log((index + 1) + ". " + todo);
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="starter">
+console.log("To-Do app loaded.");
+
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+console.log("Form:", form);
+console.log("Input:", input);
+console.log("List:", list);
+
+// The data will live here
+let todos = [];
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="starter">
+let todos = [];
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+function render() {
+  list.innerHTML = "";
+  todos.forEach(function(todo, index) {
+    let li = document.createElement("li");
+    li.textContent = todo;
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.style.marginLeft = "12px";
+    delBtn.addEventListener("click", function() {
+      todos.splice(index, 1);
+      render();
+    });
+    li.appendChild(delBtn);
+
+    list.appendChild(li);
+  });
+  console.log("Rendered", todos.length, "todos");
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  let text = input.value.trim();
+  if (text === "") return;
+  todos.push(text);
+  input.value = "";
+  render();
+});
+
+render();
+</textarea>
+
+<textarea class="src-code" data-l="pr3" data-kind="starter">
+// Load saved todos first
+let todos = loadTodos();
+
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+function loadTodos() {
+  try {
+    let raw = localStorage.getItem("myTodos");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.log("Could not load todos:", e.message);
+    return [];
+  }
+}
+
+function saveTodos() {
+  localStorage.setItem("myTodos", JSON.stringify(todos));
+  console.log("Saved", todos.length, "todos");
+}
+
+function render() {
+  list.innerHTML = "";
+  todos.forEach(function(todo, index) {
+    let li = document.createElement("li");
+    li.textContent = todo;
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.style.marginLeft = "12px";
+    delBtn.addEventListener("click", function() {
+      todos.splice(index, 1);
+      saveTodos();
+      render();
+    });
+    li.appendChild(delBtn);
+
+    list.appendChild(li);
+  });
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  let text = input.value.trim();
+  if (text === "") return;
+  todos.push(text);
+  input.value = "";
+  saveTodos();
+  render();
+});
+
+render();
+console.log("Loaded todos:", todos);
+</textarea>
+
+<!-- ===================== SOLUTIONS ===================== -->
+<textarea class="src-code" data-l="b1" data-kind="solution">
+let name = "Chisomo";
+const age = 22;
+let isStudent = true;
+let favoriteFood = "Nsima";
+
+console.log("Name:", name);
+console.log("Age:", age);
+console.log("Student:", isStudent);
+console.log("Favorite food:", favoriteFood);
+console.log(2 + 3);
+</textarea>
+
+<textarea class="src-code" data-l="b2" data-kind="solution">
+let score = 45;
+
+if (score >= 80) {
+  console.log("Grade: A");
+} else if (score >= 70) {
+  console.log("Grade: B");
+} else if (score >= 60) {
+  console.log("Grade: C");
+} else {
+  console.log("Grade: F");
+}
+
+// Even numbers 2 to 10
+for (let i = 2; i <= 10; i = i + 2) {
+  console.log("Even:", i);
+}
+</textarea>
+
+<textarea class="src-code" data-l="b3" data-kind="solution">
+function greet(name) {
+  return "Hello, " + name + "!";
+}
+
+console.log(greet("Malawi"));
+
+const add = (a, b) => a + b;
+console.log("3 + 5 =", add(3, 5));
+
+function square(n) {
+  return n * n;
+}
+console.log("6 squared =", square(6));
+
+const isEven = n => n % 2 === 0;
+console.log("4 is even?", isEven(4));
+console.log("7 is even?", isEven(7));
+</textarea>
+
+<textarea class="src-code" data-l="i1" data-kind="solution">
+let title = document.querySelector("#title");
+let msg = document.querySelector(".msg");
+let btn = document.querySelector("#changeBtn");
+
+title.textContent = "Hello, DOM!";
+title.style.color = "#00c853";
+
+btn.textContent = "Clicked!";
+
+let newPara = document.createElement("p");
+newPara.textContent = "Added by JavaScript.";
+document.querySelector("#app").appendChild(newPara);
+
+console.log("Done. Title is now:", title.textContent);
+</textarea>
+
+<textarea class="src-code" data-l="i2" data-kind="solution">
+let count = 0;
+let countEl = document.querySelector("#count");
+
+document.querySelector("#incBtn").addEventListener("click", function() {
+  count = count + 1;
+  countEl.textContent = count;
+});
+
+document.querySelector("#resetBtn").addEventListener("click", function() {
+  count = 0;
+  countEl.textContent = 0;
+});
+
+// Bonus: decrement button that can't go below 0
+let decBtn = document.createElement("button");
+decBtn.textContent = "-1";
+decBtn.style.marginLeft = "8px";
+decBtn.addEventListener("click", function() {
+  if (count > 0) {
+    count = count - 1;
+    countEl.textContent = count;
+  }
+});
+document.querySelector("#incBtn").parentNode.appendChild(decBtn);
+</textarea>
+
+<textarea class="src-code" data-l="i3" data-kind="solution">
+let todos = ["Learn HTML", "Learn CSS"];
+todos.push("Learn JavaScript");
+
+let user = {
+  name: "Chisomo",
+  age: 22,
+  isStudent: true,
+  greet: function() {
+    return "Hi, I'm " + this.name;
+  }
+};
+
+console.log("User:", user.name);
+console.log(user.greet());
+
+todos.forEach(function(todo, i) {
+  console.log((i + 1) + ". " + todo);
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="solution">
+console.log("To-Do app loaded.");
+
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+console.log("Form found:", !!form);
+console.log("Input found:", !!input);
+console.log("List found:", !!list);
+
+// Hardcoded li to verify structure
+let li = document.createElement("li");
+li.textContent = "Sample task (hardcoded)";
+list.appendChild(li);
+
+let todos = [];
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="solution">
+let todos = [];
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+function render() {
+  list.innerHTML = "";
+  todos.forEach(function(todo, index) {
+    let li = document.createElement("li");
+    li.textContent = todo.text;
+    if (todo.done) li.style.textDecoration = "line-through";
+    if (todo.done) li.style.opacity = "0.6";
+
+    let toggleBtn = document.createElement("button");
+    toggleBtn.textContent = todo.done ? "Undo" : "Done";
+    toggleBtn.style.marginLeft = "12px";
+    toggleBtn.addEventListener("click", function() {
+      todos[index].done = !todos[index].done;
+      render();
+    });
+    li.appendChild(toggleBtn);
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.style.marginLeft = "6px";
+    delBtn.addEventListener("click", function() {
+      todos.splice(index, 1);
+      render();
+    });
+    li.appendChild(delBtn);
+
+    list.appendChild(li);
+  });
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  let text = input.value.trim();
+  if (text === "") return;
+  todos.push({ text: text, done: false });
+  input.value = "";
+  render();
+});
+
+render();
+</textarea>
+
+<textarea class="src-code" data-l="pr3" data-kind="solution">
+let todos = loadTodos();
+let form = document.querySelector("#todoForm");
+let input = document.querySelector("#todoInput");
+let list = document.querySelector("#todoList");
+
+function loadTodos() {
+  try {
+    let raw = localStorage.getItem("myTodos");
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveTodos() {
+  localStorage.setItem("myTodos", JSON.stringify(todos));
+}
+
+function render() {
+  list.innerHTML = "";
+  if (todos.length === 0) {
+    let li = document.createElement("li");
+    li.textContent = "No tasks yet. Add one above.";
+    li.style.opacity = "0.5";
+    li.style.fontStyle = "italic";
+    list.appendChild(li);
+    return;
+  }
+  todos.forEach(function(todo, index) {
+    let li = document.createElement("li");
+    li.textContent = todo.text;
+    if (todo.done) {
+      li.style.textDecoration = "line-through";
+      li.style.opacity = "0.6";
+    }
+
+    let toggleBtn = document.createElement("button");
+    toggleBtn.textContent = todo.done ? "Undo" : "Done";
+    toggleBtn.style.marginLeft = "12px";
+    toggleBtn.addEventListener("click", function() {
+      todos[index].done = !todos[index].done;
+      saveTodos();
+      render();
+    });
+    li.appendChild(toggleBtn);
+
+    let delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.style.marginLeft = "6px";
+    delBtn.addEventListener("click", function() {
+      todos.splice(index, 1);
+      saveTodos();
+      render();
+    });
+    li.appendChild(delBtn);
+
+    list.appendChild(li);
+  });
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  let text = input.value.trim();
+  if (text === "") return;
+  todos.push({ text: text, done: false });
+  input.value = "";
+  saveTodos();
+  render();
+});
+
+render();
+console.log("Loaded", todos.length, "todos from localStorage");
+</textarea>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+/* ========== CONFIG ========== */
+var STORAGE_KEY = 'js_essentials_progress_v1';
+var CAPSTONE_KEY = 'js_essentials_capstone_v1';
+
+/* ========== COURSE DATA ========== */
+var course = {
+  modules: [
+    {
+      id: 'beginner', icon: '🌱', title: 'Beginner',
+      lessons: [
+        { id:'b1', title:'Variables & Data Types', time:'20 min', jsOnly:true,
+          challenge:'Add a variable called <code>favoriteFood</code> holding your favourite meal. Log it with a label. Then log the result of <code>age + 5</code>.',
+          quiz:[
+            { q:'Which keyword should you use for a value that never changes?', options:['var','let','const','final'], correct:2 },
+            { q:'What does console.log() do?', options:['Shows a popup','Prints a value to the browser console','Deletes a variable','Alerts the user'], correct:1 },
+            { q:'What type is the value true?', options:['String','Number','Boolean','Null'], correct:2 }
+          ]},
+        { id:'b2', title:'Control Flow', time:'22 min', jsOnly:true,
+          challenge:'Change <code>score</code> to <code>45</code> and rerun. Then write a <code>for</code> loop that logs only the even numbers from 2 to 10.',
+          quiz:[
+            { q:'Which operator checks for strict equality?', options:['==','===','=','equals'], correct:1 },
+            { q:'What does the for loop condition control?', options:['How many times the loop runs','The loop\'s colour','Which browser runs it','Whether the function is called'], correct:0 },
+            { q:'What does && mean?', options:['OR','NOT','AND','XOR'], correct:2 }
+          ]},
+        { id:'b3', title:'Functions', time:'20 min', jsOnly:true,
+          challenge:'Write a function <code>square(n)</code> that returns <code>n * n</code>. Then write <code>isEven(n)</code> that returns <code>true</code> or <code>false</code>. Test both with console.log.',
+          quiz:[
+            { q:'What does return do?', options:['Prints to console','Stops the function and sends a value back','Deletes the function','Repeats the function'], correct:1 },
+            { q:'Which is a valid arrow function?', options:['const add = (a,b) => a+b;','function add => a+b;','const add = a,b -> a+b;','arrow add(a,b) { a+b }'], correct:0 },
+            { q:'What is a local variable?', options:['A variable stored on the server','A variable only visible inside a function','A variable that changes constantly','A variable written in lowercase'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'intermediate', icon: '⚙️', title: 'Intermediate',
+      lessons: [
+        { id:'i1', title:'DOM Selection & Manipulation', time:'25 min', jsOnly:false,
+          htmlStarter:'<div id="app">\n  <h1 id="title">Hello</h1>\n  <p class="msg">Welcome to DOM.</p>\n  <button id="changeBtn">Change</button>\n</div>',
+          challenge:'Change the button text to "Clicked!". Then create a new paragraph and add it to the app.',
+          quiz:[
+            { q:'Which method selects the FIRST matching element?', options:['querySelectorAll','getElementsByClassName','querySelector','selectOne'], correct:2 },
+            { q:'What does classList.add("active") do?', options:['Removes the class','Adds the class to the element','Checks if the class exists','Replaces all classes'], correct:1 },
+            { q:'What does textContent do?', options:['Gets or sets the text inside an element','Reads a file','Logs to console','Creates a new element'], correct:0 }
+          ]},
+        { id:'i2', title:'Events', time:'25 min', jsOnly:false,
+          htmlStarter:'<div style="padding:20px;font-family:system-ui,sans-serif;text-align:center;">\n  <h2>Counter</h2>\n  <p style="font-size:2rem;font-weight:700;margin:14px 0;color:#00c853;">Count: <span id="count">0</span></p>\n  <button id="incBtn" style="padding:10px 24px;font-size:1rem;font-weight:600;background:#00c853;color:#1a2332;border:none;border-radius:9999px;cursor:pointer;">+1</button>\n  <button id="resetBtn" style="padding:10px 24px;font-size:1rem;font-weight:600;background:#fff;color:#1a2332;border:2px solid #1a2332;border-radius:9999px;cursor:pointer;margin-left:8px;">Reset</button>\n</div>',
+          challenge:'Add a third button "-1" that decrements. Bonus: don\'t allow the count to go below 0.',
+          quiz:[
+            { q:'Which method attaches an event listener?', options:['onClick','addEventListener','attachEvent','listen'], correct:1 },
+            { q:'What does event.preventDefault() do?', options:['Stops the default browser behaviour','Cancels the event','Removes the listener','Prevents clicks'], correct:0 },
+            { q:'Which event fires on every keystroke in an input?', options:['click','keydown','input','change'], correct:2 }
+          ]},
+        { id:'i3', title:'Arrays & Objects', time:'25 min', jsOnly:true,
+          challenge:'Add a <code>greet</code> method to the <code>user</code> object that returns "Hi, I\'m " + <code>this.name</code>. Log the result. Then add a fourth todo and rerun.',
+          quiz:[
+            { q:'Which method adds an item to the end of an array?', options:['push','pop','shift','unshift'], correct:0 },
+            { q:'What does map do?', options:['Removes items','Transforms each item into a new array','Sorts the array','Deletes the array'], correct:1 },
+            { q:'How do you access the name property of user?', options:['user->name','user[name]','user.name','user::name'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'projects', icon: '🛠', title: 'Projects',
+      lessons: [
+        { id:'pr1', title:'Capstone 1 — Plan & Build the UI', time:'30 min', jsOnly:false,
+          htmlStarter:'<div style="max-width:520px;margin:0 auto;padding:20px;font-family:system-ui,sans-serif;">\n  <h1 style="color:#1a2332;margin-bottom:16px;">My To-Do List</h1>\n  <form id="todoForm" style="display:flex;gap:8px;margin-bottom:16px;">\n    <input id="todoInput" type="text" placeholder="Add a new task..." style="flex:1;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:8px;font:inherit;font-size:0.95rem;">\n    <button type="submit" style="padding:10px 20px;background:#00c853;color:#1a2332;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Add</button>\n  </form>\n  <ul id="todoList" style="list-style:none;padding:0;"></ul>\n</div>',
+          challenge:'Confirm all three elements are found in the console. Then create a hardcoded <code>&lt;li&gt;</code> and append it to the list.',
+          quiz:[
+            { q:'What is the shape of each todo item in our plan?', options:['A plain string','An object with text and done','An array of two strings','A number'], correct:1 },
+            { q:'What does a querySelector return if nothing matches?', options:['undefined','null','false','An empty string'], correct:1 },
+            { q:'Why build a static UI first?', options:['It looks pretty','So you can verify structure before adding logic','It\'s required by JavaScript','For SEO'], correct:1 }
+          ]},
+        { id:'pr2', title:'Capstone 2 — Add & Delete', time:'35 min', jsOnly:false,
+          htmlStarter:'<div style="max-width:520px;margin:0 auto;padding:20px;font-family:system-ui,sans-serif;">\n  <h1 style="color:#1a2332;margin-bottom:16px;">My To-Do List</h1>\n  <form id="todoForm" style="display:flex;gap:8px;margin-bottom:16px;">\n    <input id="todoInput" type="text" placeholder="Add a new task..." style="flex:1;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:8px;font:inherit;font-size:0.95rem;">\n    <button type="submit" style="padding:10px 20px;background:#00c853;color:#1a2332;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Add</button>\n  </form>\n  <ul id="todoList" style="list-style:none;padding:0;"></ul>\n</div>\n<style>\n  #todoList li { padding: 10px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; }\n  #todoList button { padding: 5px 12px; font-size: 0.8rem; border-radius: 6px; border: 1.5px solid #d1d5db; background: #f9fafb; cursor: pointer; font-family: inherit; }\n  #todoList button:hover { background: #f3f4f6; }\n</style>',
+          challenge:'Add a "Done" button that toggles a <code>done</code> flag on each todo and applies a line-through style. Hint: change <code>todos</code> to store objects.',
+          quiz:[
+            { q:'What does event.preventDefault() prevent?', options:['Clicking','Form submission reloading the page','Typing','Delete buttons'], correct:1 },
+            { q:'What does todos.splice(index, 1) do?', options:['Adds one item','Removes one item at that position','Sorts the array','Reverses the array'], correct:1 },
+            { q:'Why do we clear list.innerHTML in render()?', options:['To save memory','To rebuild the list from scratch each time','To make it faster','To please the browser'], correct:1 }
+          ]},
+        { id:'pr3', title:'Capstone 3 — localStorage Persistence', time:'30 min', jsOnly:false,
+          htmlStarter:'<div style="max-width:520px;margin:0 auto;padding:20px;font-family:system-ui,sans-serif;">\n  <h1 style="color:#1a2332;margin-bottom:16px;">My To-Do List</h1>\n  <form id="todoForm" style="display:flex;gap:8px;margin-bottom:16px;">\n    <input id="todoInput" type="text" placeholder="Add a new task..." style="flex:1;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:8px;font:inherit;font-size:0.95rem;">\n    <button type="submit" style="padding:10px 20px;background:#00c853;color:#1a2332;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Add</button>\n  </form>\n  <ul id="todoList" style="list-style:none;padding:0;"></ul>\n</div>\n<style>\n  #todoList li { padding: 10px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; }\n  #todoList button { padding: 5px 12px; font-size: 0.8rem; border-radius: 6px; border: 1.5px solid #d1d5db; background: #f9fafb; cursor: pointer; font-family: inherit; }\n</style>',
+          challenge:'Add a "Clear all" button that empties the list and localStorage. Then add three filter buttons — All / Active / Done — that show only matching tasks.',
+          quiz:[
+            { q:'What does JSON.stringify do?', options:['Converts a value to a JSON string','Parses JSON','Deletes JSON','Encrypts data'], correct:0 },
+            { q:'What does localStorage store?', options:['Only numbers','Only strings','Any type directly','Only objects'], correct:1 },
+            { q:'Why wrap JSON.parse in a try-catch?', options:['It looks professional','Corrupted data would otherwise crash the app','It\'s required syntax','To make it faster'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+/* ========== FLATTEN ========== */
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, jsOnly: l.jsOnly,
+      htmlStarter: l.htmlStarter, challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+/* ========== SOURCE MAPS ========== */
+var readings = {};
+var starters = {};
+var solutions = {};
+var htmlStarters = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+  allLessons.forEach(function(l) {
+    if (l.htmlStarter) htmlStarters[l.id] = l.htmlStarter;
+  });
+})();
+
+/* ========== CONSOLE INJECTION CODE ========== */
+var CONSOLE_INJECT =
+  '(function(){' +
+  'function s(a){' +
+  'try{' +
+  'if(a===undefined)return "undefined";' +
+  'if(a===null)return "null";' +
+  'if(typeof a==="string")return a;' +
+  'if(typeof a==="number"||typeof a==="boolean")return String(a);' +
+  'if(typeof a==="function")return "[Function "+(a.name||"anonymous")+"]";' +
+  'if(a instanceof Error)return a.message;' +
+  'if(typeof a==="object")return JSON.stringify(a);' +
+  'return String(a);' +
+  '}catch(e){return "[value]"}' +
+  '}' +
+  'function p(t,args){' +
+  'try{' +
+  'var r=[];' +
+  'for(var i=0;i<args.length;i++)r.push(s(args[i]));' +
+  'parent.postMessage({__jsc:1,t:t,a:r},"*");' +
+  '}catch(e){}' +
+  '}' +
+  'var o={l:console.log,w:console.warn,e:console.error,i:console.info};' +
+  'console.log=function(){p("log",arguments);try{o.l.apply(console,arguments)}catch(e){}};' +
+  'console.warn=function(){p("warn",arguments);try{o.w.apply(console,arguments)}catch(e){}};' +
+  'console.error=function(){p("error",arguments);try{o.e.apply(console,arguments)}catch(e){}};' +
+  'console.info=function(){p("log",arguments);try{o.i.apply(console,arguments)}catch(e){}};' +
+  'window.addEventListener("error",function(ev){p("error",[ev.message+" (line "+ev.lineno+")"]);});' +
+  'window.addEventListener("unhandledrejection",function(ev){' +
+  'var m=ev.reason&&ev.reason.message?ev.reason.message:String(ev.reason);' +
+  'p("error",["Unhandled promise rejection: "+m]);' +
+  '});' +
+  '})();';
+
+/* ========== PROGRESS ========== */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+}
+function lk(id) { return 'js::' + id; }
+function isDone(id) {
+  var p = loadProgress();
+  return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed');
+}
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+/* ========== CAPSTONE MILESTONES ========== */
+var MILESTONES = [
+  { id: 'm1', text: 'I planned the app: sketched a wireframe and listed required features' },
+  { id: 'm2', text: 'I built the HTML structure: form, input, and empty list' },
+  { id: 'm3', text: 'My code finds all elements with querySelector and logs them' },
+  { id: 'm4', text: 'Adding a todo works — the new task appears in the list' },
+  { id: 'm5', text: 'Deleting a todo works' },
+  { id: 'm6', text: 'Toggling "done" works with a line-through style' },
+  { id: 'm7', text: 'My todos survive a page refresh (localStorage save + load)' },
+  { id: 'm8', text: 'I added a "Clear all" button' },
+  { id: 'm9', text: 'I added All / Active / Done filter buttons' },
+  { id: 'm10', text: 'I deployed the app to GitHub Pages and shared the link' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) {
+  try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {}
+}
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+/* ========== STATE ========== */
+var currentLessonId = 'b1';
+var currentView = 'lessons';
+var lintTimer = null;
+var autoTimer = null;
+var autoRunEnabled = false;
+
+/* ========== HELPERS ========== */
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+/* ========== METER ========== */
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+/* ========== SIDEBAR ========== */
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+/* ========== VIEW SWITCH ========== */
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'qa') renderQa();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+/* ========== BUILD IFRAME DOC ========== */
+function buildSrcDoc(userHtml, userJs) {
+  var html = userHtml || '';
+  var baseStyle = 'body{font-family:system-ui,-apple-system,sans-serif;padding:16px;margin:0;color:#1f2937}button{cursor:pointer;font:inherit}';
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><style>' + baseStyle + '</style></head><body>' +
+    html +
+    '<script>' + CONSOLE_INJECT + '<\/script>' +
+    '<script>' + userJs + '<\/script>' +
+    '</body></html>';
+}
+
+/* ========== RENDER LESSON ========== */
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+  var htmlStarter = htmlStarters[lesson.id] || '';
+  var hasHtmlEditor = !lesson.jsOnly && htmlStarter;
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>💻 Code exercise</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter || htmlStarter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Live Console</span></h2>';
+    html += '<p class="ed-s">Write JavaScript on the left. Click <strong>Run</strong> to see output in the console below.</p>';
+
+    if (hasHtmlEditor) {
+      html += '<div class="ed-grid">';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>HTML</span><span class="pane-lb">Structure</span></div>';
+      html += '<textarea class="code-ta" id="htmlEditor" spellcheck="false" aria-label="HTML editor"></textarea></div>';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>JavaScript</span><span class="pane-lb">Logic</span></div>';
+      html += '<textarea class="code-ta" id="jsEditor" spellcheck="false" aria-label="JavaScript editor"></textarea></div>';
+      html += '</div>';
+      html += '<div class="ed-grid" style="margin-top:14px">';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot live"></span>Preview</span><span class="pane-lb">Live</span></div>';
+      html += '<iframe class="prev-fr" id="previewFrame" sandbox="allow-scripts" title="Preview"></iframe></div>';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Console</span><button id="clearConsoleBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+      html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Run your code — console output will appear here.</div></div></div>';
+      html += '</div>';
+    } else {
+      html += '<div class="ed-grid js-only">';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>JavaScript</span><span class="pane-lb">Your code</span></div>';
+      html += '<textarea class="code-ta" id="jsEditor" spellcheck="false" aria-label="JavaScript editor"></textarea></div>';
+      html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Console Output</span><button id="clearConsoleBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+      html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Run your code — console output will appear here.</div></div></div>';
+      html += '</div>';
+    }
+
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run Code</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download</button>';
+    html += '<label class="ed-auto"><input type="checkbox" id="autoRunToggle"> Auto-run</label>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some code — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (hasHtmlEditor) $('htmlEditor').value = htmlStarter;
+  if (starter) $('jsEditor').value = starter;
+
+  if (starter || htmlStarter) attachEditor(lesson, starter, htmlStarter, hasHtmlEditor);
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+/* ========== EDITOR ========== */
+function attachEditor(lesson, starter, htmlStarter, hasHtml) {
+  var jsTa = $('jsEditor');
+  var htmlTa = hasHtml ? $('htmlEditor') : null;
+  var iframe = $('previewFrame');
+  var conOut = $('consoleOutput');
+  var lintBox = $('lintBox');
+  var clearBtn = $('clearConsoleBtn');
+  var autoToggle = $('autoRunToggle');
+  var runBtn = $('runBtn');
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Run your code — console output will appear here.</div>';
+  }
+  function appendConsole(type, message) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + type;
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = type;
+    var text = document.createElement('span');
+    text.textContent = message;
+    line.appendChild(badge);
+    line.appendChild(text);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+
+  // Listen to console messages from iframe
+  window.addEventListener('message', function(e) {
+    var d = e.data;
+    if (!d || !d.__jsc) return;
+    var text = (d.a || []).join(' ');
+    appendConsole(d.t || 'log', text);
+  });
+
+  function lintJs(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+    var braces = (code.match(/{/g) || []).length - (code.match(/}/g) || []).length;
+    if (braces !== 0) issues.push({ level: 'error', text: (braces > 0 ? braces + ' missing }' : Math.abs(braces) + ' extra }') + ' — check your braces.' });
+    var parens = (code.match(/\(/g) || []).length - (code.match(/\)/g) || []).length;
+    if (parens !== 0) issues.push({ level: 'error', text: (parens > 0 ? parens + ' missing )' : Math.abs(parens) + ' extra )') + ' — check your parentheses.' });
+    var brackets = (code.match(/\[/g) || []).length - (code.match(/\]/g) || []).length;
+    if (brackets !== 0) issues.push({ level: 'error', text: (brackets > 0 ? brackets + ' missing ]' : Math.abs(brackets) + ' extra ]') + ' — check your brackets.' });
+    if (/\bvar\s+/.test(code)) issues.push({ level: 'warn', text: 'You used "var" — prefer "let" or "const".' });
+    if (/document\.write\s*\(/.test(code)) issues.push({ level: 'warn', text: 'Avoid document.write() — it can erase the page.' });
+    if (/\baddEventListener\s*\([^,]+,\s*[a-zA-Z_$][\w$]*\s*\(\s*\)\s*\)/.test(code)) issues.push({ level: 'warn', text: 'You might be calling the function immediately in addEventListener — remove the ().' });
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintJs(jsTa.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+
+  function run() {
+    if (!iframe) return;
+    clearConsole();
+    var userJs = jsTa.value;
+    var userHtml = htmlTa ? htmlTa.value : '';
+    var srcdoc = buildSrcDoc(userHtml, userJs);
+    // force reload with unique marker
+    try { iframe.srcdoc = ''; } catch (e) {}
+    setTimeout(function() {
+      try { iframe.srcdoc = srcdoc + '<!-- run:' + Date.now() + ' -->'; } catch (e) {}
+    }, 10);
+  }
+
+  function debRun() {
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(run, 900);
+  }
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 300);
+  }
+
+  jsTa.addEventListener('input', function() {
+    debLint();
+    if (autoRunEnabled) debRun();
+  });
+  if (htmlTa) htmlTa.addEventListener('input', function() {
+    if (autoRunEnabled) debRun();
+  });
+
+  // Tab support
+  function attachTab(ta) {
+    ta.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        var s = ta.selectionStart, en = ta.selectionEnd;
+        ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+        ta.selectionStart = ta.selectionEnd = s + 2;
+        debLint();
+        if (autoRunEnabled) debRun();
+      }
+    });
+  }
+  attachTab(jsTa);
+  if (htmlTa) attachTab(htmlTa);
+
+  runBtn.addEventListener('click', run);
+
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    jsTa.value = starter;
+    if (htmlTa) htmlTa.value = htmlStarter;
+    lintNow();
+    run();
+  });
+
+  $('downloadBtn').addEventListener('click', function() {
+    var doc = buildSrcDoc(htmlTa ? htmlTa.value : '', jsTa.value);
+    var blob = new Blob([doc], { type: 'text/html' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.html';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  if (clearBtn) clearBtn.addEventListener('click', clearConsole);
+  autoToggle.addEventListener('change', function() {
+    autoRunEnabled = autoToggle.checked;
+    if (autoRunEnabled) run();
+  });
+
+  lintNow();
+  // Initial run
+  setTimeout(run, 300);
+}
+
+/* ========== QUIZ ========== */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ========== OVERVIEW ========== */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">JavaScript Essentials</h1>';
+  html += '<p class="pg-sub">Add real interactivity to your websites. In 8 weeks you will go from variables and loops all the way to a fully functional to-do app with data persistence — the same foundations used by every modern web developer.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>8 weeks</h3><p>12 hours of structured learning across 3 modules and 9 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Beginner–Intermediate</h3><p>No prior JavaScript needed. Some HTML/CSS helps but is not required.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💻</span>Hands-on</h3><p>Every lesson has a live editor with a real console. You learn by writing code, not watching.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Foundations</h3><p>Variables, data types, operators, control flow, and functions.</p></div>';
+  html += '<div class="ov-card"><h3>DOM &amp; Events</h3><p>Select elements, change them, and respond to user actions in real time.</p></div>';
+  html += '<div class="ov-card"><h3>Data handling</h3><p>Arrays, objects, and the built-in methods that transform them.</p></div>';
+  html += '<div class="ov-card"><h3>Debugging</h3><p>Read the console, catch errors, and fix bugs methodically.</p></div>';
+  html += '<div class="ov-card"><h3>Best practices</h3><p>Modern syntax (let/const, arrow functions), clean naming, no globals.</p></div>';
+  html += '<div class="ov-card"><h3>Capstone project</h3><p>Build and deploy a to-do app with localStorage persistence.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Variables & Types', 'Strings, numbers, booleans, null vs undefined, template literals.'],
+    ['W2', 'Control Flow', 'if / else if / else, comparisons, logical operators, for and while loops.'],
+    ['W3', 'Functions', 'Declaration vs expression, parameters, return, arrow functions, scope.'],
+    ['W4', 'DOM Selection', 'querySelector, textContent, classList, creating and appending elements.'],
+    ['W5', 'Events', 'addEventListener, click / input / submit, the event object, preventDefault.'],
+    ['W6', 'Arrays & Objects', 'push / pop / forEach / map / filter, objects, and arrays of objects.'],
+    ['W7', 'Capstone I', 'Plan and build the UI of the to-do app: HTML structure and element selection.'],
+    ['W8', 'Capstone II & III', 'Add, delete, toggle. Then save and load with localStorage. Deploy.'],
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson — no setup required. Your progress saves automatically.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('b1');
+    switchView('lessons');
+  });
+}
+
+/* ========== PROJECTS ========== */
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A dynamic to-do app with localStorage persistence. Broken into three buildable milestones across the Projects module.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three build stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Plan &amp; Build UI</h3><p>Set up the HTML skeleton, select elements, and verify they exist in the console.</p></div>';
+  html += '<div class="ov-card"><h3>2. Add &amp; Delete</h3><p>A <code>render()</code> function, form submission, and per-item delete buttons.</p></div>';
+  html += '<div class="ov-card"><h3>3. Persist Data</h3><p>Save and load the todo list with <code>localStorage</code> and <code>JSON</code>.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpPr1" type="button">▶ Start Stage 1</button>';
+  html += '<button class="btn btn-g" id="jumpPr3" type="button">Jump to Final Stage</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpPr1').addEventListener('click', function() { selectLesson('pr1'); switchView('lessons'); });
+  $('jumpPr3').addEventListener('click', function() { selectLesson('pr3'); switchView('lessons'); });
+}
+
+/* ========== RESOURCES ========== */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your learning journey.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'MDN JavaScript Guide', 'The official, most trusted reference. Bookmark it.', 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide'],
+    ['📚', 'javascript.info', 'Deep, well-written tutorial. Excellent for going beyond this course.', 'https://javascript.info/'],
+    ['🎓', 'Eloquent JavaScript (free book)', 'A classic. Available free online in full.', 'https://eloquentjavascript.net/'],
+    ['🔍', 'MDN DOM Reference', 'Everything you can do with the DOM.', 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model'],
+    ['💬', 'Stack Overflow', 'When you get stuck, someone has asked before.', 'https://stackoverflow.com/questions/tagged/javascript'],
+    ['🎥', 'Web Dev Simplified (YouTube)', 'Short, focused JavaScript tutorials.', 'https://www.youtube.com/c/WebDevSimplified']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">JavaScript Cheatsheet</div><div class="res-d">A one-page reference covering all syntax from this course. Generated live from the lessons.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['🌐', 'Google Chrome / Firefox DevTools', 'Press F12 to open. The Console tab is your best friend.', 'https://developer.chrome.com/docs/devtools/'],
+    ['✏️', 'Visual Studio Code', 'The most popular free code editor.', 'https://code.visualstudio.com/'],
+    ['🐙', 'GitHub', 'Host your code and projects. Free.', 'https://github.com/'],
+    ['🚀', 'GitHub Pages', 'Deploy static sites for free.', 'https://pages.github.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+}
+
+function downloadCheatsheet() {
+  var lines = [];
+  lines.push('============================================');
+  lines.push('  JAVASCRIPT ESSENTIALS — CHEATSHEET');
+  lines.push('============================================');
+  lines.push('');
+  lines.push('--- VARIABLES ---');
+  lines.push('let name = "Chisomo";        // can change');
+  lines.push('const age = 22;              // cannot change');
+  lines.push('');
+  lines.push('--- TYPES ---');
+  lines.push('"string"    42      true');
+  lines.push('null        undefined');
+  lines.push('');
+  lines.push('--- CONTROL FLOW ---');
+  lines.push('if (x > 10) { ... }');
+  lines.push('else if (x > 5) { ... }');
+  lines.push('else { ... }');
+  lines.push('');
+  lines.push('--- COMPARISONS ---');
+  lines.push('===  !==  >  <  >=  <=');
+  lines.push('&&  ||  !');
+  lines.push('');
+  lines.push('--- LOOPS ---');
+  lines.push('for (let i = 0; i < 5; i++) { ... }');
+  lines.push('while (condition) { ... }');
+  lines.push('');
+  lines.push('--- FUNCTIONS ---');
+  lines.push('function greet(name) { return "Hi " + name; }');
+  lines.push('const add = (a, b) => a + b;');
+  lines.push('');
+  lines.push('--- ARRAYS ---');
+  lines.push('arr.push(x)       // add to end');
+  lines.push('arr.pop()         // remove from end');
+  lines.push('arr.length        // count');
+  lines.push('arr.forEach(fn)   // loop');
+  lines.push('arr.map(fn)       // transform');
+  lines.push('arr.filter(fn)    // keep some');
+  lines.push('arr.splice(i, 1)  // remove at i');
+  lines.push('');
+  lines.push('--- OBJECTS ---');
+  lines.push('let user = { name: "A", age: 22 };');
+  lines.push('user.name         // access');
+  lines.push('user.email = "x"  // add/update');
+  lines.push('');
+  lines.push('--- DOM ---');
+  lines.push('document.querySelector("#id")');
+  lines.push('document.querySelectorAll(".class")');
+  lines.push('el.textContent = "new"');
+  lines.push('el.classList.add("active")');
+  lines.push('document.createElement("div")');
+  lines.push('parent.appendChild(child)');
+  lines.push('');
+  lines.push('--- EVENTS ---');
+  lines.push('el.addEventListener("click", fn)');
+  lines.push('event.preventDefault()');
+  lines.push('');
+  lines.push('--- STORAGE ---');
+  lines.push('localStorage.setItem("k", "v")');
+  lines.push('localStorage.getItem("k")');
+  lines.push('JSON.stringify(value)');
+  lines.push('JSON.parse(string)');
+  lines.push('');
+  lines.push('--- CONSOLE ---');
+  lines.push('console.log("message")');
+  lines.push('console.warn("warning")');
+  lines.push('console.error("error")');
+  lines.push('');
+  lines.push('============================================');
+  lines.push('  TechMountain Bootcamp — JavaScript Essentials');
+  lines.push('============================================');
+
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'javascript-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ========== Q&A ========== */
+function renderQa() {
+  var container = $('viewQa');
+  var html = '';
+  html += '<h1 class="pg-h1">Questions &amp; Answers</h1>';
+  html += '<p class="pg-sub">The most common questions from students in this course. If yours is not here, ask in our community group.</p>';
+
+  html += '<div class="acc">';
+  var faqs = [
+    ['Do I need to know HTML and CSS first?',
+     'Not strictly. You can start with JavaScript if you are motivated. But if you already know some HTML and CSS, the DOM lessons (module 2) will feel much more natural. If you are completely new to web development, we recommend our HTML &amp; CSS course first — it takes about 2 weeks.'],
+    ['Why does my console.log() not show anything?',
+     'Two common causes. First: make sure you actually clicked Run (or that Auto-run is on). Second: check for syntax errors — if your JavaScript has a typo, the whole script fails to run and nothing executes. Our lint panel below the editor will flag most syntax errors.'],
+    ['What is the difference between let and var?',
+     'let is block-scoped (only visible inside the { } where it was declared). var is function-scoped and can leak outside blocks, which causes bugs. Always use let, or const if the value never changes. Never use var in modern JavaScript.'],
+    ['What is the difference between == and ===?',
+     '== does "loose" comparison with type coercion. So "5" == 5 is true. === does strict comparison — same value AND same type. So "5" === 5 is false. Always use ===. It prevents a huge class of subtle bugs.'],
+    ['Why does my form keep reloading the page?',
+     'You forgot event.preventDefault() inside the submit listener. Without it, the browser does its default behaviour: sends the form to a server and reloads. Always call event.preventDefault() as the first line of your submit handler.'],
+    ['Why does my delete button delete the wrong item?',
+     'You are probably using var inside a for loop, so all your closures share the same variable. Use let, or use forEach (which gives each iteration its own copy of the index). Our capstone lesson shows the correct pattern.'],
+    ['localStorage is not saving my data — why?',
+     'Three checks. 1) Are you calling JSON.stringify before setItem? localStorage only stores strings. 2) Are you on a local file:// page? Some browsers block storage on file:// URLs. Test on a real server (GitHub Pages, for example). 3) Are you sure you called saveTodos() every time the array changed?'],
+    ['My app works but the console shows an error I do not understand.',
+     'Copy the first line of the error, paste it into Google with "javascript" in front. Nine times out of ten, someone on Stack Overflow has had the exact same problem. Learning to read errors is a skill — practice it.'],
+    ['How do I open the browser console?',
+     'Press F12 on Windows/Linux, or Cmd+Option+I on Mac. Or right-click anywhere on a page and choose "Inspect". Then click the Console tab. In this course the console is captured for you, but you should still learn the browser one.'],
+    ['Do I need to install anything to learn JavaScript?',
+     'No. Everything in this course runs in your browser. When you are ready for a real project, install Visual Studio Code (free) and optionally Node.js. But you can go far without installing anything.'],
+    ['How long should each lesson take?',
+     'Each lesson is designed for 20–35 minutes of focused work. But do not just read — type the code yourself. Reading JavaScript and writing JavaScript are two very different skills. Budget 15 minutes of hands-on practice per lesson minimum.'],
+    ['I finished the course. What next?',
+     'Three directions: 1) Build 3–5 small projects on your own (weather app, calculator, quiz game). 2) Learn a framework — React or Vue is the natural next step. 3) Learn backend — Node.js lets you use JavaScript on the server. All three share the same fundamentals you learned here.']
+  ];
+  faqs.forEach(function(f) {
+    html += '<details class="acc-item">';
+    html += '<summary>' + f[0] + '</summary>';
+    html += '<div class="acc-body">' + f[1] + '</div>';
+    html += '</details>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Still stuck?</h2>';
+  html += '<p>Our WhatsApp study group is active 24/7. Ask your question, share your code, get help from peers and instructors.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Join WhatsApp Group</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ========== CERTIFICATE ========== */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in JavaScript Essentials. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">JavaScript Essentials</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">8 Weeks · Beginner to Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of JavaScript Essentials, demonstrating proficiency in variables, control flow, functions, DOM manipulation, events, arrays and objects, and building a full capstone project with localStorage persistence.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>JavaScript Essentials</h1>' +
+        '<div class="t">8 Weeks · Beginner to Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of JavaScript Essentials,<br>demonstrating proficiency in variables, control flow, functions,<br>DOM manipulation, events, arrays and objects, and building a full<br>capstone project with localStorage persistence.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+/* ========== INIT ========== */
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

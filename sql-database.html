@@ -1,0 +1,2486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL &amp; Database Design — Interactive Course</title>
+<meta name="description" content="Learn SQL and relational database design from SELECT to schema modelling. Real SQLite running in your browser.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:16px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+.rd .sql-kw{color:#7dd3fc;font-weight:600}
+.rd .sql-str{color:#a5d6a7}
+.rd .sql-com{color:#6b7280;font-style:italic}
+
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.sql-ta{width:100%;min-height:280px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:2;white-space:pre;outline:none}
+.sql-ta::selection{background:rgba(0,200,83,.35)}
+.res-area{padding:0;background:var(--surf);min-height:280px;max-height:520px;overflow-y:auto}
+.res-empty{padding:40px 20px;text-align:center;color:var(--t4);font-style:italic;font-size:14px}
+.res-status{padding:10px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2);font-size:12.5px;color:var(--t2);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.res-status.ok{background:var(--gsoft);color:var(--navy)}
+.res-status.err{background:rgba(220,38,38,.06);color:var(--danger)}
+.res-badge{display:inline-block;padding:3px 9px;border-radius:var(--rpill);font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;background:var(--navy);color:#fff}
+.res-badge.ok{background:var(--green);color:var(--navy)}
+.res-badge.err{background:var(--danger);color:#fff}
+.res-meta{font-size:12px;color:var(--t3);font-weight:500}
+.res-error{padding:16px 20px;color:var(--danger);font-family:var(--mono);font-size:13px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.result-table-wrap{padding:14px}
+.result-set{margin-bottom:18px}
+.result-set:last-child{margin-bottom:0}
+.result-set-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t4);margin-bottom:8px;padding:0 4px}
+.result-table{width:100%;border-collapse:collapse;font-size:13px}
+.result-table th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;z-index:2}
+.result-table th:first-child{border-top-left-radius:6px}
+.result-table th:last-child{border-top-right-radius:6px}
+.result-table td{padding:9px 14px;border-bottom:1px solid var(--bd2);font-family:var(--mono);font-size:12.5px;color:var(--navy);vertical-align:top;word-break:break-word;max-width:340px}
+.result-table tr:hover td{background:var(--gsoft)}
+.result-table td.null{color:var(--t4);font-style:italic}
+.result-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+.result-table tbody tr:last-child td:first-child{border-bottom-left-radius:6px}
+.result-table tbody tr:last-child td:last-child{border-bottom-right-radius:6px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ed-tip{font-size:12px;color:var(--t3);margin-left:auto}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+/* Schema diagram */
+.schema-mini{margin:20px 0;padding:20px;background:var(--bg);border-radius:var(--r);border:1px solid var(--bd)}
+.schema-mini h4{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);font-weight:700;margin-bottom:14px}
+.schema-row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start}
+.schema-table{background:var(--surf);border:2px solid var(--bd);border-radius:var(--r);padding:12px 14px;min-width:160px;flex:1;max-width:240px;font-family:var(--mono);font-size:12.5px;line-height:1.7}
+.schema-table-name{font-weight:800;color:var(--navy);font-size:13px;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--bd2);text-transform:uppercase;letter-spacing:.5px}
+.schema-col{display:flex;justify-content:space-between;gap:10px;color:var(--t2)}
+.schema-col .col-name{color:var(--navy);font-weight:600}
+.schema-col .col-type{color:var(--t3);font-size:11.5px}
+.schema-col.pk .col-name{color:var(--green2)}
+.schema-col.fk .col-name{color:#3b82f6}
+
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:14px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .sql-ta{min-height:220px}
+  .res-area{min-height:220px;max-height:400px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .ed-tip{display:none}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:14px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+  .result-table{font-size:11.5px}
+  .result-table th,.result-table td{padding:7px 9px}
+  .schema-row{flex-direction:column}
+  .schema-table{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">🗄️</div>
+      <div class="brand-tx">
+        <div class="brand-nm">SQL &amp; Database Design</div>
+        <div class="brand-sb">8 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">🗄️</div>
+      <div class="footer-tx">
+        <div class="footer-nm">SQL &amp; Database Design</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<!-- Hidden data: schema + seed -->
+<textarea id="schemaSql" hidden>
+CREATE TABLE students (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  grade INTEGER,
+  district TEXT,
+  enrolled_year INTEGER
+);
+
+INSERT INTO students (first_name, last_name, grade, district, enrolled_year) VALUES
+  ('Chisomo', 'Banda', 10, 'Lilongwe', 2023),
+  ('Tadala', 'Mwale', 10, 'Blantyre', 2023),
+  ('Gift', 'Phiri', 11, 'Mzuzu', 2022),
+  ('Mphatso', 'Zulu', 9, 'Zomba', 2024),
+  ('Yamikani', 'Gondwe', 10, 'Lilongwe', 2023),
+  ('Thandiwe', 'Nkhoma', 11, 'Kasungu', 2022),
+  ('Limbani', 'Tembo', 12, 'Blantyre', 2021),
+  ('Chimwemwe', 'Kachala', 9, 'Mangochi', 2024),
+  ('Wiza', 'Chirwa', 10, 'Mzuzu', 2023),
+  ('Chikondi', 'Mtawali', 12, 'Lilongwe', 2021),
+  ('Pemphero', 'Kalua', 9, 'Zomba', 2024),
+  ('Tiyamike', 'Mbewe', 11, 'Lilongwe', 2022),
+  ('Dalitso', 'Nkhata', 10, 'Kasungu', 2023),
+  ('Madalitso', 'Kamoto', 12, 'Mzuzu', 2021),
+  ('Faith', 'Chikondi', 9, 'Blantyre', 2024);
+
+CREATE TABLE teachers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  phone TEXT
+);
+
+INSERT INTO teachers (name, subject, phone) VALUES
+  ('Mr. Banda', 'Mathematics', '+265 999 111 222'),
+  ('Mrs. Phiri', 'English', '+265 888 333 444'),
+  ('Mr. Gondwe', 'Science', '+265 999 555 666'),
+  ('Miss Nkhoma', 'History', '+265 888 777 888');
+
+CREATE TABLE classes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  teacher_id INTEGER NOT NULL,
+  year INTEGER NOT NULL,
+  FOREIGN KEY (teacher_id) REFERENCES teachers(id)
+);
+
+INSERT INTO classes (name, teacher_id, year) VALUES
+  ('Form 1 Mathematics', 1, 2024),
+  ('Form 2 English', 2, 2024),
+  ('Form 3 Science', 3, 2024),
+  ('Form 4 History', 4, 2024);
+
+CREATE TABLE enrollments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  student_id INTEGER NOT NULL,
+  class_id INTEGER NOT NULL,
+  term TEXT NOT NULL,
+  grade_percent INTEGER,
+  FOREIGN KEY (student_id) REFERENCES students(id),
+  FOREIGN KEY (class_id) REFERENCES classes(id)
+);
+
+INSERT INTO enrollments (student_id, class_id, term, grade_percent) VALUES
+  (1, 1, 'Term 1', 78),
+  (1, 2, 'Term 1', 85),
+  (2, 1, 'Term 1', 92),
+  (2, 2, 'Term 1', 88),
+  (3, 1, 'Term 1', 65),
+  (3, 3, 'Term 1', 72),
+  (4, 1, 'Term 1', 55),
+  (5, 2, 'Term 1', 81),
+  (5, 3, 'Term 1', 79),
+  (6, 1, 'Term 1', 88),
+  (6, 2, 'Term 1', 91),
+  (7, 3, 'Term 1', 94),
+  (8, 1, 'Term 1', 62),
+  (9, 3, 'Term 1', 76),
+  (10, 4, 'Term 1', 89),
+  (11, 2, 'Term 1', 70),
+  (12, 1, 'Term 1', 84),
+  (13, 2, 'Term 1', 67),
+  (14, 4, 'Term 1', 91),
+  (15, 3, 'Term 1', 58);
+</textarea>
+
+<div hidden>
+
+<!-- ===== MODULE 1: FOUNDATIONS ===== -->
+<div class="src-read" data-l="d1">
+<p>Almost every app you have ever used — Facebook, WhatsApp, your bank — stores its data in a <strong>relational database</strong>. Instagram keeps users, posts, and likes. Airtel Money keeps accounts, transfers, and balances. Even a small Malawian shop's inventory system is, at its core, a database.</p>
+<h2>What is a database?</h2>
+<p>A database is a structured collection of data that a program can read from and write to efficiently. The word <strong>relational</strong> means the data is organised into <strong>tables</strong> that relate to each other.</p>
+<h2>Tables, rows, columns</h2>
+<p>A table looks just like a spreadsheet:</p>
+<ul>
+<li><strong>Columns</strong> define what kind of data you are storing — name, age, district</li>
+<li><strong>Rows</strong> are individual records — one student, one order, one payment</li>
+<li><strong>Cells</strong> are the intersections — the value at a specific row and column</li>
+</ul>
+<pre><code>students
++----+-----------+----------+-------+----------+
+| id | first_name| last_name| grade | district |
++----+-----------+----------+-------+----------+
+|  1 | Chisomo   | Banda    |    10 | Lilongwe |
+|  2 | Tadala    | Mwale    |    10 | Blantyre |
+|  3 | Gift      | Phiri    |    11 | Mzuzu    |
++----+-----------+----------+-------+----------+</code></pre>
+<p>The difference between a database and a spreadsheet is <strong>how you query it</strong>. A spreadsheet is designed for a human to look at. A database is designed for a program to ask questions: "How many students are in Form 3?", "Which district has the highest average grade?"</p>
+<h2>SQL — the language of databases</h2>
+<p>SQL (pronounced "sequel" or "S-Q-L") stands for <strong>Structured Query Language</strong>. It is how you talk to every major database — PostgreSQL, MySQL, SQL Server, Oracle, SQLite. Learn one, and the same skills transfer to all of them.</p>
+<p>SQL splits into four families:</p>
+<ul>
+<li><strong>SELECT</strong> — read data</li>
+<li><strong>INSERT</strong> — add new rows</li>
+<li><strong>UPDATE</strong> — change existing rows</li>
+<li><strong>DELETE</strong> — remove rows</li>
+</ul>
+<p>That is 90% of what developers actually write.</p>
+<h2>Why not just use a spreadsheet?</h2>
+<p>Because spreadsheets break down at scale:</p>
+<ul>
+<li>Ten thousand rows is fine. Ten million rows is not.</li>
+<li>Two people editing simultaneously corrupts the file.</li>
+<li>There is no access control — everyone with the file sees everything.</li>
+<li>Relationships between tables are ad-hoc and error-prone.</li>
+</ul>
+<p>A database handles all of this cleanly.</p>
+<blockquote><strong>The course database:</strong> Throughout this course, we will work with a Malawi school management database. It has four tables: <code>students</code>, <code>teachers</code>, <code>classes</code>, and <code>enrollments</code>. Every lesson adds to what you can do with it.</blockquote>
+</div>
+
+<div class="src-read" data-l="d2">
+<p>A single table is fine for toy data. Real data has relationships — a student enrolls in many classes, a class is taught by one teacher, an order contains many items. That is what makes databases <strong>relational</strong>.</p>
+<h2>Primary keys</h2>
+<p>Every table needs a way to identify each row uniquely. That is the <strong>primary key</strong>.</p>
+<pre><code>CREATE TABLE students (
+  id INTEGER PRIMARY KEY,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL
+);</code></pre>
+<p>Rules of a primary key:</p>
+<ul>
+<li>Every row must have one</li>
+<li>No two rows can share the same value</li>
+<li>It never changes once assigned</li>
+</ul>
+<p>The most common pattern is an integer called <code>id</code> that auto-increments (1, 2, 3, 4...).</p>
+<h2>Foreign keys</h2>
+<p>A <strong>foreign key</strong> is a column that points to a primary key in another table. It is how two tables are connected.</p>
+<pre><code>CREATE TABLE classes (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  teacher_id INTEGER NOT NULL,
+  FOREIGN KEY (teacher_id) REFERENCES teachers(id)
+);</code></pre>
+<p>Here, <code>teacher_id</code> in <code>classes</code> points to <code>id</code> in <code>teachers</code>. Every class must have a teacher. If you try to insert a class with a <code>teacher_id</code> that does not exist in <code>teachers</code>, the database rejects it.</p>
+<h2>Why this matters</h2>
+<p>Foreign keys enforce <strong>referential integrity</strong> — the guarantee that data stays consistent. Without them, you could end up with classes assigned to teachers who do not exist. With them, that is impossible.</p>
+<h2>One-to-many relationships</h2>
+<p>The most common shape in relational data:</p>
+<pre><code>teachers      1 ──── many  classes
+students      1 ──── many  enrollments
+classes       1 ──── many  enrollments</code></pre>
+<p>One teacher teaches many classes. One student has many enrollments. This is expressed by putting the foreign key on the "many" side. <code>classes.teacher_id</code> is a foreign key because one teacher has many classes.</p>
+<h2>Many-to-many relationships</h2>
+<p>Sometimes two tables need a many-to-many relationship: one student is in many classes, and one class has many students. This is expressed with a <strong>join table</strong>.</p>
+<pre><code>CREATE TABLE enrollments (
+  id INTEGER PRIMARY KEY,
+  student_id INTEGER NOT NULL,
+  class_id INTEGER NOT NULL,
+  term TEXT NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES students(id),
+  FOREIGN KEY (class_id) REFERENCES classes(id)
+);</code></pre>
+<p><code>enrollments</code> is the join table. It sits between <code>students</code> and <code>classes</code> and holds one row for every student-class pairing.</p>
+<blockquote><strong>Rule of thumb:</strong> if you ever catch yourself storing multiple values in one cell (like "Chisomo, Tadala, Gift" in a column called <em>students</em>), stop. That is a relationship that needs its own table. Databases hate comma-separated lists.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: CORE SQL ===== -->
+<div class="src-read" data-l="s1">
+<p><code>SELECT</code> is the SQL statement you will write more than all others combined. It reads data. Nothing changes. Nothing is destroyed. You can run it a million times safely.</p>
+<h2>The simplest form</h2>
+<pre><code>SELECT * FROM students;</code></pre>
+<p>The <code>*</code> means "all columns". The <code>FROM students</code> tells SQL which table to read from. The semicolon marks the end of the statement — every SQL statement ends with one.</p>
+<h2>Choosing specific columns</h2>
+<pre><code>SELECT first_name, last_name FROM students;</code></pre>
+<p>Comma-separated list of columns. This is almost always better than <code>SELECT *</code> — it is clearer and faster.</p>
+<h2>Adding column aliases</h2>
+<pre><code>SELECT
+  first_name AS "First Name",
+  last_name AS "Last Name"
+FROM students;</code></pre>
+<p><code>AS</code> gives a column a different name in the output. Use it when the raw column name is unclear, or when you want formatted headers.</p>
+<h2>ORDER BY</h2>
+<pre><code>SELECT first_name, grade FROM students
+ORDER BY grade DESC;</code></pre>
+<p>Sorts the results. <code>ASC</code> (ascending) is the default; <code>DESC</code> reverses it. You can sort by multiple columns:</p>
+<pre><code>SELECT first_name, grade, district FROM students
+ORDER BY grade DESC, first_name ASC;</code></pre>
+<p>Sort by grade first. If two students share a grade, sort them alphabetically.</p>
+<h2>LIMIT</h2>
+<pre><code>SELECT * FROM students LIMIT 5;</code></pre>
+<p>Returns only the first 5 rows. Useful for previewing a table without dumping ten thousand rows.</p>
+<h2>DISTINCT</h2>
+<pre><code>SELECT DISTINCT district FROM students;</code></pre>
+<p>Returns only unique values. If 6 students are from Lilongwe, "Lilongwe" appears once.</p>
+<h2>Combining them</h2>
+<pre><code>SELECT DISTINCT district
+FROM students
+ORDER BY district ASC
+LIMIT 10;</code></pre>
+<p>Reads as: "give me the ten distinct districts, alphabetically."</p>
+<blockquote><strong>Clause order matters.</strong> SQL requires <code>SELECT ... FROM ... WHERE ... GROUP BY ... ORDER BY ... LIMIT</code> in that order. Get it wrong and SQL will tell you. The order is not optional.</blockquote>
+</div>
+
+<div class="src-read" data-l="s2">
+<p><code>SELECT * FROM students</code> returns everything. Real queries need to filter. That is what <code>WHERE</code> does.</p>
+<h2>The basic filter</h2>
+<pre><code>SELECT first_name, last_name, district
+FROM students
+WHERE district = 'Lilongwe';</code></pre>
+<p>Returns only students from Lilongwe. Notice strings use single quotes. Numbers do not:</p>
+<pre><code>SELECT * FROM students WHERE grade = 10;</code></pre>
+<h2>Comparison operators</h2>
+<ul>
+<li><code>=</code> equal to</li>
+<li><code>!=</code> or <code>&lt;&gt;</code> not equal to</li>
+<li><code>&lt;</code> less than</li>
+<li><code>&gt;</code> greater than</li>
+<li><code>&lt;=</code>, <code>&gt;=</code> less/greater or equal</li>
+</ul>
+<pre><code>SELECT * FROM students WHERE grade > 10;
+SELECT * FROM enrollments WHERE grade_percent >= 80;</code></pre>
+<h2>AND, OR, NOT</h2>
+<pre><code>SELECT * FROM students
+WHERE grade = 10 AND district = 'Lilongwe';
+
+SELECT * FROM students
+WHERE district = 'Lilongwe' OR district = 'Blantyre';</code></pre>
+<p>Wrap conditions in parentheses when you mix AND with OR — otherwise SQL's precedence rules will surprise you:</p>
+<pre><code>SELECT * FROM students
+WHERE grade = 10 AND (district = 'Lilongwe' OR district = 'Blantyre');</code></pre>
+<h2>IN and BETWEEN</h2>
+<pre><code>SELECT * FROM students
+WHERE district IN ('Lilongwe', 'Blantyre', 'Mzuzu');
+
+SELECT * FROM enrollments
+WHERE grade_percent BETWEEN 70 AND 90;</code></pre>
+<p><code>IN</code> is a cleaner way to write a long OR chain. <code>BETWEEN</code> is inclusive on both ends — 70 and 90 are included.</p>
+<h2>LIKE — pattern matching</h2>
+<pre><code>SELECT * FROM students WHERE first_name LIKE 'Ch%';
+SELECT * FROM students WHERE last_name LIKE '%a';</code></pre>
+<p><code>%</code> matches any number of characters. So <code>'Ch%'</code> matches Chisomo, Chikondi, Chimwemwe — anything starting with "Ch". <code>'%a'</code> matches names ending in "a".</p>
+<h2>Handling NULL</h2>
+<p><code>NULL</code> means "no value". It is not zero and it is not an empty string. You cannot compare NULL with <code>=</code>. You must use <code>IS NULL</code> or <code>IS NOT NULL</code>.</p>
+<pre><code>SELECT * FROM enrollments WHERE grade_percent IS NULL;
+SELECT * FROM enrollments WHERE grade_percent IS NOT NULL;</code></pre>
+<p>This is one of the most common mistakes for beginners: writing <code>WHERE column = NULL</code> never returns anything.</p>
+<h2>ORDER BY with WHERE</h2>
+<pre><code>SELECT first_name, grade FROM students
+WHERE district = 'Lilongwe'
+ORDER BY grade DESC, first_name ASC;</code></pre>
+<p>Filter first, then sort. That is the natural reading order.</p>
+<blockquote><strong>Real query, real question:</strong> "List every Form 10 student from Lilongwe, sorted by first name." That is a WHERE, an ORDER BY, and a column selection — the three core tools of reading data.</blockquote>
+</div>
+
+<div class="src-read" data-l="s3">
+<p>Reading is only half of SQL. Eventually you need to add new rows, change existing ones, and remove old ones. That is <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code>.</p>
+<h2>INSERT — adding data</h2>
+<pre><code>INSERT INTO students (first_name, last_name, grade, district, enrolled_year)
+VALUES ('Mphatso', 'Chirwa', 10, 'Zomba', 2024);</code></pre>
+<p>You list the columns you are providing, then the values in the same order. Columns you skip are filled with <code>NULL</code> or their default.</p>
+<p>Inserting multiple rows in one statement:</p>
+<pre><code>INSERT INTO students (first_name, last_name, grade, district, enrolled_year) VALUES
+  ('Alinafe', 'Nkosi', 9, 'Blantyre', 2024),
+  ('Blessings', 'Kalulu', 11, 'Lilongwe', 2022),
+  ('Chifundo', 'Zimba', 10, 'Mzuzu', 2023);</code></pre>
+<p>Faster, and it either all succeeds or all fails. No half-inserted rows.</p>
+<h2>UPDATE — changing data</h2>
+<pre><code>UPDATE students
+SET district = 'Lilongwe'
+WHERE id = 4;</code></pre>
+<p>Read it as: "change the <code>district</code> column to 'Lilongwe' for the row where <code>id</code> is 4."</p>
+<p>Multiple columns at once:</p>
+<pre><code>UPDATE students
+SET district = 'Zomba', grade = 10
+WHERE id = 4;</code></pre>
+<h2>⚠️ Always use WHERE with UPDATE</h2>
+<p>This is the single most important rule in SQL:</p>
+<pre><code>UPDATE students SET district = 'Lilongwe';   -- ⚠️ Changes EVERY row!</code></pre>
+<p>Without a <code>WHERE</code> clause, <code>UPDATE</code> affects every single row in the table. Every student now claims to be from Lilongwe. There is no undo. You cannot <code>Ctrl+Z</code> a database.</p>
+<p>The same applies to <code>DELETE</code>:</p>
+<pre><code>DELETE FROM students WHERE id = 4;</code></pre>
+<p>Deletes the one student with id 4.</p>
+<pre><code>DELETE FROM students;   -- ⚠️ Deletes ALL students. No warning. No undo.</code></pre>
+<p>Professional teams often work in transactions precisely so that a mis-typed WHERE can be rolled back. For now, the rule is simpler: <strong>write the WHERE first, then write the UPDATE</strong>.</p>
+<h2>The safe pattern</h2>
+<ol>
+<li>Write the WHERE clause first: <code>WHERE id = 4</code></li>
+<li>Test it with a SELECT: <code>SELECT * FROM students WHERE id = 4;</code> — does it return exactly the rows you meant?</li>
+<li>If yes, convert the SELECT into an UPDATE</li>
+</ol>
+<p>This five-second habit will save you weeks of pain over your career.</p>
+<h2>Soft deletes</h2>
+<p>In real production systems, <code>DELETE</code> is often avoided entirely. Instead, a column like <code>deleted_at</code> is set to the current timestamp, and every query adds <code>WHERE deleted_at IS NULL</code>.</p>
+<pre><code>UPDATE students SET deleted_at = CURRENT_TIMESTAMP WHERE id = 4;
+
+SELECT * FROM students WHERE deleted_at IS NULL;</code></pre>
+<p>This lets you "undo" a delete. Banks, hospitals, and government systems almost always work this way.</p>
+<blockquote><strong>The discipline:</strong> every <code>UPDATE</code> and <code>DELETE</code> should have a <code>WHERE</code>. If you find yourself typing one without a WHERE, stop and ask whether you really mean to affect every row.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: JOINS & AGGREGATES ===== -->
+<div class="src-read" data-l="j1">
+<p>The real power of a relational database comes from joining tables. You store data across multiple tables to avoid duplication, then combine them when you need to read.</p>
+<h2>The problem</h2>
+<p>Look at the <code>enrollments</code> table:</p>
+<pre><code>+----+------------+----------+--------+---------------+
+| id | student_id | class_id | term   | grade_percent |
++----+------------+----------+--------+---------------+
+|  1 |          1 |        1 | Term 1 |            78 |
+|  2 |          1 |        2 | Term 1 |            85 |
++----+------------+----------+--------+---------------+</code></pre>
+<p>It stores <code>student_id</code>, not the student's name. That is deliberate — if Chisomo changes her name, we update it in one place, not in every enrollment row.</p>
+<p>But when we read, we want to see the name, not the number. That is what <code>JOIN</code> is for.</p>
+<h2>INNER JOIN</h2>
+<pre><code>SELECT
+  s.first_name,
+  s.last_name,
+  c.name AS class_name,
+  e.grade_percent
+FROM enrollments e
+JOIN students s ON e.student_id = s.id
+JOIN classes c ON e.class_id = c.id;</code></pre>
+<p>Let's unpack that:</p>
+<ul>
+<li><code>FROM enrollments e</code> — start with the enrollments table, and give it the alias <code>e</code></li>
+<li><code>JOIN students s ON e.student_id = s.id</code> — for every enrollment, find the matching student and give that table the alias <code>s</code></li>
+<li><code>JOIN classes c ON e.class_id = c.id</code> — same for the class</li>
+<li><code>s.first_name</code> — read the <code>first_name</code> column from the students table (aliased <code>s</code>)</li>
+</ul>
+<p>The result is one row per enrollment, with the student's name and the class name included.</p>
+<h2>Table aliases</h2>
+<p>You do not have to use aliases, but you should. Without them you have to write:</p>
+<pre><code>SELECT enrollments.grade_percent
+FROM enrollments
+JOIN students ON enrollments.student_id = students.id;</code></pre>
+<p>Aliases are shorter, clearer, and standard practice.</p>
+<h2>INNER vs LEFT JOIN</h2>
+<ul>
+<li><strong>INNER JOIN</strong> — only returns rows where the join finds a match on both sides. If a student has no enrollments, that student does not appear.</li>
+<li><strong>LEFT JOIN</strong> — returns every row from the left table, plus any matches from the right. If a student has no enrollments, they still appear, but with NULL in the enrollment columns.</li>
+</ul>
+<p>This distinction matters a lot. Consider "list every student and their classes":</p>
+<pre><code>-- INNER JOIN — silently drops students with no enrollments
+SELECT s.first_name, c.name
+FROM students s
+JOIN enrollments e ON s.id = e.student_id
+JOIN classes c ON e.class_id = c.id;
+
+-- LEFT JOIN — keeps every student
+SELECT s.first_name, c.name
+FROM students s
+LEFT JOIN enrollments e ON s.id = e.student_id
+LEFT JOIN classes c ON e.class_id = c.id;</code></pre>
+<p>If you are asking "how many students have enrolled in at least one class?" the INNER JOIN gives you the right numerator. If you are asking "which students have enrolled in nothing?" you need the LEFT JOIN and a WHERE clause checking for NULL.</p>
+<h2>A common trap</h2>
+<p>If you ever see a query returning fewer rows than you expected, check your JOINs. An INNER JOIN quietly drops any row that has no match on the other side.</p>
+<blockquote><strong>The mental model:</strong> imagine placing all tables side by side, and drawing lines from the foreign key in one table to the primary key in another. A JOIN walks those lines and merges the matched rows.</blockquote>
+</div>
+
+<div class="src-read" data-l="j2">
+<p>So far every query returns individual rows. But most business questions are not about individual rows. They are about counts, sums, and averages. That is what aggregation is for.</p>
+<h2>The five aggregate functions</h2>
+<ul>
+<li><code>COUNT()</code> — how many rows</li>
+<li><code>SUM()</code> — total</li>
+<li><code>AVG()</code> — mean</li>
+<li><code>MIN()</code> — smallest</li>
+<li><code>MAX()</code> — largest</li>
+</ul>
+<pre><code>SELECT COUNT(*) FROM students;
+SELECT AVG(grade_percent) FROM enrollments;
+SELECT MIN(grade_percent), MAX(grade_percent) FROM enrollments;</code></pre>
+<h2>GROUP BY — the real superpower</h2>
+<p>An aggregate on its own gives you one number. <code>GROUP BY</code> lets you compute that number for each category.</p>
+<pre><code>SELECT district, COUNT(*) AS student_count
+FROM students
+GROUP BY district
+ORDER BY student_count DESC;</code></pre>
+<p>Read it as: "for each district, count the students, then sort by count descending."</p>
+<p>The rule: <strong>everything in the SELECT list must either be in the GROUP BY, or inside an aggregate function.</strong> This is not a style choice — it is what SQL requires.</p>
+<pre><code>-- ✅ Correct
+SELECT district, AVG(grade) FROM students GROUP BY district;
+
+-- ❌ Error: first_name is neither grouped nor aggregated
+SELECT district, first_name, AVG(grade) FROM students GROUP BY district;</code></pre>
+<h2>Multiple groups</h2>
+<pre><code>SELECT district, grade, COUNT(*) AS n
+FROM students
+GROUP BY district, grade
+ORDER BY district, grade;</code></pre>
+<p>This gives one row per (district, grade) pair. If Lilongwe has three Grade 10 students and two Grade 11, you get two rows for Lilongwe.</p>
+<h2>HAVING — filtering groups</h2>
+<p><code>WHERE</code> filters rows before aggregation. <code>HAVING</code> filters groups after aggregation.</p>
+<pre><code>SELECT district, COUNT(*) AS student_count
+FROM students
+GROUP BY district
+HAVING COUNT(*) > 2;</code></pre>
+<p>Read it as: "count students per district, then keep only the districts with more than 2 students." You cannot use WHERE for that, because WHERE runs before the aggregation.</p>
+<h2>Real business queries</h2>
+<pre><code>-- Total enrollments per class
+SELECT c.name, COUNT(*) AS enrollments
+FROM classes c
+JOIN enrollments e ON e.class_id = c.id
+GROUP BY c.name
+ORDER BY enrollments DESC;</code></pre>
+<pre><code>-- Average grade per class
+SELECT c.name, ROUND(AVG(e.grade_percent), 1) AS avg_grade
+FROM classes c
+JOIN enrollments e ON e.class_id = c.id
+GROUP BY c.name
+ORDER BY avg_grade DESC;</code></pre>
+<pre><code>-- Top-performing students (students with an average grade above 80)
+SELECT s.first_name, s.last_name, ROUND(AVG(e.grade_percent), 1) AS avg_grade
+FROM students s
+JOIN enrollments e ON e.student_id = s.id
+GROUP BY s.id
+HAVING AVG(e.grade_percent) > 80
+ORDER BY avg_grade DESC;</code></pre>
+<p>That last query joins two tables, groups by student, filters groups with a HAVING clause, and sorts by the aggregate. If you can write that, you can answer most real database questions.</p>
+<blockquote><strong>The clause order, again:</strong> <code>SELECT ... FROM ... JOIN ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT</code>. WHERE filters rows. GROUP BY creates groups. HAVING filters groups. The order is not optional.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: DESIGN & PERFORMANCE ===== -->
+<div class="src-read" data-l="de1">
+<p>Writing queries is one skill. Designing the tables so that queries are easy and data stays clean is another. That is what schema design is about.</p>
+<h2>What is normalization?</h2>
+<p>Normalization is a set of rules for organising tables to reduce duplication and avoid inconsistency. The three forms you need to know:</p>
+<h3>First Normal Form (1NF)</h3>
+<p>Every cell holds one value. No comma-separated lists.</p>
+<pre><code>-- ❌ Bad: multiple teachers in one cell
++----+------------+--------------------------------+
+| id | name       | teachers                       |
++----+------------+--------------------------------+
+|  1 | Form 1     | Mr. Banda, Mrs. Phiri          |
++----+------------+--------------------------------+</code></pre>
+<p>The right design gives every class-teacher pairing its own row in a join table.</p>
+<h3>Second Normal Form (2NF)</h3>
+<p>Every non-key column depends on the whole primary key, not part of it. In practice: when you have a join table, do not store attributes of the joined entities inside it.</p>
+<pre><code>-- ❌ Bad: student_name depends on student_id, not on the whole enrollment key
++----+------------+----------+---------------+---------------+
+| id | student_id | class_id | student_name  | grade_percent |
++----+------------+----------+---------------+---------------+
+|  1 |          1 |        1 | Chisomo Banda |            78 |
++----+------------+----------+---------------+---------------+</code></pre>
+<p>Storing <code>student_name</code> here means every enrollment row repeats the name. If Chisomo changes her name, you must update dozens of rows. Worse: if you forget one, the database now disagrees with itself.</p>
+<p>The fix: keep <code>student_name</code> only in <code>students</code>, and use <code>student_id</code> here.</p>
+<h3>Third Normal Form (3NF)</h3>
+<p>No transitive dependencies. If a column depends on another non-key column, it belongs in its own table.</p>
+<pre><code>-- ❌ Bad: district_region depends on district, not on student
++----+------------+----------+------------------+
+| id | first_name | district | district_region  |
++----+------------+----------+------------------+
+|  1 | Chisomo    | Lilongwe | Central          |
++----+------------+----------+------------------+</code></pre>
+<p>Lilongwe is always in the Central region. Storing that fact on every student row is duplication. Move it to a <code>districts</code> table with a <code>region</code> column, and reference it by <code>district_id</code>.</p>
+<h2>When NOT to normalize</h2>
+<p>Normalization is the right default, but there are cases where you deliberately denormalize:</p>
+<ul>
+<li><strong>Reporting databases.</strong> A data warehouse often stores pre-computed aggregates for speed.</li>
+<li><strong>Frequently read columns.</strong> If a join is expensive and the data rarely changes, duplicating one column can be worth it.</li>
+<li><strong>Snapshots.</strong> An invoice stores the price at the time of sale, not the current product price. This is duplication on purpose.</li>
+</ul>
+<p>The rule: <strong>normalize until it hurts, denormalize until it works.</strong></p>
+<h2>The schema of this course</h2>
+<div class="schema-mini">
+<h4>Course database (school management)</h4>
+<div class="schema-row">
+<div class="schema-table">
+<div class="schema-table-name">students</div>
+<div class="schema-col pk"><span class="col-name">id</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">first_name</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">last_name</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">grade</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">district</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">enrolled_year</span><span class="col-type">INTEGER</span></div>
+</div>
+<div class="schema-table">
+<div class="schema-table-name">teachers</div>
+<div class="schema-col pk"><span class="col-name">id</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">name</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">subject</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">phone</span><span class="col-type">TEXT</span></div>
+</div>
+<div class="schema-table">
+<div class="schema-table-name">classes</div>
+<div class="schema-col pk"><span class="col-name">id</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">name</span><span class="col-type">TEXT</span></div>
+<div class="schema-col fk"><span class="col-name">teacher_id →</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">year</span><span class="col-type">INTEGER</span></div>
+</div>
+<div class="schema-table">
+<div class="schema-table-name">enrollments</div>
+<div class="schema-col pk"><span class="col-name">id</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col fk"><span class="col-name">student_id →</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col fk"><span class="col-name">class_id →</span><span class="col-type">INTEGER</span></div>
+<div class="schema-col"><span class="col-name">term</span><span class="col-type">TEXT</span></div>
+<div class="schema-col"><span class="col-name">grade_percent</span><span class="col-type">INTEGER</span></div>
+</div>
+</div>
+</div>
+<p>Four tables. Two foreign keys in <code>classes</code> and <code>enrollments</code>. Every concept we covered in module 1 is present.</p>
+<blockquote><strong>The design test:</strong> if you ever need to update the same fact in more than one row, you have a normalization problem. Fix the schema, not the code.</blockquote>
+</div>
+
+<div class="src-read" data-l="de2">
+<p>You have written queries. They work. But how fast are they on a million rows? That is what indexing is about.</p>
+<h2>The problem</h2>
+<p>Imagine a table with one million students. You write:</p>
+<pre><code>SELECT * FROM students WHERE last_name = 'Banda';</code></pre>
+<p>Without an index, SQLite reads every row, checking each one. One million reads. It is called a <strong>full table scan</strong>, and it is slow.</p>
+<h2>What an index is</h2>
+<p>An index is a sorted structure that points to rows. It is exactly like the index at the back of a textbook — instead of reading every page to find "photosynthesis", you jump straight to page 247.</p>
+<pre><code>CREATE INDEX idx_students_last_name ON students(last_name);</code></pre>
+<p>Now the same query is nearly instant. SQLite finds "Banda" in the index, follows the pointer, and retrieves the rows.</p>
+<h2>When indexes help</h2>
+<p>Add an index on:</p>
+<ul>
+<li><strong>Columns used in WHERE clauses</strong> — <code>WHERE last_name = 'Banda'</code></li>
+<li><strong>Columns used in JOIN conditions</strong> — foreign keys</li>
+<li><strong>Columns used in ORDER BY</strong> — sorting a million rows is expensive</li>
+</ul>
+<p>Foreign keys are usually the highest-impact place to index. Most JOIN queries collapse to near-instant with the right indexes on the join columns.</p>
+<h2>When indexes hurt</h2>
+<p>Every index has a cost:</p>
+<ul>
+<li><strong>They take disk space.</strong> Each index is essentially a second copy of the indexed data.</li>
+<li><strong>They slow down writes.</strong> Every INSERT, UPDATE, and DELETE must also update every index on that table.</li>
+</ul>
+<p>So: index the columns you filter on and join on. Do not index everything.</p>
+<h2>Composite indexes</h2>
+<p>An index can span multiple columns:</p>
+<pre><code>CREATE INDEX idx_students_district_grade ON students(district, grade);</code></pre>
+<p>This index helps queries like:</p>
+<pre><code>SELECT * FROM students WHERE district = 'Lilongwe' AND grade = 10;</code></pre>
+<p>But NOT queries that only filter on <code>grade</code>. The rule: a composite index helps queries that filter on a <strong>left-prefix</strong> of the indexed columns. <code>(district, grade)</code> helps <code>(district)</code> and <code>(district, grade)</code>, but not <code>(grade)</code> alone.</p>
+<h2>EXPLAIN — the query planner's report</h2>
+<p>Every database has a way to show you what it does with a query. In SQLite:</p>
+<pre><code>EXPLAIN QUERY PLAN
+SELECT * FROM students WHERE last_name = 'Banda';</code></pre>
+<p>You will see either "SCAN students" (bad — reading every row) or "SEARCH students USING INDEX idx_students_last_name" (good — using the index).</p>
+<p>Get in the habit of running EXPLAIN QUERY PLAN on any query you think might be slow. It is the single most useful diagnostic tool for database performance.</p>
+<h2>Query optimisation checklist</h2>
+<ul>
+<li>Are the columns in WHERE indexed?</li>
+<li>Are the JOIN columns indexed?</li>
+<li>Are you using <code>SELECT *</code> when you only need a few columns?</li>
+<li>Are you filtering rows as early as possible?</li>
+<li>Could a GROUP BY be avoided by adding a summary table?</li>
+</ul>
+<blockquote><strong>Premature optimization is the root of all evil.</strong> Do not add indexes "just in case." Add them when EXPLAIN QUERY PLAN tells you a query is doing a full table scan on a table that matters. Then measure again.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: CAPSTONE ===== -->
+<div class="src-read" data-l="cp1">
+<p>Time to build. Over the next two lessons, you will design and query a database for a real Malawi business scenario.</p>
+<h2>The scenario</h2>
+<p>You are building the database for a small agri-business in Kasungu that buys maize from farmers and sells it to traders. They need to track:</p>
+<ul>
+<li><strong>Farmers</strong> — name, village, phone</li>
+<li><strong>Deliveries</strong> — farmer, date, weight in kg, price per kg</li>
+<li><strong>Buyers</strong> — name, company, phone</li>
+<li><strong>Sales</strong> — buyer, date, weight in kg, price per kg</li>
+</ul>
+<h2>Design the schema</h2>
+<p>Before touching the editor, answer these questions on paper:</p>
+<ol>
+<li>What are the four tables?</li>
+<li>What is the primary key of each?</li>
+<li>Where do the foreign keys go?</li>
+<li>What type should each column have? (<code>INTEGER</code>, <code>TEXT</code>, <code>REAL</code>, <code>DATE</code>)</li>
+</ol>
+<p>Rules to remember:</p>
+<ul>
+<li>Farmers do not appear directly in sales. Sales reference buyers. The farmer relationship is on the delivery side.</li>
+<li>Never store a farmer's name inside the deliveries table — use <code>farmer_id</code>.</li>
+<li>Weight and price are numbers. Use <code>REAL</code> for decimals, <code>INTEGER</code> for whole numbers.</li>
+<li>Dates can be stored as <code>TEXT</code> in ISO format (YYYY-MM-DD), which sorts correctly.</li>
+</ul>
+<h2>Write the CREATE statements</h2>
+<pre><code>CREATE TABLE farmers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  village TEXT,
+  phone TEXT
+);
+
+CREATE TABLE buyers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  company TEXT,
+  phone TEXT
+);
+
+CREATE TABLE deliveries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  farmer_id INTEGER NOT NULL,
+  delivery_date TEXT NOT NULL,
+  weight_kg REAL NOT NULL,
+  price_per_kg REAL NOT NULL,
+  FOREIGN KEY (farmer_id) REFERENCES farmers(id)
+);
+
+CREATE TABLE sales (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  buyer_id INTEGER NOT NULL,
+  sale_date TEXT NOT NULL,
+  weight_kg REAL NOT NULL,
+  price_per_kg REAL NOT NULL,
+  FOREIGN KEY (buyer_id) REFERENCES buyers(id)
+);</code></pre>
+<h2>Insert sample data</h2>
+<pre><code>INSERT INTO farmers (name, village, phone) VALUES
+  ('Chisomo Banda', 'Chamama', '+265 999 111 222'),
+  ('Tadala Mwale', 'Kaluluma', '+265 888 333 444'),
+  ('Gift Phiri', 'Chulu', '+265 999 555 666');
+
+INSERT INTO buyers (name, company, phone) VALUES
+  ('Mrs. Nyirenda', 'Nyirenda Trading', '+265 991 234 567'),
+  ('Mr. Kaunda', 'Kaunda Grain Co', '+265 998 765 432');
+
+INSERT INTO deliveries (farmer_id, delivery_date, weight_kg, price_per_kg) VALUES
+  (1, '2024-04-15', 850.5, 280.00),
+  (2, '2024-04-16', 620.0, 275.00),
+  (3, '2024-04-18', 1200.0, 290.00),
+  (1, '2024-04-22', 950.0, 285.00);
+
+INSERT INTO sales (buyer_id, sale_date, weight_kg, price_per_kg) VALUES
+  (1, '2024-04-20', 1500.0, 340.00),
+  (2, '2024-04-25', 2000.0, 350.00);</code></pre>
+<p>Notice how much cleaner this is than a single spreadsheet. Each fact lives in exactly one place.</p>
+<h2>Try it in the sandbox</h2>
+<p>The sandbox already loads the school database. For this lesson, use a different workflow: write your <code>CREATE TABLE</code> statements, then <code>INSERT</code> some rows, then <code>SELECT *</code> to check. The sandbox resets on every Run — so write everything in one script.</p>
+<blockquote><strong>The design is 80% of the work.</strong> Once the tables exist, the queries almost write themselves. If you find yourself writing a query that feels awkward, the schema is probably wrong.</blockquote>
+</div>
+
+<div class="src-read" data-l="cp2">
+<p>Your tables are ready. Now you answer the business questions. Every query in this lesson is one the owner of that agri-business would actually ask.</p>
+<h2>Question 1 — How much maize did each farmer deliver?</h2>
+<pre><code>SELECT
+  f.name,
+  SUM(d.weight_kg) AS total_kg,
+  ROUND(SUM(d.weight_kg * d.price_per_kg), 2) AS total_paid
+FROM farmers f
+JOIN deliveries d ON d.farmer_id = f.id
+GROUP BY f.id
+ORDER BY total_kg DESC;</code></pre>
+<p>This joins farmers to deliveries, groups by farmer, sums the weight, and computes how much was paid. <code>SUM(d.weight_kg * d.price_per_kg)</code> is a computed column inside an aggregate — completely valid and very useful.</p>
+<h2>Question 2 — What was the total profit?</h2>
+<pre><code>SELECT
+  (SELECT SUM(weight_kg * price_per_kg) FROM sales) -
+  (SELECT SUM(weight_kg * price_per_kg) FROM deliveries) AS profit;</code></pre>
+<p>Subqueries in the SELECT list let you compute one value from another query. The profit is total sales minus total deliveries.</p>
+<h2>Question 3 — Which buyer spent the most?</h2>
+<pre><code>SELECT
+  b.name,
+  b.company,
+  SUM(s.weight_kg * s.price_per_kg) AS total_spent
+FROM buyers b
+JOIN sales s ON s.buyer_id = b.id
+GROUP BY b.id
+ORDER BY total_spent DESC
+LIMIT 1;</code></pre>
+<h2>Question 4 — Average price per kg paid to farmers vs. received from buyers</h2>
+<pre><code>SELECT
+  (SELECT AVG(price_per_kg) FROM deliveries) AS avg_buy_price,
+  (SELECT AVG(price_per_kg) FROM sales) AS avg_sell_price,
+  (SELECT AVG(price_per_kg) FROM sales) -
+  (SELECT AVG(price_per_kg) FROM deliveries) AS margin_per_kg;</code></pre>
+<p>This tells the owner the average markup. If the margin is thin, they need to negotiate better sale prices or reduce costs.</p>
+<h2>Question 5 — Monthly totals</h2>
+<pre><code>SELECT
+  SUBSTR(delivery_date, 1, 7) AS month,
+  COUNT(*) AS deliveries,
+  ROUND(SUM(weight_kg), 1) AS total_kg
+FROM deliveries
+GROUP BY SUBSTR(delivery_date, 1, 7)
+ORDER BY month;</code></pre>
+<p><code>SUBSTR(delivery_date, 1, 7)</code> extracts the "YYYY-MM" part from an ISO date. Grouping by it gives monthly totals. This is the standard way to build trend reports.</p>
+<h2>What you have built</h2>
+<p>A complete database for a small agri-business, with:</p>
+<ul>
+<li>A normalized schema (4 tables, 4 foreign keys)</li>
+<li>Realistic sample data</li>
+<li>Five business queries that answer real questions</li>
+</ul>
+<p>This is exactly the kind of thing a small Malawian business would pay a developer to build. If you can do this, you can build the database layer for inventory systems, customer management tools, payment records, and almost anything else.</p>
+<h2>What to do with this</h2>
+<ol>
+<li>Push the schema to GitHub as a <code>.sql</code> file.</li>
+<li>Write a README explaining what problem it solves.</li>
+<li>Take screenshots of the queries running.</li>
+<li>Add it to your portfolio.</li>
+</ol>
+<p>Employers care about proof that you can design and query a real schema. This project is that proof.</p>
+<blockquote><strong>You have finished the course.</strong> You now know SELECT, WHERE, JOINs, aggregates, GROUP BY, schema design, and indexing. That is the full toolkit of a working SQL developer. Everything else is variations on these same ideas applied to bigger and messier data.</blockquote>
+</div>
+
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="d1" data-kind="starter" hidden>
+-- SELECT is how you read data. Try running this query.
+SELECT * FROM students;
+</textarea>
+
+<textarea class="src-code" data-l="d2" data-kind="starter" hidden>
+-- Every student has an id. Every enrollment references a student.
+-- Run this to see how the two tables connect.
+SELECT
+  e.id AS enrollment_id,
+  s.first_name,
+  s.last_name
+FROM enrollments e
+JOIN students s ON s.id = e.student_id
+LIMIT 10;
+</textarea>
+
+<textarea class="src-code" data-l="s1" data-kind="starter" hidden>
+-- SELECT specific columns, sorted, with a limit
+SELECT first_name, last_name, grade, district
+FROM students
+ORDER BY grade DESC, first_name ASC
+LIMIT 10;
+</textarea>
+
+<textarea class="src-code" data-l="s2" data-kind="starter" hidden>
+-- Filter with WHERE
+SELECT first_name, last_name, district
+FROM students
+WHERE district = 'Lilongwe'
+ORDER BY first_name;
+</textarea>
+
+<textarea class="src-code" data-l="s3" data-kind="starter" hidden>
+-- Check what you're about to change, then change it
+SELECT * FROM students WHERE id = 3;
+
+-- Now update (uncomment to run)
+-- UPDATE students SET district = 'Kasungu' WHERE id = 3;
+-- SELECT * FROM students WHERE id = 3;
+</textarea>
+
+<textarea class="src-code" data-l="j1" data-kind="starter" hidden>
+-- JOIN students, classes, and enrollments
+SELECT
+  s.first_name,
+  s.last_name,
+  c.name AS class_name,
+  e.grade_percent
+FROM enrollments e
+JOIN students s ON s.id = e.student_id
+JOIN classes c ON c.id = e.class_id
+ORDER BY e.grade_percent DESC;
+</textarea>
+
+<textarea class="src-code" data-l="j2" data-kind="starter" hidden>
+-- Count students per district
+SELECT district, COUNT(*) AS student_count
+FROM students
+GROUP BY district
+ORDER BY student_count DESC;
+</textarea>
+
+<textarea class="src-code" data-l="de1" data-kind="starter" hidden>
+-- Inspect the schema. What tables exist? What columns?
+SELECT name FROM sqlite_master WHERE type = 'table';
+</textarea>
+
+<textarea class="src-code" data-l="de2" data-kind="starter" hidden>
+-- Check what the query planner does
+EXPLAIN QUERY PLAN
+SELECT * FROM students WHERE district = 'Lilongwe';
+</textarea>
+
+<textarea class="src-code" data-l="cp1" data-kind="starter" hidden>
+-- CAPSTONE PART 1 — Design and build the agri-business schema.
+-- Write your CREATE TABLE statements here.
+-- Then INSERT some rows.
+-- Then SELECT to verify.
+
+-- Your tables: farmers, buyers, deliveries, sales
+
+SELECT 'Replace this with your schema design' AS next_step;
+</textarea>
+
+<textarea class="src-code" data-l="cp2" data-kind="starter" hidden>
+-- CAPSTONE PART 2 — Answer business questions.
+-- (Use the schema you built in the previous lesson — for now,
+-- use the school database to practice the query patterns.)
+
+-- Question: count students per district, ordered by count
+SELECT district, COUNT(*) AS student_count
+FROM students
+GROUP BY district
+ORDER BY student_count DESC;
+</textarea>
+
+<!-- SOLUTIONS -->
+<textarea class="src-code" data-l="d1" data-kind="solution" hidden>
+-- See everything in the students table
+SELECT * FROM students;
+
+-- Count how many students there are
+SELECT COUNT(*) AS total_students FROM students;
+</textarea>
+
+<textarea class="src-code" data-l="d2" data-kind="solution" hidden>
+-- Students and their classes (INNER JOIN — only students with enrollments)
+SELECT
+  s.first_name,
+  s.last_name,
+  c.name AS class_name
+FROM enrollments e
+JOIN students s ON s.id = e.student_id
+JOIN classes c ON c.id = e.class_id
+ORDER BY s.last_name, s.first_name;
+</textarea>
+
+<textarea class="src-code" data-l="s1" data-kind="solution" hidden>
+-- Form 11 and 12 students, sorted alphabetically by last name
+SELECT first_name, last_name, grade, district
+FROM students
+WHERE grade >= 11
+ORDER BY last_name ASC, first_name ASC;
+</textarea>
+
+<textarea class="src-code" data-l="s2" data-kind="solution" hidden>
+-- Students from Lilongwe or Blantyre, in grade 10, sorted by first name
+SELECT first_name, last_name, district
+FROM students
+WHERE grade = 10
+  AND district IN ('Lilongwe', 'Blantyre')
+ORDER BY first_name;
+</textarea>
+
+<textarea class="src-code" data-l="s3" data-kind="solution" hidden>
+-- SAFE PATTERN: SELECT first to see what will change
+SELECT * FROM students WHERE district = 'Zomba';
+
+-- Then update (in real code, wrap in a transaction)
+UPDATE students
+SET grade = 10
+WHERE district = 'Zomba';
+
+-- Verify the change
+SELECT first_name, last_name, grade, district
+FROM students
+WHERE district = 'Zomba';
+</textarea>
+
+<textarea class="src-code" data-l="j1" data-kind="solution" hidden>
+-- Everything a student is enrolled in, with class and teacher
+SELECT
+  s.first_name,
+  s.last_name,
+  c.name AS class_name,
+  t.name AS teacher
+FROM enrollments e
+JOIN students s ON s.id = e.student_id
+JOIN classes c ON c.id = e.class_id
+JOIN teachers t ON t.id = c.teacher_id
+ORDER BY s.last_name, c.name;
+</textarea>
+
+<textarea class="src-code" data-l="j2" data-kind="solution" hidden>
+-- Districts with more than 2 students, plus the average grade
+SELECT
+  s.district,
+  COUNT(DISTINCT s.id) AS student_count,
+  ROUND(AVG(e.grade_percent), 1) AS avg_grade
+FROM students s
+LEFT JOIN enrollments e ON e.student_id = s.id
+GROUP BY s.district
+HAVING COUNT(DISTINCT s.id) > 2
+ORDER BY student_count DESC;
+</textarea>
+
+<textarea class="src-code" data-l="de1" data-kind="solution" hidden>
+-- Full schema of every table
+SELECT name, sql FROM sqlite_master WHERE type = 'table';
+
+-- Column details of the students table
+PRAGMA table_info(students);
+</textarea>
+
+<textarea class="src-code" data-l="de2" data-kind="solution" hidden>
+-- Compare the query plan before and after creating an index.
+
+EXPLAIN QUERY PLAN
+SELECT * FROM students WHERE district = 'Lilongwe';
+
+CREATE INDEX idx_students_district ON students(district);
+
+EXPLAIN QUERY PLAN
+SELECT * FROM students WHERE district = 'Lilongwe';
+</textarea>
+
+<textarea class="src-code" data-l="cp1" data-kind="solution" hidden>
+-- Full schema for the agri-business
+
+CREATE TABLE farmers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  village TEXT,
+  phone TEXT
+);
+
+CREATE TABLE buyers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  company TEXT,
+  phone TEXT
+);
+
+CREATE TABLE deliveries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  farmer_id INTEGER NOT NULL,
+  delivery_date TEXT NOT NULL,
+  weight_kg REAL NOT NULL,
+  price_per_kg REAL NOT NULL,
+  FOREIGN KEY (farmer_id) REFERENCES farmers(id)
+);
+
+CREATE TABLE sales (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  buyer_id INTEGER NOT NULL,
+  sale_date TEXT NOT NULL,
+  weight_kg REAL NOT NULL,
+  price_per_kg REAL NOT NULL,
+  FOREIGN KEY (buyer_id) REFERENCES buyers(id)
+);
+
+INSERT INTO farmers (name, village, phone) VALUES
+  ('Chisomo Banda', 'Chamama', '+265 999 111 222'),
+  ('Tadala Mwale', 'Kaluluma', '+265 888 333 444'),
+  ('Gift Phiri', 'Chulu', '+265 999 555 666');
+
+INSERT INTO buyers (name, company, phone) VALUES
+  ('Mrs. Nyirenda', 'Nyirenda Trading', '+265 991 234 567'),
+  ('Mr. Kaunda', 'Kaunda Grain Co', '+265 998 765 432');
+
+INSERT INTO deliveries (farmer_id, delivery_date, weight_kg, price_per_kg) VALUES
+  (1, '2024-04-15', 850.5, 280.00),
+  (2, '2024-04-16', 620.0, 275.00),
+  (3, '2024-04-18', 1200.0, 290.00),
+  (1, '2024-04-22', 950.0, 285.00);
+
+INSERT INTO sales (buyer_id, sale_date, weight_kg, price_per_kg) VALUES
+  (1, '2024-04-20', 1500.0, 340.00),
+  (2, '2024-04-25', 2000.0, 350.00);
+
+SELECT 'Schema built. Now run the business queries.' AS status;
+</textarea>
+
+<textarea class="src-code" data-l="cp2" data-kind="solution" hidden>
+-- Business question: average grade per class, sorted by highest average
+SELECT
+  c.name AS class_name,
+  COUNT(*) AS enrollments,
+  ROUND(AVG(e.grade_percent), 1) AS avg_grade
+FROM classes c
+JOIN enrollments e ON e.class_id = c.id
+GROUP BY c.id
+ORDER BY avg_grade DESC;
+
+-- Bonus: top performing students (avg grade > 80)
+SELECT
+  s.first_name,
+  s.last_name,
+  ROUND(AVG(e.grade_percent), 1) AS avg_grade
+FROM students s
+JOIN enrollments e ON e.student_id = s.id
+GROUP BY s.id
+HAVING AVG(e.grade_percent) > 80
+ORDER BY avg_grade DESC;
+</textarea>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'sql_database_progress_v1';
+var CAPSTONE_KEY = 'sql_database_capstone_v1';
+var SQLJS_URL = 'https://cdn.jsdelivr.net/npm/sql.js@1.10.2/dist/sql-wasm.js';
+
+var course = {
+  modules: [
+    {
+      id: 'foundations', icon: '🧱', title: 'Foundations',
+      lessons: [
+        { id:'d1', title:'What is a Database?', time:'24 min',
+          challenge:'Run <code>SELECT * FROM students;</code> to see all data. Then run <code>SELECT COUNT(*) FROM students;</code> to see the total row count.',
+          quiz:[
+            { q:'What does SQL stand for?', options:['Structured Question Language','Structured Query Language','Simple Query Language','Standard Query Layer'], correct:1 },
+            { q:'Which of these is NOT something a database does better than a spreadsheet?', options:['Handling millions of rows','Handling concurrent editors','Making cells colourful','Enforcing relationships'], correct:2 },
+            { q:'Which SQL statement reads data?', options:['INSERT','SELECT','UPDATE','DELETE'], correct:1 }
+          ]},
+        { id:'d2', title:'Tables, Keys & Relationships', time:'26 min',
+          challenge:'Join <code>enrollments</code> and <code>students</code> so each row shows the enrollment id and the student\'s first name. Use the JOIN pattern shown in the reading.',
+          quiz:[
+            { q:'What is a primary key?', options:['A column that uniquely identifies each row','The first column of a table','A foreign key','A password'], correct:0 },
+            { q:'What does a foreign key do?', options:['Locks the table','Points to the primary key of another table','Encrypts a column','Sorts rows'], correct:1 },
+            { q:'How do you express a many-to-many relationship?', options:['Put both IDs in one cell','Create a join table with two foreign keys','Use a comma-separated list','You cannot'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'core-sql', icon: '📖', title: 'Core SQL',
+      lessons: [
+        { id:'s1', title:'SELECT — Reading Data', time:'28 min',
+          challenge:'Write a query that returns every student in grade 11 or 12, sorted by last name A–Z. Include only first_name, last_name, grade, district.',
+          quiz:[
+            { q:'What does SELECT * do?', options:['Selects the first column','Selects all columns','Counts rows','Deletes everything'], correct:1 },
+            { q:'Which clause sorts results?', options:['SORT BY','ORDER BY','GROUP BY','ARRANGE'], correct:1 },
+            { q:'What does LIMIT 5 do?', options:['Skips 5 rows','Returns only 5 rows','Sorts top 5','Removes 5 rows'], correct:1 }
+          ]},
+        { id:'s2', title:'Filtering & Sorting', time:'30 min',
+          challenge:'Write a query that returns students from Lilongwe or Blantyre, in grade 10, sorted by first name. Columns: first_name, last_name, district.',
+          quiz:[
+            { q:'How do you filter rows in SQL?', options:['FILTER BY','WHERE','HAVING','IF'], correct:1 },
+            { q:'What does LIKE \'Ch%\' match?', options:['Values ending in "Ch"','Values equal to "Ch"','Values starting with "Ch"','Values containing "Ch" only at the end'], correct:2 },
+            { q:'How do you check for NULL?', options:['= NULL','IS NULL','== NULL','NULL CHECK'], correct:1 }
+          ]},
+        { id:'s3', title:'Writing Data (INSERT / UPDATE / DELETE)', time:'32 min',
+          challenge:'Write an <code>UPDATE</code> that changes every Zomba student to grade 10. First run a <code>SELECT</code> to confirm which rows match, then run the <code>UPDATE</code>, then <code>SELECT</code> again.',
+          quiz:[
+            { q:'What happens if you run UPDATE without WHERE?', options:['Nothing','Only the first row is updated','Every row is updated','SQL blocks it'], correct:2 },
+            { q:'Why check with SELECT before UPDATE or DELETE?', options:['To be polite','To verify exactly which rows will be affected','SELECT is required','It speeds things up'], correct:1 },
+            { q:'What is a soft delete?', options:['Deleting the row','Marking a row as deleted without removing it','Archiving to another table','A backup'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'joins', icon: '🔗', title: 'Joins & Aggregates',
+      lessons: [
+        { id:'j1', title:'JOINs — Connecting Tables', time:'34 min',
+          challenge:'Write a query that lists every enrollment with the student name, class name, and teacher name. Sort by student last name. This requires three JOINs.',
+          quiz:[
+            { q:'What does an INNER JOIN return?', options:['All rows from both tables','Only rows with matching keys in both tables','All rows from the left table','Sorted rows'], correct:1 },
+            { q:'What is a table alias?', options:['A copy of the table','A short name used to reference a table in the query','A security feature','An index'], correct:1 },
+            { q:'What does LEFT JOIN do that INNER JOIN does not?', options:['Nothing','Keeps all rows from the left table even with no match','Sorts the results','Hides columns'], correct:1 }
+          ]},
+        { id:'j2', title:'GROUP BY & Aggregations', time:'34 min',
+          challenge:'Write a query that returns each district, the number of students in it, and the average enrollment grade for that district. Only include districts with more than 2 students.',
+          quiz:[
+            { q:'Which aggregate returns a row count?', options:['SUM()','COUNT()','TOTAL()','LEN()'], correct:1 },
+            { q:'What is the difference between WHERE and HAVING?', options:['None','WHERE filters rows before grouping; HAVING filters groups after','HAVING is faster','WHERE only works with numbers'], correct:1 },
+            { q:'What must be true of every column in the SELECT list when using GROUP BY?', options:['It must be a number','It must be in the GROUP BY or inside an aggregate','It must be indexed','It must be sorted'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'design', icon: '📐', title: 'Design & Performance',
+      lessons: [
+        { id:'de1', title:'Schema Design & Normalization', time:'32 min',
+          challenge:'Look at the <code>students</code> table. Every district name is stored as text on every row. Sketch a normalized design with a separate <code>districts</code> table that has an <code>id</code> and a <code>region</code> column, and change <code>students</code> to reference it.',
+          quiz:[
+            { q:'What does First Normal Form (1NF) require?', options:['One value per cell','No duplicate rows','An index on every column','At least three tables'], correct:0 },
+            { q:'What is the main purpose of normalization?', options:['Faster queries','Reducing duplication and avoiding inconsistent data','Hiding data','Saving disk space'], correct:1 },
+            { q:'When should you denormalize?', options:['Never','When read performance matters more than write simplicity, or for historical snapshots','Always','Only in small databases'], correct:1 }
+          ]},
+        { id:'de2', title:'Indexes & Performance', time:'30 min',
+          challenge:'Run <code>EXPLAIN QUERY PLAN SELECT * FROM students WHERE district = \'Lilongwe\';</code> before creating an index. Then create <code>CREATE INDEX idx_students_district ON students(district);</code> and run the EXPLAIN again to compare.',
+          quiz:[
+            { q:'What does an index do?', options:['Sorts the table permanently','Provides a fast lookup structure so queries do not scan every row','Compresses data','Encrypts a column'], correct:1 },
+            { q:'What is the trade-off of adding an index?', options:['No trade-off','Slower writes and more disk space','Slower reads','Less data'], correct:1 },
+            { q:'Which command shows you the query plan?', options:['SHOW PLAN','EXPLAIN QUERY PLAN','DESCRIBE QUERY','ANALYSE'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'capstone', icon: '🚀', title: 'Capstone',
+      lessons: [
+        { id:'cp1', title:'Capstone 1 — Design a Schema', time:'40 min',
+          challenge:'Design and build the agri-business schema: farmers, buyers, deliveries, sales. Insert at least 3 farmers, 2 buyers, 4 deliveries, and 2 sales. Then <code>SELECT * FROM deliveries;</code> to verify.',
+          quiz:[
+            { q:'Where should the farmer_id foreign key go?', options:['In the farmers table','In the deliveries table','In both','Nowhere'], correct:1 },
+            { q:'What type should weight_kg be?', options:['TEXT','INTEGER','REAL','DATE'], correct:2 },
+            { q:'Why do we store farmer_id in deliveries instead of the farmer name?', options:['It is shorter','To avoid duplication and keep data consistent','It sorts better','It is required'], correct:1 }
+          ]},
+        { id:'cp2', title:'Capstone 2 — Answer Real Questions', time:'42 min',
+          challenge:'Write a query that returns each class name, the number of students enrolled, and the average grade. Sort by average grade, highest first.',
+          quiz:[
+            { q:'How do you compute a total revenue column?', options:['SUM(weight_kg) only','SUM(weight_kg * price_per_kg)','SUM(price_per_kg)','COUNT(*)'], correct:1 },
+            { q:'What does SUBSTR(date, 1, 7) do to \'2024-04-15\'?', options:['Returns 2024','Returns 04','Returns 2024-04','Returns the day'], correct:2 },
+            { q:'Why is this capstone useful in a portfolio?', options:['It uses keywords','It shows you can design a schema AND write business queries','It is long','It uses Python'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+var SCHEMA_SQL = document.getElementById('schemaSql').value;
+
+/* ============================================================
+   SQL.JS LAZY LOADER
+   ============================================================ */
+var sqlReady = false;
+var sqlLoading = false;
+var sqlQueue = [];
+var sqlModule = null;
+
+function loadSqlEngine(callback) {
+  if (sqlReady) { callback(null); return; }
+  sqlQueue.push(callback);
+  if (sqlLoading) return;
+  sqlLoading = true;
+
+  var s = document.createElement('script');
+  s.src = SQLJS_URL;
+  s.onload = function() {
+    if (typeof initSqlJs !== 'function') {
+      sqlLoading = false;
+      var err = new Error('sql.js loaded but initSqlJs not found.');
+      var q = sqlQueue.slice(); sqlQueue = [];
+      q.forEach(function(cb) { cb(err); });
+      return;
+    }
+    initSqlJs({
+      locateFile: function(file) {
+        return 'https://cdn.jsdelivr.net/npm/sql.js@1.10.2/dist/' + file;
+      }
+    }).then(function(SQL) {
+      sqlModule = SQL;
+      sqlReady = true;
+      sqlLoading = false;
+      var q = sqlQueue.slice(); sqlQueue = [];
+      q.forEach(function(cb) { cb(null); });
+    }).catch(function(err) {
+      sqlLoading = false;
+      var q = sqlQueue.slice(); sqlQueue = [];
+      q.forEach(function(cb) { cb(err); });
+    });
+  };
+  s.onerror = function() {
+    sqlLoading = false;
+    var err = new Error('Failed to load the SQL engine. Check your connection.');
+    var q = sqlQueue.slice(); sqlQueue = [];
+    q.forEach(function(cb) { cb(err); });
+  };
+  document.head.appendChild(s);
+}
+
+function runSql(userSql, onDone) {
+  loadSqlEngine(function(err) {
+    if (err) { onDone(err, null, 0); return; }
+    var startTime = performance.now();
+    try {
+      var db = new sqlModule.Database();
+      db.run(SCHEMA_SQL);
+      var results = db.exec(userSql);
+      var elapsed = Math.round(performance.now() - startTime);
+      db.close();
+      onDone(null, results, elapsed);
+    } catch (e) {
+      var elapsed2 = Math.round(performance.now() - startTime);
+      onDone(e, null, elapsed2);
+    }
+  });
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'sql::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I understand what a relational database is and why it beats a spreadsheet at scale' },
+  { id: 'm2', text: 'I can identify primary keys and foreign keys in a schema' },
+  { id: 'm3', text: 'I can write SELECT queries with WHERE, ORDER BY, and LIMIT' },
+  { id: 'm4', text: 'I can INSERT, UPDATE, and DELETE rows safely' },
+  { id: 'm5', text: 'I can join two or more tables together' },
+  { id: 'm6', text: 'I can aggregate data with COUNT, SUM, AVG, and GROUP BY' },
+  { id: 'm7', text: 'I can design a normalized schema with proper relationships' },
+  { id: 'm8', text: 'I understand what indexes are and when to add them' },
+  { id: 'm9', text: 'I built the agri-business capstone schema end to end' },
+  { id: 'm10', text: 'I pushed my capstone .sql file to GitHub with a README' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'd1';
+var currentView = 'lessons';
+var lintTimer = null;
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>🗄️ Real SQLite</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Live SQL</span></h2>';
+    html += '<p class="ed-s">Write SQL and click <strong>Run</strong>. The Malawi school database is loaded automatically on every run — four tables, realistic data, ready to query.</p>';
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>query.sql</span><span class="pane-lb">SQLite</span></div>';
+    html += '<textarea class="sql-ta" id="sqlEditor" spellcheck="false" aria-label="SQL editor"></textarea></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Results</span><button id="clearResultsBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+    html += '<div class="res-area" id="resultsArea" aria-live="polite"><div class="res-empty">Click Run to execute your query.</div></div></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .sql</button>';
+    html += '<span class="ed-tip">Tip: Ctrl+Enter to run · Tab inserts 2 spaces</span>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some SQL — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Write the query, run it, answer the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('sqlEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+function attachEditor(lesson, starter) {
+  var ta = $('sqlEditor');
+  var resArea = $('resultsArea');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+
+  function clearResults() {
+    resArea.innerHTML = '<div class="res-empty">Click Run to execute your query.</div>';
+  }
+
+  function renderResults(results, elapsed) {
+    resArea.innerHTML = '';
+    if (!results || results.length === 0) {
+      var st = document.createElement('div');
+      st.className = 'res-status ok';
+      st.innerHTML = '<span><span class="res-badge ok">OK</span> Statement executed</span><span class="res-meta">' + elapsed + ' ms</span>';
+      resArea.appendChild(st);
+      var msg = document.createElement('div');
+      msg.className = 'res-empty';
+      msg.textContent = 'No rows returned. If you expected data, add a SELECT after your INSERT/UPDATE.';
+      resArea.appendChild(msg);
+      return;
+    }
+    // Show the last result set (or all if there are multiple)
+    var st2 = document.createElement('div');
+    st2.className = 'res-status ok';
+    var totalRows = 0;
+    results.forEach(function(rs) { totalRows += (rs.values ? rs.values.length : 0); });
+    st2.innerHTML = '<span><span class="res-badge ok">OK</span> ' + totalRows + ' row' + (totalRows !== 1 ? 's' : '') + ' returned</span><span class="res-meta">' + elapsed + ' ms</span>';
+    resArea.appendChild(st2);
+
+    var wrap = document.createElement('div');
+    wrap.className = 'result-table-wrap';
+    results.forEach(function(rs, idx) {
+      var set = document.createElement('div');
+      set.className = 'result-set';
+      if (results.length > 1) {
+        var lbl = document.createElement('div');
+        lbl.className = 'result-set-label';
+        lbl.textContent = 'Result ' + (idx + 1) + ' of ' + results.length;
+        set.appendChild(lbl);
+      }
+      var table = document.createElement('table');
+      table.className = 'result-table';
+      var thead = document.createElement('thead');
+      var trHead = document.createElement('tr');
+      (rs.columns || []).forEach(function(col) {
+        var th = document.createElement('th');
+        th.textContent = col;
+        trHead.appendChild(th);
+      });
+      thead.appendChild(trHead);
+      table.appendChild(thead);
+      var tbody = document.createElement('tbody');
+      (rs.values || []).forEach(function(row) {
+        var tr = document.createElement('tr');
+        row.forEach(function(cell) {
+          var td = document.createElement('td');
+          if (cell === null || cell === undefined) {
+            td.className = 'null';
+            td.textContent = 'NULL';
+          } else if (typeof cell === 'number') {
+            td.className = 'num';
+            td.textContent = String(cell);
+          } else if (typeof cell === 'object') {
+            td.textContent = JSON.stringify(cell);
+          } else {
+            td.textContent = String(cell);
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      set.appendChild(table);
+      wrap.appendChild(set);
+    });
+    resArea.appendChild(wrap);
+  }
+
+  function renderError(err, elapsed) {
+    resArea.innerHTML = '';
+    var st = document.createElement('div');
+    st.className = 'res-status err';
+    st.innerHTML = '<span><span class="res-badge err">Error</span> Query failed</span><span class="res-meta">' + elapsed + ' ms</span>';
+    resArea.appendChild(st);
+    var msg = document.createElement('div');
+    msg.className = 'res-error';
+    msg.textContent = err.message || String(err);
+    resArea.appendChild(msg);
+  }
+
+  function run() {
+    runBtn.disabled = true;
+    if (!sqlReady) {
+      resArea.innerHTML = '';
+      var loading = document.createElement('div');
+      loading.className = 'res-status';
+      loading.innerHTML = '<span><span class="res-badge">...</span> Loading SQL engine (one-time, ~1.5 MB)</span>';
+      resArea.appendChild(loading);
+      var note = document.createElement('div');
+      note.className = 'res-empty';
+      note.textContent = 'First Run downloads the SQLite engine. After this, it is cached and instant.';
+      resArea.appendChild(note);
+    }
+    runSql(ta.value, function(err, results, elapsed) {
+      runBtn.disabled = false;
+      if (err) renderError(err, elapsed);
+      else renderResults(results, elapsed);
+    });
+  }
+
+  function lintSql(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+
+    // Common typos
+    if (/\bSELCT\b/i.test(code)) issues.push({ level: 'error', text: '"SELCT" is a typo — did you mean SELECT?' });
+    if (/\bFORM\s+\w+\s*(;|$)/im.test(code) && !/\bFROM\b/i.test(code)) issues.push({ level: 'error', text: '"FORM" is a typo — did you mean FROM?' });
+    if (/\bWEHRE\b/i.test(code)) issues.push({ level: 'error', text: '"WEHRE" is a typo — did you mean WHERE?' });
+    if (/\bORDR\s+BY\b/i.test(code)) issues.push({ level: 'error', text: '"ORDR BY" is a typo — did you mean ORDER BY?' });
+    if (/\bGROUPBY\b/i.test(code)) issues.push({ level: 'error', text: '"GROUPBY" should be two words: GROUP BY.' });
+    if (/\bORDERBY\b/i.test(code)) issues.push({ level: 'error', text: '"ORDERBY" should be two words: ORDER BY.' });
+
+    // SELECT without FROM
+    var selectMatches = code.match(/SELECT[\s\S]*?(?=;|$)/gi) || [];
+    selectMatches.forEach(function(s) {
+      var trimmed = s.trim();
+      if (!/\bFROM\b/i.test(s) && !/^SELECT\s+('.*'|".*"|[\d.]+|CURRENT_\w+)\s*(;|$)/i.test(trimmed)) {
+        if (!/EXPLAIN|PRAGMA/i.test(s)) {
+          issues.push({ level: 'warn', text: 'SELECT without FROM — most SELECTs need FROM table_name.' });
+        }
+      }
+    });
+
+    // Unbalanced quotes
+    var singleQ = (code.match(/'/g) || []).length;
+    if (singleQ % 2 !== 0) issues.push({ level: 'error', text: 'Odd number of single quotes — check that every opening \' has a closing one.' });
+
+    // Missing semicolon at end
+    if (!/;\s*$/.test(code.trim())) {
+      issues.push({ level: 'warn', text: 'Statements usually end with a semicolon (;).' });
+    }
+
+    // UPDATE/DELETE without WHERE
+    if (/\bUPDATE\b/i.test(code) && !/\bWHERE\b/i.test(code)) {
+      issues.push({ level: 'warn', text: 'UPDATE without WHERE affects every row in the table. Is that intentional?' });
+    }
+    if (/\bDELETE\s+FROM\b/i.test(code) && !/\bWHERE\b/i.test(code)) {
+      issues.push({ level: 'warn', text: 'DELETE without WHERE removes every row. Is that intentional?' });
+    }
+
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintSql(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      debLint();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      run();
+    }
+  });
+
+  runBtn.addEventListener('click', run);
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearResults();
+  });
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'application/sql' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.sql';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+  if ($('clearResultsBtn')) $('clearResultsBtn').addEventListener('click', clearResults);
+
+  lintNow();
+}
+
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">SQL &amp; Database Design</h1>';
+  html += '<p class="pg-sub">Every real application has a database behind it. Over 8 weeks you will go from your first <code>SELECT</code> to designing a normalized schema for a real Malawi business — using the same SQL that powers PostgreSQL, MySQL, and every production system you have ever used.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>8 weeks</h3><p>10 lessons across 5 modules. About 12 hours of learning.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>Comfortable with basic programming concepts. No prior database experience needed.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🗄️</span>Real SQLite</h3><p>Actual SQLite running in your browser. The Malawi school database loads on every run.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Relational thinking</h3><p>Tables, rows, primary keys, foreign keys, one-to-many and many-to-many.</p></div>';
+  html += '<div class="ov-card"><h3>Core SQL</h3><p>SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE — read and write with confidence.</p></div>';
+  html += '<div class="ov-card"><h3>Joins</h3><p>INNER JOIN, LEFT JOIN, joining three or more tables.</p></div>';
+  html += '<div class="ov-card"><h3>Aggregation</h3><p>COUNT, SUM, AVG, GROUP BY, HAVING — answer business questions from data.</p></div>';
+  html += '<div class="ov-card"><h3>Schema design</h3><p>Normalization, when to denormalize, real schema modelling.</p></div>';
+  html += '<div class="ov-card"><h3>Performance</h3><p>Indexes, query planning, and the EXPLAIN command.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Foundations', 'What databases are, tables, keys, relationships.'],
+    ['W2–3', 'Core SQL', 'SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE.'],
+    ['W4–5', 'Joins & Aggregates', 'JOINs across tables, GROUP BY, and business queries.'],
+    ['W6–7', 'Design & Performance', 'Normalization, indexes, and query planning.'],
+    ['W8', 'Capstone', 'Design and query a real agri-business schema.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. The Malawi school database loads in the sandbox on your first Run — no installs, no setup.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('d1');
+    switchView('lessons');
+  });
+}
+
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">Design and query a full schema for a Kasungu agri-business that buys maize from farmers and sells it to traders. Four tables, real business questions, real answers.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The two stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Design &amp; build</h3><p>Create the four tables, insert sample data, and verify the schema.</p></div>';
+  html += '<div class="ov-card"><h3>2. Query</h3><p>Answer five real business questions with SELECT and aggregations.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpCp1" type="button">▶ Capstone Part 1</button>';
+  html += '<button class="btn btn-g" id="jumpCp2" type="button">Capstone Part 2</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpCp1').addEventListener('click', function() { selectLesson('cp1'); switchView('lessons'); });
+  $('jumpCp2').addEventListener('click', function() { selectLesson('cp2'); switchView('lessons'); });
+}
+
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your SQL learning.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'SQLite Documentation', 'The database engine powering this course. Authoritative and clear.', 'https://www.sqlite.org/docs.html'],
+    ['📚', 'PostgreSQL Tutorial', 'The industry-standard open source database. Same SQL, more features.', 'https://www.postgresqltutorial.com/'],
+    ['🎓', 'SQLBolt', 'Interactive SQL lessons — great for extra practice.', 'https://sqlbolt.com/'],
+    ['🔍', 'Mode SQL Tutorial', 'A well-organised reference for every clause.', 'https://mode.com/sql-tutorial/'],
+    ['🎥', 'Use The Index, Luke', 'The best free resource on database performance and indexing.', 'https://use-the-index-luke.com/'],
+    ['💬', 'Stack Overflow — SQL', 'When you get stuck, someone has asked before.', 'https://stackoverflow.com/questions/tagged/sql']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">SQL Cheatsheet</div><div class="res-d">One-page reference covering every clause and command in this course.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadSchemaBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">🗄️</span>';
+  html += '<div><div class="res-t">School Database Schema + Sample Data</div><div class="res-d">The full .sql file you can load into any SQLite or PostgreSQL instance.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['🐘', 'PostgreSQL', 'The professional open source database. Free.', 'https://www.postgresql.org/download/'],
+    ['🗄️', 'DB Browser for SQLite', 'Free desktop tool to browse and query SQLite files.', 'https://sqlitebrowser.org/'],
+    ['✏️', 'VS Code + SQLTools', 'SQL editing inside your favourite editor.', 'https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools'],
+    ['🚀', 'Supabase', 'Free PostgreSQL in the cloud. Great for portfolio projects.', 'https://supabase.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadSchemaBtn').addEventListener('click', downloadSchema);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  SQL — CHEATSHEET',
+    '============================================',
+    '',
+    '--- READING ---',
+    'SELECT * FROM students;',
+    'SELECT first_name, last_name FROM students;',
+    'SELECT first_name AS "First" FROM students;',
+    'SELECT DISTINCT district FROM students;',
+    '',
+    '--- FILTERING ---',
+    "WHERE district = 'Lilongwe'",
+    'WHERE grade > 10',
+    'WHERE grade BETWEEN 70 AND 90',
+    "WHERE district IN ('Lilongwe', 'Blantyre')",
+    "WHERE first_name LIKE 'Ch%'",
+    'WHERE grade_percent IS NULL',
+    '',
+    '--- SORTING + LIMIT ---',
+    'ORDER BY grade DESC, first_name ASC',
+    'LIMIT 10',
+    '',
+    '--- WRITING ---',
+    'INSERT INTO students (first_name, last_name) VALUES (\'A\', \'B\');',
+    'UPDATE students SET grade = 10 WHERE id = 3;',
+    'DELETE FROM students WHERE id = 3;',
+    '',
+    '⚠ NEVER UPDATE or DELETE without a WHERE.',
+    '   First run a SELECT with the same WHERE to see what will change.',
+    '',
+    '--- JOINING ---',
+    'SELECT s.first_name, c.name',
+    'FROM enrollments e',
+    'JOIN students s ON s.id = e.student_id',
+    'JOIN classes c ON c.id = e.class_id;',
+    '',
+    'INNER JOIN = only matching rows',
+    'LEFT JOIN  = all left rows + matches',
+    '',
+    '--- AGGREGATING ---',
+    'COUNT(*)   SUM(col)   AVG(col)   MIN(col)   MAX(col)',
+    '',
+    'SELECT district, COUNT(*) AS n',
+    'FROM students',
+    'GROUP BY district',
+    'HAVING COUNT(*) > 2',
+    'ORDER BY n DESC;',
+    '',
+    '--- CLAUSE ORDER (memorise this) ---',
+    'SELECT ...',
+    'FROM ...',
+    'JOIN ...',
+    'WHERE ...',
+    'GROUP BY ...',
+    'HAVING ...',
+    'ORDER BY ...',
+    'LIMIT ...',
+    '',
+    'WHERE filters rows.',
+    'HAVING filters groups.',
+    '',
+    '--- SCHEMA ---',
+    'CREATE TABLE students (',
+    '  id INTEGER PRIMARY KEY AUTOINCREMENT,',
+    '  first_name TEXT NOT NULL,',
+    '  grade INTEGER,',
+    '  district TEXT',
+    ');',
+    '',
+    'CREATE TABLE classes (',
+    '  id INTEGER PRIMARY KEY,',
+    '  teacher_id INTEGER,',
+    '  FOREIGN KEY (teacher_id) REFERENCES teachers(id)',
+    ');',
+    '',
+    '--- INDEXES ---',
+    'CREATE INDEX idx_name ON students(district);',
+    'EXPLAIN QUERY PLAN SELECT ...;',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — SQL',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'sql-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadSchema() {
+  var blob = new Blob([SCHEMA_SQL], { type: 'application/sql' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'school-database.sql';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">SQL is a team sport. Join other learners in Malawi, share your queries, and get help when a JOIN returns fewer rows than you expected.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Study Group</h3><p>Share queries, paste errors, get feedback in real time.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer queries, schema diagrams, group study sessions.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Publish your capstone .sql file and see other students\' schemas.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Debugging tips</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Fewer rows than expected?</h3><p>Almost always an INNER JOIN silently dropping unmatched rows. Try a LEFT JOIN to see the full picture.</p></div>';
+  html += '<div class="ov-card"><h3>WHERE = NULL returns nothing?</h3><p>NULL cannot be compared with <code>=</code>. Use <code>IS NULL</code> or <code>IS NOT NULL</code>.</p></div>';
+  html += '<div class="ov-card"><h3>Before UPDATE or DELETE</h3><p>Run the same query as a SELECT first. If the rows look right, then change SELECT into UPDATE/DELETE.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Stuck on a JOIN?</h2>';
+  html += '<p>Post your query, the schema, and what you expected. The community has hit every SQL error there is.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://stackoverflow.com/questions/tagged/sql" target="_blank" rel="noopener">Ask on Stack Overflow</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in SQL &amp; Database Design and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">SQL &amp; Database Design</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">8 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of SQL &amp; Database Design, demonstrating proficiency in SELECT, INSERT, UPDATE, DELETE, JOINs, aggregation, GROUP BY, normalization, and indexing, culminating in a full capstone schema.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>SQL &amp; Database Design</h1>' +
+        '<div class="t">8 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of SQL &amp; Database Design,<br>demonstrating proficiency in SELECT, INSERT, UPDATE, DELETE, JOINs,<br>aggregation, GROUP BY, normalization, and indexing,<br>culminating in a full capstone schema.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Money Integration — Interactive Course</title>
+<meta name="description" content="Integrate Airtel Money and TNM Mpamba. Build a real checkout flow with webhooks, idempotency, and reconciliation.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--info:#0284c7;--airtel:#e30613;--tnm:#009639;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+.rd table{width:100%;border-collapse:collapse;font-size:14px;margin:14px 0}
+.rd table th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.rd table td{padding:9px 14px;border-bottom:1px solid var(--bd2);vertical-align:top}
+.rd table tr:last-child td{border-bottom:none}
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ex-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:22px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.ex-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.ex-card .hint{font-size:13.5px;color:var(--t3);margin-bottom:16px;line-height:1.6}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-hint{font-size:12px;color:var(--t3);margin-top:5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-airtel{background:var(--airtel);color:#fff;border-color:var(--airtel)}
+.btn-airtel:hover:not(:disabled){background:#c00511;border-color:#c00511;transform:translateY(-1px)}
+.btn-tnm{background:var(--tnm);color:#fff;border-color:var(--tnm)}
+.btn-tnm:hover:not(:disabled){background:#007a2e;border-color:#007a2e;transform:translateY(-1px)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+/* Checkout flow */
+.mm-flow{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:24px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.mm-grid{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+.mm-stage{background:var(--bg);border-radius:var(--r);padding:18px}
+.mm-stage-title{font-size:11.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;color:var(--t4);margin-bottom:12px}
+.mm-provider-pick{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.mm-prov{flex:1;min-width:130px;padding:14px 16px;border:2px solid var(--bd);border-radius:var(--r);background:var(--surf);cursor:pointer;transition:all .15s;text-align:left;font-family:inherit}
+.mm-prov:hover{transform:translateY(-2px)}
+.mm-prov.selected{border-color:var(--green);background:var(--gsoft);box-shadow:0 0 0 4px var(--gglow)}
+.mm-prov[data-provider="airtel"].selected{border-color:var(--airtel);background:rgba(227,6,19,.06);box-shadow:0 0 0 4px rgba(227,6,19,.15)}
+.mm-prov[data-provider="tnm"].selected{border-color:var(--tnm);background:rgba(0,150,57,.06);box-shadow:0 0 0 4px rgba(0,150,57,.15)}
+.mm-prov-name{font-weight:800;color:var(--navy);font-size:15px;margin-bottom:4px}
+.mm-prov-tag{font-size:11.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.mm-phone{background:#1f2937;border-radius:36px;padding:14px;box-shadow:0 8px 30px rgba(15,23,33,.2);min-height:520px;display:flex;flex-direction:column;align-items:center}
+.mm-phone-screen{background:#fff;border-radius:24px;width:100%;flex:1;overflow:hidden;display:flex;flex-direction:column}
+.mm-ph-header{background:#1a2332;color:#fff;padding:26px 16px 14px;font-size:12px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono)}
+.mm-ph-header strong{font-weight:600}
+.mm-ph-body{flex:1;padding:16px;overflow-y:auto;font-size:13px;line-height:1.55}
+.mm-ph-msg{background:#f0f1f5;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;line-height:1.55;color:#1f2937}
+.mm-ph-msg strong{color:#1a2332;display:block;margin-bottom:4px;font-size:13.5px}
+.mm-ph-msg.info{background:#dbeafe;border-left:3px solid #3b82f6}
+.mm-ph-msg.success{background:#d1fae5;border-left:3px solid #10b981}
+.mm-ph-msg.warn{background:#fef3c7;border-left:3px solid #f59e0b}
+.mm-ph-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.mm-ph-btn{padding:12px 16px;border-radius:10px;font-weight:700;font-size:14px;border:1.5px solid #1a2332;background:#1a2332;color:#fff;cursor:pointer;transition:all .15s;font-family:inherit}
+.mm-ph-btn:hover{background:#0f1721}
+.mm-ph-btn.alt{background:#fff;color:#1a2332}
+.mm-ph-btn.alt:hover{background:#f0f1f5}
+.mm-order{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.mm-order-row{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:6px 0;border-bottom:1px solid var(--bd2)}
+.mm-order-row:last-child{border-bottom:none;font-weight:700;font-size:16px;color:var(--navy);padding-top:10px;margin-top:6px;border-top:1px solid var(--bd)}
+.mm-order-lbl{color:var(--t3)}
+/* Status badge */
+.mm-status{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--rpill);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.mm-status.pending{background:rgba(217,119,6,.12);color:var(--warn)}
+.mm-status.processing{background:rgba(2,132,199,.12);color:var(--info)}
+.mm-status.success{background:var(--gsoft);color:var(--green2)}
+.mm-status.failed{background:rgba(220,38,38,.1);color:var(--danger)}
+.mm-status .pulse{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* Webhook log */
+.wh-log{background:var(--navy3);color:#e6edf3;border-radius:var(--r);padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.6;max-height:300px;overflow-y:auto;margin-top:14px}
+.wh-line{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);word-break:break-word;white-space:pre-wrap}
+.wh-line:last-child{border-bottom:none}
+.wh-line.ok{color:#86efac}
+.wh-line.err{color:#f87171}
+.wh-line.info{color:#93c5fd}
+.wh-time{color:#6b7280;margin-right:8px}
+.wh-method{display:inline-block;padding:1px 6px;border-radius:4px;background:rgba(255,255,255,.1);color:#c9d1d9;font-weight:600;margin-right:6px;font-size:11px}
+/* Idempotency demo */
+.idem-card{background:var(--bg);border-radius:var(--r);padding:16px;margin-top:14px}
+.idem-row{display:flex;gap:12px;align-items:center;padding:10px 12px;background:var(--surf);border-radius:8px;margin-bottom:8px;font-family:var(--mono);font-size:12.5px}
+.idem-row:last-child{margin-bottom:0}
+.idem-key{color:var(--t4);font-weight:600;min-width:140px}
+.idem-val{flex:1;color:var(--navy);word-break:break-all}
+.idem-badge{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase}
+.idem-badge.new{background:var(--gsoft);color:var(--green2)}
+.idem-badge.dupe{background:rgba(217,119,6,.15);color:var(--warn)}
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:16px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+  .mm-grid{grid-template-columns:1fr}
+  .mm-phone{max-width:320px;margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+  .field-row{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:16px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+  .mm-prov-pick{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">💳</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Mobile Money Integration</div>
+        <div class="brand-sb">6 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="tools" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Tools</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewTools"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">💳</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Mobile Money Integration</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- MODULE 1 -->
+<div class="src-read" data-l="m1">
+<p>Every Malawian business that wants to sell online needs a way to accept payment. And in Malawi, that almost always means <strong>mobile money</strong> — Airtel Money or TNM Mpamba.</p>
+<p>Learning to integrate these APIs makes you immediately valuable. Every e-commerce shop, ticketing platform, school fee system, and subscription service in the country needs exactly this, and almost no developer can build it.</p>
+<h2>What is mobile money?</h2>
+<p>Mobile money is a payment system where the "account" is a phone number, and the balance is held by the mobile network operator (MNO). Users can:</p>
+<ul>
+<li>Send money to another phone number</li>
+<li>Pay merchants and bills</li>
+<li>Withdraw cash at agents</li>
+<li>Receive remittances</li>
+</ul>
+<p>The two dominant providers in Malawi are <strong>Airtel Money</strong> (Airtel Malawi) and <strong>TNM Mpamba</strong> (Telekom Networks Malawi). Together they reach nearly every adult with a phone.</p>
+<h2>Why this matters for developers</h2>
+<p>If you are building any of these, you need mobile money:</p>
+<ul>
+<li>E-commerce checkout for an online shop</li>
+<li>Ticket sales (concerts, sports, events)</li>
+<li>School or university fee payments</li>
+<li>Subscriptions (streaming, news, membership)</li>
+<li>Donations for NGOs and churches</li>
+<li>Delivery payments for food and groceries</li>
+</ul>
+<p>Every one of these businesses is currently paying someone — often a foreign agency — to integrate mobile money. A Malawian developer who can do this locally has an instant advantage.</p>
+<h2>The two sides</h2>
+<p>Every mobile money integration has two directions:</p>
+<ol>
+<li><strong>Collections</strong> — you receive money from a customer (checkout, subscriptions, donations)</li>
+<li><strong>Disbursements</strong> — you send money to someone (refunds, payouts, salaries, dividends)</li>
+</ol>
+<p>Most businesses start with collections and add disbursements later.</p>
+<h2>The mental model</h2>
+<p>Think of the payment flow as four steps:</p>
+<ol>
+<li><strong>Your server</strong> tells the API "I want to charge customer X K5,000"</li>
+<li>The <strong>API</strong> sends a prompt to the customer's phone (a "push")</li>
+<li>The <strong>customer</strong> enters their PIN on their phone to approve</li>
+<li>The <strong>API</strong> sends a <em>webhook</em> back to your server saying "payment succeeded" or "payment failed"</li>
+</ol>
+<p>Your code must handle all four. The customer's phone is the source of truth, not your server — this is the single most important thing to understand.</p>
+<div class="challenge" style="margin-top:22px;">
+<strong>Try the simulator</strong>
+Scroll to the sandbox. Pick a provider (Airtel or TNM), click "Charge customer," and watch the full flow: request out, phone prompt, customer approval, webhook back. This is exactly what happens in production.
+</div>
+</div>
+
+<div class="src-read" data-l="m2">
+<p>Both Airtel Money and TNM Mpamba offer developer APIs. The pattern is similar across both, but the details differ. This lesson gives you the conceptual shape.</p>
+<h2>Authentication</h2>
+<p>Every API request must be authenticated. Both providers use <strong>OAuth 2.0</strong>:</p>
+<ol>
+<li>Your server sends a <code>client_id</code> and <code>client_secret</code> to the auth endpoint</li>
+<li>The provider returns an access token (valid for ~1 hour)</li>
+<li>Every subsequent request includes <code>Authorization: Bearer &lt;token&gt;</code></li>
+</ol>
+<pre><code>POST /auth/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&amp;client_id=YOUR_CLIENT_ID
+&amp;client_secret=YOUR_CLIENT_SECRET</code></pre>
+<p>Response:</p>
+<pre><code>{
+  "access_token": "eyJhbGciOi...",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}</code></pre>
+<p>Cache the token and refresh it when it expires. Do not fetch a new one for every request — that is slow and rate-limited.</p>
+<h2>Collections endpoint (charge a customer)</h2>
+<pre><code>POST /merchant/v1/payments/
+Authorization: Bearer &lt;token&gt;
+X-Country: MW
+X-Currency: MWK
+
+{
+  "reference": "ORDER-12345",
+  "subscriber": {
+    "country": "MW",
+    "currency": "MWK",
+    "msisdn": "265991234567"
+  },
+  "transaction": {
+    "amount": 5000,
+    "country": "MW",
+    "currency": "MWK",
+    "id": "TX-abc-123"
+  }
+}</code></pre>
+<p>The response acknowledges receipt. The actual result comes via webhook.</p>
+<h2>The webhook</h2>
+<p>When the customer approves or rejects the prompt, the provider sends a POST to a URL you registered:</p>
+<pre><code>POST https://yourapp.com/webhooks/mobile-money
+Content-Type: application/json
+
+{
+  "transaction": {
+    "id": "TX-abc-123",
+    "status": "TS",       // TS = success, TF = failed, TP = pending
+    "amount": 5000,
+    "currency": "MWK"
+  },
+  "reference": "ORDER-12345"
+}</code></pre>
+<p>Your server must:</p>
+<ol>
+<li>Verify the webhook (signature or IP allowlist)</li>
+<li>Look up the order by reference</li>
+<li>Mark it as paid (or failed)</li>
+<li>Respond 200 OK quickly (within 5 seconds)</li>
+</ol>
+<h2>Status codes you will see</h2>
+<table>
+<tr><th>Code</th><th>Meaning</th></tr>
+<tr><td><code>TS</code></td><td>Transaction Successful</td></tr>
+<tr><td><code>TF</code></td><td>Transaction Failed</td></tr>
+<tr><td><code>TP</code></td><td>Transaction Pending (customer has not responded yet)</td></tr>
+<tr><td><code>TA</code></td><td>Transaction Ambiguous (rare — treat as pending, reconcile later)</td></tr>
+</table>
+<h2>Disbursements (send money out)</h2>
+<pre><code>POST /merchant/v1/payments/disburse
+
+{
+  "reference": "REFUND-12345",
+  "subscriber": {
+    "msisdn": "265991234567"
+  },
+  "transaction": {
+    "amount": 2500,
+    "currency": "MWK"
+  }
+}</code></pre>
+<p>Used for refunds, payouts, salaries, and dividends.</p>
+<h2>Testing vs production</h2>
+<p>Both providers offer a sandbox — a fake environment where no real money moves. Use it exclusively until you have a signed merchant agreement.</p>
+<ul>
+<li><strong>Sandbox base URL</strong> — usually <code>https://openapi.airtel.africa/sandbox/</code> or similar</li>
+<li><strong>Production base URL</strong> — different domain, requires approval</li>
+<li><strong>Same code</strong> — only the base URL and credentials change</li>
+</ul>
+<div class="challenge" style="margin-top:22px;">
+<strong>Practice</strong>
+In the sandbox, try both providers. Notice the endpoints and payloads are nearly identical, just different credentials and status codes.
+</div>
+</div>
+
+<div class="src-read" data-l="m3">
+<p>Let's walk through a complete collection flow, from the moment your customer clicks "Pay" to the moment their order is confirmed.</p>
+<h2>Step 1 — Customer clicks "Pay"</h2>
+<p>Your frontend sends a request to your own backend (not directly to the API — your client secret never leaves the server):</p>
+<pre><code>POST https://yourapp.com/api/checkout
+{
+  "orderId": "ORDER-12345",
+  "amount": 5000,
+  "currency": "MWK",
+  "phone": "265991234567",
+  "provider": "airtel_money"
+}</code></pre>
+<h2>Step 2 — Backend initiates the charge</h2>
+<pre><code>async function initiateCharge(orderId, phone, amount) {
+  const token = await getAccessToken();
+
+  const response = await fetch(
+    'https://openapi.airtel.africa/merchant/v1/payments/',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        'X-Country': 'MW',
+        'X-Currency': 'MWK',
+      },
+      body: JSON.stringify({
+        reference: orderId,
+        subscriber: {
+          country: 'MW',
+          currency: 'MWK',
+          msisdn: phone,
+        },
+        transaction: {
+          amount: amount,
+          country: 'MW',
+          currency: 'MWK',
+          id: generateTransactionId(),
+        },
+      }),
+    }
+  );
+
+  return response.json();
+}</code></pre>
+<p>The response comes back in under a second. It says "we received your request, we are pushing to the phone." It does NOT say the payment succeeded.</p>
+<h2>Step 3 — Customer sees the prompt</h2>
+<p>On their phone, the customer sees something like:</p>
+<blockquote>
+<strong>Airtel Money</strong><br>
+A payment request of MWK 5,000 from <em>TechMountain Store</em> is waiting.<br>
+Enter your PIN to approve.<br>
+Ref: ORDER-12345
+</blockquote>
+<p>They have 60 seconds to enter their PIN. If they do, payment succeeds. If they do not, or they cancel, payment fails. If they have insufficient balance, it fails.</p>
+<h2>Step 4 — Webhook arrives</h2>
+<p>While the customer is deciding, your server is waiting. When they approve or reject, the provider POSTs to your webhook URL:</p>
+<pre><code>app.post('/webhooks/mobile-money', async (req, res) =&gt; {
+  // 1. Immediately acknowledge
+  res.status(200).send('OK');
+
+  // 2. Then process asynchronously
+  try {
+    const { reference, transaction } = req.body;
+
+    if (transaction.status === 'TS') {
+      await markOrderPaid(reference, transaction.id);
+    } else if (transaction.status === 'TF') {
+      await markOrderFailed(reference, transaction.id);
+    }
+    // 'TP' means still pending — wait for a second webhook
+  } catch (err) {
+    console.error('Webhook processing failed:', err);
+  }
+});</code></pre>
+<p>Notice two things:</p>
+<ol>
+<li><strong>Respond 200 immediately.</strong> The provider retries if you take too long, which can cause duplicate webhooks.</li>
+<li><strong>Process asynchronously.</strong> Do the actual work (marking the order, sending confirmation emails) after you have acknowledged receipt.</li>
+</ol>
+<h2>Step 5 — Frontend polls for status</h2>
+<p>The customer does not know what your webhook received. Their browser needs to know when the order is confirmed:</p>
+<pre><code>async function pollOrderStatus(orderId) {
+  while (true) {
+    const res = await fetch('/api/orders/' + orderId);
+    const data = await res.json();
+
+    if (data.status === 'paid') return 'success';
+    if (data.status === 'failed') return 'failed';
+
+    await sleep(2000); // check every 2 seconds
+  }
+}</code></pre>
+<p>Alternatively, use Server-Sent Events or WebSockets for instant updates. For most small shops, polling every 2 seconds is fine.</p>
+<h2>The 60-second window</h2>
+<p>Between step 2 and step 4, there is a gap. During this gap:</p>
+<ul>
+<li>The order is in a <code>pending</code> state</li>
+<li>The customer sees "waiting for approval" on the screen</li>
+<li>If the webhook never comes (network failure), you need a timeout: after 90 seconds, mark the order as <code>failed_timeout</code></li>
+</ul>
+<h2>Common failure modes</h2>
+<ul>
+<li><strong>Customer cancels the prompt</strong> — status <code>TF</code></li>
+<li><strong>Customer enters wrong PIN three times</strong> — status <code>TF</code></li>
+<li><strong>Insufficient balance</strong> — status <code>TF</code></li>
+<li><strong>Phone not registered for mobile money</strong> — status <code>TF</code></li>
+<li><strong>Number is wrong format</strong> — API rejects immediately</li>
+<li><strong>Webhook lost</strong> — no webhook arrives; use a status-check endpoint after 90 seconds as a fallback</li>
+</ul>
+<blockquote><strong>The core principle:</strong> the webhook is the source of truth. Your server initiates; the customer approves on their phone; the webhook tells you the result. Never trust a client-side "success" message.</blockquote>
+</div>
+
+<div class="src-read" data-l="m4">
+<p>You can also send money the other way — from your merchant account to a customer's phone. This is how refunds, payouts, and salary distributions work.</p>
+<h2>When to use disbursements</h2>
+<ul>
+<li><strong>Refunds</strong> — customer returns a product, you send money back</li>
+<li><strong>Marketplace payouts</strong> — sellers on your platform get their share</li>
+<li><strong>Salary or dividend payments</strong> — pay staff or investors</li>
+<li><strong>Referral commissions</strong> — pay users who refer others</li>
+<li><strong>Cashback or loyalty rewards</strong></li>
+</ul>
+<h2>The endpoint</h2>
+<pre><code>POST /merchant/v1/payments/disburse
+Authorization: Bearer &lt;token&gt;
+
+{
+  "reference": "REFUND-12345",
+  "subscriber": {
+    "country": "MW",
+    "currency": "MWK",
+    "msisdn": "265991234567"
+  },
+  "transaction": {
+    "amount": 2500,
+    "country": "MW",
+    "currency": "MWK",
+    "id": "PAYOUT-xyz"
+  }
+}</code></pre>
+<p>The customer does not need to approve anything. Money arrives directly in their mobile money account within seconds.</p>
+<h2>The float requirement</h2>
+<p>To send money out, your merchant account needs <strong>float</strong> — a balance of money that the provider holds for you. If your float runs out, disbursements fail.</p>
+<p>Typical setup:</p>
+<ol>
+<li>You deposit money into your merchant account (via bank transfer)</li>
+<li>The provider credits your float</li>
+<li>You can disburse up to your float balance</li>
+<li>Top up whenever it runs low</li>
+</ol>
+<p>This is why most businesses start with collections and only add disbursements once they have revenue coming in.</p>
+<h2>Reconciliation matters</h2>
+<p>Every disbursement costs money and moves real funds. You need to know exactly:</p>
+<ul>
+<li>How much you have sent today</li>
+<li>Which transactions succeeded</li>
+<li>Which are pending</li>
+<li>Your remaining float balance</li>
+</ul>
+<p>Log every disbursement to your database, with the reference, amount, status, and the provider's transaction ID.</p>
+<h2>Building a payout system</h2>
+<pre><code>async function sendPayout(recipientPhone, amount, reason) {
+  const reference = 'PAYOUT-' + Date.now();
+
+  // 1. Record it as pending BEFORE sending
+  await db.insert('payouts', {
+    reference,
+    phone: recipientPhone,
+    amount,
+    status: 'initiating',
+    reason,
+  });
+
+  // 2. Call the API
+  try {
+    const result = await airtelAPI.disburse({
+      reference,
+      phone: recipientPhone,
+      amount,
+    });
+
+    // 3. Update status
+    await db.update('payouts', reference, {
+      status: 'pending',
+      providerTxId: result.transaction.id,
+    });
+  } catch (err) {
+    await db.update('payouts', reference, {
+      status: 'failed',
+      error: err.message,
+    });
+    throw err;
+  }
+}</code></pre>
+<p>Notice: record before sending. If the API call succeeds but your server crashes before recording, you have a payment you cannot explain.</p>
+<h2>Webhook for disbursements</h2>
+<p>Disbursements also send webhooks — with the same status codes (<code>TS</code>, <code>TF</code>, <code>TP</code>). Handle them the same way:</p>
+<pre><code>app.post('/webhooks/mobile-money', async (req, res) =&gt; {
+  res.status(200).send('OK');
+  const { reference, transaction } = req.body;
+
+  // Find the payout record
+  const payout = await db.findByReference(reference);
+  if (!payout) return; // not ours
+
+  if (transaction.status === 'TS') {
+    await db.updatePayout(reference, { status: 'paid' });
+  } else if (transaction.status === 'TF') {
+    await db.updatePayout(reference, { status: 'failed' });
+  }
+});</code></pre>
+<h2>Safety rules</h2>
+<ul>
+<li><strong>Never disburse to a number that has not been verified.</strong> A typo sends money to a stranger.</li>
+<li><strong>Log every disbursement in your database first.</strong> The API call is secondary.</li>
+<li><strong>Rate-limit.</strong> A bug that fires 1,000 payouts per minute will drain your float instantly.</li>
+<li><strong>Two-person rule for large amounts.</strong> Above some threshold, require a second approval.</li>
+<li><strong>Never trust user input for the phone number.</strong> Verify it via an OTP first.</li>
+</ul>
+<blockquote><strong>Collections and disbursements are not symmetric.</strong> Sending money out is a hundred times riskier than receiving it — a bug that double-sends is money you cannot get back. Treat disbursement code with extreme care.</blockquote>
+</div>
+
+<div class="src-read" data-l="m5">
+<p>Webhooks are the backbone of any payment integration. Handled correctly, they make your system reliable. Handled naively, they cause duplicates, lost payments, and angry customers.</p>
+<h2>What is a webhook?</h2>
+<p>Instead of your server asking "did the payment succeed yet?" a hundred times, the provider <strong>pushes</strong> the result to you. That push is a webhook — an HTTP POST to a URL you registered.</p>
+<h2>Your webhook URL must be</h2>
+<ul>
+<li><strong>Publicly accessible</strong> — the provider needs to reach it</li>
+<li><strong>HTTPS</strong> — the provider will not send to HTTP</li>
+<li><strong>Fast</strong> — responds 200 within 5 seconds</li>
+<li><strong>Idempotent</strong> — see lesson m6</li>
+</ul>
+<h2>A production-grade webhook handler</h2>
+<pre><code>const express = require('express');
+const app = express();
+
+app.post('/webhooks/mobile-money',
+  express.json({ limit: '100kb' }),
+  async (req, res) =&gt; {
+    // 1. Verify the source
+    if (!verifyWebhookSignature(req)) {
+      return res.status(401).send('Unauthorized');
+    }
+
+    // 2. Acknowledge immediately
+    res.status(200).send('OK');
+
+    // 3. Process asynchronously
+    try {
+      await processWebhook(req.body);
+    } catch (err) {
+      console.error('Webhook processing failed:', err);
+      // Do NOT return an error — you already sent 200.
+      // Log it, and rely on reconciliation to catch it.
+    }
+  }
+);</code></pre>
+<p>Three critical decisions:</p>
+<ol>
+<li><strong>Verify the signature.</strong> Anyone can POST to your endpoint. Verify the HMAC signature or IP allowlist before trusting the payload.</li>
+<li><strong>Respond 200 first.</strong> Providers retry if you are slow. Retries create duplicates.</li>
+<li><strong>Process after responding.</strong> Your handler runs after the 200, so slow processing does not cause retries.</li>
+</ol>
+<h2>Why respond 200 first?</h2>
+<p>Because you cannot know if processing will succeed. If your database is momentarily unavailable, and you return 500, the provider retries — and you now have two deliveries of the same event. If you already processed the first one successfully, you now double-charge the customer.</p>
+<p>Instead: acknowledge receipt, then process. If processing fails, log it, and reconciliation will catch it later.</p>
+<h2>Verifying webhook signatures</h2>
+<p>Most providers sign webhooks with an HMAC of the payload using a secret only you and they know:</p>
+<pre><code>const crypto = require('crypto');
+
+function verifyWebhookSignature(req) {
+  const signature = req.headers['x-signature'];
+  const secret = process.env.WEBHOOK_SECRET;
+
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(JSON.stringify(req.body))
+    .digest('hex');
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  );
+}</code></pre>
+<p>Two important details:</p>
+<ul>
+<li><strong>timingSafeEqual</strong> — a naive string compare leaks information via timing.</li>
+<li><strong>Read the raw body.</strong> Some frameworks parse the body and change its formatting, breaking the signature. Use a raw-body middleware for webhook routes.</li>
+</ul>
+<h2>What if the webhook never arrives?</h2>
+<p>Webhooks can be lost — network failure, provider outage, deploy in progress. Always have a fallback:</p>
+<ol>
+<li>After initiating a payment, schedule a <strong>status check</strong> for 90 seconds later</li>
+<li>The status check calls the provider's <em>query endpoint</em> (every provider has one)</li>
+<li>If the transaction is successful but you never received the webhook, mark the order as paid</li>
+</ol>
+<pre><code>setTimeout(async () =&gt; {
+  const order = await db.getOrder(reference);
+  if (order.status !== 'paid') {
+    const status = await provider.queryTransaction(order.providerTxId);
+    if (status === 'TS') {
+      await markOrderPaid(reference);
+    }
+  }
+}, 90000);</code></pre>
+<p>This single pattern eliminates 99% of "lost webhook" problems.</p>
+<h2>The retry storm</h2>
+<p>During a provider outage, they may retry the same webhook for hours. If your handler is not idempotent, you will process the same payment dozens of times.</p>
+<p>Two mitigations:</p>
+<ol>
+<li><strong>Idempotency key</strong> (lesson m6) — ignore duplicate events by transaction ID</li>
+<li><strong>Fast responses</strong> — the faster you respond 200, the less they retry</li>
+</ol>
+<blockquote><strong>The webhook contract:</strong> acknowledge immediately, verify the source, process asynchronously, handle duplicates, and have a polling fallback. Do all five and your payment system will be reliable. Skip any one and you will have incidents.</blockquote>
+</div>
+
+<div class="src-read" data-l="m6">
+<p>Idempotency is the property that doing the same operation twice has the same effect as doing it once. For payments, it is not optional — it is the difference between charging a customer once and charging them five times.</p>
+<h2>The duplicate problem</h2>
+<p>Duplicates come from everywhere:</p>
+<ul>
+<li>The provider retries a webhook because your response was slow</li>
+<li>The customer double-clicks "Pay"</li>
+<li>Your server times out and retries internally</li>
+<li>You replay a webhook while debugging</li>
+<li>A network blip causes the same request to be delivered twice</li>
+</ul>
+<p>Without idempotency, each of these creates a duplicate charge.</p>
+<h2>The idempotency key</h2>
+<p>The solution is a unique key that identifies the operation. The second time you see the same key, you return the cached result instead of doing the work again.</p>
+<p>For a payment, the key is usually the transaction ID from the provider.</p>
+<pre><code>async function processWebhook(payload) {
+  const txId = payload.transaction.id;
+
+  // Check if we have already processed this transaction
+  const existing = await db.findOne('processed_transactions', {
+    providerTxId: txId,
+  });
+
+  if (existing) {
+    console.log('Duplicate webhook, ignoring:', txId);
+    return existing.result;
+  }
+
+  // First time — do the work
+  const result = await markOrderPaid(payload.reference, txId);
+
+  // Record that we did it
+  await db.insert('processed_transactions', {
+    providerTxId: txId,
+    processedAt: new Date(),
+    result: 'success',
+  });
+
+  return result;
+}</code></pre>
+<p>The <code>processed_transactions</code> table (or unique constraint on the column) is what makes this work. The second call sees the first call's record and skips the work.</p>
+<h2>The unique constraint approach</h2>
+<p>Even better than a check-then-insert is a database unique constraint:</p>
+<pre><code>CREATE TABLE processed_transactions (
+  provider_tx_id TEXT PRIMARY KEY,
+  order_reference TEXT NOT NULL,
+  processed_at TIMESTAMPTZ DEFAULT NOW()
+);</code></pre>
+<p>Now if two webhook handlers run simultaneously for the same transaction, one wins and the other gets a constraint violation — which you catch and treat as "already processed."</p>
+<h2>Idempotency for outgoing requests</h2>
+<p>When <em>you</em> initiate a payment, use the same principle. Send an idempotency key with the request:</p>
+<pre><code>POST /merchant/v1/payments/
+Idempotency-Key: ORDER-12345-initiate
+
+{
+  "reference": "ORDER-12345",
+  "transaction": { ... }
+}</code></pre>
+<p>If the request times out and you retry with the same key, the provider will not initiate a second charge. They will return the result of the first.</p>
+<h2>Timeouts and retries</h2>
+<p>The rule for retrying:</p>
+<ul>
+<li><strong>Retry</strong> on network errors, timeouts, and 5xx responses — but only with an idempotency key</li>
+<li><strong>Do not retry</strong> on 4xx responses (except 429)</li>
+<li><strong>Use exponential backoff</strong> — wait 1s, then 2s, then 4s, then 8s. Do not hammer the API.</li>
+</ul>
+<pre><code>async function retry(fn, attempts = 5) {
+  for (let i = 0; i &lt; attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (!isRetryable(err) || i === attempts - 1) throw err;
+      await sleep(Math.pow(2, i) * 1000);
+    }
+  }
+}</code></pre>
+<h2>The ledger</h2>
+<p>Every payment integration needs a ledger — an append-only record of every transaction, with its full lifecycle:</p>
+<pre><code>{
+  id: 'uuid',
+  reference: 'ORDER-12345',
+  provider: 'airtel_money',
+  providerTxId: 'TX-abc-123',
+  amount: 5000,
+  currency: 'MWK',
+  status: 'success',
+  customerPhone: '265991234567',
+  createdAt: '2025-06-12T14:32:01Z',
+  completedAt: '2025-06-12T14:32:47Z',
+  rawWebhooks: [...]
+}</code></pre>
+<p>The ledger is your source of truth when something goes wrong. When a customer says "I paid but did not get my order," you look up the reference and see exactly what happened.</p>
+<blockquote><strong>The principle:</strong> treat every payment operation as if it will be attempted twice. Design for the duplicate from the start, and you will never wake up to a customer who was charged five times.</blockquote>
+</div>
+
+<div class="src-read" data-l="m7">
+<p>Reconciliation is the daily process of comparing your records against the provider's records and fixing any differences. It is boring. It is also essential.</p>
+<h2>Why reconciliation matters</h2>
+<p>Discrepancies happen even with good code:</p>
+<ul>
+<li>A webhook was lost and your order stayed "pending"</li>
+<li>A webhook arrived twice and you accidentally double-counted</li>
+<li>A payment succeeded but was marked failed by a bug</li>
+<li>A refund went out but was never recorded</li>
+<li>A customer was charged but their order was never created</li>
+</ul>
+<p>Without reconciliation, these errors sit in your database forever. With reconciliation, you catch them the next morning.</p>
+<h2>What the provider gives you</h2>
+<p>Both Airtel and TNM offer a <strong>transaction history API</strong> — a list of every transaction for your merchant account for a given day or date range:</p>
+<pre><code>GET /merchant/v1/transactions/?date=2025-06-12
+
+{
+  "transactions": [
+    {
+      "id": "TX-abc-123",
+      "reference": "ORDER-12345",
+      "amount": 5000,
+      "status": "TS",
+      "time": "2025-06-12T14:32:47Z"
+    },
+    ...
+  ]
+}
+</code></pre>
+<h2>The reconciliation script</h2>
+<p>Run it every night at midnight (or every morning at 6am). It compares the two datasets and reports discrepancies.</p>
+<pre><code>async function reconcile(date) {
+  // 1. Fetch provider transactions for the day
+  const providerTxs = await provider.getTransactions(date);
+
+  // 2. Fetch your transactions for the same day
+  const ourTxs = await db.getTransactions(date);
+
+  // 3. Build lookup maps by provider transaction ID
+  const providerMap = new Map();
+  providerTxs.forEach(tx =&gt; providerMap.set(tx.id, tx));
+
+  const ourMap = new Map();
+  ourTxs.forEach(tx =&gt; ourMap.set(tx.providerTxId, tx));
+
+  const discrepancies = [];
+
+  // 4. Provider has it, we do not — we missed a transaction
+  for (const [txId, tx] of providerMap) {
+    if (!ourMap.has(txId)) {
+      discrepancies.push({
+        type: 'missing_on_our_side',
+        txId,
+        reference: tx.reference,
+        amount: tx.amount,
+      });
+    }
+  }
+
+  // 5. We have it, provider does not — we have a phantom transaction
+  for (const [txId, tx] of ourMap) {
+    if (!providerMap.has(txId)) {
+      discrepancies.push({
+        type: 'missing_on_provider_side',
+        txId,
+        reference: tx.reference,
+      });
+    }
+  }
+
+  // 6. Status mismatch — we said success, they say failed
+  for (const [txId, ourTx] of ourMap) {
+    const providerTx = providerMap.get(txId);
+    if (providerTx &amp;&amp; ourTx.status !== mapStatus(providerTx.status)) {
+      discrepancies.push({
+        type: 'status_mismatch',
+        txId,
+        ours: ourTx.status,
+        theirs: providerTx.status,
+      });
+    }
+  }
+
+  // 7. Report
+  if (discrepancies.length) {
+    await sendAlert('Reconciliation discrepancies', discrepancies);
+  }
+
+  return discrepancies;
+}</code></pre>
+<h2>Handling each type of discrepancy</h2>
+<table>
+<tr><th>Type</th><th>Action</th></tr>
+<tr><td>Missing on our side</td><td>Create the transaction record and, if it was a payment, fulfil the order</td></tr>
+<tr><td>Missing on provider side</td><td>Investigate — was this a duplicate insert? A test transaction? Mark as suspect</td></tr>
+<tr><td>Status mismatch</td><td>Trust the provider. Update our record.</td></tr>
+</table>
+<h2>The daily report</h2>
+<p>Every morning, send yourself an email or Slack message with:</p>
+<ul>
+<li>Total collections (amount, count)</li>
+<li>Total disbursements (amount, count)</li>
+<li>Current float balance</li>
+<li>Number of discrepancies and their details</li>
+</ul>
+<p>This takes two minutes to read and catches every problem before your customers complain.</p>
+<h2>Monthly bank reconciliation</h2>
+<p>Once a month, compare the total amount the provider says you received against what actually hit your bank account. Small discrepancies (rounding, fees) are normal. Large ones are not.</p>
+<blockquote><strong>The discipline:</strong> payments is one of the few areas where "it works in testing" is not enough. You need a system that catches its own mistakes, because they will happen. Reconciliation is that system.</blockquote>
+</div>
+
+<div class="src-read" data-l="m8">
+<p>You have the backend working. Now for the part your customer actually sees — the checkout page.</p>
+<h2>The checkout page's job</h2>
+<p>A good checkout page:</p>
+<ul>
+<li>Shows the amount clearly (in MWK, with no hidden fees)</li>
+<li>Asks for the phone number (or remembers it if the user is logged in)</li>
+<li>Lets the customer pick their provider (Airtel or TNM)</li>
+<li>Has one obvious button: "Pay K5,000"</li>
+<li>Shows a clear waiting state with the amount and a countdown</li>
+<li>Shows a clear success or failure state with a next step</li>
+</ul>
+<h2>The three states</h2>
+<p>Your checkout UI has three screens:</p>
+<ol>
+<li><strong>Form</strong> — collect phone number and provider</li>
+<li><strong>Waiting</strong> — "Check your phone, enter your PIN"</li>
+<li><strong>Result</strong> — success (with order confirmation) or failure (with retry)</li>
+</ol>
+<p>Do not skip any of these. A page that goes straight from form to success is lying to the customer.</p>
+<h2>Sample HTML structure</h2>
+<pre><code>&lt;div id="checkout"&gt;
+  &lt;div id="form-state"&gt;
+    &lt;h1&gt;Pay K5,000&lt;/h1&gt;
+    &lt;label&gt;Your phone number&lt;/label&gt;
+    &lt;input id="phone" type="tel" placeholder="0991 234 567"&gt;
+    &lt;div class="providers"&gt;
+      &lt;button data-provider="airtel"&gt;Airtel Money&lt;/button&gt;
+      &lt;button data-provider="tnm"&gt;TNM Mpamba&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;button id="pay"&gt;Pay K5,000&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div id="waiting-state" hidden&gt;
+    &lt;h1&gt;Check your phone&lt;/h1&gt;
+    &lt;p&gt;A prompt has been sent to &lt;strong id="waiting-phone"&gt;&lt;/strong&gt;.&lt;/p&gt;
+    &lt;p&gt;Enter your PIN to complete the payment of &lt;strong&gt;K5,000&lt;/strong&gt;.&lt;/p&gt;
+    &lt;p&gt;Waiting for confirmation… &lt;span id="countdown"&gt;60&lt;/span&gt;s&lt;/p&gt;
+    &lt;button id="cancel"&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div id="success-state" hidden&gt;
+    &lt;h1&gt;✓ Payment received&lt;/h1&gt;
+    &lt;p&gt;Your order is confirmed.&lt;/p&gt;
+    &lt;a href="/orders/12345"&gt;View order&lt;/a&gt;
+  &lt;/div&gt;
+
+  &lt;div id="failure-state" hidden&gt;
+    &lt;h1&gt;Payment failed&lt;/h1&gt;
+    &lt;p id="failure-reason"&gt;&lt;/p&gt;
+    &lt;button id="retry"&gt;Try again&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<h2>The frontend logic</h2>
+<pre><code>async function pay() {
+  const phone = document.getElementById('phone').value;
+  const provider = document.querySelector('.providers button.selected').dataset.provider;
+
+  showState('waiting');
+  document.getElementById('waiting-phone').textContent = phone;
+
+  // 1. Ask our backend to initiate the charge
+  const res = await fetch('/api/checkout', {
+    method: 'POST',
+    body: JSON.stringify({ orderId, phone, provider, amount: 5000 }),
+  });
+  const { orderId: oid } = await res.json();
+
+  // 2. Poll for status
+  const result = await pollUntilFinal(oid, { intervalMs: 2000, timeoutMs: 90000 });
+
+  if (result.status === 'paid') {
+    showState('success');
+  } else {
+    document.getElementById('failure-reason').textContent = result.reason;
+    showState('failure');
+  }
+}</code></pre>
+<h2>Mobile-first considerations</h2>
+<p>Most of your customers will use your checkout on a phone. That means:</p>
+<ul>
+<li><strong>Big buttons</strong> — thumb-sized, at least 44px tall</li>
+<li><strong>Number keyboard</strong> — <code>type="tel"</code> for the phone input</li>
+<li><strong>No unnecessary steps</strong> — the customer is already on the phone they will pay from</li>
+<li><strong>Clear error messages</strong> — "This number is not registered for Airtel Money" not just "Error"</li>
+<li><strong>Fast</strong> — mobile checkouts should be under 50 KB and load in 2 seconds (see the Low Bandwidth course)</li>
+</ul>
+<h2>Prefill whenever possible</h2>
+<p>If the customer is logged in, prefill their phone number from their profile. If they have paid with Airtel before, default to Airtel. Reduce friction and you reduce drop-off.</p>
+<h2>Trust signals</h2>
+<p>Payments require trust. Add:</p>
+<ul>
+<li>The business name clearly displayed</li>
+<li>The exact amount, no surprises</li>
+<li>A visible "secured by Airtel Money" or "TNM Mpamba" badge</li>
+<li>A support phone number or WhatsApp link</li>
+<li>A link to refund policy</li>
+</ul>
+<h2>The cancel button matters</h2>
+<p>If a customer cannot cancel, they panic. Give them a clear "Cancel" button. When they cancel, stop polling and show a "Payment cancelled" state. Whether the provider's prompt still succeeds is not your problem — if it does, you will see it via webhook and can handle it.</p>
+<blockquote><strong>Every second of friction loses customers.</strong> The best mobile money checkout in Malawi has three fields and one button. Aim for that.</blockquote>
+</div>
+
+<div class="src-read" data-l="m9">
+<p>Payment systems are the highest-value target for attackers. If you build one, you must handle security like a professional.</p>
+<h2>The credentials you must protect</h2>
+<ul>
+<li><strong>Client ID and client secret</strong> — used to authenticate with the provider</li>
+<li><strong>Webhook secret</strong> — used to verify incoming webhooks</li>
+<li><strong>API keys</strong> — for querying transaction status</li>
+</ul>
+<p>These never go in source code. Never. Not in a comment saying "TODO: move this." Not in a test file. Not in a commit that you plan to revert later.</p>
+<h2>Environment variables only</h2>
+<pre><code>const AIRTEL_CLIENT_ID = process.env.AIRTEL_CLIENT_ID;
+const AIRTEL_CLIENT_SECRET = process.env.AIRTEL_CLIENT_SECRET;
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+
+if (!AIRTEL_CLIENT_ID || !AIRTEL_CLIENT_SECRET) {
+  throw new Error('Airtel credentials missing. Check env vars.');
+}</code></pre>
+<p>The <code>throw</code> at startup is critical: if a required secret is missing, fail immediately with a clear message. Do not start and then crash unpredictably in the middle of a payment.</p>
+<h2>Never log</h2>
+<ul>
+<li>Client secrets</li>
+<li>Webhook signatures</li>
+<li>Customer PINs (you never see these anyway — good)</li>
+<li>Full phone numbers in production logs</li>
+<li>The raw body of webhook requests containing sensitive data</li>
+</ul>
+<h2>Redact sensitive data</h2>
+<p>If you must log transaction details, redact:</p>
+<pre><code>function redact(value, keep = 4) {
+  if (!value) return value;
+  const s = String(value);
+  return '***' + s.slice(-keep);
+}
+
+logger.info('Processing payment', {
+  reference: order.reference,
+  amount: order.amount,
+  phone: redact(order.phone, 4),  // ***4567
+});
+</code></pre>
+<h2>Verify every webhook</h2>
+<p>Anyone on the internet can POST to your webhook URL. Without verification, an attacker can mark orders as paid without paying.</p>
+<p>Two ways to verify:</p>
+<ol>
+<li><strong>HMAC signature</strong> — the provider includes a signature header, computed with a shared secret</li>
+<li><strong>IP allowlist</strong> — only accept requests from the provider's published IP ranges</li>
+</ol>
+<p>Use both if you can. At minimum, use one.</p>
+<h2>Always query after a webhook</h2>
+<p>Even after verifying the signature, query the provider to confirm the transaction:</p>
+<pre><code>async function processWebhook(payload) {
+  // Trust but verify
+  const verified = await provider.queryTransaction(payload.transaction.id);
+
+  if (verified.status !== 'TS') {
+    console.warn('Webhook said success but query says:', verified.status);
+    return;
+  }
+
+  await markOrderPaid(payload.reference);
+}</code></pre>
+<p>This costs one extra API call per payment and eliminates the entire class of forged-webhook attacks.</p>
+<h2>Rate limiting</h2>
+<p>Add rate limits to every endpoint that touches payments:</p>
+<pre><code>const rateLimit = require('express-rate-limit');
+
+app.use('/api/checkout', rateLimit({
+  windowMs: 60 * 1000,       // 1 minute
+  max: 5,                    // 5 requests per IP per minute
+}));
+
+app.use('/webhooks/mobile-money', rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,                  // providers may retry quickly
+}));
+</code></pre>
+<h2>HTTPS everywhere</h2>
+<p>Payment endpoints must be HTTPS. No exceptions. If your platform does not provide HTTPS automatically, set it up with Let's Encrypt (see the DevOps course).</p>
+<h2>The PIN is sacred</h2>
+<p>You never see the customer's PIN — the provider handles it on their phone. If anyone ever asks you to collect a PIN, it is a scam. Your code should never need it.</p>
+<h2>Never store card data</h2>
+<p>Mobile money does not use card numbers, but if you ever add card payments, use a provider like Stripe or Paystack who handles the card data for you. Never store card numbers on your own server.</p>
+<h2>The audit log</h2>
+<p>Every payment-related action goes to an immutable audit log:</p>
+<pre><code>auditLog.record({
+  actor: 'system',
+  action: 'payment.initiated',
+  orderId: order.id,
+  amount: order.amount,
+  ip: req.ip,
+  userAgent: req.headers['user-agent'],
+  timestamp: new Date(),
+});</code></pre>
+<p>If a dispute arises, this is your evidence.</p>
+<blockquote><strong>The rule:</strong> payments is not a place to cut corners on security. Every shortcut becomes a vulnerability. Every "we will fix it later" becomes a breach. Do it right the first time.</blockquote>
+</div>
+
+<div class="src-read" data-l="m10">
+<p>You have all the pieces. The capstone is a complete, working checkout flow you can adapt for any Malawian business.</p>
+<h2>What you will build</h2>
+<p>A single-page checkout that:</p>
+<ol>
+<li>Shows the amount and business name</li>
+<li>Collects a phone number and provider choice</li>
+<li>Initiates the charge on the provider's API</li>
+<li>Shows a waiting state with a 60-second countdown</li>
+<li>Polls for the result</li>
+<li>Handles webhooks in the background</li>
+<li>Shows success or failure with a clear next step</li>
+<li>Records every step in an audit ledger</li>
+</ol>
+<h2>The recommended flow</h2>
+<pre><code>Browser                     Your Server                  Provider API
+--------                    -----------                  -----------
+Click "Pay"
+    |
+    |- POST /api/checkout --&gt;
+                              |- POST /payments/  --------&gt;
+                              &lt;-- { accepted } -------------|
+                              |- insert order pending
+    &lt;-- { orderId, pending }--|
+    |
+Start polling
+    |- GET /api/orders/12345 -&gt;
+                              |- read order
+    &lt;-- { status: pending } --|
+    |
+(repeat every 2s)
+                                                    Customer phone
+                                                    shows prompt
+                                                    Customer approves
+                                                    |
+                              &lt;-- POST /webhooks/ ----------|
+                              |- verify signature
+                              |- query provider to confirm
+                              |- mark order paid
+                              |- 200 OK
+    |
+    |- GET /api/orders/12345 -&gt;
+    &lt;-- { status: paid } -----|
+Show success
+</code></pre>
+<h2>The five files of a real integration</h2>
+<pre><code>server.js              # Express app, routes
+provider.js            # API client (auth, initiate, query)
+webhooks.js            # Webhook handler with verification
+orders.js              # Order model + status transitions
+ledger.js              # Audit log
+</code></pre>
+<h2>Provider client (provider.js)</h2>
+<pre><code>const fetch = require('node-fetch');
+
+let cachedToken = null;
+let tokenExpiresAt = 0;
+
+async function getToken() {
+  if (cachedToken &amp;&amp; Date.now() &lt; tokenExpiresAt - 60000) {
+    return cachedToken;
+  }
+  const res = await fetch(process.env.PROVIDER_AUTH_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: process.env.PROVIDER_CLIENT_ID,
+      client_secret: process.env.PROVIDER_CLIENT_SECRET,
+    }),
+  });
+  const data = await res.json();
+  cachedToken = data.access_token;
+  tokenExpiresAt = Date.now() + data.expires_in * 1000;
+  return cachedToken;
+}
+
+async function initiateCharge(order) {
+  const token = await getToken();
+  const res = await fetch(process.env.PROVIDER_PAYMENTS_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      'X-Country': 'MW',
+      'X-Currency': 'MWK',
+      'Idempotency-Key': order.reference + '-initiate',
+    },
+    body: JSON.stringify({
+      reference: order.reference,
+      subscriber: { country: 'MW', currency: 'MWK', msisdn: order.phone },
+      transaction: {
+        amount: order.amount,
+        country: 'MW',
+        currency: 'MWK',
+        id: order.providerTxId,
+      },
+    }),
+  });
+  return res.json();
+}
+
+async function queryTransaction(providerTxId) {
+  const token = await getToken();
+  const res = await fetch(
+    process.env.PROVIDER_QUERY_URL + '?id=' + providerTxId,
+    { headers: { 'Authorization': 'Bearer ' + token } }
+  );
+  return res.json();
+}
+
+module.exports = { getToken, initiateCharge, queryTransaction };</code></pre>
+<h2>Order model with safe state transitions (orders.js)</h2>
+<pre><code>const ALLOWED = {
+  pending: ['paid', 'failed', 'failed_timeout'],
+  paid: [],
+  failed: [],
+  failed_timeout: [],
+};
+
+async function transition(orderId, newStatus) {
+  const order = await db.getOrder(orderId);
+  if (!ALLOWED[order.status].includes(newStatus)) {
+    throw new Error(`Invalid transition: ${order.status} -> ${newStatus}`);
+  }
+  await db.update('orders', orderId, {
+    status: newStatus,
+    [`${newStatus}At`]: new Date(),
+  });
+}
+
+module.exports = { transition };</code></pre>
+<p>The state machine is critical. It prevents bugs like marking a failed order as paid twice, or a paid order as failed after the fact.</p>
+<h2>Webhook handler with all the safeguards (webhooks.js)</h2>
+<pre><code>const express = require('express');
+const crypto = require('crypto');
+const provider = require('./provider');
+const orders = require('./orders');
+
+const router = express.Router();
+
+router.post('/webhooks/mobile-money',
+  express.raw({ type: 'application/json' }),
+  async (req, res) =&gt; {
+
+    // 1. Respond immediately
+    res.status(200).send('OK');
+
+    // 2. Verify signature
+    const signature = req.headers['x-signature'];
+    const expected = crypto
+      .createHmac('sha256', process.env.WEBHOOK_SECRET)
+      .update(req.body)
+      .digest('hex');
+
+    if (!signature || !crypto.timingSafeEqual(
+      Buffer.from(signature), Buffer.from(expected)
+    )) {
+      console.warn('Webhook signature invalid, ignoring');
+      return;
+    }
+
+    // 3. Parse
+    const payload = JSON.parse(req.body.toString());
+    const { reference, transaction } = payload;
+
+    // 4. Idempotency
+    const existing = await db.findOne('processed_txs', {
+      providerTxId: transaction.id,
+    });
+    if (existing) return;
+
+    // 5. Query provider to confirm
+    const verified = await provider.queryTransaction(transaction.id);
+    if (verified.status !== transaction.status) {
+      console.warn('Webhook says', transaction.status,
+                   'query says', verified.status);
+      return;
+    }
+
+    // 6. Transition order
+    if (transaction.status === 'TS') {
+      await orders.transition(reference, 'paid');
+    } else if (transaction.status === 'TF') {
+      await orders.transition(reference, 'failed');
+    }
+
+    // 7. Record
+    await db.insert('processed_txs', {
+      providerTxId: transaction.id,
+      reference,
+      processedAt: new Date(),
+    });
+  }
+);
+
+module.exports = router;</code></pre>
+<h2>The 60-second fallback check</h2>
+<p>When you initiate a charge, schedule a check 90 seconds later:</p>
+<pre><code>async function scheduleStatusCheck(order, delayMs = 90000) {
+  setTimeout(async () =&gt; {
+    const current = await db.getOrder(order.id);
+    if (current.status !== 'pending') return;
+
+    const verified = await provider.queryTransaction(order.providerTxId);
+    if (verified.status === 'TS') {
+      await orders.transition(order.id, 'paid');
+    } else if (verified.status === 'TF') {
+      await orders.transition(order.id, 'failed');
+    } else {
+      await orders.transition(order.id, 'failed_timeout');
+    }
+  }, delayMs);
+}</code></pre>
+<h2>Testing checklist</h2>
+<ul>
+<li>Successful payment end to end</li>
+<li>Failed payment (customer cancels)</li>
+<li>Timeout (no webhook, no query result)</li>
+<li>Duplicate webhook (send the same one twice)</li>
+<li>Invalid signature (should be rejected)</li>
+<li>Missing env var at startup (should throw)</li>
+<li>Slow provider response (should retry with backoff)</li>
+<li>Concurrent webhooks for the same order</li>
+</ul>
+<h2>What you have built</h2>
+<p>A complete, production-ready mobile money integration. This is the code that powers every Malawian e-commerce business, every event ticketing platform, every school fee system. You can now build this from scratch.</p>
+<p>Put the code on GitHub. Write a README. Explain the flow. That repo is worth more than any certificate when you pitch a client.</p>
+<blockquote><strong>You have finished the course.</strong> You now know how mobile money works under the hood, how to integrate both major Malawian providers, how to handle webhooks safely, how to make operations idempotent, how to reconcile, and how to build a checkout your customers trust. This is the most valuable backend skill in Malawi right now.</blockquote>
+</div>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'mobile_money_progress_v1';
+var CAPSTONE_KEY = 'mobile_money_capstone_v1';
+
+var course = {
+  modules: [
+    {
+      id: 'basics', icon: '📚', title: 'Fundamentals',
+      lessons: [
+        { id:'m1', title:'How Mobile Money Works', time:'20 min', tool: 'checkout',
+          challenge:'Open the checkout simulator. Complete a payment with Airtel Money. Then do one with TNM Mpamba. Notice how the flow is identical — only the branding differs.',
+          quiz:[
+            { q:'Which two mobile money providers dominate Malawi?', options:['Vodacom and MTN','Airtel Money and TNM Mpamba','Safaricom and Orange','Zoona and Mukuru'], correct:1 },
+            { q:'What is "collections" in mobile money?', options:['Sending money out','Receiving money from customers','Withdrawing cash','Buying airtime'], correct:1 },
+            { q:'Where does the customer confirm a payment?', options:['On your website','In an email','On their phone via a PIN prompt','By calling you'], correct:2 }
+          ]},
+        { id:'m2', title:'Airtel & TNM APIs Overview', time:'26 min',
+          challenge:'Write down the four-step mental model of a payment: initiate, prompt, approve, webhook. Then explain in your own words why the webhook — not the API response — is the source of truth.',
+          quiz:[
+            { q:'What authentication method do both providers use?', options:['Basic auth','OAuth 2.0','API key only','No auth needed'], correct:1 },
+            { q:'Where does the access token go?', options:['In the URL','In the request body','In the Authorization header','In a cookie'], correct:2 },
+            { q:'What status code means "Transaction Successful"?', options:['OK','TS','200','SUCCESS'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'collections', icon: '💵', title: 'Collections',
+      lessons: [
+        { id:'m3', title:'The Collections Flow', time:'30 min', tool: 'checkout',
+          challenge:'In the checkout simulator, trigger a payment failure (choose "Customer rejects" on the phone). Notice how the failure is handled — the customer is sent back to the form with a clear reason. That is what good UX looks like.',
+          quiz:[
+            { q:'What should your server do immediately after receiving a webhook?', options:['Process it fully, then respond','Respond 200 OK, then process asynchronously','Ignore it if it looks suspicious','Wait 5 minutes'], correct:1 },
+            { q:'What is "pending" status mean?', options:['Payment failed','Customer has not yet responded to the prompt','Payment succeeded','API is broken'], correct:1 },
+            { q:'How long should you wait before a fallback status check?', options:['5 seconds','90 seconds','10 minutes','24 hours'], correct:1 }
+          ]},
+        { id:'m4', title:'Disbursements (Payouts)', time:'30 min',
+          challenge:'Write pseudocode for a refund function that: records the refund as pending, calls the disbursement API, and handles the response. Include what happens if the API call fails.',
+          quiz:[
+            { q:'What is "float"?', options:['A floating exchange rate','The balance of money the provider holds for you','A type of transaction','An API parameter'], correct:1 },
+            { q:'When should you record a disbursement?', options:['After the API returns success','Before making the API call','At the end of the day','Never'], correct:1 },
+            { q:'Why is disbursement riskier than collection?', options:['It is slower','A bug can send money you cannot get back','It costs more','It requires more approvals'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'reliability', icon: '🛡️', title: 'Reliability',
+      lessons: [
+        { id:'m5', title:'Webhooks Done Right', time:'30 min',
+          challenge:'Write a webhook handler from scratch. It must: verify a signature, respond 200 immediately, process asynchronously, and ignore duplicates. Ten lines of pseudocode is enough.',
+          quiz:[
+            { q:'Why respond 200 before processing?', options:['It is faster','Otherwise the provider retries, causing duplicates','Required by HTTP','It looks professional'], correct:1 },
+            { q:'Why use timingSafeEqual for signature checks?', options:['It is faster','Naive string comparison leaks information via timing','It is required','It handles Unicode'], correct:1 },
+            { q:'What if a webhook never arrives?', options:['Give up','Retry the charge','Use a scheduled status check with the query endpoint','Assume it failed'], correct:2 }
+          ]},
+        { id:'m6', title:'Idempotency & Retries', time:'28 min',
+          challenge:'Design an idempotency scheme for a payment system. What is the key? Where is it stored? What happens when a duplicate arrives? Write the schema and the flow.',
+          quiz:[
+            { q:'What does idempotent mean?', options:['Fast','Doing the same operation twice has the same effect as doing it once','Encrypted','Retryable'], correct:1 },
+            { q:'What is a good idempotency key for a payment?', options:['The customer name','The provider transaction ID','A random number','The date'], correct:1 },
+            { q:'How should you retry a failed API call?', options:['Immediately, in a loop','With exponential backoff and an idempotency key','Never','Once, then give up'], correct:1 }
+          ]},
+        { id:'m7', title:'Reconciliation', time:'30 min',
+          challenge:'Write a reconciliation function that: fetches transactions from the provider, fetches them from your database, and reports any discrepancies. Handle all three types: missing on your side, missing on theirs, and status mismatch.',
+          quiz:[
+            { q:'What is reconciliation?', options:['Refunding customers','Comparing your records against the provider\'s records','Closing accounts','Approving new users'], correct:1 },
+            { q:'How often should reconciliation run?', options:['Never','Every night or every morning','Once a year','Only when there is a problem'], correct:1 },
+            { q:'What does "missing on your side" mean?', options:['The provider has a transaction you do not have recorded','You have a transaction the provider does not','The customer did not pay','The API is down'], correct:0 }
+          ]}
+      ]
+    },
+    {
+      id: 'ux-security', icon: '🔐', title: 'UX & Security',
+      lessons: [
+        { id:'m8', title:'Building the Checkout Page', time:'28 min', tool: 'checkout',
+          challenge:'In the simulator, complete the full three-state flow: form, waiting, success. Then look at the code in the challenge — how would you add a "Pay with card" option? Sketch the extra state without writing code.',
+          quiz:[
+            { q:'How many states does a good checkout UI have?', options:['One','Three (form, waiting, result)','Ten','As many as you want'], correct:1 },
+            { q:'What input type is best for a phone number?', options:['text','tel','number','email'], correct:1 },
+            { q:'Why include a cancel button?', options:['Required by law','Reduces panic and drop-off','Looks nicer','It cancels the payment'], correct:1 }
+          ]},
+        { id:'m9', title:'Security: What Never to Log', time:'30 min',
+          challenge:'Take any payment handler you have written. Add redaction to every log statement that touches customer data. Write a helper that hides all but the last 4 digits.',
+          quiz:[
+            { q:'Where should API credentials live?', options:['In source code','In environment variables','In a comment','In tests'], correct:1 },
+            { q:'Why verify every webhook?', options:['Best practice','Anyone can POST to your URL and forge a payment','Required by HTTP','It is faster'], correct:1 },
+            { q:'What must NEVER be logged?', options:['Request paths','Amounts','Client secrets and PINs','Status codes'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'capstone', icon: '🚀', title: 'Capstone',
+      lessons: [
+        { id:'m10', title:'Full Checkout Flow Capstone', time:'45 min', tool: 'checkout',
+          challenge:'Build the entire flow end to end in the sandbox. Trigger a successful payment, a failed payment, and a timeout. Verify each one is handled correctly with the right UI state and the right log entries.',
+          quiz:[
+            { q:'What is the safest state transition pattern for orders?', options:['Direct assignment','A state machine with allowed transitions','No state at all','Any state to any state'], correct:1 },
+            { q:'When should you use a status-query fallback?', options:['Never','90 seconds after initiating a charge with no webhook','Immediately','At the end of the day'], correct:1 },
+            { q:'What makes this integration production-ready?', options:['It works once','It handles success, failure, timeout, and duplicates','It is fast','It uses HTTPS'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, tool: l.tool || null,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+})();
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'mm::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I understand the four-step flow: initiate, prompt, approve, webhook' },
+  { id: 'm2', text: 'I have a sandbox account with Airtel Money or TNM Mpamba' },
+  { id: 'm3', text: 'I have written code to fetch an OAuth token from the provider' },
+  { id: 'm4', text: 'I have written code to initiate a charge from my backend' },
+  { id: 'm5', text: 'I have a webhook handler that verifies signatures' },
+  { id: 'm6', text: 'My webhook handler responds 200 immediately' },
+  { id: 'm7', text: 'My payment processing is idempotent (duplicates are ignored)' },
+  { id: 'm8', text: 'I have built a working checkout page with three states' },
+  { id: 'm9', text: 'I have a scheduled status check as a webhook fallback' },
+  { id: 'm10', text: 'I have run reconciliation and can explain any discrepancies' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'm1';
+var currentView = 'lessons';
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'tools') renderTools();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>💳 Mobile Money</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (lesson.tool === 'checkout') {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Live Payment Simulator</span></h2>';
+    html += '<p class="ed-s">A working checkout flow. Pick a provider, enter a phone number, click "Charge customer", and watch the full sequence: request out, phone prompt, customer decision, webhook back. Everything you see is what happens in production.</p>';
+    html += '<div id="checkoutArea"></div>';
+    html += '<div class="challenge" style="margin-top:16px;"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  } else {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Your Exercise</h2>';
+    html += '<div class="challenge"><strong>Do this now</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Run the simulation, take the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (lesson.tool === 'checkout' && $('checkoutArea')) renderCheckoutSimulator($('checkoutArea'));
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+}
+
+/* ============================================================
+   CHECKOUT SIMULATOR
+   ============================================================ */
+function renderCheckoutSimulator(container) {
+  var state = {
+    step: 'form', // form | waiting | success | failed
+    provider: 'airtel_money',
+    phone: '0991 234 567',
+    amount: 5000,
+    orderId: 'ORDER-' + Date.now().toString().slice(-6),
+    providerTxId: 'TX-' + Math.random().toString(16).slice(2, 8),
+    webhookLog: [],
+    pollCount: 0,
+    pollTimer: null,
+    countdownTimer: null,
+    countdownValue: 60,
+    customerDecision: 'approve', // approve | reject | timeout
+    failedReason: '',
+    paymentStatus: 'pending',
+  };
+
+  function render() {
+    var html = '';
+    html += '<div class="mm-flow">';
+    html += '<div class="mm-grid">';
+
+    // Left: phone screen
+    html += '<div>';
+    html += '<div class="mm-stage">';
+    html += '<div class="mm-stage-title">Customer phone</div>';
+    html += '<div class="mm-phone"><div class="mm-phone-screen">';
+    html += '<div class="mm-ph-header"><strong>Airtel Money</strong><span>' + esc(state.phone) + '</span></div>';
+    html += '<div class="mm-ph-body">';
+
+    if (state.step === 'form') {
+      html += '<div class="mm-ph-msg">Waiting for a payment request…</div>';
+    } else if (state.step === 'waiting') {
+      html += '<div class="mm-ph-msg info"><strong>Payment request</strong>A payment of MWK ' + state.amount.toLocaleString() + ' from TechMountain Store is waiting.<br>Ref: ' + state.orderId + '</div>';
+      html += '<div class="mm-ph-msg warn"><strong>Enter your PIN</strong>You have ' + state.countdownValue + 's to approve this payment.</div>';
+      html += '<div class="mm-ph-actions">';
+      html += '<button class="mm-ph-btn" id="phApprove" type="button">Approve</button>';
+      html += '<button class="mm-ph-btn alt" id="phReject" type="button">Cancel</button>';
+      html += '<button class="mm-ph-btn alt" id="phTimeout" type="button" style="opacity:.6">Let it time out</button>';
+      html += '</div>';
+    } else if (state.step === 'success') {
+      html += '<div class="mm-ph-msg success"><strong>✓ Payment approved</strong>MWK ' + state.amount.toLocaleString() + ' sent to TechMountain Store.</div>';
+      html += '<div class="mm-ph-msg">You can close this screen.</div>';
+    } else if (state.step === 'failed') {
+      html += '<div class="mm-ph-msg warn"><strong>Payment cancelled</strong>' + esc(state.failedReason || 'The payment was not completed.') + '</div>';
+      html += '<div class="mm-ph-msg">You can try again when ready.</div>';
+    }
+    html += '</div></div></div>';
+    html += '</div>';
+
+    // Right: order summary + controls
+    html += '<div>';
+    html += '<div class="mm-order">';
+    html += '<div class="mm-order-row"><span class="mm-order-lbl">Order</span><span>' + state.orderId + '</span></div>';
+    html += '<div class="mm-order-row"><span class="mm-order-lbl">Provider</span><span>' + (state.provider === 'airtel_money' ? 'Airtel Money' : 'TNM Mpamba') + '</span></div>';
+    html += '<div class="mm-order-row"><span class="mm-order-lbl">Customer phone</span><span>' + esc(state.phone) + '</span></div>';
+    html += '<div class="mm-order-row"><span class="mm-order-lbl">Amount</span><span>MWK ' + state.amount.toLocaleString() + '</span></div>';
+    html += '</div>';
+
+    html += '<div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">';
+    var statusCls = state.paymentStatus === 'pending' ? 'pending'
+                  : state.paymentStatus === 'processing' ? 'processing'
+                  : state.paymentStatus === 'success' ? 'success' : 'failed';
+    var statusLabel = state.paymentStatus === 'pending' ? 'Not started'
+                    : state.paymentStatus === 'processing' ? 'Waiting for customer'
+                    : state.paymentStatus === 'success' ? 'Paid'
+                    : 'Failed';
+    html += '<span class="mm-status ' + statusCls + '">';
+    if (state.paymentStatus === 'processing') html += '<span class="pulse"></span>';
+    html += statusLabel + '</span>';
+    html += '</div>';
+
+    if (state.step === 'form') {
+      html += '<div class="mm-provider-pick">';
+      html += '<button class="mm-prov ' + (state.provider === 'airtel_money' ? 'selected' : '') + '" data-provider="airtel" type="button">';
+      html += '<div class="mm-prov-name" style="color:var(--airtel)">Airtel Money</div>';
+      html += '<div class="mm-prov-tag">Airtel Malawi</div>';
+      html += '</button>';
+      html += '<button class="mm-prov ' + (state.provider === 'tnm_mpamba' ? 'selected' : '') + '" data-provider="tnm" type="button">';
+      html += '<div class="mm-prov-name" style="color:var(--tnm)">TNM Mpamba</div>';
+      html += '<div class="mm-prov-tag">Telekom Networks</div>';
+      html += '</button>';
+      html += '</div>';
+      html += '<div class="field"><label for="mmPhone">Customer phone number</label><input id="mmPhone" type="tel" value="' + esc(state.phone) + '" placeholder="0991 234 567"></div>';
+      html += '<div class="field"><label for="mmAmount">Amount (MWK)</label><input id="mmAmount" type="number" value="' + state.amount + '" step="100"></div>';
+      html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+      html += '<button class="btn ' + (state.provider === 'airtel_money' ? 'btn-airtel' : 'btn-tnm') + '" id="mmCharge" type="button">💳 Charge customer</button>';
+      html += '</div>';
+    } else if (state.step === 'waiting') {
+      html += '<p style="font-size:13.5px;color:var(--t2);line-height:1.6;margin-bottom:12px">The prompt has been sent to the customer\'s phone. Waiting for their decision…</p>';
+      html += '<p style="font-size:12.5px;color:var(--t3);font-family:var(--mono)">Polling status endpoint every 2 seconds… (' + state.pollCount + ' checks)</p>';
+      html += '<div style="margin-top:14px"><button class="btn btn-g btn-sm" id="mmCancelWait" type="button">Cancel from our side</button></div>';
+    } else {
+      html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+      html += '<button class="btn btn-p" id="mmNewPayment" type="button">↺ New payment</button>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+    html += '</div>';
+
+    // Webhook log
+    html += '<div class="wh-log" id="whLog"><div style="color:#6b7280">Webhook log will appear here as the flow progresses…</div></div>';
+
+    html += '</div>';
+    container.innerHTML = html;
+
+    bindEvents();
+  }
+
+  function logWebhook(method, text, level) {
+    var time = new Date().toLocaleTimeString();
+    state.webhookLog.push({ time: time, method: method, text: text, level: level || '' });
+    updateLog();
+  }
+
+  function updateLog() {
+    var el = $('whLog');
+    if (!el) return;
+    if (!state.webhookLog.length) {
+      el.innerHTML = '<div style="color:#6b7280">Webhook log will appear here as the flow progresses…</div>';
+      return;
+    }
+    el.innerHTML = state.webhookLog.map(function(l) {
+      return '<div class="wh-line ' + l.level + '"><span class="wh-time">' + l.time + '</span>' +
+        (l.method ? '<span class="wh-method">' + esc(l.method) + '</span>' : '') +
+        esc(l.text) + '</div>';
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function bindEvents() {
+    // Provider pick
+    container.querySelectorAll('.mm-prov').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        state.provider = btn.getAttribute('data-provider') === 'airtel' ? 'airtel_money' : 'tnm_mpamba';
+        render();
+      });
+    });
+    // Phone input
+    var phoneInput = $('mmPhone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function() {
+        state.phone = phoneInput.value;
+      });
+    }
+    var amtInput = $('mmAmount');
+    if (amtInput) {
+      amtInput.addEventListener('input', function() {
+        state.amount = parseInt(amtInput.value, 10) || 0;
+      });
+    }
+
+    // Charge button
+    var chargeBtn = $('mmCharge');
+    if (chargeBtn) {
+      chargeBtn.addEventListener('click', function() { startCharge(); });
+    }
+
+    // Phone screen actions
+    var approveBtn = $('phApprove');
+    if (approveBtn) approveBtn.addEventListener('click', function() { customerApproves(); });
+    var rejectBtn = $('phReject');
+    if (rejectBtn) rejectBtn.addEventListener('click', function() { customerRejects(); });
+    var timeoutBtn = $('phTimeout');
+    if (timeoutBtn) timeoutBtn.addEventListener('click', function() { customerTimeout(); });
+
+    // Cancel wait
+    var cancelBtn = $('mmCancelWait');
+    if (cancelBtn) cancelBtn.addEventListener('click', function() { cancelWait(); });
+
+    // New payment
+    var newBtn = $('mmNewPayment');
+    if (newBtn) newBtn.addEventListener('click', function() { reset(); });
+  }
+
+  function startCharge() {
+    if (!state.phone || !state.amount) return;
+    state.orderId = 'ORDER-' + Date.now().toString().slice(-6);
+    state.providerTxId = 'TX-' + Math.random().toString(16).slice(2, 8);
+    state.webhookLog = [];
+    state.pollCount = 0;
+    state.step = 'waiting';
+    state.paymentStatus = 'processing';
+    state.countdownValue = 60;
+
+    logWebhook('POST', '→ POST /merchant/v1/payments/ (initiating charge)', 'info');
+    logWebhook('', 'Authorization: Bearer eyJ...cached', '');
+    logWebhook('', 'Body: { reference: "' + state.orderId + '", msisdn: "' + state.phone + '", amount: ' + state.amount + ' }', '');
+    setTimeout(function() {
+      logWebhook('200', '← Provider accepted: "request received, pushing to phone"', 'ok');
+      logWebhook('', 'Order status: pending', '');
+    }, 400);
+
+    // Poll
+    var pollInterval = setInterval(function() {
+      if (state.step !== 'waiting') { clearInterval(pollInterval); return; }
+      state.pollCount++;
+      logWebhook('GET', '→ GET /api/orders/' + state.orderId + ' (status: pending)', '');
+      updateLog();
+    }, 2000);
+
+    // Countdown
+    state.countdownTimer = setInterval(function() {
+      if (state.step !== 'waiting') { clearInterval(state.countdownTimer); return; }
+      state.countdownValue--;
+      if (state.countdownValue <= 0) {
+        clearInterval(state.countdownTimer);
+        clearInterval(pollInterval);
+        customerTimeout();
+      } else {
+        render();
+      }
+    }, 1000);
+
+    setTimeout(render, 50);
+  }
+
+  function customerApproves() {
+    if (state.step !== 'waiting') return;
+    clearInterval(state.countdownTimer);
+    state.customerDecision = 'approve';
+    logWebhook('INFO', 'Customer entered PIN. Payment approved.', 'ok');
+    setTimeout(function() {
+      logWebhook('POST', '→ POST /webhooks/mobile-money (from provider)', 'info');
+      logWebhook('', 'Body: { reference: "' + state.orderId + '", transaction: { id: "' + state.providerTxId + '", status: "TS" } }', '');
+      setTimeout(function() {
+        logWebhook('200', '← 200 OK (acknowledged)', 'ok');
+        logWebhook('GET', '→ Query provider to confirm transaction…', '');
+        setTimeout(function() {
+          logWebhook('200', '← Confirmed: status TS', 'ok');
+          logWebhook('INFO', '✓ Order ' + state.orderId + ' marked paid', 'ok');
+          state.paymentStatus = 'success';
+          state.step = 'success';
+          render();
+        }, 400);
+      }, 300);
+    }, 300);
+  }
+
+  function customerRejects() {
+    if (state.step !== 'waiting') return;
+    clearInterval(state.countdownTimer);
+    state.customerDecision = 'reject';
+    state.failedReason = 'The customer cancelled the payment on their phone.';
+    logWebhook('INFO', 'Customer pressed Cancel on the phone.', 'err');
+    setTimeout(function() {
+      logWebhook('POST', '→ POST /webhooks/mobile-money (from provider)', 'info');
+      logWebhook('', 'Body: { reference: "' + state.orderId + '", transaction: { id: "' + state.providerTxId + '", status: "TF" } }', '');
+      setTimeout(function() {
+        logWebhook('200', '← 200 OK (acknowledged)', 'ok');
+        logWebhook('INFO', '✗ Order ' + state.orderId + ' marked failed', 'err');
+        state.paymentStatus = 'failed';
+        state.step = 'failed';
+        render();
+      }, 300);
+    }, 300);
+  }
+
+  function customerTimeout() {
+    if (state.step !== 'waiting') return;
+    clearInterval(state.countdownTimer);
+    state.customerDecision = 'timeout';
+    state.failedReason = 'The customer did not respond within 60 seconds.';
+    logWebhook('INFO', 'No customer response within 60s.', 'err');
+    setTimeout(function() {
+      logWebhook('GET', '→ Query provider after 90s fallback…', '');
+      setTimeout(function() {
+        logWebhook('200', '← Status: TP (still pending, treated as timeout)', '');
+        logWebhook('INFO', '✗ Order ' + state.orderId + ' marked failed_timeout', 'err');
+        state.paymentStatus = 'failed';
+        state.step = 'failed';
+        render();
+      }, 400);
+    }, 500);
+  }
+
+  function cancelWait() {
+    if (state.step !== 'waiting') return;
+    clearInterval(state.countdownTimer);
+    state.failedReason = 'You cancelled the wait on our side. If the customer approves anyway, the webhook will still arrive.';
+    logWebhook('INFO', 'Wait cancelled by merchant. Continuing to listen for webhook.', '');
+    state.paymentStatus = 'failed';
+    state.step = 'failed';
+    render();
+  }
+
+  function reset() {
+    clearInterval(state.countdownTimer);
+    state.step = 'form';
+    state.webhookLog = [];
+    state.paymentStatus = 'pending';
+    state.failedReason = '';
+    render();
+  }
+
+  render();
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Mobile Money Integration</h1>';
+  html += '<p class="pg-sub">Airtel Money and TNM Mpamba are the payment rails of Malawi. Every e-commerce shop, ticketing platform, and subscription business needs this — and almost no developer knows how to build it. This course teaches you the complete integration: OAuth, collections, disbursements, webhooks, idempotency, reconciliation, and a checkout your customers trust.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>6 weeks</h3><p>10 lessons across 5 modules. About 5 hours of learning plus real integration work.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>You should know basic backend development — Node.js or Python, HTTP, and databases.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💳</span>Live simulator</h3><p>A working checkout flow with both providers, complete webhook log, and every failure mode.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Fundamentals</h3><p>How mobile money works, and the shape of both Airtel and TNM APIs.</p></div>';
+  html += '<div class="ov-card"><h3>Collections</h3><p>Charging a customer: initiate, prompt, approve, webhook.</p></div>';
+  html += '<div class="ov-card"><h3>Disbursements</h3><p>Sending money out: refunds, payouts, and safety rules.</p></div>';
+  html += '<div class="ov-card"><h3>Webhooks</h3><p>Signature verification, fast 200s, async processing, and fallbacks.</p></div>';
+  html += '<div class="ov-card"><h3>Reliability</h3><p>Idempotency, retries with backoff, and daily reconciliation.</p></div>';
+  html += '<div class="ov-card"><h3>Checkout UX</h3><p>Three-state design, mobile-first, and clear failure messages.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Fundamentals', 'How mobile money works. The shape of both provider APIs.'],
+    ['W2', 'Collections', 'The four-step payment flow and how to implement it.'],
+    ['W3', 'Disbursements', 'Sending money out safely. Float, payouts, refunds.'],
+    ['W4', 'Reliability', 'Webhooks, idempotency, retries, and reconciliation.'],
+    ['W5', 'UX & Security', 'Building a checkout page. Credentials, logging, redaction.'],
+    ['W6', 'Capstone', 'Full integration end to end with all edge cases handled.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to build Malawi\'s payment layer?</h2>';
+  html += '<p>Every Malawian business that sells online needs this. Jump in and start with the payment flow simulator.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('m1');
+    switchView('lessons');
+  });
+}
+
+/* ============================================================
+   TOOLS
+   ============================================================ */
+function renderTools() {
+  var container = $('viewTools');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Tools &amp; Milestones</h1>';
+  html += '<p class="pg-sub">The full payment simulator in one place, plus your real-world integration checklist. Tick each milestone only when you have actually done it.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' real-world milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Real-World Integration Checklist <span class="badge">Actual work</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">These are real actions you take in your own project. Tick each one only after you have actually done it.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 Payment Simulator</h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:14px">Full working checkout flow. Try success, failure, and timeout. Watch the webhook log carefully — that is what production looks like.</p>';
+  html += '<div id="toolsCheckout"></div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+
+  if ($('toolsCheckout')) renderCheckoutSimulator($('toolsCheckout'));
+}
+
+/* ============================================================
+   RESOURCES
+   ============================================================ */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your payment integration work.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['🔴', 'Airtel Africa Developer Portal', 'Official Airtel Money API documentation.', 'https://developers.airtel.africa/'],
+    ['🟢', 'TNM Mpamba Developer', 'TNM Mpamba API and merchant integration.', 'https://www.tnm.co.mw/'],
+    ['💳', 'OAuth 2.0 Simplified', 'The auth pattern both providers use.', 'https://oauth.net/2/'],
+    ['🔐', 'OWASP Payment Security', 'Best practices for payment systems.', 'https://owasp.org/www-project-top-ten/'],
+    ['📚', 'Webhooks Best Practices', 'A clear guide from Stripe on webhook reliability.', 'https://stripe.com/docs/webhooks/best-practices'],
+    ['💬', 'Stack Overflow — Payments', 'When you get stuck on a specific integration.', 'https://stackoverflow.com/questions/tagged/payment-gateway']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Mobile Money Cheatsheet</div><div class="res-d">One-page reference covering every step of the flow, all status codes, and the safety rules.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadStarterBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">💳</span>';
+  html += '<div><div class="res-t">Integration Starter Code</div><div class="res-d">A complete Node.js starter with provider client, webhook handler, and state machine.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadStarterBtn').addEventListener('click', downloadStarter);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  MOBILE MONEY INTEGRATION — CHEATSHEET',
+    '============================================',
+    '',
+    '--- PROVIDERS ---',
+    'Airtel Money   — Airtel Malawi',
+    'TNM Mpamba     — Telekom Networks Malawi',
+    'Base URLs differ, flow is identical.',
+    '',
+    '--- THE FOUR-STEP FLOW ---',
+    '1. Your server calls the payments endpoint',
+    '2. Provider pushes a prompt to the customer phone',
+    '3. Customer enters PIN to approve/reject',
+    '4. Provider sends a webhook with the result',
+    '',
+    'The webhook is the source of truth.',
+    'Never trust a client-side "success" message.',
+    '',
+    '--- AUTH (OAuth 2.0) ---',
+    'POST /auth/oauth2/token',
+    '  grant_type=client_credentials',
+    '  client_id=YOUR_ID',
+    '  client_secret=YOUR_SECRET',
+    '',
+    'Response: { access_token, expires_in: 3600 }',
+    'Cache the token. Refresh 60s before expiry.',
+    '',
+    '--- COLLECTIONS ---',
+    'POST /merchant/v1/payments/',
+    'Headers:',
+    '  Authorization: Bearer <token>',
+    '  X-Country: MW',
+    '  X-Currency: MWK',
+    '  Idempotency-Key: <unique>',
+    'Body:',
+    '  { reference, subscriber: { msisdn },',
+    '    transaction: { amount, currency, id } }',
+    '',
+    '--- STATUS CODES ---',
+    'TS   Transaction Successful',
+    'TF   Transaction Failed',
+    'TP   Transaction Pending',
+    'TA   Transaction Ambiguous (rare)',
+    '',
+    '--- WEBHOOK HANDLER PATTERN ---',
+    '1. Verify signature (HMAC-SHA256)',
+    '2. Respond 200 OK immediately',
+    '3. Check idempotency (skip if seen)',
+    '4. Query provider to confirm',
+    '5. Transition order state',
+    '6. Record as processed',
+    '',
+    '--- STATE MACHINE ---',
+    'pending → paid           (TS)',
+    'pending → failed         (TF)',
+    'pending → failed_timeout (no response)',
+    '',
+    'paid, failed, failed_timeout are terminal.',
+    'Never transition backwards.',
+    '',
+    '--- IDEMPOTENCY ---',
+    'Key: provider transaction ID',
+    'Store: processed_transactions table',
+    'Unique constraint on provider_tx_id',
+    '',
+    '--- RETRY WITH BACKOFF ---',
+    'Retry: network errors, timeouts, 5xx',
+    'Do not retry: 4xx (except 429)',
+    'Wait: 1s, 2s, 4s, 8s, 16s',
+    'Always send the same Idempotency-Key',
+    '',
+    '--- RECONCILIATION ---',
+    'Run nightly.',
+    'Compare:',
+    '  Provider transaction list',
+    '  vs your database',
+    '',
+    'Handle three cases:',
+    '  Missing on your side  → create record, fulfil',
+    '  Missing on theirs     → investigate, mark suspect',
+    '  Status mismatch       → trust the provider',
+    '',
+    '--- NEVER LOG ---',
+    'Client secrets',
+    'Webhook signatures',
+    'Full phone numbers (redact to last 4)',
+    'Customer PINs (you never see these)',
+    '',
+    '--- ALWAYS ---',
+    'HTTPS only',
+    'Environment variables for credentials',
+    'Verify every webhook',
+    'Query the provider to confirm',
+    'Rate-limit payment endpoints',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([lines], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'mobile-money-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadStarter() {
+  var code = [
+    '// provider.js — API client',
+    'const fetch = require("node-fetch");',
+    '',
+    'let cachedToken = null;',
+    'let tokenExpiresAt = 0;',
+    '',
+    'async function getToken() {',
+    '  if (cachedToken && Date.now() < tokenExpiresAt - 60000) {',
+    '    return cachedToken;',
+    '  }',
+    '  const res = await fetch(process.env.PROVIDER_AUTH_URL, {',
+    '    method: "POST",',
+    '    headers: { "Content-Type": "application/x-www-form-urlencoded" },',
+    '    body: new URLSearchParams({',
+    '      grant_type: "client_credentials",',
+    '      client_id: process.env.PROVIDER_CLIENT_ID,',
+    '      client_secret: process.env.PROVIDER_CLIENT_SECRET,',
+    '    }),',
+    '  });',
+    '  const data = await res.json();',
+    '  cachedToken = data.access_token;',
+    '  tokenExpiresAt = Date.now() + data.expires_in * 1000;',
+    '  return cachedToken;',
+    '}',
+    '',
+    'async function initiateCharge(order) {',
+    '  const token = await getToken();',
+    '  const res = await fetch(process.env.PROVIDER_PAYMENTS_URL, {',
+    '    method: "POST",',
+    '    headers: {',
+    '      Authorization: "Bearer " + token,',
+    '      "Content-Type": "application/json",',
+    '      "X-Country": "MW",',
+    '      "X-Currency": "MWK",',
+    '      "Idempotency-Key": order.reference + "-initiate",',
+    '    },',
+    '    body: JSON.stringify({',
+    '      reference: order.reference,',
+    '      subscriber: { country: "MW", currency: "MWK", msisdn: order.phone },',
+    '      transaction: {',
+    '        amount: order.amount,',
+    '        country: "MW",',
+    '        currency: "MWK",',
+    '        id: order.providerTxId,',
+    '      },',
+    '    }),',
+    '  });',
+    '  return res.json();',
+    '}',
+    '',
+    'async function queryTransaction(providerTxId) {',
+    '  const token = await getToken();',
+    '  const res = await fetch(',
+    '    process.env.PROVIDER_QUERY_URL + "?id=" + providerTxId,',
+    '    { headers: { Authorization: "Bearer " + token } }',
+    '  );',
+    '  return res.json();',
+    '}',
+    '',
+    'module.exports = { getToken, initiateCharge, queryTransaction };',
+    '',
+    '',
+    '// webhooks.js — webhook handler',
+    'const express = require("express");',
+    'const crypto = require("crypto");',
+    'const provider = require("./provider");',
+    '',
+    'const router = express.Router();',
+    '',
+    'router.post("/webhooks/mobile-money",',
+    '  express.raw({ type: "application/json" }),',
+    '  async (req, res) => {',
+    '    // 1. Acknowledge immediately',
+    '    res.status(200).send("OK");',
+    '',
+    '    // 2. Verify signature',
+    '    const signature = req.headers["x-signature"];',
+    '    const expected = crypto',
+    '      .createHmac("sha256", process.env.WEBHOOK_SECRET)',
+    '      .update(req.body)',
+    '      .digest("hex");',
+    '',
+    '    if (!signature ||',
+    '        !crypto.timingSafeEqual(',
+    '          Buffer.from(signature), Buffer.from(expected))) {',
+    '      return;',
+    '    }',
+    '',
+    '    const payload = JSON.parse(req.body.toString());',
+    '    const { reference, transaction } = payload;',
+    '',
+    '    // 3. Idempotency',
+    '    const existing = await db.findOne("processed_txs", {',
+    '      providerTxId: transaction.id,',
+    '    });',
+    '    if (existing) return;',
+    '',
+    '    // 4. Verify with provider',
+    '    const verified = await provider.queryTransaction(transaction.id);',
+    '    if (verified.status !== transaction.status) return;',
+    '',
+    '    // 5. Transition order',
+    '    if (transaction.status === "TS") {',
+    '      await db.update("orders", reference, { status: "paid" });',
+    '    } else if (transaction.status === "TF") {',
+    '      await db.update("orders", reference, { status: "failed" });',
+    '    }',
+    '',
+    '    // 6. Record',
+    '    await db.insert("processed_txs", {',
+    '      providerTxId: transaction.id,',
+    '      reference,',
+    '      processedAt: new Date(),',
+    '    });',
+    '  }',
+    ');',
+    '',
+    'module.exports = router;',
+    '',
+    '',
+    '// .env.example',
+    'PROVIDER_AUTH_URL=',
+    'PROVIDER_PAYMENTS_URL=',
+    'PROVIDER_QUERY_URL=',
+    'PROVIDER_CLIENT_ID=',
+    'PROVIDER_CLIENT_SECRET=',
+    'WEBHOOK_SECRET='
+  ].join('\n');
+  var blob = new Blob([code], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'mobile-money-starter.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ============================================================
+   COMMUNITY
+   ============================================================ */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Payments is a small, high-trust community. Join other Malawian developers building the payment layer for the country.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>Payments WhatsApp Group</h3><p>Share integration issues, webhook debugging, and provider quirks.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer discussions, API changes, business models.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>Integration Showcase</h3><p>See what other learners have built. Share your repo.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Real talk on payments</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>The webhook is the truth</h3><p>Your API response only says "received." The customer\'s phone decides. Only the webhook tells you the actual result. Design everything around this.</p></div>';
+  html += '<div class="ov-card"><h3>Idempotency saves careers</h3><p>One client was charged five times because of a duplicate webhook. Without an idempotency key, that is a five-way refund and an angry customer.</p></div>';
+  html += '<div class="ov-card"><h3>Reconciliation is not optional</h3><p>Payments will drift. Webhooks will be lost. A nightly reconciliation script catches everything before your customers do.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:36px">';
+  html += '<h2>Stuck on a webhook?</h2>';
+  html += '<p>Post your handler code and the payload you received. Someone will spot the issue fast.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ============================================================
+   CERTIFICATE
+   ============================================================ */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">You unlock the certificate when you have completed every lesson and ticked at least 7 real-world milestones on the Tools tab.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Real-world milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Mobile Money Integration</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">6 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Mobile Money Integration, demonstrating proficiency in OAuth authentication, collections and disbursement flows, webhook handling, idempotency, reconciliation, and secure checkout design.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Mobile Money Integration</h1>' +
+        '<div class="t">6 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Mobile Money Integration,<br>demonstrating proficiency in OAuth authentication, collections<br>and disbursement flows, webhook handling, idempotency,<br>reconciliation, and secure checkout design.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

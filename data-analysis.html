@@ -1,0 +1,2659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Analysis with Python — Interactive Course</title>
+<meta name="description" content="Learn pandas, NumPy, and Matplotlib. 10 weeks, intermediate level, with a real Python data sandbox and Matplotlib charts.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:18px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:340px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:4;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+.con-out{min-height:200px;max-height:340px;overflow-y:auto;padding:12px 14px;background:var(--navy3);font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#c9d1d9}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:3px 8px;margin:1px 0;border-radius:4px;display:flex;gap:8px;align-items:flex-start;word-break:break-word;white-space:pre-wrap}
+.con-line.log{color:#c9d1d9}
+.con-line.info{color:#7dd3fc;background:rgba(56,189,248,.08);border-left:2px solid #38bdf8}
+.con-line.warn{color:#fbbf24;background:rgba(217,119,6,.1);border-left:2px solid var(--warn)}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-bdg{font-size:9.5px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:34px}
+.fig-area{padding:10px;background:#f9fafb;overflow-y:auto;max-height:400px;border-top:1px solid var(--bd2)}
+.fig-frame{margin-bottom:10px;background:#fff;border:1px solid var(--bd);border-radius:8px;padding:8px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.fig-frame img{width:100%;display:block;border-radius:4px}
+.fig-cap{font-size:11px;color:var(--t3);text-align:center;padding-top:6px;font-family:var(--mono)}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:16px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .code-ta{min-height:260px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:16px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">∑</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Data Analysis with Python</div>
+        <div class="brand-sb">10 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">∑</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Data Analysis with Python</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: PYTHON REFRESHER ===== -->
+<div class="src-read" data-l="pr1">
+<p>Before we dive into pandas, let's refresh the Python essentials you will use constantly. If you have taken our Python Fundamentals course, this is a fast recap — if you are rusty, slow down.</p>
+<h2>Variables and types</h2>
+<pre><code>name = "Chisomo"       # str
+age = 22               # int
+height = 1.75          # float
+is_student = True      # bool</code></pre>
+<p>Python infers the type. You can check it with <code>type(x)</code>.</p>
+<h2>Lists — ordered sequences</h2>
+<pre><code>districts = ["Lilongwe", "Blantyre", "Mzuzu"]
+districts.append("Zomba")             # add to end
+districts[0]                          # "Lilongwe"
+districts[-1]                         # "Zomba"
+districts[1:3]                        # ["Blantyre", "Mzuzu"]
+len(districts)                        # 4</code></pre>
+<p>Lists are mutable — you can change them after creation.</p>
+<h2>Dictionaries — key-value maps</h2>
+<pre><code>user = {
+    "name": "Chisomo",
+    "age": 22,
+    "city": "Lilongwe"
+}
+user["name"]                 # "Chisomo"
+user["email"] = "c@m.mw"     # add a key
+user.get("phone", "none")    # safe lookup</code></pre>
+<p>Dictionaries are the natural shape of one "row" of data. When we load a CSV into pandas, each row becomes a dict internally.</p>
+<h2>List of dicts — the tabular shape</h2>
+<pre><code>rows = [
+    {"district": "Lilongwe", "population": 1200000},
+    {"district": "Blantyre", "population": 1000000},
+    {"district": "Mzuzu",    "population": 220000}
+]
+
+for row in rows:
+    print(row["district"], row["population"])</code></pre>
+<p>This is exactly what <code>pd.DataFrame(rows)</code> expects. Remember this pattern — it will appear in every lesson.</p>
+<h2>Try it</h2>
+<p>In the sandbox, create a small list of 3 districts with their populations. Print each one on its own line.</p>
+<blockquote>Data analysis is 80% "wrangling" — reshaping, filtering, and cleaning data. Python's list and dict primitives are what make wrangling possible.</blockquote>
+</div>
+
+<div class="src-read" data-l="pr2">
+<p>Loops and functions are the two tools that turn raw data into insight. Every pandas pattern you will learn is built on top of them.</p>
+<h2>for loops</h2>
+<pre><code>districts = ["Lilongwe", "Blantyre", "Mzuzu"]
+
+for d in districts:
+    print(d)
+
+# with index
+for i, d in enumerate(districts):
+    print(i, d)</code></pre>
+<h2>while loops — less common in data work</h2>
+<pre><code>n = 0
+while n &lt; 3:
+    print(n)
+    n += 1</code></pre>
+<p>You will use <code>for</code> far more than <code>while</code>. Data is usually a collection you iterate over.</p>
+<h2>Functions</h2>
+<pre><code>def mean(numbers):
+    return sum(numbers) / len(numbers)
+
+def describe(name, age):
+    return f"{name} is {age} years old"
+
+print(mean([10, 20, 30]))       # 20.0
+print(describe("Chisomo", 22))</code></pre>
+<p>Functions keep your analysis organized. Instead of a 300-line script, you write small functions that each do one thing.</p>
+<h2>List comprehensions</h2>
+<p>A Pythonic shortcut for building lists:</p>
+<pre><code>squares = [n * n for n in range(1, 6)]
+# [1, 4, 9, 16, 25]
+
+lilongwe_only = [d for d in districts if d == "Lilongwe"]
+# ["Lilongwe"]</code></pre>
+<p>You will use comprehensions constantly in data work — but only on small collections. For anything large, pandas replaces them.</p>
+<h2>Conditionals</h2>
+<pre><code>for d in districts:
+    if d == "Lilongwe":
+        print(d + " is the capital")
+    elif d == "Blantyre":
+        print(d + " is the commercial hub")
+    else:
+        print(d + " is a major city")</code></pre>
+<h2>Try it</h2>
+<p>Write a function <code>average(numbers)</code> that returns the mean. Test it on a list of 5 numbers. Then use a list comprehension to build a list of the squares of numbers 1–10.</p>
+<blockquote>Once you are comfortable with loops and functions, pandas will feel like a superpower — it does in one line what would take you ten with a for loop.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: NUMPY ===== -->
+<div class="src-read" data-l="np1">
+<p>NumPy is the foundation of every Python data tool. pandas is built on top of it. Matplotlib accepts it. SciPy, scikit-learn, PyTorch — all of them use NumPy arrays as the universal data format.</p>
+<h2>What is a NumPy array?</h2>
+<p>A NumPy array is like a Python list, but:</p>
+<ul>
+<li><strong>Faster</strong> — 10–100× faster for numerical operations</li>
+<li><strong>Typed</strong> — all elements share the same type (usually float64)</li>
+<li><strong>Vectorized</strong> — you operate on the whole array at once, not element by element</li>
+</ul>
+<pre><code>import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+print(arr)
+print(arr.shape)      # (5,)
+print(arr.dtype)      # int64</code></pre>
+<h2>Creating arrays</h2>
+<pre><code>np.zeros(5)              # [0. 0. 0. 0. 0.]
+np.ones(3)               # [1. 1. 1.]
+np.arange(0, 10, 2)      # [0 2 4 6 8]
+np.linspace(0, 1, 5)     # [0.   0.25 0.5  0.75 1.  ]
+np.random.rand(3)        # 3 random numbers in [0, 1)</code></pre>
+<p><code>arange</code> is like Python's <code>range</code> but returns an array. <code>linspace</code> returns evenly spaced numbers between two values — useful for plotting.</p>
+<h2>Vectorized operations — the superpower</h2>
+<p>Without NumPy:</p>
+<pre><code>prices = [100, 200, 300]
+doubled = []
+for p in prices:
+    doubled.append(p * 2)</code></pre>
+<p>With NumPy:</p>
+<pre><code>prices = np.array([100, 200, 300])
+doubled = prices * 2          # array([200, 400, 600])</code></pre>
+<p>Every arithmetic operator applies to the whole array. Same for comparison, and functions:</p>
+<pre><code>a = np.array([1, 2, 3])
+b = np.array([10, 20, 30])
+
+a + b       # [11, 22, 33]
+a * b       # [10, 40, 90]
+np.sqrt(a)  # [1.   1.414 1.732]
+a > 2       # [False False  True]</code></pre>
+<h2>2D arrays</h2>
+<pre><code>grid = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+grid.shape       # (2, 3)
+grid[0]          # [1, 2, 3]
+grid[1, 2]       # 6
+grid[:, 0]       # [1, 4] (first column)</code></pre>
+<h2>Try it</h2>
+<p>Create an array of numbers 1–10. Compute their squares (without a loop). Compute the sum. Print the mean.</p>
+<blockquote>If you find yourself writing a for loop over a list of numbers, stop and ask: can this be done with a NumPy array in one line? 99% of the time, yes — and it will be 50× faster.</blockquote>
+</div>
+
+<div class="src-read" data-l="np2">
+<p>Two NumPy features make it truly powerful for data analysis: <strong>broadcasting</strong> and <strong>aggregations</strong>.</p>
+<h2>Broadcasting</h2>
+<p>Broadcasting means NumPy stretches arrays to match shapes when doing arithmetic — automatically.</p>
+<pre><code>arr = np.array([1, 2, 3, 4, 5])
+arr + 10          # [11, 12, 13, 14, 15]  (10 is broadcast to every element)
+arr * 2           # [ 2,  4,  6,  8, 10]</code></pre>
+<p>Two arrays of compatible shape:</p>
+<pre><code>prices = np.array([100, 200, 300])
+taxes = np.array([0.1, 0.1, 0.15])
+total = prices * (1 + taxes)
+# [110. 220. 345.]</code></pre>
+<p>Broadcasting also works with 2D arrays:</p>
+<pre><code>matrix = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+row_mean = matrix.mean(axis=1)     # array([2., 5.])
+centered = matrix - row_mean.reshape(2, 1)
+# subtract the row mean from each row</code></pre>
+<h2>Aggregations</h2>
+<pre><code>scores = np.array([85, 92, 78, 95, 88])
+
+scores.sum()      # 438
+scores.mean()     # 87.6
+scores.min()      # 78
+scores.max()      # 95
+scores.std()      # 6.13...
+np.median(scores) # 88.0</code></pre>
+<h2>The axis parameter</h2>
+<p>For 2D arrays, <code>axis</code> controls which direction to aggregate:</p>
+<pre><code>grid = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+grid.sum()             # 21      (everything)
+grid.sum(axis=0)       # [5, 7, 9]  (down each column)
+grid.sum(axis=1)       # [6, 15]    (across each row)
+grid.mean(axis=0)      # [2.5, 3.5, 4.5]</code></pre>
+<p>Remember: <code>axis=0</code> collapses rows (aggregates down a column). <code>axis=1</code> collapses columns (aggregates across a row).</p>
+<h2>Boolean masking — filtering without loops</h2>
+<pre><code>scores = np.array([85, 92, 78, 95, 88])
+
+high = scores > 85
+# [False  True False  True  True]
+
+scores[high]
+# [92, 95, 88]
+
+scores[scores > 85].mean()
+# 91.67</code></pre>
+<p>This one pattern — <code>arr[arr &gt; threshold]</code> — is used constantly in data analysis.</p>
+<h2>Try it</h2>
+<p>Create an array of 20 random numbers between 0 and 100. Compute the mean, min, and max. Then filter the array to keep only numbers greater than 50, and count how many there are.</p>
+<blockquote>Broadcasting and boolean masking are the two NumPy concepts you will use most. Master them and pandas will feel natural — pandas reuses both, just with labels on top.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: PANDAS ===== -->
+<div class="src-read" data-l="pd1">
+<p>pandas is the single most important library in Python data analysis. It gives you two data structures — Series and DataFrame — that make working with tabular data natural and fast.</p>
+<h2>What is a DataFrame?</h2>
+<p>Think of it as a spreadsheet in code. Rows, columns, labels, mixed types. Under the hood, it is a collection of NumPy arrays plus an index.</p>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame({
+    "district": ["Lilongwe", "Blantyre", "Mzuzu"],
+    "population": [1200000, 1000000, 220000],
+    "gdp": [850, 920, 780]
+})
+
+print(df)</code></pre>
+<p>Output:</p>
+<pre><code>    district  population  gdp
+0   Lilongwe     1200000  850
+1   Blantyre     1000000  920
+2      Mzuzu      220000  780</code></pre>
+<h2>From a list of dicts</h2>
+<p>The most common shape when loading JSON or CSVs:</p>
+<pre><code>rows = [
+    {"district": "Lilongwe", "population": 1200000},
+    {"district": "Blantyre", "population": 1000000},
+]
+df = pd.DataFrame(rows)</code></pre>
+<h2>From a CSV file</h2>
+<pre><code>df = pd.read_csv("data.csv")</code></pre>
+<p>That is the most common line of pandas code in the world. It reads a CSV into a DataFrame. In the sandbox, we will build DataFrames from Python data since we do not have real files — but the operations are identical.</p>
+<h2>Exploring a DataFrame</h2>
+<p>First five rows:</p>
+<pre><code>df.head()</code></pre>
+<p>Last five:</p>
+<pre><code>df.tail()</code></pre>
+<p>Shape, columns, types, missing values:</p>
+<pre><code>df.shape        # (rows, columns)
+df.columns      # column names
+df.dtypes       # data type of each column
+df.info()       # summary with non-null counts
+df.describe()   # statistics for numeric columns</code></pre>
+<p><code>describe()</code> is usually the first thing you run on a new dataset. It gives you count, mean, std, min, quartiles, and max for every numeric column.</p>
+<h2>Selecting columns and rows</h2>
+<pre><code>df["district"]              # one column (a Series)
+df[["district", "gdp"]]     # multiple columns (a DataFrame)
+
+df.loc[0]                   # row by label
+df.iloc[0]                  # row by position
+
+df[df["gdp"] > 800]         # filter rows</code></pre>
+<h2>A Series vs a DataFrame</h2>
+<p>A <strong>Series</strong> is a single column: one-dimensional, with an index. A <strong>DataFrame</strong> is a collection of Series sharing the same index. <code>df["district"]</code> returns a Series; <code>df[["district"]]</code> returns a DataFrame.</p>
+<h2>Try it</h2>
+<p>Create a DataFrame with 4 cities and columns for city, population, and area. Print <code>df.shape</code>, <code>df.describe()</code>, and then filter to cities with population greater than 500000.</p>
+<blockquote>90% of data analysis begins with <code>pd.read_csv()</code>, then <code>df.info()</code> and <code>df.describe()</code>. Get in the habit of those three lines — they tell you what you are working with.</blockquote>
+</div>
+
+<div class="src-read" data-l="pd2">
+<p>Real datasets are messy. Columns have wrong types, values are missing, labels are inconsistent. pandas gives you the tools to clean and reshape.</p>
+<h2>Missing values</h2>
+<pre><code>df.isna()             # boolean mask of missing
+df.isna().sum()       # count per column
+df.dropna()           # drop rows with any missing
+df.fillna(0)          # fill missing with 0
+df["gdp"].fillna(df["gdp"].mean())   # fill with mean</code></pre>
+<p>There is no universally correct choice. Dropping loses data; filling invents it. The right answer depends on the question you are asking.</p>
+<h2>Renaming and cleaning text</h2>
+<pre><code>df.rename(columns={"old": "new"}, inplace=True)
+df["district"] = df["district"].str.strip()
+df["district"] = df["district"].str.title()
+df["district"] = df["district"].str.replace("LILONGWE", "Lilongwe")</code></pre>
+<p>String columns have a <code>.str</code> accessor with dozens of useful methods. Cleaning text is 30% of real data work.</p>
+<h2>Filtering with conditions</h2>
+<pre><code>df[df["year"] == 2022]
+df[df["gdp_per_capita"] > 800]
+df[(df["year"] == 2022) &amp; (df["gdp_per_capita"] > 800)]
+df[df["district"].isin(["Lilongwe", "Blantyre"])]</code></pre>
+<p>Combine conditions with <code>&amp;</code> (and), <code>|</code> (or). Always wrap each condition in parentheses.</p>
+<h2>Sorting</h2>
+<pre><code>df.sort_values("population")
+df.sort_values("population", ascending=False)
+df.sort_values(["year", "district"])</code></pre>
+<h2>GroupBy — the killer feature</h2>
+<p>Group rows by a column, then aggregate:</p>
+<pre><code>df.groupby("district")["population"].mean()
+df.groupby("district")["gdp_per_capita"].max()
+df.groupby("year")[["population", "gdp_per_capita"]].sum()</code></pre>
+<p>The pattern is always: <strong>group by something, pick a column, apply an aggregation.</strong></p>
+<p>Multiple aggregations at once:</p>
+<pre><code>df.groupby("district").agg({
+    "population": "sum",
+    "gdp_per_capita": "mean",
+    "literacy_rate": "mean"
+})</code></pre>
+<h2>Adding new columns</h2>
+<pre><code>df["gdp_total"] = df["population"] * df["gdp_per_capita"]
+df["literacy_pct"] = df["literacy_rate"] * 100</code></pre>
+<p>New columns are created just by assigning. The multiplication is vectorized — pandas applies it to every row at once.</p>
+<h2>Try it</h2>
+<p>Build a DataFrame with district, year, and gdp. Group by district and compute the average gdp. Sort the result from highest to lowest.</p>
+<blockquote>If you can write <code>groupby</code> and <code>agg</code> fluently, you can answer 80% of real data questions — "average by region", "total by month", "max by category".</blockquote>
+</div>
+
+<!-- ===== MODULE 4: MATPLOTLIB ===== -->
+<div class="src-read" data-l="mp1">
+<p>Numbers on their own are hard to read. A single chart can replace a page of statistics. Matplotlib is Python's standard plotting library, and it is what you will use for every visualization in this course.</p>
+<h2>Your first chart</h2>
+<pre><code>import matplotlib.pyplot as plt
+
+years = [2019, 2020, 2021, 2022, 2023]
+population = [17.5, 18.1, 18.7, 19.3, 19.9]
+
+plt.plot(years, population)
+plt.show()</code></pre>
+<p>Two lines and you have a chart. <code>plot</code> draws the data; <code>show</code> displays it.</p>
+<h2>The four chart types you will use most</h2>
+<h3>Line plot — trends over time</h3>
+<pre><code>plt.plot(years, population)
+plt.show()</code></pre>
+<p>Use when x is time or another ordered sequence.</p>
+<h3>Bar chart — comparing categories</h3>
+<pre><code>districts = ["Lilongwe", "Blantyre", "Mzuzu", "Zomba"]
+pops = [1200000, 1000000, 220000, 105000]
+
+plt.bar(districts, pops)
+plt.show()</code></pre>
+<p>Use when comparing values across categories.</p>
+<h3>Scatter plot — relationship between two variables</h3>
+<pre><code>gdp = [850, 920, 780, 760]
+literacy = [0.82, 0.85, 0.76, 0.72]
+
+plt.scatter(gdp, literacy)
+plt.show()</code></pre>
+<p>Use when you want to see if two variables are correlated.</p>
+<h3>Histogram — distribution of one variable</h3>
+<pre><code>import numpy as np
+scores = np.random.normal(70, 12, 200)
+
+plt.hist(scores, bins=20)
+plt.show()</code></pre>
+<p>Use when you want to see how values are distributed.</p>
+<h2>Always label your chart</h2>
+<pre><code>plt.plot(years, population)
+plt.title("Malawi Population, 2019–2023")
+plt.xlabel("Year")
+plt.ylabel("Population (millions)")
+plt.show()</code></pre>
+<p>A chart without a title and axis labels is a chart nobody can interpret. Always label.</p>
+<h2>Try it</h2>
+<p>Create a bar chart of the populations of 5 Malawi districts. Add a title and axis labels. Then create a line chart of the same data.</p>
+<blockquote>Charts are arguments. Every chart should answer one clear question. If you cannot state the question in a sentence, you do not yet know what to plot.</blockquote>
+</div>
+
+<div class="src-read" data-l="mp2">
+<p>Anyone can make a basic plot. Turning it into something a stakeholder would actually read takes a few more lines.</p>
+<h2>Colors, markers, and line styles</h2>
+<pre><code>plt.plot(years, population, color="green", marker="o", linestyle="-")
+plt.plot(years, gdp, color="blue", marker="s", linestyle="--")</code></pre>
+<ul>
+<li><code>color</code> — any named color or hex like <code>"#00c853"</code></li>
+<li><code>marker</code> — <code>"o"</code> (circle), <code>"s"</code> (square), <code>"^"</code> (triangle), <code>"x"</code></li>
+<li><code>linestyle</code> — <code>"-"</code> (solid), <code>"--"</code> (dashed), <code>":"</code> (dotted)</li>
+</ul>
+<h2>Grid and legend</h2>
+<pre><code>plt.plot(years, population, label="Population")
+plt.plot(years, gdp, label="GDP")
+plt.legend()
+plt.grid(True, alpha=0.3)</code></pre>
+<p><code>label</code> names each line; <code>legend()</code> displays the key. <code>grid</code> adds faint gridlines for readability.</p>
+<h2>Figure size</h2>
+<pre><code>plt.figure(figsize=(10, 6))
+plt.plot(years, population)
+plt.show()</code></pre>
+<p>Default is 6.4 × 4.8 inches. Bigger is better for detailed data, smaller is fine for slides.</p>
+<h2>Subplots — multiple charts in one figure</h2>
+<pre><code>fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+axes[0].plot(years, population)
+axes[0].set_title("Population")
+
+axes[1].bar(districts, pops)
+axes[1].set_title("Population by District")
+
+plt.tight_layout()
+plt.show()</code></pre>
+<p><code>subplots(rows, cols)</code> returns a figure and an array of axes. Each axis is a separate chart. <code>tight_layout()</code> prevents labels from overlapping.</p>
+<h2>Styling tricks worth knowing</h2>
+<pre><code>plt.style.use("seaborn-v0_8-whitegrid")
+
+plt.xticks(rotation=45)
+plt.ylim(0, None)              # start y-axis at 0
+plt.axhline(y=1000000, color="red", linestyle="--", label="Threshold")</code></pre>
+<p><code>xticks(rotation=45)</code> angles x labels so they do not overlap. <code>ylim</code> sets the y-axis range. <code>axhline</code> draws a horizontal reference line.</p>
+<h2>Two variables, one chart</h2>
+<pre><code>fig, ax1 = plt.subplots(figsize=(10, 5))
+
+ax1.plot(years, population, color="green", marker="o")
+ax1.set_ylabel("Population", color="green")
+ax1.tick_params(axis="y", labelcolor="green")
+
+ax2 = ax1.twinx()
+ax2.plot(years, gdp, color="blue", marker="s")
+ax2.set_ylabel("GDP per capita", color="blue")
+ax2.tick_params(axis="y", labelcolor="blue")
+
+plt.title("Population and GDP over Time")
+plt.show()</code></pre>
+<p><code>twinx()</code> shares the x-axis but gives a second y-axis. Perfect for comparing two series with different scales.</p>
+<h2>Try it</h2>
+<p>Create a figure with 2 subplots side by side: a line chart of population over time on the left, and a bar chart of district populations on the right. Give each a title.</p>
+<blockquote>The difference between a beginner chart and a professional one is: title, axis labels, legend, and readable sizing. Four additions. Always make them.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: PROJECTS ===== -->
+<div class="src-read" data-l="cp1">
+<p>Time to build. The capstone is a full data analysis project on a <strong>Malawi districts dataset</strong> — 40 rows across 8 districts and 5 years, with intentional data-quality problems that you will fix.</p>
+<h2>The dataset</h2>
+<p>We have preloaded <code>MALAWI_RAW</code> into the sandbox. It is a list of dicts, each with these fields:</p>
+<ul>
+<li><code>district</code> — district name (string)</li>
+<li><code>year</code> — 2019 to 2023 (int)</li>
+<li><code>population</code> — people (int)</li>
+<li><code>gdp_per_capita</code> — USD per person (int, sometimes missing)</li>
+<li><code>literacy_rate</code> — 0 to 1 (float, sometimes missing)</li>
+<li><code>maize_tonnes</code> — annual maize production (int)</li>
+</ul>
+<p>We intentionally introduced three data-quality problems:</p>
+<ol>
+<li><strong>Inconsistent district names</strong> — some rows say "LILONGWE", "lilongwe", or "Blantyre " (with a trailing space)</li>
+<li><strong>Missing values</strong> — a few rows have <code>None</code> for <code>literacy_rate</code> or <code>gdp_per_capita</code></li>
+<li><strong>A duplicate row</strong> — the first Lilongwe 2019 row is repeated</li>
+</ol>
+<h2>The plan</h2>
+<ol>
+<li>Load <code>MALAWI_RAW</code> into a DataFrame</li>
+<li>Inspect with <code>head()</code>, <code>info()</code>, <code>describe()</code></li>
+<li>Fix the district name inconsistencies</li>
+<li>Remove the duplicate row</li>
+<li>Handle the missing values</li>
+</ol>
+<h2>Step 1: Load the DataFrame</h2>
+<pre><code>import pandas as pd
+
+df = pd.DataFrame(MALAWI_RAW)
+print(df.head())
+print(df.info())
+print(df.describe())</code></pre>
+<p>The <code>info()</code> output tells you immediately which columns have missing values — the "non-null count" will be lower than the total row count for those columns.</p>
+<h2>Step 2: Fix district names</h2>
+<p>Three operations, in order:</p>
+<pre><code># Normalize case and strip whitespace
+df["district"] = df["district"].str.strip().str.title()
+
+# Now "LILONGWE" -> "Lilongwe", "lilongwe" -> "Lilongwe", "Blantyre " -> "Blantyre"</code></pre>
+<p><code>.str.title()</code> capitalizes the first letter of every word and lowercases the rest. <code>.str.strip()</code> removes leading and trailing spaces.</p>
+<h2>Step 3: Remove duplicates</h2>
+<pre><code>print("Before:", len(df))
+df = df.drop_duplicates()
+print("After:", len(df))</code></pre>
+<p><code>drop_duplicates()</code> removes rows that are identical across all columns. Use <code>subset=["district", "year"]</code> to remove rows that are duplicates on only a few columns.</p>
+<h2>Step 4: Handle missing values</h2>
+<p>Two reasonable approaches for numeric columns:</p>
+<pre><code># Option A: drop rows with any missing
+df_dropped = df.dropna()
+
+# Option B: fill with the column mean
+df_filled = df.copy()
+df_filled["gdp_per_capita"] = df_filled["gdp_per_capita"].fillna(
+    df_filled["gdp_per_capita"].mean()
+)
+df_filled["literacy_rate"] = df_filled["literacy_rate"].fillna(
+    df_filled["literacy_rate"].mean()
+)</code></pre>
+<p>For a small dataset, <strong>filling with the mean</strong> is usually the safer choice — you keep more rows. We will use that approach in the capstone.</p>
+<h2>Try it</h2>
+<p>Load <code>MALAWI_RAW</code>, fix the district names, drop duplicates, and fill missing values. Then print <code>df.shape</code> and <code>df.head()</code> to see the cleaned result.</p>
+<blockquote>Data cleaning is not glamorous. It is the actual work. Every analyst spends more time cleaning than analyzing. Get it right and the analysis writes itself.</blockquote>
+</div>
+
+<div class="src-read" data-l="cp2">
+<p>Your data is clean. Now the interesting part: extract insights and visualize them.</p>
+<h2>Step 1: Group by district</h2>
+<p>The most common aggregation in any analysis:</p>
+<pre><code>summary = df.groupby("district").agg({
+    "population": "mean",
+    "gdp_per_capita": "mean",
+    "literacy_rate": "mean",
+    "maize_tonnes": "sum"
+})
+
+print(summary)</code></pre>
+<p>You now have one row per district, with the average population, average GDP, average literacy, and total maize production.</p>
+<h2>Step 2: Add a derived column</h2>
+<p>Total GDP = population × gdp per capita:</p>
+<pre><code>df["gdp_total"] = df["population"] * df["gdp_per_capita"]
+
+district_gdp = df.groupby("district")["gdp_total"].sum()
+print(district_gdp.sort_values(ascending=False))</code></pre>
+<h2>Step 3: Trend over time</h2>
+<pre><code>yearly = df.groupby("year")[["population", "gdp_per_capita", "maize_tonnes"]].mean()
+print(yearly)</code></pre>
+<h2>Step 4: Visualize — chart 1: population by district</h2>
+<pre><code>import matplotlib.pyplot as plt
+
+summary_sorted = summary.sort_values("population", ascending=False)
+
+plt.figure(figsize=(10, 6))
+plt.bar(summary_sorted.index, summary_sorted["population"])
+plt.title("Average Population by District")
+plt.xlabel("District")
+plt.ylabel("Population")
+plt.xticks(rotation=45)
+plt.show()</code></pre>
+<h2>Step 5: Chart 2 — GDP trend over time</h2>
+<pre><code>plt.figure(figsize=(10, 5))
+plt.plot(yearly.index, yearly["gdp_per_capita"], marker="o", color="green")
+plt.title("Malawi Average GDP per Capita, 2019–2023")
+plt.xlabel("Year")
+plt.ylabel("GDP per Capita (USD)")
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+<h2>Step 6: Chart 3 — GDP vs literacy scatter</h2>
+<pre><code>plt.figure(figsize=(8, 6))
+plt.scatter(summary["gdp_per_capita"], summary["literacy_rate"], s=80)
+plt.title("GDP per Capita vs Literacy Rate")
+plt.xlabel("GDP per Capita (USD)")
+plt.ylabel("Literacy Rate")
+for name, row in summary.iterrows():
+    plt.annotate(name, (row["gdp_per_capita"], row["literacy_rate"]), fontsize=9)
+plt.show()</code></pre>
+<p><code>annotate</code> places text at a specific point — here, the district name next to its dot. Essential for scatter plots with categories.</p>
+<h2>Step 7: Write your insights</h2>
+<p>Three sentences that answer real questions:</p>
+<ul>
+<li>Which district has the highest average GDP per capita? Which has the lowest?</li>
+<li>Is GDP trending up or down over the 5 years?</li>
+<li>Is there a visible relationship between GDP and literacy? What does that suggest?</li>
+</ul>
+<p>Add these as a <code>print()</code> block at the end of your script:</p>
+<pre><code>top = summary["gdp_per_capita"].idxmax()
+bottom = summary["gdp_per_capita"].idxmin()
+
+print()
+print("=== Insights ===")
+print(f"Highest GDP per capita: {top}")
+print(f"Lowest GDP per capita: {bottom}")
+print(f"GDP growth 2019-2023: {(yearly['gdp_per_capita'].iloc[-1] / yearly['gdp_per_capita'].iloc[0] - 1) * 100:.1f}%")
+</code></pre>
+<h2>What you have built</h2>
+<p>A complete data analysis: raw data → clean → group → aggregate → visualize → insight. This is exactly what a data analyst does every day. Put it on GitHub and you have a portfolio piece.</p>
+<h2>Try it</h2>
+<p>Run the full analysis in the sandbox. Adjust the charts — change colors, add another chart, or investigate a different question (maize production trends, literacy by district).</p>
+<blockquote>An analysis that ends with three clear sentences and three clean charts is worth more than a hundred numbers in a spreadsheet. You just built one.</blockquote>
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="pr1" data-kind="starter">
+# Python Refresher — Variables & Collections
+
+districts = [
+    {"name": "Lilongwe", "population": 1200000},
+    {"name": "Blantyre", "population": 1000000},
+    {"name": "Mzuzu", "population": 220000},
+]
+
+for row in districts:
+    print(row["name"], "-", row["population"])
+
+# Try: add a fourth district to the list and rerun
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="starter">
+# Python Refresher — Loops & Functions
+
+def average(numbers):
+    return sum(numbers) / len(numbers)
+
+scores = [85, 92, 78, 95, 88]
+print("Average:", average(scores))
+
+# List comprehension: squares of 1-10
+squares = [n * n for n in range(1, 11)]
+print("Squares:", squares)
+
+# Loop with index
+for i, s in enumerate(scores):
+    print(f"Student {i+1}: {s}")
+</textarea>
+
+<textarea class="src-code" data-l="np1" data-kind="starter">
+# NumPy — Arrays and Vectorized Operations
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+print("Array:", arr)
+print("Shape:", arr.shape)
+print("Type:", arr.dtype)
+
+# Vectorized math
+print("Doubled:", arr * 2)
+print("Squared:", arr ** 2)
+print("Sum:", arr.sum())
+print("Mean:", arr.mean())
+</textarea>
+
+<textarea class="src-code" data-l="np2" data-kind="starter">
+# NumPy — Broadcasting and Aggregations
+import numpy as np
+
+scores = np.array([85, 92, 78, 95, 88, 71, 83, 90])
+
+print("Mean:", scores.mean())
+print("Min:", scores.min())
+print("Max:", scores.max())
+print("Std:", scores.std())
+
+# Boolean masking
+above_85 = scores[scores > 85]
+print("Above 85:", above_85)
+print("Count above 85:", len(above_85))
+</textarea>
+
+<textarea class="src-code" data-l="pd1" data-kind="starter">
+# pandas — DataFrames
+import pandas as pd
+
+df = pd.DataFrame({
+    "city": ["Lilongwe", "Blantyre", "Mzuzu", "Zomba"],
+    "population": [1200000, 1000000, 220000, 105000],
+    "area_km2": [1124, 1078, 143, 258],
+})
+
+print(df)
+print()
+print("Shape:", df.shape)
+print()
+print(df.describe())
+</textarea>
+
+<textarea class="src-code" data-l="pd2" data-kind="starter">
+# pandas — Cleaning and Grouping
+import pandas as pd
+
+df = pd.DataFrame({
+    "district": ["Lilongwe", "Blantyre", "Lilongwe", "Mzuzu", "Blantyre", "Lilongwe"],
+    "year": [2020, 2020, 2021, 2020, 2021, 2022],
+    "gdp": [850, 920, 880, 780, 940, 900],
+})
+
+print(df)
+print()
+print("Average GDP by district:")
+print(df.groupby("district")["gdp"].mean().sort_values(ascending=False))
+</textarea>
+
+<textarea class="src-code" data-l="mp1" data-kind="starter">
+# Matplotlib — Basic Charts
+import matplotlib.pyplot as plt
+
+years = [2019, 2020, 2021, 2022, 2023]
+population = [17.5, 18.1, 18.7, 19.3, 19.9]
+
+plt.plot(years, population, marker="o", color="green")
+plt.title("Malawi Population, 2019-2023")
+plt.xlabel("Year")
+plt.ylabel("Population (millions)")
+plt.grid(True, alpha=0.3)
+plt.show()
+</textarea>
+
+<textarea class="src-code" data-l="mp2" data-kind="starter">
+# Matplotlib — Customization & Subplots
+import matplotlib.pyplot as plt
+
+years = [2019, 2020, 2021, 2022, 2023]
+population = [17.5, 18.1, 18.7, 19.3, 19.9]
+gdp = [500, 520, 540, 570, 590]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+axes[0].plot(years, population, marker="o", color="green")
+axes[0].set_title("Population")
+axes[0].set_xlabel("Year")
+
+axes[1].bar(years, gdp, color="blue")
+axes[1].set_title("GDP")
+axes[1].set_xlabel("Year")
+
+plt.tight_layout()
+plt.show()
+</textarea>
+
+<textarea class="src-code" data-l="cp1" data-kind="starter">
+# CAPSTONE Part 1 — Load, Explore, Clean
+import pandas as pd
+
+# Load the raw Malawi data (already available in the sandbox)
+df = pd.DataFrame(MALAWI_RAW)
+print("Raw shape:", df.shape)
+print()
+print(df.head())
+print()
+print(df.info())
+</textarea>
+
+<textarea class="src-code" data-l="cp2" data-kind="starter">
+# CAPSTONE Part 2 — Analyze and Visualize
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Start from clean data
+df = pd.DataFrame(MALAWI_RAW)
+df["district"] = df["district"].str.strip().str.title()
+df = df.drop_duplicates()
+df["gdp_per_capita"] = df["gdp_per_capita"].fillna(df["gdp_per_capita"].mean())
+df["literacy_rate"] = df["literacy_rate"].fillna(df["literacy_rate"].mean())
+
+print("Clean shape:", df.shape)
+print()
+
+# Group by district
+summary = df.groupby("district").agg({
+    "population": "mean",
+    "gdp_per_capita": "mean",
+    "literacy_rate": "mean",
+    "maize_tonnes": "sum",
+})
+print(summary)
+</textarea>
+
+<!-- ===================== SOLUTIONS ===================== -->
+<textarea class="src-code" data-l="pr1" data-kind="solution">
+districts = [
+    {"name": "Lilongwe", "population": 1200000},
+    {"name": "Blantyre", "population": 1000000},
+    {"name": "Mzuzu", "population": 220000},
+    {"name": "Zomba", "population": 105000},
+]
+
+for row in districts:
+    print(f"{row['name']}: {row['population']:,} people")
+
+print()
+print(f"Total districts: {len(districts)}")
+print(f"Total population: {sum(d['population'] for d in districts):,}")
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="solution">
+def average(numbers):
+    if not numbers:
+        return 0
+    return sum(numbers) / len(numbers)
+
+scores = [85, 92, 78, 95, 88]
+print("Average score:", average(scores))
+print("Max score:", max(scores))
+print("Min score:", min(scores))
+
+squares = [n * n for n in range(1, 11)]
+print("Squares 1-10:", squares)
+
+evens = [n for n in range(1, 21) if n % 2 == 0]
+print("Evens 1-20:", evens)
+
+for i, s in enumerate(scores):
+    status = "Pass" if s >= 80 else "Needs review"
+    print(f"Student {i+1}: {s} - {status}")
+</textarea>
+
+<textarea class="src-code" data-l="np1" data-kind="solution">
+import numpy as np
+
+arr = np.arange(1, 11)
+print("Array:", arr)
+print("Shape:", arr.shape)
+
+squares = arr ** 2
+print("Squares:", squares)
+
+print("Sum:", arr.sum())
+print("Mean:", arr.mean())
+print("Max:", arr.max())
+
+# Vectorized math with broadcasting
+scaled = arr * 10 + 5
+print("Scaled (x10 + 5):", scaled)
+
+# Filter
+print("Numbers > 5:", arr[arr > 5])
+</textarea>
+
+<textarea class="src-code" data-l="np2" data-kind="solution">
+import numpy as np
+
+np.random.seed(42)
+scores = np.random.randint(0, 101, 20)
+
+print("Scores:", scores)
+print("Mean:", round(scores.mean(), 2))
+print("Min:", scores.min())
+print("Max:", scores.max())
+print("Std dev:", round(scores.std(), 2))
+
+above_50 = scores[scores > 50]
+print()
+print("Above 50:", above_50)
+print("Count above 50:", len(above_50))
+print("Percent above 50:", round(len(above_50) / len(scores) * 100, 1), "%")
+
+# 2D array example — aggregation by axis
+matrix = np.array([
+    [10, 20, 30],
+    [40, 50, 60],
+    [70, 80, 90],
+])
+print()
+print("Matrix:\n", matrix)
+print("Column sums (axis=0):", matrix.sum(axis=0))
+print("Row sums (axis=1):", matrix.sum(axis=1))
+print("Grand total:", matrix.sum())
+</textarea>
+
+<textarea class="src-code" data-l="pd1" data-kind="solution">
+import pandas as pd
+
+df = pd.DataFrame({
+    "city": ["Lilongwe", "Blantyre", "Mzuzu", "Zomba"],
+    "population": [1200000, 1000000, 220000, 105000],
+    "area_km2": [1124, 1078, 143, 258],
+})
+
+print(df)
+print()
+print("Shape:", df.shape)
+print("Columns:", list(df.columns))
+print()
+print(df.describe())
+print()
+
+# Density
+df["density"] = df["population"] / df["area_km2"]
+print(df[["city", "density"]].sort_values("density", ascending=False))
+
+# Filter
+big = df[df["population"] > 500000]
+print()
+print("Cities over 500k:")
+print(big)
+</textarea>
+
+<textarea class="src-code" data-l="pd2" data-kind="solution">
+import pandas as pd
+
+df = pd.DataFrame({
+    "district": ["Lilongwe", "Blantyre", "Lilongwe", "Mzuzu", "Blantyre", "Lilongwe"],
+    "year": [2020, 2020, 2021, 2020, 2021, 2022],
+    "gdp": [850, 920, 880, 780, 940, 900],
+})
+
+print("Raw data:")
+print(df)
+print()
+
+# Average GDP per district
+avg = df.groupby("district")["gdp"].mean().sort_values(ascending=False)
+print("Average GDP by district:")
+print(avg)
+print()
+
+# Multiple aggregations
+summary = df.groupby("district").agg({
+    "gdp": ["mean", "max", "min"],
+})
+print("Detailed summary:")
+print(summary)
+print()
+
+# Filter to one year
+y2021 = df[df["year"] == 2021]
+print("2021 only:")
+print(y2021)
+</textarea>
+
+<textarea class="src-code" data-l="mp1" data-kind="solution">
+import matplotlib.pyplot as plt
+
+years = [2019, 2020, 2021, 2022, 2023]
+population = [17.5, 18.1, 18.7, 19.3, 19.9]
+
+plt.figure(figsize=(10, 5))
+plt.plot(years, population, marker="o", color="green", linewidth=2)
+plt.title("Malawi Population, 2019-2023")
+plt.xlabel("Year")
+plt.ylabel("Population (millions)")
+plt.grid(True, alpha=0.3)
+plt.ylim(0, 22)
+plt.show()
+
+# Bar chart of the same data
+districts = ["Lilongwe", "Blantyre", "Mzuzu", "Zomba", "Kasungu"]
+pops = [1200000, 1000000, 220000, 105000, 840000]
+
+plt.figure(figsize=(10, 5))
+plt.bar(districts, pops, color="#00c853")
+plt.title("Population by District")
+plt.xlabel("District")
+plt.ylabel("Population")
+plt.xticks(rotation=45)
+plt.show()
+</textarea>
+
+<textarea class="src-code" data-l="mp2" data-kind="solution">
+import matplotlib.pyplot as plt
+
+years = [2019, 2020, 2021, 2022, 2023]
+population = [17.5, 18.1, 18.7, 19.3, 19.9]
+gdp = [500, 520, 540, 570, 590]
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+# Left: line plot
+axes[0].plot(years, population, marker="o", color="green", linewidth=2)
+axes[0].set_title("Population Trend")
+axes[0].set_xlabel("Year")
+axes[0].set_ylabel("Population (millions)")
+axes[0].grid(True, alpha=0.3)
+
+# Right: bar chart
+axes[1].bar(years, gdp, color="#3b82f6")
+axes[1].set_title("GDP per Capita Trend")
+axes[1].set_xlabel("Year")
+axes[1].set_ylabel("USD")
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# A third chart: GDP vs Population (dual axis)
+fig, ax1 = plt.subplots(figsize=(10, 5))
+
+ax1.plot(years, population, marker="o", color="green", label="Population")
+ax1.set_ylabel("Population (millions)", color="green")
+ax1.tick_params(axis="y", labelcolor="green")
+
+ax2 = ax1.twinx()
+ax2.plot(years, gdp, marker="s", color="blue", label="GDP")
+ax2.set_ylabel("GDP per capita (USD)", color="blue")
+ax2.tick_params(axis="y", labelcolor="blue")
+
+plt.title("Population and GDP over Time")
+plt.show()
+</textarea>
+
+<textarea class="src-code" data-l="cp1" data-kind="solution">
+import pandas as pd
+
+# Load the raw data
+df = pd.DataFrame(MALAWI_RAW)
+print("Raw shape:", df.shape)
+print()
+print("First rows:")
+print(df.head())
+print()
+print("Info:")
+df.info()
+print()
+print("Districts BEFORE cleaning:")
+print(sorted(df["district"].unique()))
+print()
+
+# Step 1: Clean district names
+df["district"] = df["district"].str.strip().str.title()
+print("Districts AFTER cleaning:")
+print(sorted(df["district"].unique()))
+print()
+
+# Step 2: Remove duplicates
+print("Rows before dedup:", len(df))
+df = df.drop_duplicates()
+print("Rows after dedup:", len(df))
+print()
+
+# Step 3: Handle missing values
+print("Missing values per column:")
+print(df.isna().sum())
+print()
+
+df["gdp_per_capita"] = df["gdp_per_capita"].fillna(df["gdp_per_capita"].mean())
+df["literacy_rate"] = df["literacy_rate"].fillna(df["literacy_rate"].mean())
+
+print("Missing after fill:")
+print(df.isna().sum())
+print()
+print("Final shape:", df.shape)
+print("Final head:")
+print(df.head())
+</textarea>
+
+<textarea class="src-code" data-l="cp2" data-kind="solution">
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# ===== 1. LOAD AND CLEAN =====
+df = pd.DataFrame(MALAWI_RAW)
+df["district"] = df["district"].str.strip().str.title()
+df = df.drop_duplicates()
+df["gdp_per_capita"] = df["gdp_per_capita"].fillna(df["gdp_per_capita"].mean())
+df["literacy_rate"] = df["literacy_rate"].fillna(df["literacy_rate"].mean())
+
+print("Clean shape:", df.shape)
+print()
+
+# ===== 2. SUMMARY BY DISTRICT =====
+summary = df.groupby("district").agg({
+    "population": "mean",
+    "gdp_per_capita": "mean",
+    "literacy_rate": "mean",
+    "maize_tonnes": "sum",
+})
+
+# Derived column: total GDP per district (population × gdp)
+df["gdp_total"] = df["population"] * df["gdp_per_capita"]
+district_gdp = df.groupby("district")["gdp_total"].sum().sort_values(ascending=False)
+
+print("Total GDP by district (top 3):")
+print(district_gdp.head(3))
+print()
+
+# ===== 3. TREND OVER TIME =====
+yearly = df.groupby("year")[["population", "gdp_per_capita", "maize_tonnes"]].mean()
+print("Yearly averages:")
+print(yearly)
+print()
+
+# ===== 4. VISUALIZE =====
+
+# Chart 1: Population by district (bar)
+plt.figure(figsize=(10, 6))
+summary_sorted = summary.sort_values("population", ascending=False)
+plt.bar(summary_sorted.index, summary_sorted["population"], color="#00c853")
+plt.title("Average Population by District")
+plt.xlabel("District")
+plt.ylabel("Population")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Chart 2: GDP trend over time (line)
+plt.figure(figsize=(10, 5))
+plt.plot(yearly.index, yearly["gdp_per_capita"], marker="o", color="green", linewidth=2)
+plt.title("Malawi Average GDP per Capita, 2019-2023")
+plt.xlabel("Year")
+plt.ylabel("GDP per Capita (USD)")
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Chart 3: GDP vs Literacy (scatter)
+plt.figure(figsize=(9, 6))
+plt.scatter(summary["gdp_per_capita"], summary["literacy_rate"], s=100, color="#3b82f6")
+plt.title("GDP per Capita vs Literacy Rate")
+plt.xlabel("GDP per Capita (USD)")
+plt.ylabel("Literacy Rate")
+for name, row in summary.iterrows():
+    plt.annotate(name, (row["gdp_per_capita"], row["literacy_rate"]),
+                 fontsize=9, xytext=(5, 5), textcoords="offset points")
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# ===== 5. INSIGHTS =====
+top = summary["gdp_per_capita"].idxmax()
+bottom = summary["gdp_per_capita"].idxmin()
+growth = (yearly["gdp_per_capita"].iloc[-1] / yearly["gdp_per_capita"].iloc[0] - 1) * 100
+
+print()
+print("=== INSIGHTS ===")
+print(f"Highest GDP per capita: {top} (${summary.loc[top, 'gdp_per_capita']:.0f})")
+print(f"Lowest GDP per capita: {bottom} (${summary.loc[bottom, 'gdp_per_capita']:.0f})")
+print(f"GDP growth 2019-2023: {growth:.1f}%")
+print(f"Highest literacy rate: {summary['literacy_rate'].idxmax()}")
+print(f"Most maize produced: {summary['maize_tonnes'].idxmax()}")
+</textarea>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'data_analysis_progress_v1';
+var CAPSTONE_KEY = 'data_analysis_capstone_v1';
+var PYODIDE_URL = 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js';
+var PYODIDE_INDEX = 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/';
+
+var course = {
+  modules: [
+    {
+      id: 'refresher', icon: '🐍', title: 'Python Refresher',
+      lessons: [
+        { id:'pr1', title:'Variables & Collections', time:'22 min',
+          challenge:'Add a fourth district to the list and print the total population across all districts. Use an f-string with <code>{:,}</code> to add thousands separators.',
+          quiz:[
+            { q:'Which Python structure is a key-value map?', options:['list','tuple','dict','set'], correct:2 },
+            { q:'How do you safely look up a dict key that might not exist?', options:['d[key]','d.get(key)','d.find(key)','d.fetch(key)'], correct:1 },
+            { q:'What is the natural shape of one row of tabular data in Python?', options:['A string','A dict','A tuple','A set'], correct:1 }
+          ]},
+        { id:'pr2', title:'Loops & Functions', time:'22 min',
+          challenge:'Write a function <code>average(nums)</code> that returns the mean. Then use a list comprehension to build a list of the even numbers from 1 to 20.',
+          quiz:[
+            { q:'Which loop is most common in data work?', options:['while','for','do-while','until'], correct:1 },
+            { q:'What does <code>enumerate(list)</code> give you?', options:['Just the values','Index and value pairs','A copy of the list','Sorted values'], correct:1 },
+            { q:'Which keyword exits a loop immediately?', options:['exit','stop','break','end'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'numpy', icon: '🔢', title: 'NumPy',
+      lessons: [
+        { id:'np1', title:'Arrays & Vectorized Operations', time:'26 min',
+          challenge:'Create an array of 1–10. Compute their squares without a loop. Then compute the sum, mean, and max in three lines.',
+          quiz:[
+            { q:'What is the main advantage of NumPy arrays over Python lists?', options:['They hold more items','Vectorized math is much faster','They use less memory','They accept strings'], correct:1 },
+            { q:'Which function creates an evenly-spaced array between two values?', options:['arange','linspace','range','sequence'], correct:1 },
+            { q:'What does <code>arr * 2</code> do when arr is a NumPy array?', options:['Errors','Duplicates the array','Multiplies every element by 2','Adds 2 to every element'], correct:2 }
+          ]},
+        { id:'np2', title:'Broadcasting & Aggregations', time:'28 min',
+          challenge:'Create 20 random numbers between 0 and 100. Compute mean, min, max. Then use boolean masking to keep only values above 50 and count them.',
+          quiz:[
+            { q:'What does broadcasting do?', options:['Stretches arrays to matching shapes for arithmetic','Sorts the array','Compresses the array','Removes duplicates'], correct:0 },
+            { q:'For a 2D array, what does <code>axis=0</code> aggregate?', options:['Down each column (across rows)','Across each row','Everything','Nothing'], correct:0 },
+            { q:'How do you filter a NumPy array to values > 50?', options:['arr.filter(50)','arr[arr > 50]','arr.where(50)','arr.gt(50)'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'pandas', icon: '🐼', title: 'pandas',
+      lessons: [
+        { id:'pd1', title:'Series & DataFrames', time:'30 min',
+          challenge:'Build a DataFrame with 4 cities, population, and area. Add a derived column <code>density = population / area</code> and sort by it descending.',
+          quiz:[
+            { q:'What is a DataFrame?', options:['A single column','A two-dimensional table of data','A type of list','A database connection'], correct:1 },
+            { q:'Which function reads a CSV file into a DataFrame?', options:['pd.load_csv','pd.read_csv','pd.open_csv','pd.csv'], correct:1 },
+            { q:'What does <code>df.describe()</code> show?', options:['First 5 rows','Summary statistics for numeric columns','Column types','Missing values'], correct:1 }
+          ]},
+        { id:'pd2', title:'Cleaning & Grouping', time:'32 min',
+          challenge:'Build a small DataFrame with district, year, and gdp. Group by district and compute mean, max, and min gdp in one <code>agg</code> call.',
+          quiz:[
+            { q:'Which method removes rows with missing values?', options:['df.remove_na()','df.dropna()','df.clean()','df.filter_na()'], correct:1 },
+            { q:'What does <code>df.groupby("district")["gdp"].mean()</code> return?', options:['A single number','A Series with one value per district','A DataFrame of all rows','Nothing'], correct:1 },
+            { q:'How do you safely combine two filter conditions in pandas?', options:['df[a and b]','df[a & b] with each in parens','df[a && b]','df[a.b]'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'matplotlib', icon: '📊', title: 'Matplotlib',
+      lessons: [
+        { id:'mp1', title:'Basic Charts', time:'30 min',
+          challenge:'Create a bar chart of 5 Malawi district populations. Add a title, x and y axis labels, and rotate the x labels 45 degrees.',
+          quiz:[
+            { q:'Which chart type is best for showing a trend over time?', options:['Bar','Line','Scatter','Pie'], correct:1 },
+            { q:'Which function displays the chart?', options:['plt.draw()','plt.render()','plt.show()','plt.display()'], correct:2 },
+            { q:'Why always add a title and axis labels?', options:['Required by Matplotlib','So readers can interpret the chart','Faster rendering','Saves memory'], correct:1 }
+          ]},
+        { id:'mp2', title:'Customization & Subplots', time:'34 min',
+          challenge:'Create a figure with 2 subplots: a line chart of population on the left and a bar chart of GDP on the right. Give each a title.',
+          quiz:[
+            { q:'Which function creates a figure with multiple subplots?', options:['plt.grid','plt.subplots','plt.multi','plt.split'], correct:1 },
+            { q:'What does <code>plt.twinx()</code> do?', options:['Doubles the size','Adds a second y-axis with shared x','Two charts side by side','Copies the chart'], correct:1 },
+            { q:'What does <code>label=...</code> on a plot do?', options:['Nothing','Names the line for the legend','Sets the chart title','Colors the line'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'projects', icon: '🚀', title: 'Projects',
+      lessons: [
+        { id:'cp1', title:'Capstone 1 — Load & Clean', time:'36 min',
+          challenge:'Load <code>MALAWI_RAW</code>, fix the district names, drop duplicates, and fill missing values with the column mean. Print <code>df.shape</code> before and after cleaning.',
+          quiz:[
+            { q:'What does <code>.str.title()</code> do?', options:['Uppercases everything','Capitalizes each word','Removes spaces','Reverses the string'], correct:1 },
+            { q:'Why is dropping missing values sometimes the wrong choice?', options:['It is slow','You lose data that might be useful','It is deprecated','It causes errors'], correct:1 },
+            { q:'Which method removes duplicate rows?', options:['df.clean()','df.unique()','df.drop_duplicates()','df.dedup()'], correct:2 }
+          ]},
+        { id:'cp2', title:'Capstone 2 — Analyze & Visualize', time:'40 min',
+          challenge:'Add a fourth chart: a histogram of <code>literacy_rate</code> across all districts and years. Then write two additional insight sentences based on your analysis.',
+          quiz:[
+            { q:'Which pandas operation groups rows by a category?', options:['df.sort()','df.groupby()','df.pivot()','df.split()'], correct:1 },
+            { q:'Which Matplotlib function places a text label at a specific point?', options:['plt.text()','plt.annotate()','plt.label()','plt.mark()'], correct:1 },
+            { q:'What makes a good final insight?', options:['A single number','A clear sentence answering a question','A long paragraph','A chart without commentary'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+/* ============================================================
+   PYODIDE LOADER — lazy, cached
+   ============================================================ */
+var pyodideInstance = null;
+var pyodideLoading = false;
+var pyodideReady = false;
+var pyodideQueue = [];
+var __stdoutBuffer = [];
+
+function loadPyodideEngine(callback) {
+  if (pyodideReady) { callback(null, pyodideInstance); return; }
+  pyodideQueue.push(callback);
+  if (pyodideLoading) return;
+  pyodideLoading = true;
+
+  var s = document.createElement('script');
+  s.src = PYODIDE_URL;
+  s.onload = function() {
+    // global `loadPyodide` should now exist
+    if (typeof loadPyodide !== 'function') {
+      pyodideLoading = false;
+      var err = new Error('Pyodide script loaded but loadPyodide is not defined.');
+      var q = pyodideQueue.slice(); pyodideQueue = [];
+      q.forEach(function(cb) { cb(err); });
+      return;
+    }
+    loadPyodide({ indexURL: PYODIDE_INDEX }).then(function(py) {
+      return py.loadPackage(['numpy', 'pandas', 'matplotlib']).then(function() {
+        // Setup matplotlib backend and prelude
+        return py.runPythonAsync([
+          'import sys, io, base64',
+          'import matplotlib',
+          "matplotlib.use('agg')",
+          'import matplotlib.pyplot as plt',
+          '',
+          '_figures = []',
+          '',
+          'def _capture_show(*args, **kwargs):',
+          '    if plt.get_fignums():',
+          "        buf = io.BytesIO()",
+          "        plt.savefig(buf, format='png', bbox_inches='tight', dpi=100)",
+          '        buf.seek(0)',
+          "        _figures.append(base64.b64encode(buf.read()).decode('ascii'))",
+          "        plt.close('all')",
+          '',
+          'plt.show = _capture_show',
+          '',
+          '# Malawi dataset — synthetic, with intentional data-quality issues',
+          'import numpy as np',
+          'np.random.seed(42)',
+          '',
+          '_districts = [',
+          "    ('Lilongwe', 1200000, 850),",
+          "    ('Blantyre', 1000000, 920),",
+          "    ('Mzuzu', 220000, 780),",
+          "    ('Zomba', 105000, 760),",
+          "    ('Kasungu', 840000, 620),",
+          "    ('Mangochi', 1100000, 590),",
+          "    ('Salima', 480000, 610),",
+          "    ('Karonga', 380000, 680),",
+          ']',
+          '',
+          '_years = [2019, 2020, 2021, 2022, 2023]',
+          '',
+          '_rows = []',
+          'for _name, _base_pop, _base_gdp in _districts:',
+          '    for _i, _yr in enumerate(_years):',
+          '        _growth = 1 + 0.03 * _i',
+          '        _pop = int(_base_pop * _growth * (1 + np.random.uniform(-0.02, 0.02)))',
+          '        _gdp = int(_base_gdp * (1 + 0.04 * _i) * (1 + np.random.uniform(-0.05, 0.05)))',
+          '        _lit = round(min(0.95, 0.70 + 0.02 * _i + np.random.uniform(-0.03, 0.03)), 3)',
+          '        _maize = int(_base_pop * (1 + np.random.uniform(-0.15, 0.15)) * 0.35 / 1000) * 1000',
+          '        _rows.append({',
+          "            'district': _name,",
+          "            'year': _yr,",
+          "            'population': _pop,",
+          "            'gdp_per_capita': _gdp,",
+          "            'literacy_rate': _lit,",
+          "            'maize_tonnes': _maize,",
+          '        })',
+          '',
+          '# Intentional data-quality issues',
+          "# 1. Inconsistent district names",
+          "_rows[3]['district'] = 'LILONGWE'",
+          "_rows[12]['district'] = 'lilongwe'",
+          "_rows[20]['district'] = 'Blantyre '",
+          "_rows[27]['district'] = 'MZUZU'",
+          '# 2. Missing values',
+          "_rows[5]['literacy_rate'] = None",
+          "_rows[18]['gdp_per_capita'] = None",
+          "_rows[25]['literacy_rate'] = None",
+          "_rows[30]['gdp_per_capita'] = None",
+          '# 3. A duplicate',
+          '_rows.append(dict(_rows[0]))',
+          '',
+          'MALAWI_RAW = _rows',
+          '',
+          'print("Pyodide ready. numpy, pandas, matplotlib loaded.")',
+          'print(f"Malawi dataset: {len(MALAWI_RAW)} rows")'
+        ].join('\n'));
+      });
+    }).then(function(py) {
+      // Setup stdout/stderr capture
+      py.setStdout({ batched: function(line) { __stdoutBuffer.push({ level: 'log', text: line }); } });
+      py.setStderr({ batched: function(line) { __stdoutBuffer.push({ level: 'error', text: line }); } });
+      pyodideInstance = py;
+      pyodideReady = true;
+      pyodideLoading = false;
+      var q = pyodideQueue.slice(); pyodideQueue = [];
+      q.forEach(function(cb) { cb(null, py); });
+    }).catch(function(err) {
+      pyodideLoading = false;
+      var q = pyodideQueue.slice(); pyodideQueue = [];
+      q.forEach(function(cb) { cb(err); });
+    });
+  };
+  s.onerror = function() {
+    pyodideLoading = false;
+    var err = new Error('Failed to load Pyodide. Check your connection.');
+    var q = pyodideQueue.slice(); pyodideQueue = [];
+    q.forEach(function(cb) { cb(err); });
+  };
+  document.head.appendChild(s);
+}
+
+function runPythonCode(code, onProgress, onDone) {
+  loadPyodideEngine(function(err, py) {
+    if (err) { onDone(err, [], []); return; }
+    __stdoutBuffer = [];
+    try { py.runPython('_figures.clear()'); } catch (e) {}
+    py.runPythonAsync(code).then(function() {
+      // Capture any remaining open figures
+      try {
+        py.runPython([
+          'if plt.get_fignums():',
+          '    _capture_show()'
+        ].join('\n'));
+      } catch (e) {}
+      var figures;
+      try {
+        figures = py.globals.get('_figures').toJs();
+      } catch (e) { figures = []; }
+      var output = __stdoutBuffer.slice();
+      __stdoutBuffer = [];
+      onDone(null, output, Array.from(figures));
+    }).catch(function(pyErr) {
+      var msg = pyErr && pyErr.message ? pyErr.message : String(pyErr);
+      // Remove "PythonError: " prefix if present
+      msg = msg.replace(/^PythonError:\s*/, '');
+      __stdoutBuffer.push({ level: 'error', text: msg });
+      var output = __stdoutBuffer.slice();
+      __stdoutBuffer = [];
+      onDone(null, output, []);
+    });
+  });
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'da::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I loaded MALAWI_RAW into a DataFrame and printed the shape' },
+  { id: 'm2', text: 'I inspected the data with head(), info(), and describe()' },
+  { id: 'm3', text: 'I found and fixed the inconsistent district names' },
+  { id: 'm4', text: 'I removed the duplicate row' },
+  { id: 'm5', text: 'I handled the missing values (dropped or filled)' },
+  { id: 'm6', text: 'I grouped by district and computed means for population and GDP' },
+  { id: 'm7', text: 'I created a bar chart of population by district' },
+  { id: 'm8', text: 'I created a line chart of GDP trend over time' },
+  { id: 'm9', text: 'I created a scatter plot of GDP vs literacy rate' },
+  { id: 'm10', text: 'I wrote three clear insight sentences at the end of my script' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'pr1';
+var currentView = 'lessons';
+var lintTimer = null;
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>∑ Python data sandbox</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Real Python</span></h2>';
+    html += '<p class="ed-s">Write real Python. Click <strong>Run</strong> to execute. First run downloads Python + pandas + NumPy + Matplotlib (~8 MB, one-time) — after that it is cached.</p>';
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>analysis.py</span><span class="pane-lb">Python</span></div>';
+    html += '<textarea class="code-ta" id="pyEditor" spellcheck="false" aria-label="Python code editor"></textarea></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Console</span><button id="clearConsoleBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+    html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Click Run to execute your code.</div></div>';
+    html += '<div class="fig-area" id="figArea" style="display:none"><div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;font-weight:700;padding:0 0 8px 2px">Charts</div></div></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .py</button>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some code — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('pyEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+function attachEditor(lesson, starter) {
+  var ta = $('pyEditor');
+  var conOut = $('consoleOutput');
+  var figArea = $('figArea');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Click Run to execute your code.</div>';
+    if (figArea) {
+      figArea.innerHTML = '<div style="font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.8px;font-weight:700;padding:0 0 8px 2px">Charts</div>';
+      figArea.style.display = 'none';
+    }
+  }
+  function appendConsole(level, text) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + (level === 'log' ? 'log' : level);
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = level === 'log' ? 'out' : level === 'error' ? 'err' : 'info';
+    var span = document.createElement('span');
+    span.textContent = text;
+    line.appendChild(badge);
+    line.appendChild(span);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+  function renderFigures(figures) {
+    if (!figArea) return;
+    if (!figures || !figures.length) return;
+    figArea.style.display = 'block';
+    figures.forEach(function(b64, i) {
+      var frame = document.createElement('div');
+      frame.className = 'fig-frame';
+      var img = document.createElement('img');
+      img.src = 'data:image/png;base64,' + b64;
+      img.alt = 'Chart ' + (i + 1);
+      frame.appendChild(img);
+      var cap = document.createElement('div');
+      cap.className = 'fig-cap';
+      cap.textContent = 'Figure ' + (i + 1);
+      frame.appendChild(cap);
+      figArea.appendChild(frame);
+    });
+    figArea.scrollTop = figArea.scrollHeight;
+  }
+
+  function lintPython(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+
+    // pandas usage without import
+    if (/\bpd\./.test(code) && !/import\s+pandas\s+as\s+pd/.test(code)) {
+      issues.push({ level: 'error', text: 'You used pd. but did not import pandas. Add: import pandas as pd' });
+    }
+    if (/\bnp\./.test(code) && !/import\s+numpy\s+as\s+np/.test(code)) {
+      issues.push({ level: 'error', text: 'You used np. but did not import numpy. Add: import numpy as np' });
+    }
+    if (/\bplt\./.test(code) && !/import\s+matplotlib\.pyplot\s+as\s+plt/.test(code)) {
+      issues.push({ level: 'error', text: 'You used plt. but did not import matplotlib. Add: import matplotlib.pyplot as plt' });
+    }
+
+    // Common typos
+    if (/df\.colum\b/.test(code)) issues.push({ level: 'warn', text: 'Did you mean df.columns (plural)?' });
+    if (/df\.lenght\b/.test(code)) issues.push({ level: 'warn', text: 'Check the spelling of "length".' });
+    if (/\bDataframe\b/.test(code)) issues.push({ level: 'warn', text: 'It is DataFrame (capital F), not Dataframe.' });
+
+    // print without parentheses
+    if (/print\s+["']/.test(code) && !/print\s*\(/.test(code)) {
+      issues.push({ level: 'error', text: 'In Python 3, print is a function — use print("...").' });
+    }
+
+    // plt.show missing when plt.plot used
+    if (/(plt\.plot|plt\.bar|plt\.scatter|plt\.hist)/.test(code) && !/plt\.show\(\)/.test(code)) {
+      issues.push({ level: 'warn', text: 'You created a plot but did not call plt.show() — the chart will not appear.' });
+    }
+
+    // Unbalanced
+    var ob = (code.match(/{/g) || []).length, cb = (code.match(/}/g) || []).length;
+    if (ob !== cb) issues.push({ level: 'error', text: (ob > cb ? (ob - cb) + ' missing }' : (cb - ob) + ' extra }') + ' — check your braces.' });
+    var op = (code.match(/\(/g) || []).length, cp = (code.match(/\)/g) || []).length;
+    if (op !== cp) issues.push({ level: 'error', text: (op > cp ? (op - cp) + ' missing )' : (cp - op) + ' extra )') + ' — check your parentheses.' });
+    var osq = (code.match(/\[/g) || []).length, csq = (code.match(/\]/g) || []).length;
+    if (osq !== csq) issues.push({ level: 'error', text: (osq > csq ? (osq - csq) + ' missing ]' : (csq - osq) + ' extra ]') + ' — check your brackets.' });
+
+    // Mixed tabs and spaces
+    if (/^\t+ +/.test(code) || /^ +\t+/.test(code)) {
+      issues.push({ level: 'error', text: 'Mixed tabs and spaces — Python requires consistency. Use 4 spaces.' });
+    }
+
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintPython(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  function run() {
+    clearConsole();
+    var loading = false;
+    if (!pyodideReady) {
+      loading = true;
+      appendConsole('info', 'Downloading Python engine (~8 MB, one-time). This may take 30–60 seconds on a slow connection…');
+      runBtn.disabled = true;
+      runBtn.textContent = '⏳ Loading…';
+    }
+
+    runPythonCode(ta.value, function() {}, function(err, output, figures) {
+      runBtn.disabled = false;
+      runBtn.textContent = '▶ Run';
+      if (loading) {
+        var firstInfo = conOut.querySelector('.con-line.info');
+        if (firstInfo) firstInfo.remove();
+      }
+      if (err) {
+        appendConsole('error', 'Failed to load Python: ' + err.message);
+        return;
+      }
+      output.forEach(function(line) {
+        appendConsole(line.level, line.text);
+      });
+      renderFigures(figures);
+      if (!output.length && (!figures || !figures.length)) {
+        appendConsole('info', 'Ran successfully — no output.');
+      }
+    });
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      var lineStart = ta.value.lastIndexOf('\n', s - 1) + 1;
+      var inIndent = /^\s*$/.test(ta.value.substring(lineStart, s));
+      if (inIndent && !e.shiftKey) {
+        ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(en);
+        ta.selectionStart = ta.selectionEnd = s + 4;
+      } else {
+        ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(en);
+        ta.selectionStart = ta.selectionEnd = s + 4;
+      }
+      debLint();
+    }
+  });
+
+  runBtn.addEventListener('click', run);
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearConsole();
+  });
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'text/x-python' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.py';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+  if ($('clearConsoleBtn')) $('clearConsoleBtn').addEventListener('click', clearConsole);
+
+  lintNow();
+}
+
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Data Analysis with Python</h1>';
+  html += '<p class="pg-sub">Turn raw data into insight with pandas, NumPy, and Matplotlib. Over 10 weeks you will go from refreshing Python basics to a complete data analysis project on a real Malawi dataset — the same workflow used by analysts everywhere.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>10 weeks</h3><p>15 hours across 5 modules and 10 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>Comfortable with Python basics — variables, loops, functions.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">∑</span>Real libraries</h3><p>Actual pandas, NumPy, and Matplotlib running in your browser. Real charts render inline.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Python review</h3><p>Variables, lists, dicts, loops, functions — the foundations of every analysis.</p></div>';
+  html += '<div class="ov-card"><h3>NumPy</h3><p>Arrays, vectorized math, broadcasting, boolean masking, aggregations.</p></div>';
+  html += '<div class="ov-card"><h3>pandas</h3><p>DataFrames, filtering, cleaning, groupby, aggregation, derived columns.</p></div>';
+  html += '<div class="ov-card"><h3>Matplotlib</h3><p>Line, bar, scatter, histogram — with titles, labels, legends, subplots.</p></div>';
+  html += '<div class="ov-card"><h3>Data workflow</h3><p>Load → inspect → clean → group → visualize → conclude.</p></div>';
+  html += '<div class="ov-card"><h3>Capstone</h3><p>A complete analysis of a Malawi districts dataset with three charts and insights.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'Python Refresher', 'Variables, collections, loops, functions — quick review for those who know Python.'],
+    ['W3–4', 'NumPy', 'Arrays, vectorized operations, broadcasting, aggregations, boolean masking.'],
+    ['W5–6', 'pandas', 'DataFrames, loading, exploring, cleaning, filtering, groupby, aggregation.'],
+    ['W7–8', 'Matplotlib', 'Line, bar, scatter, histogram, customization, subplots, dual axes.'],
+    ['W9–10', 'Capstone', 'Load the Malawi districts dataset, clean it, group, visualize, and write insights.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. Real pandas runs in your browser — the engine loads once on your first Run click.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('pr1');
+    switchView('lessons');
+  });
+}
+
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A full analysis of a synthetic Malawi districts dataset: 8 districts × 5 years, with intentional data-quality issues that you will fix. By the end, you will have three charts and three insights.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Load &amp; Clean</h3><p>DataFrame from raw data, fix names, drop duplicates, handle missing values.</p></div>';
+  html += '<div class="ov-card"><h3>2. Analyze</h3><p>Group by district, compute averages, derive total GDP, aggregate by year.</p></div>';
+  html += '<div class="ov-card"><h3>3. Visualize &amp; Conclude</h3><p>Three charts — bar, line, scatter — plus three insight sentences.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpCp1" type="button">▶ Load &amp; Clean</button>';
+  html += '<button class="btn btn-g" id="jumpCp2" type="button">Jump to Analyze</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpCp1').addEventListener('click', function() { selectLesson('cp1'); switchView('lessons'); });
+  $('jumpCp2').addEventListener('click', function() { selectLesson('cp2'); switchView('lessons'); });
+}
+
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your data analysis learning.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'pandas Documentation', 'The official docs. Start with the 10-minute intro.', 'https://pandas.pydata.org/docs/user_guide/10min.html'],
+    ['📚', 'NumPy Quickstart', 'The essential guide to arrays.', 'https://numpy.org/doc/stable/user/quickstart.html'],
+    ['📊', 'Matplotlib Gallery', 'Hundreds of chart examples with code. Best way to learn.', 'https://matplotlib.org/stable/gallery/index.html'],
+    ['🐼', 'pandas Cheatsheet (PDF)', 'A two-page reference for common operations.', 'https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf'],
+    ['🎓', 'Python for Data Analysis (free book)', 'Wes McKinney\'s classic. The pandas creator\'s own book.', 'https://wesmckinney.com/book/'],
+    ['💬', 'Stack Overflow — pandas', 'The most active pandas Q&A.', 'https://stackoverflow.com/questions/tagged/pandas']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Data Analysis Cheatsheet</div><div class="res-d">One-page reference covering NumPy, pandas, and Matplotlib syntax.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadNotebookBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📓</span>';
+  html += '<div><div class="res-t">Starter Jupyter Notebook</div><div class="res-d">A .ipynb file you can open in Jupyter or Google Colab.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['📓', 'Google Colab', 'Free Jupyter notebooks in the browser. No install.', 'https://colab.research.google.com/'],
+    ['🐍', 'Anaconda Distribution', 'Python + Jupyter + all data libraries.', 'https://www.anaconda.com/download'],
+    ['📊', 'Kaggle Datasets', 'Thousands of real datasets to practise on.', 'https://www.kaggle.com/datasets'],
+    ['🌍', 'World Bank Open Data', 'Real economic data including Malawi.', 'https://data.worldbank.org/'],
+    ['🐙', 'GitHub', 'Host your notebooks and analysis projects.', 'https://github.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadNotebookBtn').addEventListener('click', downloadNotebook);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  DATA ANALYSIS WITH PYTHON — CHEATSHEET',
+    '============================================',
+    '',
+    '--- IMPORTS ---',
+    'import numpy as np',
+    'import pandas as pd',
+    'import matplotlib.pyplot as plt',
+    '',
+    '--- NUMPY ARRAYS ---',
+    'np.array([1, 2, 3])',
+    'np.zeros(5)',
+    'np.arange(0, 10, 2)',
+    'np.linspace(0, 1, 5)',
+    'arr.shape  arr.dtype',
+    'arr.sum()  arr.mean()  arr.std()',
+    'arr[arr > 50]              # boolean mask',
+    'matrix.sum(axis=0)         # column sums',
+    '',
+    '--- PANDAS DATAFRAME ---',
+    'df = pd.DataFrame(list_of_dicts)',
+    'df = pd.read_csv("file.csv")',
+    'df.head()  df.tail()',
+    'df.shape  df.columns  df.dtypes',
+    'df.info()  df.describe()',
+    'df["column"]                # a Series',
+    'df[["a", "b"]]              # a DataFrame',
+    'df[df["x"] > 10]            # filter rows',
+    'df.sort_values("x", ascending=False)',
+    '',
+    '--- CLEANING ---',
+    'df.isna().sum()              # count missing',
+    'df.dropna()                  # drop missing rows',
+    'df["x"].fillna(df["x"].mean())',
+    'df.drop_duplicates()',
+    'df["name"].str.strip().str.title()',
+    'df.rename(columns={"old": "new"}, inplace=True)',
+    '',
+    '--- GROUPING ---',
+    'df.groupby("district")["gdp"].mean()',
+    'df.groupby("district").agg({',
+    '    "pop": "sum",',
+    '    "gdp": ["mean", "max"]',
+    '})',
+    '',
+    '--- NEW COLUMNS ---',
+    'df["total"] = df["pop"] * df["gdp"]',
+    '',
+    '--- MATPLOTLIB ---',
+    'plt.plot(x, y)              # line',
+    'plt.bar(x, y)               # bar',
+    'plt.scatter(x, y)           # scatter',
+    'plt.hist(x, bins=20)        # histogram',
+    'plt.title("...")  plt.xlabel("...")  plt.ylabel("...")',
+    'plt.legend()  plt.grid(True, alpha=0.3)',
+    'plt.figure(figsize=(10, 6))',
+    'plt.xticks(rotation=45)',
+    'plt.show()',
+    '',
+    '--- SUBPLOTS ---',
+    'fig, axes = plt.subplots(1, 2, figsize=(12, 4))',
+    'axes[0].plot(...)  axes[1].bar(...)',
+    'plt.tight_layout()  plt.show()',
+    '',
+    '--- DUAL AXIS ---',
+    'fig, ax1 = plt.subplots()',
+    'ax2 = ax1.twinx()',
+    '',
+    '--- ANNOTATE ---',
+    'plt.annotate("Lilongwe", (x, y), fontsize=9)',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Data Analysis',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'data-analysis-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadNotebook() {
+  var nb = {
+    "cells": [
+      {
+        "cell_type": "markdown",
+        "metadata": {},
+        "source": ["# Data Analysis with Python — Starter Notebook\n", "\n", "Open this file in Jupyter or Google Colab. Run each cell top to bottom.\n"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["import numpy as np\n", "import pandas as pd\n", "import matplotlib.pyplot as plt\n", "\n", "%matplotlib inline"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["# Create a small dataset\n", "data = [\n", "    {'district': 'Lilongwe', 'year': 2020, 'gdp': 850, 'pop': 1200000},\n", "    {'district': 'Blantyre', 'year': 2020, 'gdp': 920, 'pop': 1000000},\n", "    {'district': 'Mzuzu',    'year': 2020, 'gdp': 780, 'pop': 220000},\n", "    {'district': 'Lilongwe', 'year': 2021, 'gdp': 880, 'pop': 1250000},\n", "    {'district': 'Blantyre', 'year': 2021, 'gdp': 940, 'pop': 1030000},\n", "]\n", "\n", "df = pd.DataFrame(data)\n", "df"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["df.info()"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["df.describe()"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["# Group by district\n", "df.groupby('district')[['gdp', 'pop']].mean()"]
+      },
+      {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {},
+        "source": ["# Chart\n", "plt.figure(figsize=(8, 5))\n", "plt.bar(df['district'], df['gdp'])\n", "plt.title('GDP by District')\n", "plt.xlabel('District')\n", "plt.ylabel('GDP per capita (USD)')\n", "plt.show()"]
+      }
+    ],
+    "metadata": {
+      "kernelspec": {
+        "display_name": "Python 3",
+        "language": "python",
+        "name": "python3"
+      },
+      "language_info": {
+        "name": "python",
+        "version": "3.11"
+      }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 5
+  };
+  var text = JSON.stringify(nb, null, 2);
+  var blob = new Blob([text], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'starter-notebook.ipynb';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Data analysis is a team sport. Share your insights, ask about pandas quirks, and see what others are finding in their data.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Study Group</h3><p>Share charts, paste pandas errors, ask for help.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer code snippets, notebook sharing, project reviews.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Publish your notebooks and see others\' analyses.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Debugging tips</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Print df.shape often</h3><p>Every operation changes the shape. Print it before and after — catches silent errors.</p></div>';
+  html += '<div class="ov-card"><h3>df.head() is your friend</h3><p>When something looks wrong, look at the actual data — not the summary statistics.</p></div>';
+  html += '<div class="ov-card"><h3>Read the traceback bottom-up</h3><p>The last line names the error. The line above says where. Start there.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Stuck on a groupby?</h2>';
+  html += '<p>The pandas community answers fast. Paste the error and a small sample of your DataFrame.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://stackoverflow.com/questions/tagged/pandas" target="_blank" rel="noopener">Ask on Stack Overflow</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in Data Analysis with Python and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Data Analysis with Python</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">10 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Data Analysis with Python, demonstrating proficiency in NumPy arrays, pandas DataFrames, data cleaning, groupby aggregation, and Matplotlib visualization, culminating in a full capstone analysis.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Data Analysis with Python</h1>' +
+        '<div class="t">10 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Data Analysis with Python,<br>demonstrating proficiency in NumPy arrays, pandas DataFrames,<br>data cleaning, groupby aggregation, and Matplotlib visualization,<br>culminating in a full capstone analysis.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

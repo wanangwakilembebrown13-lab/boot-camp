@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelancing &amp; Remote Work — Interactive Course</title>
+<meta name="description" content="Earn in dollars from Malawi. Learn Upwork, proposals, client management, and getting paid internationally.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.1);--gglow:rgba(0,200,83,.2);--bg:#f8f9fb;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--info:#0284c7;--r:12px;--rlg:16px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,'Helvetica Neue',Arial,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+.main{padding:40px 52px 80px;max-width:1000px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d;white-space:pre-wrap}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+
+.ex-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:24px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.ex-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.ex-card .hint{font-size:13.5px;color:var(--t3);margin-bottom:16px;line-height:1.6}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s;font-family:inherit}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-hint{font-size:12px;color:var(--t3);margin-top:5px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* Niche picker */
+.np-questions{display:flex;flex-direction:column;gap:18px}
+.np-q{background:var(--bg);border-radius:var(--r);padding:16px 18px}
+.np-q-title{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:12px;line-height:1.5}
+.np-opts{display:flex;flex-direction:column;gap:8px}
+.np-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14px;transition:all .15s;background:var(--surf)}
+.np-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.np-opt input{accent-color:var(--green);width:17px;height:17px;flex-shrink:0}
+.np-opt.checked{border-color:var(--green);background:var(--gsoft)}
+
+/* Rate calculator */
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rc-result{background:var(--navy3);color:#fff;border-radius:var(--r);padding:24px;margin-top:18px}
+.rc-result h4{font-size:12px;text-transform:uppercase;letter-spacing:.9px;color:var(--green);margin-bottom:14px;font-weight:700}
+.rc-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rc-stat{background:rgba(255,255,255,.06);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,.08)}
+.rc-stat-num{font-size:24px;font-weight:800;color:var(--green);line-height:1.1;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.rc-stat-num .small{font-size:14px;font-weight:600;opacity:.75;margin-left:3px}
+.rc-stat-lbl{font-size:11.5px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.6px;margin-top:6px;font-weight:600}
+.rc-note{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.65;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+
+/* Profile builder */
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pb-form{background:var(--bg);border-radius:var(--r);padding:18px}
+.pb-preview{background:#fff;border:1.5px solid var(--bd);border-radius:var(--r);padding:22px;font-size:13.5px;line-height:1.6;color:var(--text)}
+.pb-preview-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--bd2)}
+.pb-avatar{width:56px;height:56px;border-radius:50%;background:var(--navy);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;flex-shrink:0}
+.pb-name{font-size:16px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:3px}
+.pb-title{font-size:13px;color:var(--green2);font-weight:600;line-height:1.4}
+.pb-section-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--t4);font-weight:700;margin:14px 0 6px}
+.pb-section-lbl:first-of-type{margin-top:0}
+.pb-overview{white-space:pre-wrap;color:var(--t2);line-height:1.7}
+.pb-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pb-skill{padding:4px 10px;background:var(--gsoft);color:var(--navy);border-radius:var(--rpill);font-size:12px;font-weight:600}
+.pb-score{margin-top:16px;padding:14px 16px;background:var(--bg);border-radius:var(--r);border-left:4px solid var(--green);font-size:13.5px;line-height:1.65;color:var(--t2)}
+.pb-score strong{color:var(--navy);display:block;margin-bottom:4px;font-size:13px}
+.pb-score ul{margin:6px 0 0 18px;padding:0}
+.pb-score li{margin-bottom:3px}
+
+/* Proposal writer */
+.pw-job{background:var(--bg);border-radius:var(--r);padding:16px 18px;margin-bottom:16px;border-left:3px solid var(--info)}
+.pw-job-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--info);font-weight:700;margin-bottom:8px}
+.pw-job-title{font-weight:700;color:var(--navy);font-size:15.5px;margin-bottom:6px}
+.pw-job-body{font-size:14px;color:var(--t2);line-height:1.65}
+.pw-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--t3);margin-top:10px;font-weight:500}
+.pw-score{margin-top:14px;padding:16px;border-radius:var(--r);display:none}
+.pw-score.show{display:block;animation:appear .25s}
+.pw-score.good{background:var(--gsoft);border-left:4px solid var(--green)}
+.pw-score.warn{background:rgba(217,119,6,.07);border-left:4px solid var(--warn)}
+.pw-score.bad{background:rgba(220,38,38,.05);border-left:4px solid var(--danger)}
+.pw-score h5{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.pw-score-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.pw-score-list li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--t2);line-height:1.55}
+.pw-check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0;margin-top:1px}
+.pw-check.good{background:var(--green)}
+.pw-check.bad{background:var(--danger)}
+
+/* Payment comparison */
+.pc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:6px}
+.pc-card{background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);padding:18px;transition:all .18s var(--ease);cursor:pointer;position:relative}
+.pc-card:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,33,.06)}
+.pc-card.selected{border-color:var(--green);background:var(--gsoft);box-shadow:0 0 0 4px var(--gglow)}
+.pc-name{font-weight:800;color:var(--navy);font-size:16px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.pc-tag{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--green2);font-weight:700}
+.pc-fee{font-size:13px;color:var(--t2);margin:10px 0 6px;line-height:1.5}
+.pc-fee strong{color:var(--navy)}
+.pc-detail{font-size:13px;color:var(--t3);line-height:1.55;margin-top:8px}
+
+/* Scenario quiz */
+.sc-item{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.sc-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--navy);color:var(--green);border-radius:50%;font-weight:800;font-size:13px;margin-right:10px}
+.sc-msg{background:var(--bg);border-radius:var(--r);padding:14px 16px;margin:14px 0;font-size:14.5px;color:var(--text);line-height:1.65;border-left:3px solid var(--info);font-style:italic}
+.sc-msg-src{font-size:12px;color:var(--t3);font-style:normal;font-weight:600;margin-top:8px;display:block}
+.sc-q{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:12px;line-height:1.55}
+.sc-opts{display:flex;flex-direction:column;gap:9px}
+.sc-opt{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf);text-align:left;line-height:1.55;width:100%}
+.sc-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.sc-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.sc-opt.wrong{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.sc-letter{font-weight:800;color:var(--green2);flex-shrink:0}
+.sc-why{margin-top:14px;padding:13px 16px;border-radius:var(--r);background:var(--gsoft);border-left:4px solid var(--green);font-size:14px;line-height:1.65;color:var(--navy);display:none}
+.sc-why.show{display:block;animation:appear .25s}
+
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:16px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+  .pb-grid{grid-template-columns:1fr}
+  .rc-grid{grid-template-columns:1fr}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+  .field-row{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12px}
+  .ed-bar .btn{flex:1}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:16px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+  .rc-stats{grid-template-columns:1fr}
+  .pc-grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">💼</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Freelancing &amp; Remote Work</div>
+        <div class="brand-sb">6 weeks · Beginner</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="tools" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Tools</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewTools"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">💼</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Freelancing &amp; Remote Work</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: GETTING STARTED ===== -->
+<div class="src-read" data-l="g1">
+<p>Freelancing means selling your skills directly to clients — usually online, usually in USD or EUR — without an employer in the middle. For a skilled Malawian, this can mean earning 5 to 30 times what a local salary pays for the same work.</p>
+<h2>The numbers</h2>
+<p>A junior web developer in Lilongwe might earn MK 400,000 per month. That is roughly $230 USD. The same person, working 20 hours a week for a UK client at £15/hour, earns £1,200/month — about MK 2,000,000. Same skills. Same effort. Different client market.</p>
+<p>This is not a fantasy. Thousands of developers in Kenya, Nigeria, India, and the Philippines earn exactly this way. Malawi is not yet saturated with freelancers — that is your advantage.</p>
+<h2>What freelancing is not</h2>
+<ul>
+<li><strong>Not passive income.</strong> You work for every dollar. Some months are quiet. Some are busy.</li>
+<li><strong>Not easy money.</strong> Your first client will be hard to land. Your second will be easier. Your tenth will be almost automatic.</li>
+<li><strong>Not for everyone.</strong> If you hate writing, meeting deadlines, or dealing with clients, this is not the path for you. Local employment might suit you better — that is fine.</li>
+</ul>
+<h2>What freelancers actually do</h2>
+<p>The most common freelance services in the markets Malawians can access:</p>
+<ul>
+<li><strong>Web development</strong> — building sites, landing pages, WordPress work, small web apps</li>
+<li><strong>Mobile development</strong> — Flutter, React Native apps</li>
+<li><strong>Backend / API work</strong> — building or fixing Node, Python, or PHP services</li>
+<li><strong>Data work</strong> — cleaning datasets, building dashboards, small analyses</li>
+<li><strong>Design</strong> — UI/UX, logos, social media graphics</li>
+<li><strong>Writing</strong> — blog posts, technical documentation, product descriptions</li>
+<li><strong>Virtual assistance</strong> — email management, scheduling, customer support</li>
+</ul>
+<p>You do not need to be the best in the world at any of these. You need to be <strong>reliable</strong> and <strong>communicative</strong>. Most clients would rather hire a competent, on-time freelancer than a brilliant one who ghosts them.</p>
+<h2>The mindset shift</h2>
+<p>As a freelancer, you are not an employee. You are a <strong>business</strong>.</p>
+<ul>
+<li>You decide what to work on</li>
+<li>You set your rates</li>
+<li>You manage your time</li>
+<li>You are responsible for getting paid</li>
+</ul>
+<p>This is freedom, and it is also responsibility. Nobody will tell you to work today. Nobody will remind you that a deadline is approaching. That is on you.</p>
+<blockquote><strong>The honest truth:</strong> freelancing is the most direct path from "I have skills" to "I earn money." It is also the path that requires the most discipline. If you can commit to 10 hours a week for six months, this course will show you exactly how to do it.</blockquote>
+</div>
+
+<div class="src-read" data-l="g2">
+<p>Choosing the right niche is the single biggest decision you make as a freelancer. "I do websites" gets lost in a sea of thousands. "I build fast landing pages for NGOs" gets hired.</p>
+<h2>What is a niche?</h2>
+<p>A niche is the intersection of three things:</p>
+<ol>
+<li><strong>What you do</strong> — web development, data analysis, design</li>
+<li><strong>Who you do it for</strong> — startups, churches, NGOs, e-commerce shops</li>
+<li><strong>What specific problem you solve</strong> — fast-loading sites, mobile money integration, monthly reports</li>
+</ol>
+<p>Example niches:</p>
+<ul>
+<li>"I build low-bandwidth websites for Malawian small businesses"</li>
+<li>"I set up payment integration for African e-commerce stores"</li>
+<li>"I clean and analyse sales data for retail shops"</li>
+<li>"I build Flutter apps for agri-tech startups"</li>
+</ul>
+<p>Notice each one is specific. That specificity is what gets you hired.</p>
+<h2>Why narrow beats broad</h2>
+<p>Imagine you need a plumber. You have two choices:</p>
+<ul>
+<li>Person A: "I do general handyman work"</li>
+<li>Person B: "I specialise in bathroom plumbing"</li>
+</ul>
+<p>If your bathroom is leaking, who do you call? Person B. Every time. The same applies online. Narrow niches:</p>
+<ul>
+<li><strong>Stand out</strong> in searches</li>
+<li><strong>Command higher rates</strong> because you are a specialist</li>
+<li><strong>Attract better clients</strong> who want exactly what you do</li>
+<li><strong>Build faster</strong> — you solve the same problem repeatedly, so you get faster at it</li>
+</ul>
+<h2>The fear of narrowing</h2>
+<p>"But if I narrow down, I will miss clients!" This is the most common fear, and it is wrong. Narrowing does not prevent you from taking other work. It just changes how you market yourself. You can still accept a general web project if it comes. But your <em>profile</em> says "landing page specialist," so that is what you get searched for.</p>
+<h2>How to pick your niche</h2>
+<p>Answer three questions:</p>
+<ol>
+<li><strong>What can I do well right now?</strong> Be honest. Do not pick a niche you would need two years of training for.</li>
+<li><strong>Who has this problem and money to pay?</strong> NGOs, e-commerce, small businesses, and international startups are common answers in Malawi's market.</li>
+<li><strong>Can I describe the result in one sentence?</strong> If yes, you have a niche. If no, narrow further.</li>
+</ol>
+<p>Your niche can change. Most freelancers refine theirs every six months as they learn what works. The goal is not to pick perfectly on day one — it is to pick something and start.</p>
+<blockquote><strong>The classic mistake:</strong> "I do all kinds of work — coding, design, writing, data entry." That profile gets ignored because it signals "I have not decided what I am good at." Pick one. Add more later if you must.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: PROFILES & PORTFOLIOS ===== -->
+<div class="src-read" data-l="p1">
+<p>On Upwork and Fiverr, your profile is your shopfront. Clients scroll through dozens of profiles. Yours needs to make them stop and click.</p>
+<h2>Upwork profile anatomy</h2>
+<p>Five parts, in order of importance:</p>
+<ol>
+<li><strong>Title</strong> — one line, your niche</li>
+<li><strong>Overview</strong> — a few paragraphs about what you do and who you help</li>
+<li><strong>Skills</strong> — tags that Upwork uses for search</li>
+<li><strong>Portfolio</strong> — 3 to 5 pieces of work</li>
+<li><strong>Photo and location</strong> — a real photo of you, a professional one if possible</li>
+</ol>
+<h2>The title</h2>
+<p>Weak titles:</p>
+<ul>
+<li>"Web Developer"</li>
+<li>"Freelancer"</li>
+<li>"Looking for work"</li>
+</ul>
+<p>Strong titles:</p>
+<ul>
+<li>"Landing Page Developer | Fast, Mobile-First, Loads in Under 2s"</li>
+<li>"Flutter Mobile Developer | Android &amp; iOS Apps"</li>
+<li>"Data Analyst | Python, Pandas, Dashboards for African Businesses"</li>
+</ul>
+<p>The strong titles do four things: they name the skill, the platform or result, the benefit, and a specific audience. Use the pattern:</p>
+<pre><code>[Skill] | [What you deliver] for [Who]</code></pre>
+<h2>The overview</h2>
+<p>The overview is where you sell yourself. Not your history — your value. Structure:</p>
+<ol>
+<li><strong>Hook</strong> — one sentence that names the client's pain and how you solve it</li>
+<li><strong>What you do</strong> — one paragraph in plain language</li>
+<li><strong>What you have built</strong> — 2 or 3 short bullet points or one example project</li>
+<li><strong>What working with you is like</strong> — communication style, timezone, reliability</li>
+<li><strong>Call to action</strong> — what the client should do next</li>
+</ol>
+<p>Weak overviews start with "I am a passionate web developer with 3 years of experience." Strong overviews start with the client: "Your landing page has 3 seconds to convince a visitor. I build pages that load in under 2 seconds even on 2G — because I learned on 2G."</p>
+<h2>The portfolio</h2>
+<p>Three to five pieces. For each one, include:</p>
+<ul>
+<li>A screenshot or live link</li>
+<li>One sentence on the problem</li>
+<li>One sentence on what you did</li>
+<li>A result if you have one</li>
+</ul>
+<p>If you have no paid work yet, use personal projects. Every course project you built in HTML/CSS, JavaScript, React, Python, Node, Flutter, or Data Analysis is a portfolio piece. Put them on GitHub Pages or Netlify and link them.</p>
+<h2>Fiverr — the other model</h2>
+<p>Fiverr works differently. Instead of bidding on jobs, you list <strong>gigs</strong> — predefined services at fixed prices. A gig has:</p>
+<ul>
+<li>Title — same rules as Upwork titles</li>
+<li>Description</li>
+<li>Packages — Basic, Standard, Premium at different prices and deliverables</li>
+<li>Gallery — up to 3 images or a video</li>
+</ul>
+<p>Fiverr is faster to start but lower-priced. Many Malawian freelancers use Fiverr for volume and Upwork for higher-paying clients.</p>
+<blockquote><strong>The biggest profile mistake:</strong> copying someone else's. Clients can spot it instantly. Write yours in your own voice — even imperfect English reads better than a template.</blockquote>
+</div>
+
+<div class="src-read" data-l="p2">
+<p>Your Upwork or Fiverr profile matters for getting found. Your <strong>portfolio site</strong> matters for closing the deal. When a client is deciding between two freelancers, they check the portfolio.</p>
+<h2>Why you need your own site</h2>
+<ul>
+<li><strong>Control.</strong> Upwork can suspend your account tomorrow. Your own domain is yours forever.</li>
+<li><strong>Professionalism.</strong> <code>chisomo.dev</code> looks better than a Upwork profile URL.</li>
+<li><strong>Proof of skill.</strong> A clean, fast portfolio site is itself a portfolio piece — especially for developers.</li>
+<li><strong>SEO.</strong> When someone searches "Malawian Flutter developer," your site can be the top result.</li>
+</ul>
+<h2>What to include</h2>
+<p>Five sections, no more:</p>
+<ol>
+<li><strong>Hero</strong> — your name, what you do, one line on who you help</li>
+<li><strong>Selected work</strong> — 3 to 5 projects, each with a screenshot, a link, and 2–3 sentences</li>
+<li><strong>About</strong> — a short paragraph on who you are and how you work</li>
+<li><strong>Contact</strong> — email, WhatsApp, LinkedIn</li>
+<li><strong>Footer</strong> — copyright, links</li>
+</ol>
+<p>You do not need a blog, a services page, pricing, or a "book a call" widget. Keep it simple. Clients are busy.</p>
+<h2>The tech stack</h2>
+<p>Plain HTML and CSS. That is it. You can build this in one evening with the skills from the HTML &amp; CSS course. If you want a bit of interactivity, add a small amount of JavaScript.</p>
+<p>Do not use React, Next.js, or a framework for your portfolio. Reason: your portfolio is a landing page. It should load in under 2 seconds on a slow phone. Frameworks make that harder, not easier.</p>
+<h2>Hosting</h2>
+<p>Three free options that just work:</p>
+<ul>
+<li><strong>GitHub Pages</strong> — push to a repo called <code>yourname.github.io</code></li>
+<li><strong>Netlify</strong> — drag and drop your folder</li>
+<li><strong>Vercel</strong> — same idea, good for React projects</li>
+</ul>
+<p>A custom domain costs $10–15/year. Optional but worth it once you have your first client.</p>
+<h2>The GitHub profile</h2>
+<p>Many clients, especially technical ones, will look at your GitHub. Make sure:</p>
+<ul>
+<li><strong>Your profile README</strong> introduces you — name, niche, contact</li>
+<li><strong>Your pinned repos</strong> show your 4–6 best projects, not your random learning experiments</li>
+<li><strong>Each project has a README</strong> with what it does, how to run it, and a screenshot</li>
+<li><strong>Commit messages</strong> are meaningful — no "asdf" or "final final v2"</li>
+</ul>
+<h2>The overall checklist</h2>
+<ul>
+<li>Domain name (optional but recommended)</li>
+<li>Portfolio site with 3+ projects</li>
+<li>GitHub profile with pinned repos and a README</li>
+<li>Upwork profile complete (all sections)</li>
+<li>Fiverr gigs, if you want volume</li>
+<li>LinkedIn profile with a professional photo and updated headline</li>
+</ul>
+<p>This whole setup takes one weekend. It is the single highest-leverage weekend you will spend as a freelancer — everything else builds on top of it.</p>
+<blockquote><strong>The 5-second test:</strong> open your portfolio on your phone. If a stranger cannot tell within 5 seconds what you do and how to hire you, redesign it. That is the entire goal of the site.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: FINDING WORK ===== -->
+<div class="src-read" data-l="f1">
+<p>Profiles get you found. Proposals get you hired. This is where the money is made or lost.</p>
+<h2>The reality</h2>
+<p>On Upwork, most freelancers send 20–50 proposals before landing their first job. That is normal. Do not be discouraged. Every rejection is information — read the client's response (or silence) as feedback.</p>
+<h2>The anatomy of a winning proposal</h2>
+<p>A proposal has five parts, and it is short. Most successful proposals are 100–200 words. Long proposals get skimmed and discarded.</p>
+<ol>
+<li><strong>Hook</strong> — one sentence proving you read the job post</li>
+<li><strong>Understanding</strong> — one sentence showing you know the problem</li>
+<li><strong>Solution</strong> — one or two sentences on how you will solve it</li>
+<li><strong>Proof</strong> — one link to a relevant past project</li>
+<li><strong>Call to action</strong> — one sentence asking for the next step</li>
+</ol>
+<h2>Weak vs strong proposal</h2>
+<p>Weak (the one everyone sends):</p>
+<pre><code>Dear Sir/Madam,
+
+I am a passionate web developer with 5 years of experience.
+I have worked on many projects and I am confident I can do
+this job. Please consider my application.
+
+Thank you,
+Chisomo</code></pre>
+<p>Strong (specific, short, focused):</p>
+<pre><code>Hi Sarah,
+
+I noticed your site loads slowly on mobile — I checked it
+on my phone and it took 8 seconds. That is likely costing
+you customers.
+
+I build fast, low-bandwidth landing pages. Here is a
+recent one I did for a Malawian startup that loads in
+1.4 seconds on 3G: [link]
+
+If you would like, I can do a free 10-minute audit and
+send you three specific fixes. No obligation.
+
+Chisomo Banda</code></pre>
+<p>Notice the differences:</p>
+<ul>
+<li>The strong one mentions a specific detail from the job</li>
+<li>It names the problem in the client's language</li>
+<li>It shows a real example</li>
+<li>It offers a low-risk next step</li>
+<li>It is half the length</li>
+</ul>
+<h2>Personalisation is not optional</h2>
+<p>Upwork shows clients how many proposals you have sent that week. It also flags copy-paste proposals. If your proposal could be sent to any job in the category, rewrite it. Real personalisation takes 3 minutes per proposal. That is 3 minutes that could earn you $300.</p>
+<h2>The three proposal killers</h2>
+<ol>
+<li><strong>Starting with yourself.</strong> "I am a developer..." — the client does not care. Start with their problem.</li>
+<li><strong>Listing everything you can do.</strong> Sounding desperate. Pick the one thing that matches this job.</li>
+<li><strong>Making the client work.</strong> "Please see my profile for details." Do not send them hunting. Give the answer right there.</li>
+</ol>
+<h2>A volume strategy that works</h2>
+<ul>
+<li>Send 3–5 quality proposals per day, personalised</li>
+<li>Track them in a simple spreadsheet — job title, client, date sent, follow-up date</li>
+<li>Do not check email every 5 minutes. Check twice a day.</li>
+<li>Expect 5–10% to reply, 2–3% to hire you</li>
+</ul>
+<p>That math means: 100 proposals → 5–10 replies → 2–3 hires. Two or three clients from 100 proposals. If you send 5 proposals a day, five days a week, that is 100 in a month. You could realistically land your first two clients in month one.</p>
+<blockquote><strong>The one rule:</strong> every proposal should take 3 to 5 minutes to write. If you spend 30 minutes on one, you are overthinking. If you spend 10 seconds on one, you are wasting everyone's time.</blockquote>
+</div>
+
+<div class="src-read" data-l="f2">
+<p>Upwork and Fiverr are where most freelancers start. But the biggest long-term gains come from <strong>direct outreach</strong> — emailing or messaging potential clients directly.</p>
+<h2>Why direct outreach works</h2>
+<ul>
+<li><strong>No competition.</strong> On Upwork, you are one of 50 proposals. In a client's inbox, you are one of one.</li>
+<li><strong>Higher rates.</strong> Clients who come to you are less price-sensitive.</li>
+<li><strong>Longer relationships.</strong> A cold email that converts often becomes a multi-year client.</li>
+<li><strong>No platform fees.</strong> Upwork takes 10–20%. Direct clients take zero.</li>
+</ul>
+<h2>Who to email</h2>
+<p>Start with businesses you can actually help:</p>
+<ul>
+<li><strong>Local Malawi businesses</strong> with a website problem — check their site. Is it slow? Does it work on mobile? Does it have broken links? These are your reasons to email them.</li>
+<li><strong>NGOs</strong> that need help with data, websites, or digital tools</li>
+<li><strong>Startups on Twitter or LinkedIn</strong> announcing that they are hiring or launching</li>
+<li><strong>E-commerce shops</strong> that sell on Facebook or WhatsApp and might want a proper site</li>
+<li><strong>Church or community organisations</strong> that need help with digital presence</li>
+</ul>
+<h2>The cold email structure</h2>
+<p>Short. Specific. No fluff.</p>
+<pre><code>Subject: Quick observation about [specific thing on their site]
+
+Hi [Name],
+
+I was looking at [their site/business] and noticed
+[specific problem] — the contact form on mobile is
+broken, for example.
+
+I build [your niche]. Here is a recent project: [link].
+
+If you would like, I can send you a free 5-minute video
+showing exactly what I would fix. No obligation.
+
+[Your name]
+[Phone or WhatsApp]</code></pre>
+<p>Four sentences. Notice:</p>
+<ul>
+<li>Subject line is specific — not "Business proposal"</li>
+<li>Opening proves you looked at their actual business</li>
+<li>You name one specific problem, not five</li>
+<li>You offer something free and specific (a 5-minute video, an audit)</li>
+<li>No pressure, no pitch</li>
+</ul>
+<h2>The follow-up</h2>
+<p>70% of replies come from the second or third email, not the first. If you do not hear back in 5 days:</p>
+<pre><code>Subject: Re: Quick observation about [their site]
+
+Hi [Name],
+
+Just following up — I know inboxes get busy.
+
+If the timing is not right, no worries at all.
+I will check back in a few weeks.
+
+[Your name]</code></pre>
+<p>Then send one more a week later. After three attempts, move on. Some clients will reach out months later when they are ready.</p>
+<h2>Where to find work</h2>
+<p>Beyond Upwork and Fiverr:</p>
+<ul>
+<li><strong>Remote job boards</strong> — Remote OK, We Work Remotely, Remote.co, Working Nomads</li>
+<li><strong>Twitter/X</strong> — follow "hiring" accounts and tech founders</li>
+<li><strong>LinkedIn</strong> — search "looking for [skill] freelancer" every morning</li>
+<li><strong>Facebook Groups</strong> — "Malawi Tech", "African Freelancers", "NGO Digital Support"</li>
+<li><strong>Word of mouth</strong> — tell every person you know what you do</li>
+<li><strong>Contra, Toptal, Braintrust</strong> — vetted platforms, higher pay, harder to get in</li>
+</ul>
+<h2>Handling rejection</h2>
+<p>You will get far more no than yes. That is not failure — it is normal. Professional freelancers have hundreds of rejections in their history. What matters is the ratio over time.</p>
+<ul>
+<li>Track what works: which subject lines get opens, which openings get replies</li>
+<li>Iterate every week</li>
+<li>Never take it personally</li>
+</ul>
+<blockquote><strong>The confidence trick:</strong> the first proposal feels terrifying. The tenth feels normal. The hundredth feels like brushing your teeth. Volume solves almost every psychological barrier in freelancing.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: GETTING PAID ===== -->
+<div class="src-read" data-l="g3">
+<p>You have a client. You have done the work. Now you have to actually get the money. This is where many Malawian freelancers hit their biggest obstacle — international payments.</p>
+<h2>The challenge</h2>
+<p>PayPal does not allow withdrawals to Malawian bank accounts. Stripe does not support Malawi as a payout country. Direct bank transfers from the US or EU take 5–10 business days and cost $25–45 per transfer.</p>
+<p>Fortunately, there are three reliable paths that work well from Malawi.</p>
+<h2>Payoneer</h2>
+<p><strong>What it is:</strong> a US-based financial service that gives you a virtual US bank account. Clients can pay you like they would pay any US company.</p>
+<p><strong>Fees:</strong></p>
+<ul>
+<li>Free to set up</li>
+<li>Receiving money from another Payoneer user: free</li>
+<li>Receiving via US ACH or wire: 1%</li>
+<li>Withdrawing to a Malawian bank: $1.50 per transaction, takes 1–2 business days</li>
+<li>Currency conversion markup: about 2%</li>
+</ul>
+<p><strong>Verdict:</strong> the most popular choice for Malawian freelancers. Reliable, low fees, wide acceptance.</p>
+<h2>Wise</h2>
+<p><strong>What it is:</strong> a UK-based service with real exchange rates. You get multi-currency account details in USD, EUR, GBP.</p>
+<p><strong>Fees:</strong></p>
+<ul>
+<li>Free to receive in most currencies</li>
+<li>Conversion fee: 0.4–0.9% — much lower than banks</li>
+<li>Withdrawal to Malawian bank: depends on the bank, usually a small flat fee</li>
+</ul>
+<p><strong>Verdict:</strong> the best exchange rates. Slightly more complex to set up. Worth it once you are earning $500+/month.</p>
+<h2>Other options</h2>
+<ul>
+<li><strong>Skrill</strong> — similar to Payoneer, works in Malawi, higher fees</li>
+<li><strong>Direct bank wire</strong> — works but expensive ($25–45 per transfer). Only for large payments.</li>
+<li><strong>Crypto (USDT, USDC)</strong> — cheap and fast, but volatile and legally grey in some contexts. Use only if you understand the risk.</li>
+<li><strong>Upwork itself</strong> — if you use Upwork, they handle payments through their own system and you can withdraw to Payoneer or bank</li>
+</ul>
+<h2>Which to choose</h2>
+<p>If you are just starting:</p>
+<ol>
+<li>Set up Payoneer first. It is the easiest and most widely accepted.</li>
+<li>Add Wise once you have a regular client and want to save on exchange rates.</li>
+<li>Use Upwork's built-in payment if you are working through Upwork.</li>
+</ol>
+<p>Set up both before you land your first client. The last thing you want is a client ready to pay you and no way to receive it.</p>
+<h2>Getting paid by a client directly</h2>
+<p>For direct clients, the standard process:</p>
+<ol>
+<li>Send a professional invoice (PDF or a tool like Wave, Zoho Invoice, or a simple template)</li>
+<li>Include payment instructions: "Pay via Payoneer to [email]" or "Pay via Wise to [account details]"</li>
+<li>Give the client 14 or 30 days to pay — standard terms</li>
+<li>Follow up if payment is late</li>
+</ol>
+<p>Half up front, half on delivery is standard for new clients. Once trust is established, you can invoice the full amount on completion.</p>
+<blockquote><strong>The hard truth:</strong> you will sometimes not get paid. Chasing a late client is part of the job. Set clear terms, invoice promptly, follow up politely. Most clients pay. A few will not. Build a buffer so one bad client does not sink you.</blockquote>
+</div>
+
+<div class="src-read" data-l="g4">
+<p>Every freelancer has to answer the question: how much do I charge? Get this wrong and you either starve or scare off every client. Get it right and you build a sustainable business.</p>
+<h2>How not to price</h2>
+<ul>
+<li><strong>"What are other Malawians charging?"</strong> — the wrong question. You are not competing with Malawians. You are competing with the global market.</li>
+<li><strong>"What is the minimum I need to survive?"</strong> — this anchors you to poverty rates forever.</li>
+<li><strong>"What feels fair?"</strong> — feelings are a bad guide to business.</li>
+</ul>
+<h2>The right way to price</h2>
+<p>Start with your <strong>target income</strong>, work backwards.</p>
+<ol>
+<li>Decide what you want to earn per month in USD (start realistic — $200/month is fine for month one)</li>
+<li>Decide how many billable hours per week you can work (10 is realistic as a side hustle, 20–30 if full-time)</li>
+<li>Multiply: hourly rate = monthly target ÷ (hours per week × 4.33 weeks)</li>
+</ol>
+<p>Example: target $400/month, 10 billable hours per week. Rate = $400 ÷ (10 × 4.33) = $9.25/hour.</p>
+<p>That feels low. It is. Starting rates always are. The point is that as you build reviews and references, you raise the rate.</p>
+<h2>Rate progression</h2>
+<p>Typical progression for a Malawian freelancer:</p>
+<ul>
+<li><strong>Month 1–3:</strong> $5–10/hour — you are building reviews</li>
+<li><strong>Month 4–6:</strong> $10–20/hour — you have 5+ reviews, repeat clients</li>
+<li><strong>Month 7–12:</strong> $20–35/hour — you have a niche and a portfolio</li>
+<li><strong>Year 2:</strong> $35–60/hour — you are specialised and in demand</li>
+<li><strong>Year 3+:</strong> $60–120/hour — top of your niche, picky about clients</li>
+</ul>
+<p>Notice the multiplier. The same skills, at a higher rate, because of reputation. Your job as a freelancer is to constantly build reputation.</p>
+<h2>Fixed price vs hourly</h2>
+<p>Both have their place:</p>
+<ul>
+<li><strong>Hourly</strong> — good for open-ended work, ongoing maintenance, or clients who change requirements constantly. Protects you from scope creep.</li>
+<li><strong>Fixed price</strong> — good for well-defined projects. The client knows the cost up front, which is reassuring. But you must estimate carefully — if you underestimate, you eat the loss.</li>
+</ul>
+<p>A rule: if you are new to the client or the project is unclear, use hourly. If the client is trustworthy and the scope is tight, use fixed price.</p>
+<h2>Raising your rate</h2>
+<p>Every 3 months, ask yourself: "Am I turning away work because I am too busy?" If yes, raise your rate. Every 6 months, raise it 10–20% regardless. Existing clients can be grandfathered at their old rate for a few months, then transitioned.</p>
+<p>Raising rates is scary. But the reality is: 90% of clients will accept the new rate without a word. 10% will negotiate or leave. You lose a little, you gain a lot.</p>
+<h2>Invoicing</h2>
+<p>Every invoice should include:</p>
+<ul>
+<li>Your name and business name (if you have one)</li>
+<li>Your contact details and payment details</li>
+<li>The client's name and address</li>
+<li>An invoice number (start at 001 and count up)</li>
+<li>The date issued and the date due (14 or 30 days later)</li>
+<li>A line for each deliverable, quantity, rate, amount</li>
+<li>Total, currency, taxes (if any)</li>
+<li>Payment terms — how and when to pay</li>
+</ul>
+<p>Free tools that handle this: Wave, Zoho Invoice, or a simple template in Google Docs. Do not overthink it.</p>
+<h2>Tracking your income</h2>
+<p>Keep a simple spreadsheet:</p>
+<ul>
+<li>Date | Client | Project | Amount USD | Payment method | Received?</li>
+</ul>
+<p>Update it every time you invoice. At the end of the month, total the "Received" column. This is your actual income. It is also your record for tax purposes and your motivation on bad weeks.</p>
+<blockquote><strong>The mindset:</strong> you are not "just a freelancer." You are a business owner. You set the rates. You choose the clients. You send the invoices. The moment you internalise that, everything else follows.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: WORKING WITH CLIENTS ===== -->
+<div class="src-read" data-l="w1">
+<p>The hardest part of freelancing is not the work. It is the clients. Learning to communicate clearly, set boundaries, and handle difficult situations is what separates freelancers who burn out from those who build a career.</p>
+<h2>The first message</h2>
+<p>When a client agrees to work with you, the first exchange sets the tone. Send a short kickoff message confirming:</p>
+<ul>
+<li>What you understood the project to be</li>
+<li>What you will deliver, specifically</li>
+<li>What you need from them (access, files, decisions)</li>
+<li>Timeline — when they get what</li>
+<li>Payment terms — how much, when</li>
+</ul>
+<p>Example:</p>
+<pre><code>Hi Sarah,
+
+Great to be working with you. Here is what I understood:
+
+Deliverable: A new landing page with 4 sections and a
+contact form. Mobile-friendly, loads in under 2 seconds.
+
+What I need from you:
+- Logo file
+- Text content for all 4 sections (or I can draft it)
+- Brand colors (if you have them)
+
+Timeline:
+- Draft by Friday 15th
+- Revisions by Wednesday 20th
+- Final delivery by Friday 22nd
+
+Payment: $400 total, $200 deposit to start, $200 on delivery.
+
+Please confirm everything looks right and send the files
+when you can. I'll start immediately.
+
+Thanks!
+Chisomo</code></pre>
+<p>This message prevents 90% of the arguments freelancers have with clients. It creates a shared written record of what was agreed.</p>
+<h2>Communication frequency</h2>
+<p>Silence makes clients anxious. Aim for:</p>
+<ul>
+<li><strong>Weekly update</strong> — even if nothing has changed, "Still on track, delivery Friday" is fine</li>
+<li><strong>Immediate response to problems</strong> — if something breaks or a timeline slips, tell them before they notice</li>
+<li><strong>Respond within 24 hours</strong> on weekdays. Same day is better.</li>
+</ul>
+<h2>Timezone discipline</h2>
+<p>If your client is in London (UTC+0), and you are in Lilongwe (UTC+2), you have a 2-hour window where you are both working. Use it. Schedule calls, decisions, and important messages for that window. Save solo work for your own evening.</p>
+<p>For US clients (UTC−5 to UTC−8), the gap is 7–10 hours. You may need to work evenings or early mornings occasionally for calls. Discuss this up front — most clients are understanding if you tell them early.</p>
+<h2>Managing expectations</h2>
+<p>Under-promise. Over-deliver. This is not manipulative — it is professional. If a project will take 5 days, tell the client 7. Then deliver on day 5. They are thrilled. If you promise 5 and deliver on 7, they are annoyed. Same result, different feeling.</p>
+<h2>When things go wrong</h2>
+<ol>
+<li><strong>Tell them immediately.</strong> Do not hide a problem hoping it will fix itself.</li>
+<li><strong>Come with a solution.</strong> "I hit a delay because of X. Here is my plan to fix it." Not just "Sorry, I am behind."</li>
+<li><strong>Own it.</strong> Even if it is partially their fault, take responsibility for your part. This builds enormous trust.</li>
+<li><strong>Fix it fast.</strong> Ship a partial solution, a fix, an alternative. Action over apology.</li>
+</ol>
+<blockquote><strong>The reputation rule:</strong> a client who sees you handle a problem well trusts you more than a client who never sees a problem at all. Crisis is an opportunity to prove you are reliable.</blockquote>
+</div>
+
+<div class="src-read" data-l="w2">
+<p>Now the harder stuff. Every freelancer eventually meets a client who is difficult, vague, slow to pay, or wants more than they paid for. Here is how to handle it.</p>
+<h2>Scope creep</h2>
+<p>Scope creep is when a client slowly asks for more and more, without paying more. "Can you just add this one small thing?" Thirty small things later, you have worked three times the agreed amount for the same fee.</p>
+<p>How to handle it, gently:</p>
+<pre><code>That is a great idea. It is outside the original scope,
+so I can add it for $X, or we can keep it for a follow-up
+phase. Which would you prefer?</code></pre>
+<p>You are not refusing. You are pricing. Good clients accept this instantly. Bad clients push back — and that is useful information.</p>
+<h2>The client who goes silent</h2>
+<p>Two days after you send a question, no response. A week later, still nothing. What do you do?</p>
+<ul>
+<li><strong>Day 3:</strong> Friendly follow-up. "Just checking in on my question about X."</li>
+<li><strong>Day 7:</strong> Second follow-up with a clear decision point. "If I do not hear back by Friday, I will proceed with the original plan and adjust later."</li>
+<li><strong>Day 14:</strong> Escalate. "I want to make sure everything is OK. Is this project still a priority?"</li>
+</ul>
+<p>If the silence continues and you have not been paid, stop work. Do not keep delivering to a client who is not engaging. Save your energy for clients who respect your time.</p>
+<h2>The client who is never happy</h2>
+<p>Some clients will always find something to criticise. Every deliverable has a problem. Nothing is ever quite right. This is a red flag — but there is a way to handle it:</p>
+<ol>
+<li><strong>Set explicit revision rounds.</strong> "This package includes two rounds of revisions. Additional rounds are $X per hour."</li>
+<li><strong>Ask for specific feedback.</strong> "What specifically would you like changed?" Vague dissatisfaction cannot be fixed. Concrete requests can.</li>
+<li><strong>Document everything.</strong> If the relationship sours, you want a paper trail.</li>
+<li><strong>Be willing to walk away.</strong> If the client is abusive, do not keep working. Refund what is fair, close the project, and move on.</li>
+</ol>
+<h2>Late payment</h2>
+<p>Standard escalation:</p>
+<ul>
+<li><strong>Day 1 past due:</strong> Polite reminder. "Just following up on invoice #014."</li>
+<li><strong>Day 7 past due:</strong> Firmer. "Please let me know when I can expect payment."</li>
+<li><strong>Day 14 past due:</strong> Direct. "I cannot continue work on the next phase until the outstanding invoice is settled."</li>
+<li><strong>Day 30 past due:</strong> Stop work. Send a final notice. Consider whether to continue the relationship.</li>
+</ul>
+<p>Prevention is the best cure: 50% deposit up front, milestones for long projects, and clear payment terms on every invoice.</p>
+<h2>Red flags to watch for</h2>
+<p>End the conversation before you take on the client if you see:</p>
+<ul>
+<li><strong>Refusal to pay a deposit.</strong> Every legitimate client pays a deposit for a new freelancer.</li>
+<li><strong>Extreme urgency.</strong> "I need this tomorrow." Big projects take time. Urgency is often a red flag for a badly organised client.</li>
+<li><strong>Vague requirements.</strong> "Just build me something modern." You will never satisfy this client.</li>
+<li><strong>Poor communication from day one.</strong> It only gets worse.</li>
+<li><strong>Refusal to sign or confirm anything in writing.</strong> Every professional client is fine with a written scope. The ones who refuse have a reason.</li>
+</ul>
+<h2>When to fire a client</h2>
+<p>You are allowed to end a client relationship. Do it when:</p>
+<ul>
+<li>You dread opening their messages</li>
+<li>They consistently pay late</li>
+<li>They cross professional boundaries (insults, inappropriate messages)</li>
+<li>They are taking up 80% of your time for 20% of your income</li>
+</ul>
+<p>End it professionally: "I have enjoyed working with you, but I am no longer able to continue on this project. I will finish the current deliverable and hand over any remaining work. Best of luck with everything."</p>
+<p>You do not owe an explanation. You do not owe an apology. You owe a clean handover.</p>
+<blockquote><strong>You have finished the course.</strong> You now know how freelancing works from start to finish: picking a niche, building a profile, finding clients, getting paid, and handling every kind of client behaviour. The rest is practice. The first client is the hardest. Everything after that is a repetition of what you just learned.</blockquote>
+</div>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'freelancing_remote_progress_v1';
+var CAPSTONE_KEY = 'freelancing_remote_capstone_v1';
+
+/* ========== COURSE DATA ========== */
+var course = {
+  modules: [
+    {
+      id: 'getting-started', icon: '🚀', title: 'Getting Started',
+      lessons: [
+        { id:'g1', title:'What Freelancing Really Is', time:'20 min', tool: null,
+          challenge:'Write down three things you can already do well enough to charge for. Then write one sentence: "I help [who] with [what]." This is the seed of your niche.',
+          quiz:[
+            { q:'What is the main advantage of freelancing for a skilled Malawian?', options:['Easier than a job','Access to higher-paying international clients','No work required','It is passive income'], correct:1 },
+            { q:'As a freelancer, what are you?', options:['An employee','A business','A volunteer','A student'], correct:1 },
+            { q:'What is the most important trait for a freelancer?', options:['Being the best in the world','Being reliable and communicative','Having the most followers','Working the longest hours'], correct:1 }
+          ]},
+        { id:'g2', title:'Choosing Your Niche', time:'22 min', tool: 'niche',
+          challenge:'Use the niche picker above to find three niches that match your current skills and interests. Pick the one you can describe in a single sentence.',
+          quiz:[
+            { q:'What is a niche?', options:['A type of freelance platform','The specific intersection of what you do, who you help, and what problem you solve','A pricing strategy','A payment method'], correct:1 },
+            { q:'Why does narrowing beat being broad?', options:['It is easier','Narrow freelancers stand out and command higher rates','Broad freelancers earn more','Narrow freelancers work less'], correct:1 },
+            { q:'Does narrowing prevent you from taking other work?', options:['Yes, you can only do that niche','No, it changes how you market yourself but does not limit what you accept','Yes, if you sign a contract','Only on Upwork'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'profiles', icon: '👤', title: 'Profiles & Portfolios',
+      lessons: [
+        { id:'p1', title:'Building Your Upwork Profile', time:'26 min', tool: 'profile',
+          challenge:'Use the Profile Builder above to write your Upwork title and overview. Aim for a title that names your skill, the outcome, and the audience. Then run the profile check and fix at least two issues it flags.',
+          quiz:[
+            { q:'What should a strong Upwork title include?', options:['Your full name','Skill, outcome, and audience','Your CV','Your photo description'], correct:1 },
+            { q:'What should the overview start with?', options:['Your career history','The client\'s problem, not your history','Your education','A joke'], correct:1 },
+            { q:'How many portfolio pieces should you have at minimum?', options:['1','3','10','None'], correct:1 }
+          ]},
+        { id:'p2', title:'Your Portfolio & GitHub', time:'28 min', tool: null,
+          challenge:'Create a GitHub profile README that introduces you in three sentences and links to at least two projects. Then pin your four best repositories.',
+          quiz:[
+            { q:'What should a portfolio site include?', options:['Blog, services, pricing, testimonials','Hero, work, about, contact — that is it','Everything you have ever built','A chatbot'], correct:1 },
+            { q:'Why avoid React for your portfolio site?', options:['It is not supported','Portfolio sites should load fast — a framework makes it slower','React is outdated','Clients do not like React'], correct:1 },
+            { q:'What is a good GitHub profile README?', options:['A long CV','A short introduction with name, niche, and contact','Just your name','Nothing'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'finding-work', icon: '🎯', title: 'Finding Work',
+      lessons: [
+        { id:'f1', title:'Writing Proposals That Win', time:'30 min', tool: 'proposal',
+          challenge:'Use the Proposal Writer above. Read the job posting carefully, then write a proposal in 100–200 words that hooks with a specific observation, proves you understand the problem, offers a solution, and asks for the next step.',
+          quiz:[
+            { q:'How long should a typical winning proposal be?', options:['2 pages','100–200 words','10 words','As long as possible'], correct:1 },
+            { q:'What should a proposal start with?', options:['Your biography','A specific observation about the client','Your rate','"Dear Sir/Madam"'], correct:1 },
+            { q:'How many proposals does the average freelancer send before landing their first job?', options:['1–2','5–10','20–50','500+'], correct:2 }
+          ]},
+        { id:'f2', title:'Cold Outreach & Finding Gigs', time:'28 min', tool: null,
+          challenge:'Pick a real Malawian business with a website. Find one specific problem on their site — slow loading, broken form, bad mobile layout. Write a 4-sentence cold email pointing it out and offering a free audit.',
+          quiz:[
+            { q:'What is the main advantage of cold outreach over Upwork?', options:['Easier','Less competition and higher rates','Faster','Free'], correct:1 },
+            { q:'How many follow-up emails should you send?', options:['0','1–2','10+','Until they reply'], correct:1 },
+            { q:'What makes a cold email work?', options:['Length','Being specific about their actual business','Mentioning your rates','Attaching your CV'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'getting-paid', icon: '💰', title: 'Getting Paid',
+      lessons: [
+        { id:'g3', title:'Payment Methods from Malawi', time:'30 min', tool: 'payment',
+          challenge:'Compare Payoneer and Wise in the tool above. Decide which you would set up first, and write down the reasons in three bullet points.',
+          quiz:[
+            { q:'Why does PayPal not work well for Malawians?', options:['It is slow','PayPal does not allow withdrawals to Malawian bank accounts','It costs too much','It is banned'], correct:1 },
+            { q:'What does Payoneer give you?', options:['A virtual US bank account','A Malawian bank account','A crypto wallet','A credit card'], correct:0 },
+            { q:'Which service has the best exchange rates?', options:['PayPal','Wise','Bank transfer','Cash'], correct:1 }
+          ]},
+        { id:'g4', title:'Pricing, Rates & Invoicing', time:'32 min', tool: 'rate',
+          challenge:'Use the Rate Calculator above to work out your starting hourly rate. Set a target monthly income, decide your weekly hours, and note the rate. Then plan to raise it by 20% every six months.',
+          quiz:[
+            { q:'What is the starting hourly rate for most Malawian freelancers?', options:['$1–3','$5–10','$20–30','$50+'], correct:1 },
+            { q:'How should you compute your hourly rate?', options:['Ask a friend','Target monthly income divided by billable hours','Match the local minimum wage','Guess'], correct:1 },
+            { q:'When should you raise your rates?', options:['Never','Every 6 months, or when you are too busy to take new work','Only if a client asks','Once a year'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'clients', icon: '🤝', title: 'Working with Clients',
+      lessons: [
+        { id:'w1', title:'Communication & Kickoff', time:'28 min', tool: null,
+          challenge:'Write a kickoff message for a fake project: a small business wants a website. Include: what you understood, what you will deliver, what you need from them, timeline, and payment terms.',
+          quiz:[
+            { q:'Why send a kickoff message?', options:['To be polite','To create a shared written record of what was agreed','Because it is required','To slow things down'], correct:1 },
+            { q:'How often should you update the client?', options:['Only when done','Weekly, even if nothing has changed','Every hour','Never'], correct:1 },
+            { q:'If a project will take 5 days, what do you tell the client?', options:['3 days','5 days','7 days — under-promise, over-deliver','10 days'], correct:2 }
+          ]},
+        { id:'w2', title:'Difficult Clients & Scope Creep', time:'32 min', tool: 'scenario',
+          challenge:'Work through the five client scenarios above. For each one, decide on the response before revealing the answer. Then write your own response to a client who asks for work outside the agreed scope.',
+          quiz:[
+            { q:'What is scope creep?', options:['A type of contract','A client slowly asking for more work without paying more','A project delay','A payment method'], correct:1 },
+            { q:'How do you handle scope creep?', options:['Do it for free to keep the client happy','Price the extra work clearly and let the client choose','Ignore the request','End the relationship'], correct:1 },
+            { q:'When should you stop work for a client who has not paid?', options:['Immediately','After 14–30 days past due, depending on the relationship','Never','After 6 months'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, tool: l.tool,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+})();
+
+/* ========== PROGRESS ========== */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'fr::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I chose a niche and can describe it in one sentence' },
+  { id: 'm2', text: 'I created or updated my Upwork profile with a strong title and overview' },
+  { id: 'm3', text: 'I have a portfolio site or GitHub with at least 3 pieces of work' },
+  { id: 'm4', text: 'I set up a Payoneer account (or Wise) ready to receive payments' },
+  { id: 'm5', text: 'I calculated my starting hourly rate' },
+  { id: 'm6', text: 'I sent my first proposal on Upwork or Fiverr' },
+  { id: 'm7', text: 'I sent my first cold outreach email to a real business' },
+  { id: 'm8', text: 'I received my first client reply (hire or rejection)' },
+  { id: 'm9', text: 'I completed my first paid project' },
+  { id: 'm10', text: 'I invoiced my first client and got paid' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'g1';
+var currentView = 'lessons';
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'tools') renderTools();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>💼 Practical exercise</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (lesson.tool) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Interactive Tool</span></h2>';
+    html += '<p class="ed-s">Use the tool below to apply what you just read. Your work stays in your browser.</p>';
+    html += '<div class="ex-card" id="exerciseArea"></div>';
+    html += '</section>';
+  } else if (lesson.challenge) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Your Exercise</h2>';
+    html += '<div class="challenge"><strong>Do this now</strong>' + lesson.challenge + '</div>';
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Do the exercise, take the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (lesson.tool && $('exerciseArea')) {
+    if (lesson.tool === 'niche') renderNichePicker($('exerciseArea'));
+    else if (lesson.tool === 'profile') renderProfileBuilder($('exerciseArea'));
+    else if (lesson.tool === 'proposal') renderProposalWriter($('exerciseArea'));
+    else if (lesson.tool === 'payment') renderPaymentCompare($('exerciseArea'));
+    else if (lesson.tool === 'rate') renderRateCalculator($('exerciseArea'));
+    else if (lesson.tool === 'scenario') renderScenarioQuiz($('exerciseArea'));
+  }
+
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+}
+
+/* ========== TOOL: NICHE PICKER ========== */
+function renderNichePicker(container) {
+  var html = '';
+  html += '<h4>Niche Finder</h4>';
+  html += '<p class="hint">Answer three questions. We will suggest niches that match your answers.</p>';
+  html += '<div class="np-questions" id="npQuestions">';
+
+  html += '<div class="np-q" data-q="0">';
+  html += '<div class="np-q-title">1. What do you enjoy doing most?</div>';
+  html += '<div class="np-opts">';
+  html += '<label class="np-opt"><input type="radio" name="np0" value="build"> Building things — websites, apps, tools</label>';
+  html += '<label class="np-opt"><input type="radio" name="np0" value="analyze"> Finding patterns — data, numbers, reports</label>';
+  html += '<label class="np-opt"><input type="radio" name="np0" value="design"> Making things look good — design, layout, visuals</label>';
+  html += '<label class="np-opt"><input type="radio" name="np0" value="write"> Explaining things — writing, documentation, teaching</label>';
+  html += '</div></div>';
+
+  html += '<div class="np-q" data-q="1">';
+  html += '<div class="np-q-title">2. Who would you most like to work with?</div>';
+  html += '<div class="np-opts">';
+  html += '<label class="np-opt"><input type="radio" name="np1" value="local"> Malawian small businesses</label>';
+  html += '<label class="np-opt"><input type="radio" name="np1" value="ngo"> NGOs and non-profits</label>';
+  html += '<label class="np-opt"><input type="radio" name="np1" value="startup"> International startups</label>';
+  html += '<label class="np-opt"><input type="radio" name="np1" value="ecom"> E-commerce shops</label>';
+  html += '</div></div>';
+
+  html += '<div class="np-q" data-q="2">';
+  html += '<div class="np-q-title">3. Which best describes your current level?</div>';
+  html += '<div class="np-opts">';
+  html += '<label class="np-opt"><input type="radio" name="np2" value="beginner"> Just starting — I finished some courses</label>';
+  html += '<label class="np-opt"><input type="radio" name="np2" value="intermediate"> Confident — I have built real projects</label>';
+  html += '<label class="np-opt"><input type="radio" name="np2" value="advanced"> Experienced — I have worked with clients before</label>';
+  html += '</div></div>';
+
+  html += '</div>';
+  html += '<div style="margin-top:16px"><button class="btn btn-p" id="npGo" type="button">Suggest my niches</button></div>';
+  html += '<div id="npResults" style="margin-top:20px"></div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.np-opt').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var name = opt.querySelector('input').name;
+      container.querySelectorAll('input[name="' + name + '"]').forEach(function(inp) {
+        inp.parentElement.classList.remove('checked');
+      });
+      opt.classList.add('checked');
+    });
+  });
+
+  $('npGo').addEventListener('click', function() {
+    var answers = [];
+    for (var q = 0; q < 3; q++) {
+      var sel = container.querySelector('input[name="np' + q + '"]:checked');
+      answers.push(sel ? sel.value : null);
+    }
+    if (answers.includes(null)) {
+      $('npResults').innerHTML = '<div class="pb-score" style="border-left-color:var(--warn)"><strong>Almost there</strong>Please answer all three questions above.</div>';
+      return;
+    }
+    var niches = suggestNiches(answers[0], answers[1], answers[2]);
+    var resultHtml = '<div class="pb-score"><strong>Your suggested niches</strong>Pick the one that feels most like you. You can always change it later.<ul>';
+    niches.forEach(function(n) { resultHtml += '<li>' + esc(n) + '</li>'; });
+    resultHtml += '</ul></div>';
+    $('npResults').innerHTML = resultHtml;
+  });
+}
+
+function suggestNiches(doWhat, audience, level) {
+  var niches = [];
+  if (doWhat === 'build' && audience === 'local') niches.push('I build fast, low-bandwidth websites for Malawian small businesses.');
+  if (doWhat === 'build' && audience === 'ngo') niches.push('I build simple web tools and data dashboards for NGOs.');
+  if (doWhat === 'build' && audience === 'startup') niches.push('I build web apps for early-stage startups.');
+  if (doWhat === 'build' && audience === 'ecom') niches.push('I build online stores with mobile money checkout.');
+  if (doWhat === 'analyze' && audience === 'local') niches.push('I clean and analyse sales data for Malawian shops.');
+  if (doWhat === 'analyze' && audience === 'ngo') niches.push('I turn programme data into charts and reports for NGOs.');
+  if (doWhat === 'analyze' && audience === 'startup') niches.push('I build analytics dashboards for startups.');
+  if (doWhat === 'analyze' && audience === 'ecom') niches.push('I analyse e-commerce sales and customer data.');
+  if (doWhat === 'design' && audience === 'local') niches.push('I design social media graphics and logos for Malawian businesses.');
+  if (doWhat === 'design' && audience === 'ngo') niches.push('I design clear, plain-language materials for NGOs.');
+  if (doWhat === 'design' && audience === 'startup') niches.push('I design clean UI mockups in Figma for tech startups.');
+  if (doWhat === 'design' && audience === 'ecom') niches.push('I design product pages and brand assets for online shops.');
+  if (doWhat === 'write' && audience === 'local') niches.push('I write clear product descriptions and business copy for Malawian shops.');
+  if (doWhat === 'write' && audience === 'ngo') niches.push('I write grant proposals and programme reports for NGOs.');
+  if (doWhat === 'write' && audience === 'startup') niches.push('I write technical documentation and developer guides.');
+  if (doWhat === 'write' && audience === 'ecom') niches.push('I write product descriptions and marketing copy for online shops.');
+  if (niches.length === 0) niches.push('I help clients with [specific skill] — narrow this further.');
+  if (level === 'beginner') niches.push('Start with a project or two at a low rate, then narrow further once you have reviews.');
+  return niches;
+}
+
+/* ========== TOOL: RATE CALCULATOR ========== */
+function renderRateCalculator(container) {
+  var html = '';
+  html += '<h4>Freelance Rate Calculator</h4>';
+  html += '<p class="hint">Work out what you need to charge per hour to hit your target monthly income. This is your starting rate — you will raise it as you gain reviews and clients.</p>';
+  html += '<div class="rc-grid">';
+  html += '<div class="field"><label for="rcTarget">Monthly income target (USD)</label><input type="number" id="rcTarget" value="400" min="0" step="50"><div class="field-hint">Start realistic. $200 is fine for month one.</div></div>';
+  html += '<div class="field"><label for="rcHours">Billable hours per week</label><input type="number" id="rcHours" value="10" min="1" max="60" step="1"><div class="field-hint">10 is a realistic side hustle. 20–30 if full-time.</div></div>';
+  html += '</div>';
+  html += '<div class="rc-result" id="rcResult">';
+  html += '<h4>Your rate</h4>';
+  html += '<div class="rc-stats">';
+  html += '<div class="rc-stat"><div class="rc-stat-num" id="rcHourly">—</div><div class="rc-stat-lbl">Per hour (USD)</div></div>';
+  html += '<div class="rc-stat"><div class="rc-stat-num" id="rcDaily">—</div><div class="rc-stat-lbl">Per day (8h)</div></div>';
+  html += '<div class="rc-stat"><div class="rc-stat-num" id="rcMWK">—</div><div class="rc-stat-lbl">Hourly in MKW*</div></div>';
+  html += '<div class="rc-stat"><div class="rc-stat-num" id="rcMonthly">—</div><div class="rc-stat-lbl">Monthly total (USD)</div></div>';
+  html += '</div>';
+  html += '<div class="rc-note" id="rcNote">Fill in the fields above to see your rates.</div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  function update() {
+    var target = Math.max(0, parseFloat($('rcTarget').value) || 0);
+    var hours = Math.max(1, parseFloat($('rcHours').value) || 1);
+    var hourly = target / (hours * 4.33);
+    var daily = hourly * 8;
+    var mwkRate = 1750; // approximate MWK per USD
+    var hourlyMwk = hourly * mwkRate;
+
+    $('rcHourly').innerHTML = '$' + hourly.toFixed(2);
+    $('rcDaily').innerHTML = '$' + daily.toFixed(2);
+    $('rcMWK').innerHTML = 'MK ' + Math.round(hourlyMwk).toLocaleString();
+    $('rcMonthly').innerHTML = '$' + target.toFixed(0);
+
+    var note;
+    if (hourly < 5) note = 'This rate is below the typical starting range. Consider raising your target or lowering your hours. Most Malawian freelancers start at $5–10/hour.';
+    else if (hourly < 10) note = 'Good starting rate. As you build reviews and a portfolio, plan to raise this to $15–20 within 3–6 months.';
+    else if (hourly < 25) note = 'Strong rate. At this level you need a clear niche and 5+ reviews to attract clients consistently.';
+    else note = 'Premium rate. Focus on specialised skills and high-quality clients. This is where you will be after 1–2 years if you keep building.';
+    $('rcNote').innerHTML = note + '<br><span style="font-size:12px;opacity:.65;margin-top:8px;display:inline-block">* MWK figure uses an approximate rate of 1,750 MKW per USD. Actual rates vary.</span>';
+  }
+
+  $('rcTarget').addEventListener('input', update);
+  $('rcHours').addEventListener('input', update);
+  update();
+}
+
+/* ========== TOOL: PROFILE BUILDER ========== */
+function renderProfileBuilder(container) {
+  var html = '';
+  html += '<h4>Upwork Profile Builder</h4>';
+  html += '<p class="hint">Fill in the fields and see how your profile will look to a client. Run the profile check to get feedback on structure and content.</p>';
+  html += '<div class="pb-grid">';
+  html += '<div class="pb-form">';
+  html += '<div class="field"><label for="pbName">Your name</label><input type="text" id="pbName" placeholder="Chisomo Banda" value=""></div>';
+  html += '<div class="field"><label for="pbTitle">Profile title</label><input type="text" id="pbTitle" placeholder="Landing page developer | Fast, mobile-first" value=""><div class="field-hint">Pattern: Skill | Outcome for Audience</div></div>';
+  html += '<div class="field"><label for="pbOverview">Overview</label><textarea id="pbOverview" rows="6" placeholder="Start with the client\'s problem, not your history..."></textarea></div>';
+  html += '<div class="field"><label for="pbSkills">Skills (comma separated)</label><input type="text" id="pbSkills" placeholder="HTML, CSS, JavaScript, Responsive Design" value=""></div>';
+  html += '<button class="btn btn-p" id="pbCheck" type="button" style="margin-top:6px">Run profile check</button>';
+  html += '</div>';
+  html += '<div class="pb-preview" id="pbPreview">';
+  html += '<div class="pb-preview-head">';
+  html += '<div class="pb-avatar" id="pbAvatar">?</div>';
+  html += '<div><div class="pb-name" id="pbPrevName">Your Name</div><div class="pb-title" id="pbPrevTitle">Your profile title</div></div>';
+  html += '</div>';
+  html += '<div class="pb-section-lbl">Overview</div>';
+  html += '<div class="pb-overview" id="pbPrevOverview">Your overview will appear here as you type.</div>';
+  html += '<div class="pb-section-lbl">Skills</div>';
+  html += '<div class="pb-skills" id="pbPrevSkills"><span class="pb-skill" style="opacity:.4">Skills will appear here</span></div>';
+  html += '</div>';
+  html += '</div>';
+  html += '<div class="pb-score" id="pbScore" style="display:none"></div>';
+
+  container.innerHTML = html;
+
+  function update() {
+    var name = $('pbName').value.trim() || 'Your Name';
+    var title = $('pbTitle').value.trim() || 'Your profile title';
+    var overview = $('pbOverview').value.trim() || 'Your overview will appear here as you type.';
+    var skillsStr = $('pbSkills').value.trim();
+
+    $('pbPrevName').textContent = name;
+    $('pbPrevTitle').textContent = title;
+    $('pbPrevOverview').textContent = overview;
+    $('pbAvatar').textContent = (name[0] || '?').toUpperCase();
+
+    var skillsEl = $('pbPrevSkills');
+    skillsEl.innerHTML = '';
+    var skills = skillsStr.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (skills.length === 0) {
+      skillsEl.innerHTML = '<span class="pb-skill" style="opacity:.4">Skills will appear here</span>';
+    } else {
+      skills.forEach(function(s) {
+        var el = document.createElement('span');
+        el.className = 'pb-skill';
+        el.textContent = s;
+        skillsEl.appendChild(el);
+      });
+    }
+  }
+
+  ['pbName', 'pbTitle', 'pbOverview', 'pbSkills'].forEach(function(id) {
+    $(id).addEventListener('input', update);
+  });
+
+  $('pbCheck').addEventListener('click', function() {
+    var name = $('pbName').value.trim();
+    var title = $('pbTitle').value.trim();
+    var overview = $('pbOverview').value.trim();
+    var skills = $('pbSkills').value.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+
+    var issues = [];
+    var passes = [];
+
+    if (!title) issues.push({ ok: false, text: 'Your profile title is empty. Add a title that names your skill, outcome, and audience.' });
+    else if (title.length < 20) issues.push({ ok: false, text: 'Your title is quite short. Aim for at least 20 characters with a clear outcome and audience.' });
+    else if (!/[|]/.test(title)) issues.push({ ok: false, text: 'Try adding a pipe symbol ( | ) to separate the skill from the outcome or audience, e.g. "Landing Page Developer | Loads in Under 2s".' });
+    else passes.push({ ok: true, text: 'Title structure looks good.' });
+
+    if (!overview) issues.push({ ok: false, text: 'Overview is empty. Write at least 3 short paragraphs.' });
+    else if (overview.length < 150) issues.push({ ok: false, text: 'Overview is quite short. Aim for 150–300 characters minimum.' });
+    else {
+      passes.push({ ok: true, text: 'Overview has good length.' });
+      if (/^\s*I am a/i.test(overview)) issues.push({ ok: false, text: 'Your overview starts with "I am a...". Try starting with the client\'s problem instead.' });
+      else passes.push({ ok: true, text: 'Overview does not start with the classic "I am a..." opener.' });
+      if (/\bpassionate\b/i.test(overview)) issues.push({ ok: false, text: 'The word "passionate" is overused. Replace with something specific about your work.' });
+    }
+
+    if (skills.length < 3) issues.push({ ok: false, text: 'Add at least 3 skills. Upwork uses them for search matching.' });
+    else passes.push({ ok: true, text: 'You have ' + skills.length + ' skills — that is good.' });
+
+    if (!name) issues.push({ ok: false, text: 'Add your name — it will show at the top of your profile.' });
+    else passes.push({ ok: true, text: 'Name set.' });
+
+    var scoreEl = $('pbScore');
+    scoreEl.style.display = 'block';
+    var pct = passes.length / (passes.length + issues.length);
+    var cls = pct >= 0.8 ? 'good' : pct >= 0.5 ? 'warn' : 'bad';
+
+    var inner = '<strong>Profile check</strong>';
+    inner += '<ul>';
+    passes.forEach(function(p) {
+      inner += '<li style="color:var(--green2)">✓ ' + esc(p.text) + '</li>';
+    });
+    issues.forEach(function(p) {
+      inner += '<li style="color:var(--danger)">✕ ' + esc(p.text) + '</li>';
+    });
+    inner += '</ul>';
+    scoreEl.className = 'pb-score ' + cls;
+    scoreEl.innerHTML = inner;
+  });
+
+  update();
+}
+
+/* ========== TOOL: PROPOSAL WRITER ========== */
+function renderProposalWriter(container) {
+  var job = {
+    title: 'Need a fast landing page for my Malawian coffee business',
+    body: 'I sell Malawian coffee online to customers in the UK. My current site loads slowly — I tested it and it takes 8 seconds on mobile. I need someone who can build a simple, fast landing page with 4 sections and a WhatsApp order button. The page must look good on phones and load in under 2 seconds. Please send examples of similar work.',
+    budget: '$150–300',
+    duration: '1–2 weeks'
+  };
+
+  var html = '';
+  html += '<h4>Proposal Writer</h4>';
+  html += '<p class="hint">Read the job posting carefully. Then write your proposal below — aim for 100–200 words. When you are ready, run the proposal check.</p>';
+  html += '<div class="pw-job">';
+  html += '<div class="pw-job-lbl">Job posting</div>';
+  html += '<div class="pw-job-title">' + esc(job.title) + '</div>';
+  html += '<div class="pw-job-body">' + esc(job.body) + '</div>';
+  html += '<div class="pw-meta"><span>💰 ' + esc(job.budget) + '</span><span>⏱ ' + esc(job.duration) + '</span></div>';
+  html += '</div>';
+  html += '<div class="field"><label for="pwProposal">Your proposal</label><textarea id="pwProposal" rows="9" placeholder="Start with a specific observation about their site, then offer a solution..."></textarea><div class="field-hint">Aim for 100–200 words. Be specific. Do not start with "I am a passionate...".</div></div>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-p" id="pwCheck" type="button">Run proposal check</button><button class="btn btn-g" id="pwExample" type="button">Show example</button></div>';
+  html += '<div class="pw-score" id="pwScore"></div>';
+
+  container.innerHTML = html;
+
+  $('pwExample').addEventListener('click', function() {
+    var example = "Hi,\n\nI noticed your site takes 8 seconds to load on mobile — I tested it just now. That is almost certainly costing you customers.\n\nI build fast, low-bandwidth landing pages. Here is a recent project of mine that loads in 1.4 seconds on 3G: [link to your work]\n\nFor your site, I would focus on three things: compressing the hero image, removing the unused CSS, and switching to system fonts. That alone should get you under 2 seconds.\n\nI can deliver a fresh 4-section landing page with the WhatsApp order button within 10 days. Happy to send a free 5-minute video showing exactly what I would change first.\n\nChisomo";
+    $('pwProposal').value = example;
+  });
+
+  $('pwCheck').addEventListener('click', function() {
+    var text = $('pwProposal').value.trim();
+    var words = text.split(/\s+/).filter(Boolean).length;
+    var issues = [];
+    var passes = [];
+
+    if (!text) {
+      issues.push({ ok: false, text: 'Proposal is empty.' });
+    } else {
+      if (words < 60) issues.push({ ok: false, text: 'Proposal is short (' + words + ' words). Aim for 100–200.' });
+      else if (words > 250) issues.push({ ok: false, text: 'Proposal is long (' + words + ' words). Trim to 100–200.' });
+      else passes.push({ ok: true, text: 'Length is good (' + words + ' words).' });
+
+      if (/dear sir\/madam/i.test(text)) issues.push({ ok: false, text: 'Avoid "Dear Sir/Madam" — the client has a name and it is not formal in Upwork.' });
+      else passes.push({ ok: true, text: 'No generic "Dear Sir/Madam" opener.' });
+
+      if (/^\s*i am a/i.test(text)) issues.push({ ok: false, text: 'Do not start with "I am a...". Start with an observation about their problem.' });
+      else if (text.length > 0) passes.push({ ok: true, text: 'Does not start with the classic "I am a..." opener.' });
+
+      if (/passionate/i.test(text)) issues.push({ ok: false, text: 'Remove the word "passionate" — it is a cliché.' });
+
+      if (!/(http|link|github|portfolio|example)/i.test(text) && !/\[/.test(text)) {
+        issues.push({ ok: false, text: 'Include a link or reference to a relevant example of your work.' });
+      } else {
+        passes.push({ ok: true, text: 'References an example of your work.' });
+      }
+
+      if (!/(mobile|load|slow|second|speed|fast)/i.test(text)) {
+        issues.push({ ok: false, text: 'The job mentions speed and mobile specifically — acknowledge those concerns in your proposal.' });
+      } else {
+        passes.push({ ok: true, text: 'Addresses the specific concerns from the job posting (speed / mobile).' });
+      }
+
+      if (!/(\?|next step|happy to|let me know|would you|free)/i.test(text)) {
+        issues.push({ ok: false, text: 'End with a clear call to action — a question or a next step.' });
+      } else {
+        passes.push({ ok: true, text: 'Has a clear next step or call to action.' });
+      }
+
+      if (/^\s*(hi|hello)\b/im.test(text) || /^\s*(hi|hello)\b/i.test(text)) passes.push({ ok: true, text: 'Opens with a friendly greeting.' });
+    }
+
+    var scoreEl = $('pwScore');
+    scoreEl.classList.add('show');
+    var pct = passes.length / Math.max(1, passes.length + issues.length);
+    var cls = pct >= 0.85 ? 'good' : pct >= 0.6 ? 'warn' : 'bad';
+    scoreEl.className = 'pw-score ' + cls + ' show';
+    var h = '<h5>Proposal check</h5>';
+    h += '<ul class="pw-score-list">';
+    passes.forEach(function(p) {
+      h += '<li><span class="pw-check good">✓</span><span>' + esc(p.text) + '</span></li>';
+    });
+    issues.forEach(function(p) {
+      h += '<li><span class="pw-check bad">✕</span><span>' + esc(p.text) + '</span></li>';
+    });
+    h += '</ul>';
+    if (pct >= 0.85) h += '<p style="margin-top:12px;color:var(--green2);font-weight:600">This proposal is ready to send. Good job.</p>';
+    else if (pct >= 0.6) h += '<p style="margin-top:12px;color:var(--warn);font-weight:600">Close — fix the issues above and check again.</p>';
+    else h += '<p style="margin-top:12px;color:var(--danger);font-weight:600">This proposal needs significant work. Fix the issues above and try again.</p>';
+    scoreEl.innerHTML = h;
+  });
+}
+
+/* ========== TOOL: PAYMENT COMPARE ========== */
+function renderPaymentCompare(container) {
+  var html = '';
+  html += '<h4>Payment Method Comparison</h4>';
+  html += '<p class="hint">Click any method to see how it works from Malawi. Use this to decide which to set up first.</p>';
+  html += '<div class="pc-grid" id="pcGrid">';
+
+  html += '<button class="pc-card" data-method="payoneer" type="button">';
+  html += '<div class="pc-name">Payoneer</div>';
+  html += '<div class="pc-tag">Most popular</div>';
+  html += '<div class="pc-fee"><strong>Fee:</strong> 1% to receive, $1.50 to withdraw to a Malawian bank</div>';
+  html += '<div class="pc-detail">Click for details →</div>';
+  html += '</button>';
+
+  html += '<button class="pc-card" data-method="wise" type="button">';
+  html += '<div class="pc-name">Wise</div>';
+  html += '<div class="pc-tag">Best rates</div>';
+  html += '<div class="pc-fee"><strong>Fee:</strong> 0.4–0.9% conversion, low transfer fee</div>';
+  html += '<div class="pc-detail">Click for details →</div>';
+  html += '</button>';
+
+  html += '<button class="pc-card" data-method="upwork" type="button">';
+  html += '<div class="pc-name">Upwork</div>';
+  html += '<div class="pc-tag">Platform built-in</div>';
+  html += '<div class="pc-fee"><strong>Fee:</strong> 10–20% platform fee, then withdraw to Payoneer</div>';
+  html += '<div class="pc-detail">Click for details →</div>';
+  html += '</button>';
+
+  html += '<button class="pc-card" data-method="wire" type="button">';
+  html += '<div class="pc-name">Bank wire</div>';
+  html += '<div class="pc-tag">Expensive</div>';
+  html += '<div class="pc-fee"><strong>Fee:</strong> $25–45 per transfer</div>';
+  html += '<div class="pc-detail">Click for details →</div>';
+  html += '</button>';
+
+  html += '</div>';
+  html += '<div class="pb-score" id="pcDetail" style="display:none;margin-top:18px"></div>';
+
+  container.innerHTML = html;
+
+  var details = {
+    payoneer: {
+      title: 'Payoneer — recommended starting point',
+      body: 'Payoneer gives you a virtual US bank account, so clients can pay you like they would pay a US company. Fees are low, and withdrawals to your Malawian bank account take 1–2 business days.',
+      steps: [
+        'Sign up at payoneer.com with your email and national ID',
+        'Wait 1–3 days for verification',
+        'Give clients your Payoneer email, or your US account details for ACH/wire',
+        'Withdraw to your Malawian bank when you have at least $50',
+        'Total cost on a $500 payment: about $6.50 (1% receive + $1.50 withdraw + small FX markup)'
+      ]
+    },
+    wise: {
+      title: 'Wise — best exchange rates',
+      body: 'Wise gives you multi-currency account details in USD, EUR, and GBP. The exchange rate is the real mid-market rate, not a marked-up bank rate. Slightly more setup than Payoneer, but you save on conversion.',
+      steps: [
+        'Sign up at wise.com with your email and ID',
+        'Verify your identity (usually 1 day)',
+        'Get your USD account details',
+        'Give clients the account details for receiving payments',
+        'Withdraw to your Malawian bank or hold in USD',
+        'Total cost on a $500 payment: about $2–4 — cheaper than Payoneer once you are earning regularly'
+      ]
+    },
+    upwork: {
+      title: 'Upwork built-in payments',
+      body: 'If you find clients through Upwork, they pay through the platform. Upwork takes a 10–20% commission on the earnings (this includes payment processing). You then withdraw to Payoneer or a bank.',
+      steps: [
+        'Complete the jobs on Upwork',
+        'Client pays through Upwork',
+        'Upwork holds funds for 5 days (security)',
+        'Withdraw to Payoneer (free) or to your bank (varies)',
+        'Total cost on a $500 job: $50–100 to Upwork, plus withdrawal fees'
+      ]
+    },
+    wire: {
+      title: 'Bank wire — expensive, for large payments only',
+      body: 'Direct bank wire transfers work from most countries to Malawi, but they are expensive. Use only for large payments ($1,000+) or when no other option is available.',
+      steps: [
+        'Client initiates a wire from their bank',
+        'Arrives in your Malawian account in 5–10 business days',
+        'Correspondent bank fees are deducted (usually $25–45)',
+        'Useful if your client insists on bank transfer or your Payoneer is not yet set up'
+      ]
+    }
+  };
+
+  container.querySelectorAll('.pc-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      container.querySelectorAll('.pc-card').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      var method = card.getAttribute('data-method');
+      var d = details[method];
+      var detailEl = $('pcDetail');
+      detailEl.style.display = 'block';
+      var h = '<strong>' + esc(d.title) + '</strong>';
+      h += '<p style="margin:8px 0 12px;color:var(--t2)">' + esc(d.body) + '</p>';
+      h += '<ul style="margin:0 0 0 18px;padding:0">';
+      d.steps.forEach(function(s) { h += '<li style="margin-bottom:6px;color:var(--t2)">' + esc(s) + '</li>'; });
+      h += '</ul>';
+      detailEl.innerHTML = h;
+    });
+  });
+}
+
+/* ========== TOOL: SCENARIO QUIZ ========== */
+function renderScenarioQuiz(container) {
+  var scenarios = [
+    {
+      msg: 'Hi, this is looking good! While you are in there, can you also just quickly redesign the logo, add a live chat feature, and set up an email newsletter? Same budget, right?',
+      src: '— Client, two days before deadline',
+      q: 'How do you respond?',
+      options: [
+        'Do all of it for free — the client is happy, that is what matters',
+        'Say yes to keep the client happy, then figure out the extra work later',
+        'Reply kindly that these are outside the original scope, and offer to price them as a follow-up phase',
+        'Stop responding and finish the original work only'
+      ],
+      correct: 2,
+      why: 'Scope creep needs to be priced, not absorbed. A professional reply names the new items clearly and lets the client choose — either to pay for them or defer them. Most good clients accept this instantly. Clients who push back are often not worth keeping.'
+    },
+    {
+      msg: 'I have not heard back from you about the invoice I sent 12 days ago. Just following up to make sure everything is OK.',
+      src: '— You, to a client',
+      q: 'The client does not reply for another week. What is your next move?',
+      options: [
+        'Keep working on the next phase anyway — they will pay eventually',
+        'Send a firmer message and pause work on any new deliverables until the invoice is settled',
+        'Refund the whole project and end the relationship immediately',
+        'Post about them on social media to warn other freelancers'
+      ],
+      correct: 1,
+      why: 'You protect yourself by pausing new work. This is not aggressive — it is standard practice. Continue delivering only after payment or a clear payment plan. Never threaten publicly; that damages your reputation more than theirs.'
+    },
+    {
+      msg: 'This is not what I asked for at all. Can you redo it? I do not really know what I want but this is not it.',
+      src: '— Client, after the first draft',
+      q: 'What is the best next step?',
+      options: [
+        'Redo everything for free until they are happy',
+        'Refuse to do any more work without payment',
+        'Ask specific questions to turn the vague feedback into concrete requirements, then agree on a limited revision round',
+        'End the relationship immediately'
+      ],
+      correct: 2,
+      why: 'Vague dissatisfaction cannot be fixed. Turn it into specifics — "Which part? What would you prefer instead? Can you show an example of what you mean?" Then you can actually deliver. Also review how many revision rounds your agreement includes.'
+    },
+    {
+      msg: 'I am in a hurry. I do not need a contract, just start working on it today. I will pay you after — I promise.',
+      src: '— New client, first message',
+      q: 'How do you proceed?',
+      options: [
+        'Start immediately — that is how you build trust',
+        'Ask for a 50% deposit upfront and a short written scope before starting',
+        'Refuse the job entirely',
+        'Do the work for free to build a portfolio piece'
+      ],
+      correct: 1,
+      why: 'Refusing a deposit for new clients is a red flag. A short written scope plus a deposit protects both of you. Good clients accept this every time. The rush and the "I promise" are the warning signs — this is exactly the type of client who will not pay at the end.'
+    },
+    {
+      msg: 'Great work on the first project! I loved it. Now I have a much bigger project — same quality, budget is tight, but there is a lot of future work after this one.',
+      src: '— Client, after a successful first job',
+      q: 'What is your best move?',
+      options: [
+        'Accept the low budget to secure the future work',
+        'Politely explain that your rate reflects your quality, and offer either a smaller scope at the low budget or the full scope at your standard rate',
+        'Refuse the job',
+        'Accept but do the work at half effort to save time'
+      ],
+      correct: 1,
+      why: '"Future work" is often a negotiating tactic — and even when it is sincere, you should not discount your current work for a promise. Offer two clear options and let them choose. Clients who respect your work will pick one. Clients who want free labour will disappear — and you saved yourself months of underpaid work.'
+    }
+  ];
+
+  var html = '';
+  html += '<h4>Client Scenario Practice</h4>';
+  html += '<p class="hint">Five real situations that every freelancer eventually faces. Read each one and pick your response. Then see the reasoning.</p>';
+
+  scenarios.forEach(function(s, i) {
+    html += '<div class="sc-item" data-i="' + i + '">';
+    html += '<div class="sc-q"><span class="sc-num">' + (i + 1) + '</span>' + esc(s.q) + '</div>';
+    html += '<div class="sc-msg">' + esc(s.msg) + '<span class="sc-msg-src">' + esc(s.src) + '</span></div>';
+    html += '<div class="sc-opts">';
+    s.options.forEach(function(opt, oi) {
+      html += '<button class="sc-opt" type="button" data-i="' + i + '" data-oi="' + oi + '"><span class="sc-letter">' + String.fromCharCode(65 + oi) + '.</span><span>' + esc(opt) + '</span></button>';
+    });
+    html += '</div>';
+    html += '<div class="sc-why" id="scWhy' + i + '"></div>';
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+
+  var answered = {};
+  var correctCount = 0;
+  container.querySelectorAll('.sc-opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      if (answered[i]) return;
+      answered[i] = true;
+      var s = scenarios[i];
+      var oi = parseInt(btn.getAttribute('data-oi'), 10);
+      var isCorrect = oi === s.correct;
+      if (isCorrect) correctCount++;
+      var item = container.querySelector('.sc-item[data-i="' + i + '"]');
+      item.querySelectorAll('.sc-opt').forEach(function(b) {
+        b.disabled = true;
+        if (parseInt(b.getAttribute('data-oi'), 10) === s.correct) b.classList.add('correct');
+        else if (b === btn) b.classList.add('wrong');
+      });
+      var why = $('scWhy' + i);
+      why.classList.add('show');
+      why.innerHTML = (isCorrect ? '<strong>✓ Correct.</strong> ' : '<strong>✕ Not quite.</strong> ') + esc(s.why);
+    });
+  });
+}
+
+/* ========== QUIZ ========== */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ========== OVERVIEW ========== */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Freelancing &amp; Remote Work</h1>';
+  html += '<p class="pg-sub">The most direct path from "I have skills" to "I earn money" — without leaving Malawi. Over 6 weeks you will build your profile, find your first client, get paid in USD, and learn to handle every kind of client.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>6 weeks</h3><p>10 lessons across 5 modules. About 5 hours of learning, plus real-world action.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Beginner</h3><p>No prior freelancing experience needed. Basic computer skills help but are not required.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💼</span>Practical tools</h3><p>Niche finder, rate calculator, profile builder, proposal writer, client scenario practice.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Choose a niche</h3><p>Narrow down what you do, who you help, and what problem you solve.</p></div>';
+  html += '<div class="ov-card"><h3>Build a profile</h3><p>Upwork and Fiverr titles, overviews, and portfolios that get clicked.</p></div>';
+  html += '<div class="ov-card"><h3>Find clients</h3><p>Proposals that win, cold emails that get replies, and platforms that work.</p></div>';
+  html += '<div class="ov-card"><h3>Get paid</h3><p>Payoneer, Wise, invoicing, and pricing that lets you raise your rate over time.</p></div>';
+  html += '<div class="ov-card"><h3>Manage clients</h3><p>Communication, scope creep, late payments, and when to walk away.</p></div>';
+  html += '<div class="ov-card"><h3>Take action</h3><p>Every lesson has a real-world task you can do before moving on.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Getting Started', 'What freelancing is, choosing a niche, and whether it is right for you.'],
+    ['W2', 'Profiles &amp; Portfolios', 'Upwork profile, Fiverr gigs, portfolio site, GitHub profile.'],
+    ['W3', 'Finding Work', 'Proposals that win, cold outreach, and where to find gigs.'],
+    ['W4', 'Getting Paid', 'Payoneer, Wise, pricing, invoices, and rate progression.'],
+    ['W5–6', 'Working with Clients', 'Kickoff, communication, scope creep, difficult clients, and firing.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to earn your first client?</h2>';
+  html += '<p>The course is not just reading. Every lesson has an action — a real thing to set up, write, or send. By the end, you will have a working freelancing setup.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('g1');
+    switchView('lessons');
+  });
+}
+
+/* ========== TOOLS TAB ========== */
+function renderTools() {
+  var container = $('viewTools');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Tools &amp; Milestones</h1>';
+  html += '<p class="pg-sub">All the interactive tools from the course in one place, plus your freelancing milestone checklist. Tick each milestone when you have actually done it in real life.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your freelancing progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' real-world milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Real-World Milestones <span class="badge">Not just reading</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">These are real actions you take outside the browser. Tick each one only when you have actually done it. The certificate unlocks when all lessons are complete and at least 7 milestones are done.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 Jump to a Tool</h2>';
+  html += '<div class="grid-3">';
+  var tools = [
+    { id: 'g2', icon: '🎯', name: 'Niche Finder', desc: 'Answer three questions and get niche suggestions.' },
+    { id: 'p1', icon: '👤', name: 'Profile Builder', desc: 'Write and check your Upwork profile.' },
+    { id: 'f1', icon: '📝', name: 'Proposal Writer', desc: 'Practice writing a proposal for a real job posting.' },
+    { id: 'g3', icon: '💳', name: 'Payment Comparison', desc: 'Compare Payoneer, Wise, Upwork, and bank wire.' },
+    { id: 'g4', icon: '💰', name: 'Rate Calculator', desc: 'Work out your starting hourly rate.' },
+    { id: 'w2', icon: '🤝', name: 'Client Scenarios', desc: 'Five real situations and the best response.' }
+  ];
+  tools.forEach(function(t) {
+    html += '<button class="ov-card" style="text-align:left;cursor:pointer" data-lesson="' + t.id + '">';
+    html += '<h3><span class="ov-ic">' + t.icon + '</span>' + esc(t.name) + '</h3>';
+    html += '<p>' + esc(t.desc) + '</p>';
+    html += '</button>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('button[data-lesson]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      selectLesson(b.getAttribute('data-lesson'));
+      switchView('lessons');
+    });
+  });
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+/* ========== RESOURCES ========== */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your freelancing journey.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['💼', 'Upwork — Freelancer Resources', 'Official guides from the largest freelancing platform.', 'https://www.upwork.com/resources/'],
+    ['💰', 'Payoneer for Freelancers', 'How to receive international payments in Malawi.', 'https://www.payoneer.com/'],
+    ['💱', 'Wise', 'Multi-currency accounts with the real exchange rate.', 'https://wise.com/'],
+    ['📝', 'Wave Invoicing', 'Free invoicing software for freelancers.', 'https://www.waveapps.com/'],
+    ['🎥', 'Ali Abdaal — Freelancing (YouTube)', 'Practical freelancing tips, well explained.', 'https://www.youtube.com/@aliabdaal'],
+    ['💬', 'r/freelance', 'The freelancing subreddit. Real questions and answers.', 'https://www.reddit.com/r/freelance/']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Freelancing Cheatsheet</div><div class="res-d">One-page reference covering niches, proposals, rates, and client management.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadTemplatesBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📝</span>';
+  html += '<div><div class="res-t">Client Email Templates</div><div class="res-d">Proposal template, kickoff message, late payment reminder, and firing a client.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadInvoiceBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">💵</span>';
+  html += '<div><div class="res-t">Invoice Template</div><div class="res-d">A simple, professional invoice you can adapt for any client.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Platforms to join</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['💼', 'Upwork', 'The largest platform for skilled freelancers. Higher rates.', 'https://www.upwork.com/'],
+    ['🟢', 'Fiverr', 'Product-based gigs. Faster to start, lower rates.', 'https://www.fiverr.com/'],
+    ['🌍', 'Contra', 'Commission-free freelance platform. US-focused.', 'https://contra.com/'],
+    ['🎯', 'Toptal', 'Elite network, high rates, tough screening.', 'https://www.toptal.com/'],
+    ['🏠', 'Remote OK', 'Remote job board — mostly full-time, some contract.', 'https://remoteok.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadTemplatesBtn').addEventListener('click', downloadTemplates);
+  $('downloadInvoiceBtn').addEventListener('click', downloadInvoice);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  FREELANCING & REMOTE WORK — CHEATSHEET',
+    '============================================',
+    '',
+    '--- FINDING YOUR NICHE ---',
+    'Good niche = Skill + Audience + Specific problem',
+    '',
+    'Weak:  "Web Developer"',
+    'Strong: "Landing page developer | Fast, mobile-first |',
+    '         For Malawian small businesses"',
+    '',
+    '--- UPWORK PROFILE ---',
+    'Title: Skill | Outcome for Audience',
+    'Overview: Start with the CLIENT\'S problem, not your history.',
+    'Portfolio: 3-5 pieces minimum.',
+    'Never use the word "passionate".',
+    '',
+    '--- PROPOSALS ---',
+    '100-200 words. Structure:',
+    '1. Hook — specific observation about the client',
+    '2. Understanding — show you know the problem',
+    '3. Solution — what you will do',
+    '4. Proof — link to relevant work',
+    '5. Call to action — the next step',
+    '',
+    'Do NOT: start with "I am a...", use "Dear Sir/Madam",',
+    '         list everything you can do.',
+    '',
+    '--- RATES ---',
+    'Formula: Monthly target ÷ (weekly hours × 4.33)',
+    'Month 1-3:   $5-10/hour   (building reviews)',
+    'Month 4-6:   $10-20/hour  (repeat clients)',
+    'Month 7-12:  $20-35/hour  (niche + portfolio)',
+    'Year 2:      $35-60/hour  (specialised)',
+    'Year 3+:     $60-120/hour (top of niche)',
+    '',
+    'Raise rates 10-20% every 6 months.',
+    '',
+    '--- GETTING PAID ---',
+    'Payoneer  — $1.50 withdrawal, 1% receive. Start here.',
+    'Wise      — Best exchange rates. Add once earning $500+/mo.',
+    'Upwork    — Built-in, 10-20% platform fee.',
+    'Bank wire — $25-45 per transfer. Only for $1,000+.',
+    '',
+    'Always: 50% deposit for new clients.',
+    'Invoice within 24h of delivery.',
+    'Follow up politely on day 7, 14, 30.',
+    '',
+    '--- CLIENT RED FLAGS ---',
+    'Refuses deposit',
+    'Extreme urgency',
+    'Vague requirements',
+    'Poor communication from day one',
+    'Refuses anything in writing',
+    '',
+    '--- SCOPE CREEP RESPONSE ---',
+    '"That is a great idea. It is outside the original scope,',
+    'so I can add it for $X, or we can keep it for a follow-up',
+    'phase. Which would you prefer?"',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'freelancing-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadTemplates() {
+  var text = [
+    '============================================',
+    '  CLIENT EMAIL TEMPLATES',
+    '  Replace [bracketed] parts.',
+    '============================================',
+    '',
+    '',
+    '--- 1. UPWORK PROPOSAL ---',
+    'Hi [Name],',
+    '',
+    'I noticed [specific observation about their project].',
+    '',
+    'I build [your niche]. Here is a recent example: [link]',
+    '',
+    'For your project, I would focus on [one specific thing].',
+    'That alone should [specific result].',
+    '',
+    'Happy to send a free 5-minute video showing exactly what',
+    'I would change first. No obligation.',
+    '',
+    '[Your name]',
+    '',
+    '',
+    '--- 2. KICKOFF MESSAGE ---',
+    'Hi [Name],',
+    '',
+    'Great to be working with you. Here is what I understood:',
+    '',
+    'Deliverable: [specific description]',
+    '',
+    'What I need from you:',
+    '- [item 1]',
+    '- [item 2]',
+    '- [item 3]',
+    '',
+    'Timeline:',
+    '- Draft by [date]',
+    '- Revisions by [date]',
+    '- Final delivery by [date]',
+    '',
+    'Payment: $[amount] total, $[half] deposit to start,',
+    '$[half] on delivery.',
+    '',
+    'Please confirm everything looks right and send the files',
+    'when you can. I will start immediately.',
+    '',
+    '[Your name]',
+    '',
+    '',
+    '--- 3. COLD EMAIL ---',
+    'Subject: Quick observation about [their site]',
+    '',
+    'Hi [Name],',
+    '',
+    'I was looking at [their business] and noticed [specific',
+    'problem]. For example, [concrete detail].',
+    '',
+    'I build [your niche]. Here is a recent project: [link].',
+    '',
+    'If you would like, I can send a free 5-minute video showing',
+    'exactly what I would fix first. No obligation.',
+    '',
+    '[Your name]',
+    '[WhatsApp number]',
+    '',
+    '',
+    '--- 4. FOLLOW-UP (after no reply) ---',
+    'Subject: Re: [original subject]',
+    '',
+    'Hi [Name],',
+    '',
+    'Just following up — I know inboxes get busy.',
+    '',
+    'If the timing is not right, no worries at all. I will',
+    'check back in a few weeks.',
+    '',
+    '[Your name]',
+    '',
+    '',
+    '--- 5. LATE PAYMENT REMINDER (day 7) ---',
+    'Hi [Name],',
+    '',
+    'Just a friendly reminder — invoice #[number] for $[amount]',
+    'was due on [date]. Could you let me know when I can expect',
+    'payment?',
+    '',
+    'Thanks,',
+    '[Your name]',
+    '',
+    '',
+    '--- 6. LATE PAYMENT (day 14) ---',
+    'Hi [Name],',
+    '',
+    'Invoice #[number] is now 14 days overdue. I need to pause',
+    'work on the current phase until this is settled.',
+    '',
+    'Please let me know how you would like to proceed.',
+    '',
+    '[Your name]',
+    '',
+    '',
+    '--- 7. SCOPE CREEP RESPONSE ---',
+    'Hi [Name],',
+    '',
+    'Great suggestion. That is outside the original scope, so',
+    'I can either:',
+    '',
+    '1. Add it for an additional $[amount], or',
+    '2. Keep it for a follow-up phase after this project.',
+    '',
+    'Which would you prefer?',
+    '',
+    '[Your name]',
+    '',
+    '',
+    '--- 8. FIRING A CLIENT ---',
+    'Hi [Name],',
+    '',
+    'I have enjoyed working with you, but I am no longer able',
+    'to continue on this project. I will finish the current',
+    'deliverable and hand over any remaining work.',
+    '',
+    'Best of luck with everything.',
+    '',
+    '[Your name]',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'client-email-templates.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadInvoice() {
+  var invoice = [
+    '============================================',
+    '  INVOICE TEMPLATE',
+    '  Replace all [bracketed] parts.',
+    '============================================',
+    '',
+    'INVOICE',
+    '',
+    'From:',
+    '[Your full name]',
+    '[Your business name, if any]',
+    '[Your address]',
+    '[Your email]',
+    '[Your phone / WhatsApp]',
+    'Payment: Payoneer / Wise — [your account email]',
+    '',
+    'To:',
+    '[Client name]',
+    '[Client company]',
+    '[Client address]',
+    '[Client email]',
+    '',
+    'Invoice number: [001]',
+    'Invoice date:   [YYYY-MM-DD]',
+    'Due date:       [YYYY-MM-DD]',
+    '',
+    '--------------------------------------------',
+    'DESCRIPTION                    QTY    AMOUNT',
+    '--------------------------------------------',
+    '[Service description]          [1]    $[XX.XX]',
+    '[Another line if needed]       [1]    $[XX.XX]',
+    '--------------------------------------------',
+    '                            SUBTOTAL  $[XX.XX]',
+    '                            TAX       $0.00',
+    '                            TOTAL     $[XX.XX]',
+    '--------------------------------------------',
+    '',
+    'PAYMENT TERMS:',
+    'Due within 14 days of invoice date.',
+    'Pay via Payoneer to [email] or Wise to [details].',
+    '',
+    'Thank you for your business.',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ].join('\n');
+  var blob = new Blob([invoice], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'invoice-template.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ========== COMMUNITY ========== */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Freelancing is often lonely. Having other freelancers to compare notes with, share rejections with, and celebrate first payments with makes all the difference.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>Freelancers WhatsApp Group</h3><p>Share proposals, get feedback, celebrate first clients.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer discussions, client red flags, rate advice.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>Alumni Showcase</h3><p>See what other Malawian freelancers are building.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Reality check</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Your first client is the hardest</h3><p>Every freelancer you admire struggled to land their first project. Once you have one review, the second client is easier. Then the fifth, then the tenth.</p></div>';
+  html += '<div class="ov-card"><h3>Rejection is normal</h3><p>10 proposals, 0 replies, is a normal week. Keep going. The math is in your favour over months, not days.</p></div>';
+  html += '<div class="ov-card"><h3>Consistency beats brilliance</h3><p>The freelancers who succeed are not the most talented. They are the ones who send one more proposal, follow up one more time, keep going one more month.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:36px">';
+  html += '<h2>Stuck on your first client?</h2>';
+  html += '<p>Post your profile, your proposal, or your sticking point in the group. Someone has been exactly where you are.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ========== CERTIFICATE ========== */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">You unlock the certificate when you have completed every lesson and ticked at least 7 real-world milestones on the Tools tab. Print it, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Real-world milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more milestone' + (7 - mCount !== 1 ? 's' : '') + ' on the Tools tab.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Freelancing &amp; Remote Work</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">6 Weeks · Beginner</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Freelancing &amp; Remote Work, demonstrating proficiency in niche selection, profile building, proposal writing, international payment methods, pricing strategy, and professional client management.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Freelancing &amp; Remote Work</h1>' +
+        '<div class="t">6 Weeks · Beginner</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Freelancing &amp; Remote Work,<br>demonstrating proficiency in niche selection, profile building,<br>proposal writing, international payment methods, pricing strategy,<br>and professional client management.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

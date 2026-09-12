@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechMountain Bootcamp — Free Tech Courses for Malawi</title>
+<meta name="description" content="Free, low-bandwidth tech courses for Malawi. Web development, backend, data analysis, mobile, and professional skills — from your first click to your first job.">
+<meta name="theme-color" content="#1a2332">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.1);--gglow:rgba(0,200,83,.2);--bg:#f8f9fb;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:12px;--rlg:16px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,'Helvetica Neue',Arial,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:68px;--max:1320px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:140px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--green2);text-decoration:none;transition:color .18s var(--ease)}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+.container{max-width:var(--max);margin:0 auto;padding:0 24px;width:100%}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===== HEADER ===== */
+.site-header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 4px 16px rgba(15,23,33,.12)}
+.header-inner{max-width:var(--max);margin:0 auto;padding:0 24px;height:var(--hh);display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:12px;flex-shrink:0;color:#fff}
+.logo:hover{color:#fff}
+.logo-mark{width:42px;height:42px;background:var(--green);color:var(--navy);border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;letter-spacing:-1px;font-family:var(--mono)}
+.logo-text{line-height:1.15}
+.logo-name{font-weight:800;font-size:17px;letter-spacing:-.3px}
+.logo-sub{font-size:11.5px;color:rgba(255,255,255,.55);font-weight:500;letter-spacing:.2px}
+.header-nav{display:flex;gap:4px;margin-left:auto}
+.nav-link{color:rgba(255,255,255,.78);padding:9px 16px;border-radius:var(--rpill);font-weight:500;font-size:14.5px;transition:all .18s var(--ease);white-space:nowrap}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-cta{background:var(--green);color:var(--navy);padding:10px 22px;border-radius:var(--rpill);font-weight:700;font-size:14.5px;transition:all .18s var(--ease);white-space:nowrap}
+.nav-cta:hover{background:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.menu-btn{display:none;color:#fff;font-size:22px;padding:6px 12px;border-radius:8px;background:transparent;margin-left:auto}
+.menu-btn:hover{background:rgba(255,255,255,.08)}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:72px 0 88px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-120px;right:-120px;width:480px;height:480px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(0,200,83,.08) 0%,transparent 70%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:820px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;background:rgba(0,200,83,.14);color:var(--green);padding:7px 16px;border-radius:var(--rpill);font-weight:700;font-size:12.5px;letter-spacing:.4px;margin-bottom:22px;border:1px solid rgba(0,200,83,.25)}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-1.2px;line-height:1.12;margin-bottom:20px}
+.hero h1 .accent{color:var(--green)}
+.hero-sub{font-size:clamp(1.05rem,2.2vw,1.25rem);color:rgba(255,255,255,.78);max-width:640px;line-height:1.65;margin-bottom:34px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;max-width:720px;padding-top:32px;border-top:1px solid rgba(255,255,255,.1)}
+.hero-stat{}
+.hero-stat-num{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--green);line-height:1;letter-spacing:-.5px;margin-bottom:6px}
+.hero-stat-lbl{font-size:13px;color:rgba(255,255,255,.65);font-weight:500}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;border-radius:var(--rpill);font-weight:700;font-size:15px;border:2px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap;text-decoration:none;letter-spacing:.1px}
+.btn:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.btn-primary{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-primary:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-2px);box-shadow:0 8px 22px var(--gglow)}
+.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+.btn-outline:hover{background:#fff;color:var(--navy);border-color:#fff;transform:translateY(-2px)}
+.btn-secondary{background:var(--surf);color:var(--navy);border-color:var(--bd)}
+.btn-secondary:hover{border-color:var(--navy);background:var(--navy);color:#fff;transform:translateY(-2px)}
+.btn-sm{padding:10px 20px;font-size:14px}
+.btn-lg{padding:16px 34px;font-size:16px}
+.btn-block{width:100%}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important;pointer-events:none}
+
+/* ===== SECTION TITLES ===== */
+.section{padding:72px 0}
+.section-tight{padding:56px 0}
+.sec-hd{margin-bottom:40px;max-width:720px}
+.sec-eyebrow{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.3px;color:var(--green2);margin-bottom:12px}
+.sec-title{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;color:var(--navy);letter-spacing:-.9px;line-height:1.15;margin-bottom:14px}
+.sec-sub{color:var(--t2);font-size:1.05rem;line-height:1.65}
+
+/* ===== TRACKS ===== */
+.tracks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.track-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:24px 22px;text-align:left;transition:all .22s var(--ease);box-shadow:0 1px 3px rgba(15,23,33,.04);cursor:pointer;display:flex;flex-direction:column;gap:10px;width:100%}
+.track-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 12px 28px rgba(15,23,33,.08)}
+.track-icon{font-size:28px;line-height:1}
+.track-name{font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.3px}
+.track-count{font-size:13px;color:var(--t3);font-weight:500}
+.track-desc{font-size:14px;color:var(--t2);line-height:1.55;margin-top:2px}
+
+/* ===== FILTER BAR ===== */
+.filter-wrap{position:sticky;top:var(--hh);z-index:900;background:var(--bg);padding:16px 0;border-bottom:1px solid var(--bd2);transition:box-shadow .2s var(--ease)}
+.filter-wrap.scrolled{box-shadow:0 4px 12px rgba(15,23,33,.05)}
+.filter-inner{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.filter-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0;flex:1;min-width:0}
+.filter-pills::-webkit-scrollbar{display:none}
+.pill{padding:9px 16px;border-radius:var(--rpill);background:var(--surf);border:1.5px solid var(--bd);font-weight:600;font-size:13.5px;color:var(--t2);transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:6px}
+.pill:hover{border-color:var(--green);color:var(--navy)}
+.pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.filter-right{display:flex;gap:10px;align-items:center;flex-shrink:0}
+.filter-select{padding:10px 34px 10px 14px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--surf);font-weight:600;font-size:13.5px;color:var(--navy);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:14px;cursor:pointer;min-width:120px}
+.filter-select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.filter-search{flex:1;min-width:160px;max-width:240px;position:relative}
+.filter-search input{padding:10px 14px 10px 38px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--surf);font-size:14px;width:100%;font-weight:500}
+.filter-search input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.filter-search::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;opacity:.55}
+
+/* ===== COURSE GRID ===== */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px}
+.course-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);overflow:hidden;transition:all .22s var(--ease);box-shadow:0 1px 3px rgba(15,23,33,.04);display:flex;flex-direction:column;position:relative}
+.course-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(15,23,33,.1);border-color:var(--green)}
+.course-top{padding:22px 24px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.course-track{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green2)}
+.course-level{padding:4px 10px;background:var(--gsoft);color:var(--green2);border-radius:var(--rpill);font-size:11.5px;font-weight:700;letter-spacing:.3px;white-space:nowrap}
+.course-body{padding:16px 24px 0;flex:1;display:flex;flex-direction:column}
+.course-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.course-icon{font-size:32px;line-height:1;flex-shrink:0;margin-top:2px}
+.course-title{font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.4px;line-height:1.25;margin-bottom:4px}
+.course-subtitle{font-size:14px;color:var(--t3);font-weight:500;line-height:1.4}
+.course-blurb{font-size:14.5px;color:var(--t2);line-height:1.6;margin-bottom:16px;flex:1}
+.course-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--t3);font-weight:500;padding-bottom:16px}
+.course-meta span{display:inline-flex;align-items:center;gap:6px}
+.course-progress{padding:12px 24px 0;border-top:1px solid var(--bd2);margin-top:auto}
+.course-progress-info{display:flex;justify-content:space-between;font-size:12.5px;color:var(--t3);font-weight:600;margin-bottom:6px;padding-top:12px}
+.course-progress-info strong{color:var(--green2)}
+.course-progress-bar{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden;margin-bottom:16px}
+.course-progress-fill{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease)}
+.course-cta{padding:0 24px 22px;margin-top:auto}
+.course-card .course-cta{padding-top:12px}
+
+/* Empty state */
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--t2)}
+.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.5}
+.empty-state h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.empty-state p{font-size:15px;max-width:400px;margin:0 auto}
+.empty-state button{margin-top:20px}
+
+/* ===== LEARNING PATHS ===== */
+.paths-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.path-card{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;border-radius:var(--rlg);padding:28px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.path-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.path-head{position:relative;z-index:1;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.path-icon{font-size:28px}
+.path-name{font-size:19px;font-weight:800;letter-spacing:-.4px}
+.path-desc{position:relative;z-index:1;font-size:14.5px;color:rgba(255,255,255,.72);line-height:1.6;margin-bottom:20px}
+.path-steps{position:relative;z-index:1;list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+.path-step{display:flex;align-items:center;gap:12px;padding:11px 14px;background:rgba(255,255,255,.06);border-radius:var(--r);border:1px solid rgba(255,255,255,.08);font-size:14px;transition:all .18s var(--ease)}
+.path-step:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.path-num{width:26px;height:26px;background:var(--green);color:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px;flex-shrink:0}
+.path-step-name{flex:1;font-weight:500;color:rgba(255,255,255,.9)}
+.path-step a{color:var(--green);font-weight:700;font-size:12.5px;white-space:nowrap}
+.path-step a:hover{text-decoration:underline}
+.path-foot{position:relative;z-index:1;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.path-duration{font-size:13px;color:rgba(255,255,255,.65);font-weight:600}
+.path-outcome{font-size:13px;color:var(--green);font-weight:600}
+
+/* ===== WHY CARDS ===== */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.why-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:26px;box-shadow:0 1px 3px rgba(15,23,33,.04);transition:all .2s var(--ease)}
+.why-card:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,23,33,.06)}
+.why-icon{font-size:32px;margin-bottom:14px;line-height:1}
+.why-card h3{font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:10px;line-height:1.3}
+.why-card p{font-size:14.5px;color:var(--t2);line-height:1.65}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.testimonial{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:26px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.testimonial-quote{font-size:15.5px;color:var(--text);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testimonial-quote::before{content:'"';color:var(--green);font-size:36px;line-height:0;position:relative;top:12px;margin-right:2px;font-family:Georgia,serif}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.testimonial-avatar{width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0}
+.testimonial-name{font-size:14.5px;font-weight:700;color:var(--navy);line-height:1.3}
+.testimonial-role{font-size:12.5px;color:var(--t3);margin-top:2px}
+
+/* ===== COMMUNITY CTA ===== */
+.community-cta{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;border-radius:var(--rlg);padding:44px;text-align:center;position:relative;overflow:hidden}
+.community-cta::after{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.community-inner{position:relative;z-index:1;max-width:620px;margin:0 auto}
+.community-cta h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.6px;margin-bottom:12px}
+.community-cta p{color:rgba(255,255,255,.75);font-size:16px;line-height:1.65;margin-bottom:26px}
+.community-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ===== FOOTER ===== */
+.site-footer{background:var(--navy);color:rgba(255,255,255,.7);padding:52px 0 26px;margin-top:auto}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px}
+.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.footer-brand .logo-mark{width:38px;height:38px;font-size:16px}
+.footer-brand-name{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.footer-brand-tag{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px}
+.footer-about{font-size:14px;line-height:1.65;color:rgba(255,255,255,.65);max-width:320px}
+.footer-hd{color:#fff;font-weight:700;font-size:14.5px;margin-bottom:14px;letter-spacing:-.2px}
+.footer-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-list a{color:rgba(255,255,255,.65);font-size:14px;transition:color .15s var(--ease)}
+.footer-list a:hover{color:var(--green)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.5)}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .hero{padding:60px 0 72px}
+  .section{padding:60px 0}
+}
+@media (max-width:880px){
+  :root{--hh:62px}
+  .header-inner{gap:14px;padding:0 18px}
+  .header-nav{display:none;position:absolute;top:var(--hh);left:0;right:0;background:var(--navy);flex-direction:column;padding:14px 18px;gap:4px;border-top:1px solid rgba(255,255,255,.08);box-shadow:0 8px 22px rgba(15,23,33,.2)}
+  .header-nav.open{display:flex}
+  .nav-link{padding:12px 16px;border-radius:var(--r)}
+  .nav-cta{width:100%;text-align:center;margin-top:6px;padding:14px}
+  .menu-btn{display:block}
+  .logo-sub{display:none}
+  .hero{padding:48px 0 60px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn{width:100%}
+  .section{padding:50px 0}
+  .sec-hd{margin-bottom:28px}
+  .filter-right{width:100%;flex-wrap:wrap}
+  .filter-select{flex:1;min-width:0}
+  .filter-search{flex:1;min-width:0;max-width:none}
+  .footer-grid{grid-template-columns:1fr;gap:28px}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .community-cta{padding:32px 24px}
+}
+@media (max-width:560px){
+  .container{padding:0 18px}
+  .header-inner{padding:0 14px}
+  .course-grid{grid-template-columns:1fr;gap:16px}
+  .tracks-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .track-card{padding:18px 16px}
+  .track-icon{font-size:24px}
+  .track-name{font-size:15px}
+  .hero-stats{grid-template-columns:1fr 1fr;gap:18px}
+  .filter-inner{gap:10px}
+  .pill{padding:8px 13px;font-size:12.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="#" class="logo" aria-label="TechMountain home">
+      <span class="logo-mark" aria-hidden="true">TM</span>
+      <span class="logo-text">
+        <span class="logo-name">TechMountain</span>
+        <span class="logo-sub">Bootcamp · Malawi</span>
+      </span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false" type="button">☰</button>
+    <nav class="header-nav" id="headerNav" aria-label="Main navigation">
+      <a href="#courses" class="nav-link">All Courses</a>
+      <a href="#paths" class="nav-link">Learning Paths</a>
+      <a href="#why" class="nav-link">Why Us</a>
+      <a href="#community" class="nav-link">Community</a>
+      <a href="#courses" class="nav-cta">Start Learning</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" role="region" aria-label="Introduction">
+  <div class="container">
+    <div class="hero-inner">
+      <span class="hero-eyebrow">🇲🇼 Free tech education for Malawi</span>
+      <h1>Learn tech skills. <span class="accent">Build a career.</span> From anywhere in Malawi.</h1>
+      <p class="hero-sub">Fourteen free courses designed for low-bandwidth connections. From your first click to your first job — no fees, no expensive data, no pressure.</p>
+      <div class="hero-actions">
+        <a href="#courses" class="btn btn-primary btn-lg">Browse all courses →</a>
+        <a href="computer-basics.html" class="btn btn-outline btn-lg">Start with the basics</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat">
+          <div class="hero-stat-num" data-stat="courses">14</div>
+          <div class="hero-stat-lbl">Courses</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" data-stat="tracks">6</div>
+          <div class="hero-stat-lbl">Learning tracks</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">140+</div>
+          <div class="hero-stat-lbl">Hands-on lessons</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">Free</div>
+          <div class="hero-stat-lbl">Forever</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRACKS ===== -->
+<section class="section" id="tracks" aria-label="Learning tracks">
+  <div class="container">
+    <div class="sec-hd">
+      <span class="sec-eyebrow">Choose your track</span>
+      <h2 class="sec-title">Six tracks. One goal: get you hired.</h2>
+      <p class="sec-sub">Every course belongs to a track. Pick the one that matches your goal — tap a track to filter the catalog below.</p>
+    </div>
+    <div class="tracks-grid" id="tracksGrid" role="list">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== COURSES + FILTER ===== -->
+<div class="filter-wrap" id="filterWrap">
+  <div class="container">
+    <div class="filter-inner">
+      <div class="filter-pills" id="filterPills" role="tablist" aria-label="Filter by track">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="filter-right">
+        <label class="sr-only" for="filterLevel">Filter by level</label>
+        <select class="filter-select" id="filterLevel">
+          <option value="all">All levels</option>
+          <option value="Absolute Beginner">Absolute Beginner</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+        </select>
+        <label class="sr-only" for="filterSort">Sort courses</label>
+        <select class="filter-select" id="filterSort">
+          <option value="recommended">Recommended</option>
+          <option value="shortest">Shortest first</option>
+          <option value="longest">Longest first</option>
+          <option value="az">A–Z</option>
+        </select>
+        <div class="filter-search">
+          <label class="sr-only" for="filterSearchInput">Search courses</label>
+          <input type="search" id="filterSearchInput" placeholder="Search courses…" autocomplete="off">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section section-tight" id="courses" aria-label="Course catalog">
+  <div class="container">
+    <div class="sec-hd">
+      <span class="sec-eyebrow">Course catalog</span>
+      <h2 class="sec-title">Every course you need to get started.</h2>
+      <p class="sec-sub" id="coursesCount">Showing all courses</p>
+    </div>
+    <div class="course-grid" id="courseGrid">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== LEARNING PATHS ===== -->
+<section class="section" id="paths" aria-label="Learning paths" style="background:var(--surf);border-top:1px solid var(--bd2);border-bottom:1px solid var(--bd2)">
+  <div class="container">
+    <div class="sec-hd">
+      <span class="sec-eyebrow">Suggested sequences</span>
+      <h2 class="sec-title">Learning paths from zero to job-ready.</h2>
+      <p class="sec-sub">Not sure where to start? Pick a path and follow the courses in order. Each one builds on the last.</p>
+    </div>
+    <div class="paths-grid" id="pathsGrid" role="list">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY ===== -->
+<section class="section" id="why" aria-label="Why TechMountain">
+  <div class="container">
+    <div class="sec-hd">
+      <span class="sec-eyebrow">Why TechMountain</span>
+      <h2 class="sec-title">Built for Malawi, not adapted for it.</h2>
+      <p class="sec-sub">Every choice we make — from page weight to payment methods — assumes you are learning on a modest phone with a limited data bundle.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true">📶</div>
+        <h3>Designed for 2G connections</h3>
+        <p>Every course loads in under 2 seconds on a slow connection. Images are compressed, fonts are local, and lessons work offline after the first visit.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true">💻</div>
+        <h3>Learn by doing, not watching</h3>
+        <p>Every lesson has a live code sandbox. Real Python, real JavaScript, real Node.js, running in your browser. No installs, no setup.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true">🆓</div>
+        <h3>Free, forever</h3>
+        <p>No fees, no subscriptions, no fine print. Every course, every lesson, free for everyone — because education should not be a luxury.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" aria-hidden="true">👥</div>
+        <h3>Community-first</h3>
+        <p>WhatsApp and Telegram study groups. Instructors who reply. Alumni who help. You are never learning alone, no matter where you are.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section" aria-label="Student stories" style="background:var(--surf);border-top:1px solid var(--bd2);border-bottom:1px solid var(--bd2)">
+  <div class="container">
+    <div class="sec-hd">
+      <span class="sec-eyebrow">Student stories</span>
+      <h2 class="sec-title">From learners across Malawi.</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <p class="testimonial-quote">I started with Computer Basics in January. By December I was freelancing for a UK client and getting paid in dollars. The learning path made it obvious what to do next.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">CB</div>
+          <div>
+            <div class="testimonial-name">Chisomo Banda</div>
+            <div class="testimonial-role">Freelance developer, Lilongwe</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-quote">The low-bandwidth focus is why I hire TechMountain graduates. Their sites actually load in my village. Most developers who learned abroad simply cannot do that.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">TM</div>
+          <div>
+            <div class="testimonial-name">Tadala Mwale</div>
+            <div class="testimonial-role">Startup founder, Blantyre</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <p class="testimonial-quote">I went from zero coding to a junior developer job in 11 months. The lessons are short, the practice is real, and the WhatsApp group kept me going when I wanted to quit.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">GP</div>
+          <div>
+            <div class="testimonial-name">Gift Phiri</div>
+            <div class="testimonial-role">Junior developer, Mzuzu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMMUNITY CTA ===== -->
+<section class="section" id="community" aria-label="Join our community">
+  <div class="container">
+    <div class="community-cta">
+      <div class="community-inner">
+        <h2>Not sure where to start?</h2>
+        <p>Join our WhatsApp group and ask. Someone is always online — instructors, alumni, and other learners who remember being exactly where you are now.</p>
+        <div class="community-actions">
+          <a href="https://wa.me/265897621195" class="btn btn-primary btn-lg" target="_blank" rel="noopener">💬 Join WhatsApp</a>
+          <a href="https://t.me/techmountain" class="btn btn-outline btn-lg" target="_blank" rel="noopener">✈️ Join Telegram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="logo-mark" aria-hidden="true">TM</span>
+          <div>
+            <div class="footer-brand-name">TechMountain Bootcamp</div>
+            <div class="footer-brand-tag">Lilongwe, Malawi</div>
+          </div>
+        </div>
+        <p class="footer-about">Free, low-bandwidth tech education for Malawian learners. From your first click to your first job.</p>
+      </div>
+      <div>
+        <h3 class="footer-hd">Courses</h3>
+        <ul class="footer-list">
+          <li><a href="#courses" data-track-link="foundations">Foundations</a></li>
+          <li><a href="#courses" data-track-link="web">Web Development</a></li>
+          <li><a href="#courses" data-track-link="backend">Backend &amp; Databases</a></li>
+          <li><a href="#courses" data-track-link="mobile">Mobile</a></li>
+          <li><a href="#courses" data-track-link="data">Data &amp; Analytics</a></li>
+          <li><a href="#courses" data-track-link="professional">Professional Skills</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-hd">Community</h3>
+        <ul class="footer-list">
+          <li><a href="https://wa.me/265897621195" target="_blank" rel="noopener">WhatsApp Study Group</a></li>
+          <li><a href="https://t.me/techmountain" target="_blank" rel="noopener">Telegram Group</a></li>
+          <li><a href="mailto:hello@techmountain.mw">hello@techmountain.mw</a></li>
+          <li><a href="tel:+265999555123">+265 8976 211 95</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-hd">About</h3>
+        <ul class="footer-list">
+          <li><a href="#why">Why TechMountain</a></li>
+          <li><a href="#paths">Learning paths</a></li>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 TechMountain Bootcamp. Built for low-bandwidth learners.</span>
+      <span>Made with 💚 in Malawi</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+'use strict';
+
+/* ============================================================
+   COURSE DATA
+   ============================================================ */
+var tracks = [
+  { id: 'foundations', icon: '🌱', name: 'Foundations', desc: 'Start here if you have never used a computer.' },
+  { id: 'web', icon: '🌐', name: 'Web Development', desc: 'Build websites and web apps from scratch.' },
+  { id: 'backend', icon: '⚙️', name: 'Backend & Databases', desc: 'Build the engines behind the apps.' },
+  { id: 'mobile', icon: '📱', name: 'Mobile Development', desc: 'Build apps for Android and iOS.' },
+  { id: 'data', icon: '📊', name: 'Data & Analytics', desc: 'Turn data into decisions.' },
+  { id: 'professional', icon: '💼', name: 'Professional Skills', desc: 'Turn your skills into income.' }
+];
+
+var courses = [
+  {
+    id: 'computer-basics',
+    title: 'Computer Basics & Digital Literacy',
+    subtitle: 'Learn essential computer skills',
+    icon: '💡',
+    track: 'foundations',
+    level: 'Absolute Beginner',
+    weeks: 4,
+    lessons: 8,
+    blurb: 'Typing, file management, email, and safe internet use — the four skills that unlock everything else.',
+    file: 'computer-basics.html',
+    storageKey: 'computer_basics_progress_v1',
+    lessonPrefix: 'cb::',
+    totalLessons: 8
+  },
+  {
+    id: 'html-css',
+    title: 'HTML & CSS',
+    subtitle: 'Zero to Professional',
+    icon: '🌐',
+    track: 'web',
+    level: 'Beginner',
+    weeks: 8,
+    lessons: 12,
+    blurb: 'Build real, responsive websites from scratch. Semantic HTML, modern CSS, and the fundamentals of good design.',
+    file: 'html-css-course.html',
+    storageKey: 'htmlcss_progress_v1',
+    lessonPrefix: 'html-css::',
+    totalLessons: 12
+  },
+  {
+    id: 'javascript',
+    title: 'JavaScript Essentials',
+    subtitle: 'Add interactivity to your websites',
+    icon: '⚡',
+    track: 'web',
+    level: 'Beginner',
+    weeks: 8,
+    lessons: 12,
+    blurb: 'From variables to a full capstone app — the language that powers every interactive website on the internet.',
+    file: 'javascript-essentials.html',
+    storageKey: 'js_essentials_progress_v1',
+    lessonPrefix: 'js::',
+    totalLessons: 12
+  },
+  {
+    id: 'react',
+    title: 'React.js Development',
+    subtitle: 'Build modern, interactive web apps',
+    icon: '⚛️',
+    track: 'web',
+    level: 'Intermediate',
+    weeks: 12,
+    lessons: 12,
+    blurb: 'The most popular JavaScript framework. Components, hooks, routing, and a full task manager capstone.',
+    file: 'react-development.html',
+    storageKey: 'react_dev_progress_v1',
+    lessonPrefix: 'react::',
+    totalLessons: 12
+  },
+  {
+    id: 'low-bandwidth',
+    title: 'Building for Low Bandwidth',
+    subtitle: 'The Malawi Advantage',
+    icon: '📶',
+    track: 'web',
+    level: 'Intermediate',
+    weeks: 6,
+    lessons: 10,
+    blurb: 'Build websites that load in under 2 seconds on 2G. A skill no bootcamp in Europe or America can teach authentically.',
+    file: 'low-bandwidth.html',
+    storageKey: 'low_bandwidth_progress_v1',
+    lessonPrefix: 'lb::',
+    totalLessons: 10
+  },
+  {
+    id: 'python',
+    title: 'Python Fundamentals',
+    subtitle: 'Learn the most versatile programming language',
+    icon: '🐍',
+    track: 'backend',
+    level: 'Beginner',
+    weeks: 10,
+    lessons: 10,
+    blurb: 'Python from your first print statement to a working CLI app. The foundation of backend, data science, and automation.',
+    file: 'python-fundamentals.html',
+    storageKey: 'python_fundamentals_progress_v1',
+    lessonPrefix: 'py::',
+    totalLessons: 10
+  },
+  {
+    id: 'node',
+    title: 'Node.js & Express',
+    subtitle: 'Build fast, scalable backend services',
+    icon: '⬢',
+    track: 'backend',
+    level: 'Intermediate',
+    weeks: 10,
+    lessons: 12,
+    blurb: 'Real Node and Express running in your browser. REST APIs, JWT auth, and a complete blog API capstone.',
+    file: 'node-express.html',
+    storageKey: 'node_express_progress_v1',
+    lessonPrefix: 'node::',
+    totalLessons: 12
+  },
+  {
+    id: 'sql',
+    title: 'SQL & Database Design',
+    subtitle: 'Design and query real databases',
+    icon: '🗄️',
+    track: 'backend',
+    level: 'Intermediate',
+    weeks: 8,
+    lessons: 10,
+    blurb: 'The biggest gap in most self-taught developers. Relational thinking, JOINs, indexes, and PostgreSQL.',
+    file: 'sql-database.html',
+    storageKey: 'sql_database_progress_v1',
+    lessonPrefix: 'sql::',
+    totalLessons: 10
+  },
+  {
+    id: 'devops-deployment',
+    title: 'DevOps & Deployment',
+    subtitle: 'Ship real projects to the internet',
+    icon: '🚀',
+    track: 'backend',
+    level: 'Intermediate',
+    weeks: 8,
+    lessons: 10,
+    blurb: 'Git, deployment, environment variables, domains, HTTPS, Docker, and monitoring — everything to get your code live.',
+    file: 'devops-deployment.html',
+    storageKey: 'devops_deployment_progress_v1',
+    lessonPrefix: 'dv::',
+    totalLessons: 10
+  },
+  {
+    id: 'mobile-money',
+    title: 'Mobile Money Integration',
+    subtitle: 'Airtel Money & TNM Mpamba APIs',
+    icon: '💳',
+    track: 'backend',
+    level: 'Intermediate',
+    weeks: 6,
+    lessons: 10,
+    blurb: 'The payment layer of Malawi. Collections, disbursements, webhooks, idempotency, reconciliation, and a checkout your customers trust.',
+    file: 'mobile-money.html',
+    storageKey: 'mobile_money_progress_v1',
+    lessonPrefix: 'mm::',
+    totalLessons: 10
+  },
+  {
+    id: 'flutter',
+    title: 'Flutter Mobile Development',
+    subtitle: 'Build native Android and iOS apps',
+    icon: '◈',
+    track: 'mobile',
+    level: 'Intermediate',
+    weeks: 12,
+    lessons: 12,
+    blurb: 'One codebase, two platforms. Dart, widgets, state, navigation, and a full weather app capstone.',
+    file: 'flutter-mobile.html',
+    storageKey: 'flutter_dev_progress_v1',
+    lessonPrefix: 'flutter::',
+    totalLessons: 12
+  },
+  {
+    id: 'data-analysis',
+    title: 'Data Analysis with Python',
+    subtitle: 'Analyze data, create visualizations',
+    icon: '∑',
+    track: 'data',
+    level: 'Intermediate',
+    weeks: 10,
+    lessons: 10,
+    blurb: 'Real pandas, NumPy, and Matplotlib running in your browser. A complete Malawi districts dataset analysis capstone.',
+    file: 'data-analysis.html',
+    storageKey: 'data_analysis_progress_v1',
+    lessonPrefix: 'da::',
+    totalLessons: 10
+  },
+  {
+    id: 'freelancing',
+    title: 'Freelancing & Remote Work',
+    subtitle: 'Earn in dollars from Malawi',
+    icon: '💼',
+    track: 'professional',
+    level: 'Beginner',
+    weeks: 6,
+    lessons: 10,
+    blurb: 'The most direct path from learner to earner. Upwork profiles, client proposals, and getting paid in USD.',
+    file: 'freelancing-remote.html',
+    storageKey: 'freelancing_remote_progress_v1',
+    lessonPrefix: 'fr::',
+    totalLessons: 10
+  },
+  {
+    id: 'career-launchpad',
+    title: 'Tech Career Launchpad',
+    subtitle: 'Land your first tech job',
+    icon: '🚀',
+    track: 'professional',
+    level: 'Beginner',
+    weeks: 4,
+    lessons: 8,
+    blurb: 'Portfolio, GitHub, LinkedIn, interviews, salary negotiation. The last mile between skills and a paycheck.',
+    file: 'career-launchpad.html',
+    storageKey: 'career_launchpad_progress_v1',
+    lessonPrefix: 'cl::',
+    totalLessons: 8
+  }
+];
+
+var learningPaths = [
+  {
+    icon: '🌐',
+    name: 'Web Developer Path',
+    desc: 'From your first HTML tag to a job-ready portfolio. The most complete path if you want to build for the web.',
+    courseIds: ['computer-basics', 'html-css', 'javascript', 'react', 'low-bandwidth', 'career-launchpad'],
+    duration: '~52 weeks',
+    outcome: 'Ready for junior web developer roles'
+  },
+  {
+    icon: '⚙️',
+    name: 'Backend Developer Path',
+    desc: 'Build the engines behind the apps. Python, databases, and Node.js — the classic backend stack.',
+    courseIds: ['computer-basics', 'python', 'sql', 'node', 'career-launchpad'],
+    duration: '~40 weeks',
+    outcome: 'Ready for junior backend roles'
+  },
+  {
+    icon: '📊',
+    name: 'Data Analyst Path',
+    desc: 'Turn raw numbers into insight. Python, pandas, and SQL — the standard tools of the trade.',
+    courseIds: ['computer-basics', 'python', 'data-analysis', 'sql', 'career-launchpad'],
+    duration: '~34 weeks',
+    outcome: 'Ready for junior data analyst roles'
+  },
+  {
+    icon: '📱',
+    name: 'Mobile Developer Path',
+    desc: 'Build apps for the phones that most Malawians actually carry. Flutter, from first widget to a full app.',
+    courseIds: ['computer-basics', 'html-css', 'javascript', 'flutter', 'career-launchpad'],
+    duration: '~44 weeks',
+    outcome: 'Ready for junior mobile developer roles'
+  }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var state = {
+  track: 'all',
+  level: 'all',
+  sort: 'recommended',
+  search: ''
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function $(id) { return document.getElementById(id); }
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function trackById(id) {
+  for (var i = 0; i < tracks.length; i++) if (tracks[i].id === id) return tracks[i];
+  return null;
+}
+function courseById(id) {
+  for (var i = 0; i < courses.length; i++) if (courses[i].id === id) return courses[i];
+  return null;
+}
+function trackCount(id) {
+  var n = 0;
+  for (var i = 0; i < courses.length; i++) if (courses[i].track === id) n++;
+  return n;
+}
+
+/* ============================================================
+   READ PROGRESS FROM LOCALSTORAGE
+   ============================================================ */
+function readProgress(course) {
+  if (!course.storageKey || !course.lessonPrefix) return null;
+  try {
+    var raw = localStorage.getItem(course.storageKey);
+    if (!raw) return null;
+    var p = JSON.parse(raw);
+    if (!p.lessons) return null;
+    var completed = 0;
+    for (var k in p.lessons) {
+      if (k.indexOf(course.lessonPrefix) === 0 && p.lessons[k] && p.lessons[k].status === 'completed') {
+        completed++;
+      }
+    }
+    if (completed === 0) return null;
+    return { completed: completed, total: course.totalLessons };
+  } catch (e) { return null; }
+}
+
+/* ============================================================
+   RENDER TRACK CARDS
+   ============================================================ */
+function renderTracks() {
+  var grid = $('tracksGrid');
+  grid.innerHTML = '';
+  tracks.forEach(function(t) {
+    var card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'track-card';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('data-track', t.id);
+    card.innerHTML =
+      '<span class="track-icon" aria-hidden="true">' + t.icon + '</span>' +
+      '<span class="track-name">' + esc(t.name) + '</span>' +
+      '<span class="track-count">' + trackCount(t.id) + ' course' + (trackCount(t.id) !== 1 ? 's' : '') + '</span>' +
+      '<span class="track-desc">' + esc(t.desc) + '</span>';
+    card.addEventListener('click', function () {
+      state.track = t.id;
+      document.querySelectorAll('.pill').forEach(function (p) {
+        p.classList.toggle('active', p.getAttribute('data-track') === t.id);
+      });
+      renderCourses();
+      var target = $('courses');
+      if (target) {
+        var top = target.getBoundingClientRect().top + window.pageYOffset - 140;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   RENDER FILTER PILLS
+   ============================================================ */
+function renderPills() {
+  var wrap = $('filterPills');
+  wrap.innerHTML = '';
+  var allPill = document.createElement('button');
+  allPill.type = 'button';
+  allPill.className = 'pill' + (state.track === 'all' ? ' active' : '');
+  allPill.setAttribute('data-track', 'all');
+  allPill.setAttribute('role', 'tab');
+  allPill.setAttribute('aria-selected', state.track === 'all' ? 'true' : 'false');
+  allPill.textContent = 'All Courses';
+  allPill.addEventListener('click', function () {
+    state.track = 'all';
+    renderPills();
+    renderCourses();
+  });
+  wrap.appendChild(allPill);
+  tracks.forEach(function (t) {
+    var pill = document.createElement('button');
+    pill.type = 'button';
+    pill.className = 'pill' + (state.track === t.id ? ' active' : '');
+    pill.setAttribute('data-track', t.id);
+    pill.setAttribute('role', 'tab');
+    pill.setAttribute('aria-selected', state.track === t.id ? 'true' : 'false');
+    pill.innerHTML = '<span aria-hidden="true">' + t.icon + '</span> ' + esc(t.name);
+    pill.addEventListener('click', function () {
+      state.track = t.id;
+      renderPills();
+      renderCourses();
+    });
+    wrap.appendChild(pill);
+  });
+}
+
+/* ============================================================
+   FILTER + SORT
+   ============================================================ */
+function applyFilters(list) {
+  var out = list.slice();
+  if (state.track !== 'all') out = out.filter(function (c) { return c.track === state.track; });
+  if (state.level !== 'all') out = out.filter(function (c) { return c.level === state.level; });
+  if (state.search) {
+    var q = state.search.toLowerCase().trim();
+    out = out.filter(function (c) {
+      return (c.title + ' ' + c.subtitle + ' ' + c.blurb + ' ' + (trackById(c.track) ? trackById(c.track).name : '')).toLowerCase().indexOf(q) !== -1;
+    });
+  }
+  if (state.sort === 'shortest') out.sort(function (a, b) { return a.weeks - b.weeks; });
+  else if (state.sort === 'longest') out.sort(function (a, b) { return b.weeks - a.weeks; });
+  else if (state.sort === 'az') out.sort(function (a, b) { return a.title.localeCompare(b.title); });
+  else {
+    var trackOrder = {};
+    tracks.forEach(function (t, i) { trackOrder[t.id] = i; });
+    out.sort(function (a, b) {
+      return (trackOrder[a.track] - trackOrder[b.track]);
+    });
+  }
+  return out;
+}
+
+/* ============================================================
+   RENDER COURSE GRID
+   ============================================================ */
+function renderCourses() {
+  var grid = $('courseGrid');
+  var filtered = applyFilters(courses);
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    var empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML =
+      '<div class="icon" aria-hidden="true">🔍</div>' +
+      '<h3>No courses match that filter</h3>' +
+      '<p>Try widening your search, or browse all courses.</p>' +
+      '<button class="btn btn-primary" type="button" id="resetFiltersBtn">Show all courses</button>';
+    grid.appendChild(empty);
+    var rb = $('resetFiltersBtn');
+    if (rb) rb.addEventListener('click', function () {
+      state = { track: 'all', level: 'all', sort: 'recommended', search: '' };
+      $('filterLevel').value = 'all';
+      $('filterSort').value = 'recommended';
+      $('filterSearchInput').value = '';
+      renderPills();
+      renderCourses();
+    });
+    updateCount(0);
+    return;
+  }
+
+  filtered.forEach(function (c) {
+    var card = document.createElement('article');
+    card.className = 'course-card';
+    var tr = trackById(c.track);
+    var trackName = tr ? tr.name : c.track;
+    var progress = readProgress(c);
+
+    var html = '';
+    html += '<div class="course-top">';
+    html += '<span class="course-track">' + esc(trackName) + '</span>';
+    html += '<span class="course-level">' + esc(c.level) + '</span>';
+    html += '</div>';
+    html += '<div class="course-body">';
+    html += '<div class="course-head">';
+    html += '<span class="course-icon" aria-hidden="true">' + c.icon + '</span>';
+    html += '<div>';
+    html += '<h3 class="course-title">' + esc(c.title) + '</h3>';
+    html += '<div class="course-subtitle">' + esc(c.subtitle) + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<p class="course-blurb">' + esc(c.blurb) + '</p>';
+    html += '<div class="course-meta">';
+    html += '<span>⏱ ' + c.weeks + ' weeks</span>';
+    html += '<span>📚 ' + c.lessons + ' lessons</span>';
+    html += '</div>';
+    html += '</div>';
+
+    if (progress) {
+      var pct = Math.round((progress.completed / progress.total) * 100);
+      html += '<div class="course-progress">';
+      html += '<div class="course-progress-info">';
+      html += '<span>Your progress</span>';
+      html += '<strong>' + pct + '%</strong>';
+      html += '</div>';
+      html += '<div class="course-progress-bar"><div class="course-progress-fill" style="width:' + pct + '%"></div></div>';
+      html += '</div>';
+    }
+
+    html += '<div class="course-cta">';
+    html += '<a class="btn btn-primary btn-block" href="' + c.file + '">Learn Full Course →</a>';
+    html += '</div>';
+
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+
+  updateCount(filtered.length);
+}
+
+function updateCount(n) {
+  var el = $('coursesCount');
+  if (!el) return;
+  if (state.track === 'all' && state.level === 'all' && !state.search) {
+    el.textContent = 'Showing all ' + courses.length + ' courses';
+  } else {
+    el.textContent = 'Showing ' + n + ' of ' + courses.length + ' courses';
+  }
+}
+
+/* ============================================================
+   RENDER LEARNING PATHS
+   ============================================================ */
+function renderPaths() {
+  var grid = $('pathsGrid');
+  grid.innerHTML = '';
+  learningPaths.forEach(function (p) {
+    var card = document.createElement('div');
+    card.className = 'path-card';
+    card.setAttribute('role', 'listitem');
+
+    var html = '';
+    html += '<div class="path-head">';
+    html += '<span class="path-icon" aria-hidden="true">' + p.icon + '</span>';
+    html += '<span class="path-name">' + esc(p.name) + '</span>';
+    html += '</div>';
+    html += '<p class="path-desc">' + esc(p.desc) + '</p>';
+    html += '<ol class="path-steps">';
+    p.courseIds.forEach(function (id, idx) {
+      var c = courseById(id);
+      if (!c) return;
+      html += '<li class="path-step">';
+      html += '<span class="path-num">' + (idx + 1) + '</span>';
+      html += '<span class="path-step-name">' + esc(c.title) + '</span>';
+      html += '<a href="' + c.file + '">View →</a>';
+      html += '</li>';
+    });
+    html += '</ol>';
+    html += '<div class="path-foot">';
+    html += '<span class="path-duration">⏱ ' + esc(p.duration) + '</span>';
+    html += '<span class="path-outcome">' + esc(p.outcome) + '</span>';
+    html += '</div>';
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+}
+
+/* ============================================================
+   FILTER EVENTS
+   ============================================================ */
+function setupFilters() {
+  $('filterLevel').addEventListener('change', function (e) {
+    state.level = e.target.value;
+    renderCourses();
+  });
+  $('filterSort').addEventListener('change', function (e) {
+    state.sort = e.target.value;
+    renderCourses();
+  });
+  var searchInput = $('filterSearchInput');
+  var searchTimer;
+  searchInput.addEventListener('input', function (e) {
+    clearTimeout(searchTimer);
+    var val = e.target.value;
+    searchTimer = setTimeout(function () {
+      state.search = val;
+      renderCourses();
+    }, 200);
+  });
+  var filterWrap = $('filterWrap');
+  window.addEventListener('scroll', function () {
+    if (window.pageYOffset > 100) filterWrap.classList.add('scrolled');
+    else filterWrap.classList.remove('scrolled');
+  });
+}
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+function setupMenu() {
+  var menuBtn = $('menuBtn');
+  var nav = $('headerNav');
+  if (!menuBtn || !nav) return;
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuBtn.textContent = open ? '✕' : '☰';
+  });
+  nav.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.textContent = '☰';
+    });
+  });
+}
+
+/* ============================================================
+   FOOTER TRACK LINKS
+   ============================================================ */
+function setupFooterTrackLinks() {
+  document.querySelectorAll('a[data-track-link]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      var t = a.getAttribute('data-track-link');
+      state.track = t;
+      renderPills();
+      renderCourses();
+    });
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init() {
+  renderTracks();
+  renderPills();
+  renderCourses();
+  renderPaths();
+  setupFilters();
+  setupMenu();
+  setupFooterTrackLinks();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React.js Development — Interactive Course</title>
+<meta name="description" content="Learn React from JSX to a full task manager. 12 weeks, intermediate level, with a live React playground.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+/* Header */
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:14px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+/* Main */
+.main{padding:40px 52px 80px;max-width:900px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+/* Reading */
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+/* Editor */
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:280px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:2;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+.prev-fr{width:100%;min-height:280px;flex:1;background:#fff;border:none}
+.con-out{min-height:100px;max-height:200px;overflow-y:auto;padding:10px 12px;background:var(--navy3);font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#c9d1d9;border-top:1px solid var(--bd2)}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:3px 8px;margin:1px 0;border-radius:4px;display:flex;gap:8px;align-items:flex-start;word-break:break-word;white-space:pre-wrap}
+.con-line.log{color:#c9d1d9;background:rgba(255,255,255,.02)}
+.con-line.warn{color:#fbbf24;background:rgba(217,119,6,.1);border-left:2px solid var(--warn)}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-line.info{color:#7dd3fc;background:rgba(56,189,248,.08);border-left:2px solid #38bdf8}
+.con-bdg{font-size:10px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:34px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ed-tip{font-size:12px;color:var(--t3);margin-left:auto}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+/* Quiz */
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:12px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .code-ta,.prev-fr{min-height:220px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .ed-tip{display:none}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:12px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">Re</div>
+      <div class="brand-tx">
+        <div class="brand-nm">React.js Development</div>
+        <div class="brand-sb">12 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r">
+        <span class="spg-l">Progress</span>
+        <span class="spg-p" id="sidePct">0%</span>
+      </div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">Re</div>
+      <div class="footer-tx">
+        <div class="footer-nm">React.js Development</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2025 TechMountain Bootcamp · Built for low-bandwidth learners
+    </div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: REACT BASICS ===== -->
+<div class="src-read" data-l="rb1">
+<p>React is a JavaScript library for building user interfaces. It was created at Facebook in 2013 and is now the most widely used tool for building web apps — used by Instagram, Netflix, Airbnb, and thousands of companies worldwide.</p>
+<h2>What makes React different?</h2>
+<p>Traditional websites manipulate the DOM directly. You write <code>document.querySelector</code> and manually change things. As apps grow, this becomes a tangled mess of code that changes the page from a hundred different places.</p>
+<p>React flips this: you describe <strong>what the UI should look like</strong> for a given state, and React figures out how to update the page for you. This is called <strong>declarative</strong> programming.</p>
+<h2>Components</h2>
+<p>In React, you break your UI into small, reusable pieces called <strong>components</strong>. A button is a component. A navbar is a component. The whole page is a component made of smaller components.</p>
+<pre><code>function Welcome() {
+  return &lt;h1&gt;Hello, Malawi!&lt;/h1&gt;;
+}</code></pre>
+<h2>JSX — HTML inside JavaScript</h2>
+<p>That strange-looking HTML inside a JavaScript function is called <strong>JSX</strong>. It's not a string, and it's not valid JavaScript on its own — it's a special syntax that gets compiled into function calls.</p>
+<p>Under the hood, Babel turns this:</p>
+<pre><code>&lt;h1&gt;Hello&lt;/h1&gt;</code></pre>
+<p>into this:</p>
+<pre><code>React.createElement("h1", null, "Hello")</code></pre>
+<p>But you'll never write that. You'll write JSX, and the tools handle the rest.</p>
+<h2>Your first React app</h2>
+<p>Every React app has three pieces:</p>
+<ul>
+<li><strong>React</strong> — the core library</li>
+<li><strong>ReactDOM</strong> — renders React into the browser DOM</li>
+<li><strong>Babel</strong> — compiles JSX into JavaScript the browser can run</li>
+</ul>
+<p>In the sandbox below, all three are already set up. You just write your component and render it.</p>
+<blockquote>React is a <em>library</em>, not a framework. It handles the view layer only. You choose how to add routing, state management, data fetching — unlike Angular or Vue which make those decisions for you.</blockquote>
+</div>
+
+<div class="src-read" data-l="rb2">
+<p>JSX looks like HTML but has a few important differences. Learning them now saves hours of debugging later.</p>
+<h2>Rule 1: One parent element</h2>
+<p>Every component must return a <strong>single</strong> top-level element. This is wrong:</p>
+<pre><code>function App() {
+  return (
+    &lt;h1&gt;Title&lt;/h1&gt;      // ERROR
+    &lt;p&gt;Body&lt;/p&gt;
+  );
+}</code></pre>
+<p>Wrap them in a <code>&lt;div&gt;</code>, or use a <strong>fragment</strong> <code>&lt;&gt;...&lt;/&gt;</code> which doesn't add an element to the DOM:</p>
+<pre><code>function App() {
+  return (
+    &lt;&gt;
+      &lt;h1&gt;Title&lt;/h1&gt;
+      &lt;p&gt;Body&lt;/p&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<h2>Rule 2: close every tag</h2>
+<p>In HTML you can write <code>&lt;img src="..."&gt;</code>. In JSX you must self-close: <code>&lt;img src="..." /&gt;</code>. Same for <code>&lt;br /&gt;</code>, <code>&lt;input /&gt;</code>, <code>&lt;hr /&gt;</code>.</p>
+<h2>Rule 3: className, not class</h2>
+<p>Because <code>class</code> is a reserved word in JavaScript, JSX uses <code>className</code>:</p>
+<pre><code>&lt;div className="card"&gt;...&lt;/div&gt;</code></pre>
+<h2>Rule 4: { } for expressions</h2>
+<p>Anywhere inside JSX, <code>{ }</code> means "evaluate this JavaScript expression and insert the result":</p>
+<pre><code>function App() {
+  const name = "Chisomo";
+  const skills = ["HTML", "CSS", "JavaScript"];
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, {name}!&lt;/h1&gt;
+      &lt;p&gt;2 + 2 = {2 + 2}&lt;/p&gt;
+      &lt;p&gt;Skills: {skills.join(", ")}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>You can put any valid JavaScript expression inside <code>{ }</code> — variables, math, function calls, ternaries. You <em>cannot</em> put statements like <code>if</code> or <code>for</code>.</p>
+<h2>Rule 5: attributes are camelCase</h2>
+<p>Most HTML attribute names are the same, but a few are camelCase in JSX:</p>
+<ul>
+<li><code>className</code> (not class)</li>
+<li><code>htmlFor</code> (not for)</li>
+<li><code>onClick</code> (not onclick)</li>
+<li><code>onChange</code> (not onchange)</li>
+</ul>
+<h2>Comments in JSX</h2>
+<pre><code>{/* This is a JSX comment */}</code></pre>
+<p>You can't use <code>//</code> or <code>/* */</code> directly inside the JSX return — wrap them in <code>{ }</code>.</p>
+</div>
+
+<!-- ===== MODULE 2: COMPONENTS ===== -->
+<div class="src-read" data-l="cm1">
+<p>Components are the building blocks of every React app. In modern React, a component is just a JavaScript function that returns JSX.</p>
+<h2>A function component</h2>
+<pre><code>function Welcome() {
+  return &lt;h1&gt;Hello!&lt;/h1&gt;;
+}</code></pre>
+<p>Two rules:</p>
+<ol>
+<li>Name it with a <strong>capital letter</strong> — <code>Welcome</code>, not <code>welcome</code>. React uses this to tell components apart from regular HTML tags.</li>
+<li>It must <strong>return JSX</strong> (or <code>null</code>).</li>
+</ol>
+<h2>Using a component</h2>
+<pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome /&gt;
+      &lt;Welcome /&gt;
+      &lt;Welcome /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Each <code>&lt;Welcome /&gt;</code> renders an independent copy. This is the whole point — write once, reuse everywhere.</p>
+<h2>Props — passing data in</h2>
+<p>Right now the component always says "Hello!" — not very useful. <strong>Props</strong> let us pass data into a component, like arguments to a function.</p>
+<pre><code>function Welcome(props) {
+  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+}
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome name="Chisomo" /&gt;
+      &lt;Welcome name="Tadala" /&gt;
+      &lt;Welcome name="Gift" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<h2>Destructuring — the modern style</h2>
+<p>You'll almost always see props destructured right in the function signature:</p>
+<pre><code>function Welcome({ name, age }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello, {name}!&lt;/h1&gt;
+      &lt;p&gt;You are {age} years old.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<h2>Props are read-only</h2>
+<p>Never modify props inside a component. They are the caller's data, not yours:</p>
+<pre><code>function Bad({ name }) {
+  name = "Hacked";   // DON'T DO THIS
+  return &lt;p&gt;{name}&lt;/p&gt;;
+}</code></pre>
+<blockquote>Props flow <strong>down</strong> the component tree — from parent to child. If a child needs to send data back up, it uses a callback function passed down as a prop. This is the "one-way data flow" that makes React predictable.</blockquote>
+</div>
+
+<div class="src-read" data-l="cm2">
+<p>Two superpowers that turn your components into real apps: composing them, and rendering lists of them.</p>
+<h2>Composition with children</h2>
+<p>Any JSX you put between a component's opening and closing tags becomes a special <code>children</code> prop:</p>
+<pre><code>function Card({ title, children }) {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;div className="card-body"&gt;{children}&lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+function App() {
+  return (
+    &lt;Card title="About Me"&gt;
+      &lt;p&gt;I am learning React.&lt;/p&gt;
+      &lt;p&gt;I live in Malawi.&lt;/p&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+<p>This is how every layout component works — headers, modals, dialogs, wrappers.</p>
+<h2>Rendering lists with .map()</h2>
+<p>You can't write a <code>for</code> loop inside JSX. Instead, use <code>.map()</code> to turn an array of data into an array of JSX elements:</p>
+<pre><code>function App() {
+  const users = ["Chisomo", "Tadala", "Gift"];
+
+  return (
+    &lt;ul&gt;
+      {users.map(name =&gt; (
+        &lt;li key={name}&gt;{name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+<h2>The key prop</h2>
+<p>Every item in a list must have a <strong>unique key</strong>. React uses it to track which items changed. Without keys, React warns you and the list can behave unpredictably when items move.</p>
+<pre><code>items.map(item =&gt; (
+  &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;
+))</code></pre>
+<p>Use a stable ID from your data — <em>not</em> the array index (unless the list never reorders).</p>
+<h2>Conditional rendering</h2>
+<p>You can't use <code>if</code> inside JSX, but you can use JavaScript expressions:</p>
+<pre><code>// Ternary
+{isLoggedIn ? &lt;p&gt;Welcome back!&lt;/p&gt; : &lt;p&gt;Please log in.&lt;/p&gt;}
+
+// Short-circuit AND — render only if condition is true
+{items.length &gt; 0 &amp;&amp; &lt;p&gt;You have {items.length} items.&lt;/p&gt;}
+
+// Or return null from a component
+function Message({ show }) {
+  if (!show) return null;
+  return &lt;p&gt;Hello!&lt;/p&gt;;
+}</code></pre>
+<blockquote>Use <code>&amp;&amp;</code> when you only need "show or don't show". Use the ternary <code>? :</code> when you need two alternative renderings. Reach for <code>if/return null</code> when the logic is more than a line.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: STATE & EVENTS ===== -->
+<div class="src-read" data-l="st1">
+<p>Props are read-only. But real apps need to remember things that change — a counter value, form input, whether a menu is open. That's what <strong>state</strong> is for.</p>
+<h2>useState — the hook</h2>
+<pre><code>const [count, setCount] = useState(0);</code></pre>
+<p>That single line does a lot:</p>
+<ul>
+<li><code>count</code> — the current value</li>
+<li><code>setCount</code> — a function to update it</li>
+<li><code>useState(0)</code> — the initial value is 0</li>
+</ul>
+<p>When you call <code>setCount</code>, React re-renders the component with the new value. This is the fundamental loop of every React app.</p>
+<h2>Never mutate state directly</h2>
+<p>This does nothing:</p>
+<pre><code>count = count + 1;    // ignored by React</code></pre>
+<p>Always call the setter:</p>
+<pre><code>setCount(count + 1);  // re-renders</code></pre>
+<h2>Event handlers</h2>
+<p>Attach functions to events with camelCase props:</p>
+<pre><code>function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;+1&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Notice: <code>onClick</code> receives a function, not a call. Don't write <code>onClick={setCount(count + 1)}</code> — that would call the setter immediately on every render.</p>
+<h2>The updater function</h2>
+<p>When the new value depends on the old, use the updater form:</p>
+<pre><code>setCount(prev =&gt; prev + 1);</code></pre>
+<p>This is safer because React batches state updates. If you write <code>setCount(count + 1)</code> twice in a row, both see the same <code>count</code>, and you only get +1. The updater form guarantees you see the latest value.</p>
+<h2>State is per-component-instance</h2>
+<p>Each time you render <code>&lt;Counter /&gt;</code>, it gets its own independent <code>count</code>. Rendering ten counters gives you ten independent numbers.</p>
+<blockquote>React re-renders a component every time its state changes. That's normal — it's how React keeps the UI in sync with the data. Don't fight it; the virtual DOM makes it fast.</blockquote>
+</div>
+
+<div class="src-read" data-l="st2">
+<p>Almost every app has a form. In React, forms are handled with <strong>controlled components</strong> — the input's value is stored in state, and every keystroke updates it.</p>
+<h2>The pattern</h2>
+<pre><code>function NameForm() {
+  const [name, setName] = useState("");
+
+  return (
+    &lt;div&gt;
+      &lt;input
+        value={name}
+        onChange={e =&gt; setName(e.target.value)}
+        placeholder="Your name"
+      /&gt;
+      &lt;p&gt;Hello, {name || "stranger"}!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Two things make this <em>controlled</em>:</p>
+<ul>
+<li><code>value={name}</code> — the input displays state, not its own internal value</li>
+<li><code>onChange</code> — every keystroke calls <code>setName</code>, updating state, which re-renders with the new value</li>
+</ul>
+<p>It might feel like extra work compared to plain HTML, but you get full control — you can validate, transform, or reset the input at any time.</p>
+<h2>Handling form submission</h2>
+<pre><code>function SignupForm() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleSubmit(e) {
+    e.preventDefault();       // stop the page reload
+    console.log("Submitted:", email);
+    setSubmitted(true);
+  }
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input
+        type="email"
+        value={email}
+        onChange={e =&gt; setEmail(e.target.value)}
+        placeholder="you@example.com"
+      /&gt;
+      &lt;button type="submit"&gt;Sign up&lt;/button&gt;
+      {submitted &amp;&amp; &lt;p&gt;Thanks, we got {email}.&lt;/p&gt;}
+    &lt;/form&gt;
+  );
+}</code></pre>
+<p>The <code>e.preventDefault()</code> is critical — without it, the browser tries to submit the form to a server and reloads the page.</p>
+<h2>Multiple inputs, one state object</h2>
+<p>When you have several fields, storing them in one state object is cleaner:</p>
+<pre><code>const [form, setForm] = useState({ name: "", email: "" });
+
+function handleChange(e) {
+  const { name, value } = e.target;
+  setForm(prev =&gt; ({ ...prev, [name]: value }));
+}
+
+&lt;input name="name" value={form.name} onChange={handleChange} /&gt;
+&lt;input name="email" value={form.email} onChange={handleChange} /&gt;</code></pre>
+<p>The <code>{ ...prev, [name]: value }</code> spread is doing the work: copy everything, then override just the changed field.</p>
+<blockquote>Always include a <code>value</code> prop on controlled inputs. If you forget it, React warns you in the console. If you set <code>value</code> but no <code>onChange</code>, the input becomes read-only.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: HOOKS ===== -->
+<div class="src-read" data-l="hk1">
+<p>Every React component is a function. The function runs, returns JSX, and finishes. Anything you want to remember between renders has to live in state. But what about side effects — things that touch the outside world?</p>
+<h2>What is a side effect?</h2>
+<p>Anything that isn't "return JSX" is a side effect:</p>
+<ul>
+<li>Setting the document title</li>
+<li>Fetching data from an API</li>
+<li>Setting up a timer</li>
+<li>Adding an event listener to <code>window</code></li>
+<li>Writing to <code>localStorage</code></li>
+</ul>
+<p>You can't put these in the render body — they'd run on every single render. That's what <code>useEffect</code> is for.</p>
+<h2>The signature</h2>
+<pre><code>useEffect(() =&gt; {
+  // side effect code here
+  return () =&gt; {
+    // optional cleanup
+  };
+}, [dependencies]);</code></pre>
+<h2>The three dependency patterns</h2>
+<p><strong>No array — runs after every render:</strong></p>
+<pre><code>useEffect(() =&gt; {
+  console.log("Rendered");
+});</code></pre>
+<p><strong>Empty array — runs once after the first render:</strong></p>
+<pre><code>useEffect(() =&gt; {
+  console.log("Mounted");
+}, []);</code></pre>
+<p><strong>With dependencies — runs when any of them change:</strong></p>
+<pre><code>useEffect(() =&gt; {
+  document.title = `Count: ${count}`;
+}, [count]);</code></pre>
+<h2>A real example</h2>
+<pre><code>function Clock() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() =&gt; {
+    const id = setInterval(() =&gt; setTime(new Date()), 1000);
+    return () =&gt; clearInterval(id);   // cleanup!
+  }, []);
+
+  return &lt;p&gt;{time.toLocaleTimeString()}&lt;/p&gt;;
+}</code></pre>
+<p>Without the cleanup, the interval would keep running even after the component unmounts — a memory leak.</p>
+<h2>The cleanup function</h2>
+<p>Whatever you return from <code>useEffect</code> runs:</p>
+<ul>
+<li>Before the effect runs again (on the next dependency change)</li>
+<li>When the component unmounts</li>
+</ul>
+<p>Use it to cancel timers, abort fetches, remove event listeners — anything that shouldn't outlive the component.</p>
+<blockquote>Don't reach for <code>useEffect</code> too quickly. Many things you might think need an effect (like computing a derived value from props) can just be done during render. Use effects for <em>synchronizing with things outside React</em> — that's their job.</blockquote>
+</div>
+
+<div class="src-read" data-l="hk2">
+<p>Once you've written a few components, you'll notice repeated logic — "get a value from localStorage", "track a counter", "fetch a URL". Custom hooks let you extract that logic and reuse it everywhere.</p>
+<h2>Rules of hooks</h2>
+<p>Before writing custom hooks, know the two iron rules:</p>
+<ol>
+<li><strong>Only call hooks at the top level</strong> of a component or another hook. Never inside loops, conditions, or nested functions.</li>
+<li><strong>Only call hooks from React function components or custom hooks</strong> — not from plain JavaScript functions.</li>
+</ol>
+<p>React relies on hook call order to keep state straight. Break the rules and you get confusing bugs.</p>
+<h2>A custom hook is just a function</h2>
+<p>By convention, a custom hook's name starts with <code>use</code>. It can call other hooks. That's the whole idea.</p>
+<pre><code>function useCounter(initial = 0) {
+  const [count, setCount] = useState(initial);
+
+  const increment = () =&gt; setCount(c =&gt; c + 1);
+  const decrement = () =&gt; setCount(c =&gt; c - 1);
+  const reset = () =&gt; setCount(initial);
+
+  return { count, increment, decrement, reset };
+}</code></pre>
+<p>Now any component can use it:</p>
+<pre><code>function Counter() {
+  const { count, increment, decrement, reset } = useCounter(10);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{count}&lt;/p&gt;
+      &lt;button onClick={increment}&gt;+&lt;/button&gt;
+      &lt;button onClick={decrement}&gt;-&lt;/button&gt;
+      &lt;button onClick={reset}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<h2>A more useful example: useLocalStorage</h2>
+<pre><code>function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() =&gt; {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() =&gt; {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}</code></pre>
+<p>Usage:</p>
+<pre><code>function Notes() {
+  const [notes, setNotes] = useLocalStorage("notes", []);
+  // ...
+}</code></pre>
+<p>The component doesn't know or care that localStorage is involved. The hook hides it.</p>
+<h2>Why this matters</h2>
+<p>Custom hooks are the single biggest reason React code scales well. Instead of duplicating fetch logic in five places, you write <code>useUsers()</code> once and import it. When you fix a bug, you fix it in one place.</p>
+<blockquote>Custom hooks are the React community's favorite pattern. Every popular library (React Query, React Router, Zustand, etc.) is built on them. Learn to spot repeated logic and extract it.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: ROUTING ===== -->
+<div class="src-read" data-l="rt1">
+<p>A traditional website loads a new HTML file for every page. React apps are single-page — the URL changes, but the same HTML file stays loaded, and React swaps out the visible component. This is called <strong>client-side routing</strong>.</p>
+<h2>Why client-side routing?</h2>
+<ul>
+<li><strong>Instant navigation</strong> — no page reload, no network round trip</li>
+<li><strong>State persists</strong> — the user's login, form data, scroll position all stay</li>
+<li><strong>Smooth transitions</strong> — you can animate between pages</li>
+</ul>
+<p>The trade-off: the initial bundle is bigger, and you must handle things like 404 pages yourself.</p>
+<h2>React Router</h2>
+<p>The standard router for React is <code>react-router-dom</code>. It provides components that map URLs to components.</p>
+<pre><code>import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+        &lt;Route path="/contact" element={&lt;Contact /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</code></pre>
+<p>Three components in play:</p>
+<ul>
+<li><code>&lt;BrowserRouter&gt;</code> — wraps the whole app, listens for URL changes</li>
+<li><code>&lt;Routes&gt;</code> — looks at the current URL and picks the matching route</li>
+<li><code>&lt;Route&gt;</code> — maps a path to a component</li>
+</ul>
+<h2>Link — for navigation</h2>
+<p>Never use <code>&lt;a href="/about"&gt;</code> in React. Use <code>&lt;Link&gt;</code> instead:</p>
+<pre><code>import { Link } from "react-router-dom";
+
+&lt;nav&gt;
+  &lt;Link to="/"&gt;Home&lt;/Link&gt;
+  &lt;Link to="/about"&gt;About&lt;/Link&gt;
+&lt;/nav&gt;</code></pre>
+<p><code>&lt;Link&gt;</code> intercepts the click, updates the URL, and lets React re-render — no full page reload. Using a plain <code>&lt;a&gt;</code> would cause a full refresh and lose all your state.</p>
+<h2>MemoryRouter for the sandbox</h2>
+<p>In a normal browser you'd use <code>BrowserRouter</code>, which reads the address bar. In the sandbox, we use <code>MemoryRouter</code> instead — it keeps the "URL" in memory only. The API is identical, so everything you learn transfers.</p>
+<pre><code>import { MemoryRouter, Routes, Route, Link } from "react-router-dom";
+
+function App() {
+  return (
+    &lt;MemoryRouter&gt;
+      &lt;nav&gt;
+        &lt;Link to="/"&gt;Home&lt;/Link&gt;
+        &lt;Link to="/about"&gt;About&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/MemoryRouter&gt;
+  );
+}</code></pre>
+<blockquote>Real projects use <code>BrowserRouter</code>. Sandboxes and tests use <code>MemoryRouter</code>. The rest of your code is identical.</blockquote>
+</div>
+
+<div class="src-read" data-l="rt2">
+<p>Most apps have pages inside pages: <code>/posts</code> shows a list, <code>/posts/42</code> shows one post. React Router handles this with URL parameters and nested routes.</p>
+<h2>URL parameters with useParams</h2>
+<pre><code>import { useParams } from "react-router-dom";
+
+function PostDetail() {
+  const { id } = useParams();
+  return &lt;h1&gt;Post #{id}&lt;/h1&gt;;
+}
+
+&lt;Routes&gt;
+  &lt;Route path="/posts/:id" element={&lt;PostDetail /&gt;} /&gt;
+&lt;/Routes&gt;</code></pre>
+<p>The <code>:id</code> in the path matches any segment. Inside the component, <code>useParams()</code> gives you that value.</p>
+<h2>Nested routes with Outlet</h2>
+<p>When you want a shared layout across several child pages:</p>
+<pre><code>function Dashboard() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Dashboard&lt;/h1&gt;
+      &lt;nav&gt;
+        &lt;Link to="stats"&gt;Stats&lt;/Link&gt;
+        &lt;Link to="settings"&gt;Settings&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Outlet /&gt;   {/* child route renders here */}
+    &lt;/div&gt;
+  );
+}
+
+&lt;Routes&gt;
+  &lt;Route path="/dashboard" element={&lt;Dashboard /&gt;}&gt;
+    &lt;Route path="stats" element={&lt;Stats /&gt;} /&gt;
+    &lt;Route path="settings" element={&lt;Settings /&gt;} /&gt;
+  &lt;/Route&gt;
+&lt;/Routes&gt;</code></pre>
+<p>Visiting <code>/dashboard/stats</code> renders <code>Dashboard</code>, then <code>Stats</code> inside the <code>&lt;Outlet /&gt;</code>. The header and nav stay mounted — no re-rendering.</p>
+<h2>Navigating programmatically</h2>
+<p>Sometimes you need to navigate from code — after a form submits, say:</p>
+<pre><code>import { useNavigate } from "react-router-dom";
+
+function LoginForm() {
+  const navigate = useNavigate();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // ... authenticate ...
+    navigate("/dashboard");
+  }
+
+  return &lt;form onSubmit={handleSubmit}&gt;...&lt;/form&gt;;
+}</code></pre>
+<h2>NavLink — for active links</h2>
+<p><code>&lt;NavLink&gt;</code> is like <code>&lt;Link&gt;</code> but adds an <code>active</code> class when its path matches the current URL:</p>
+<pre><code>&lt;NavLink
+  to="/about"
+  className={({ isActive }) =&gt; isActive ? "active" : ""}
+&gt;
+  About
+&lt;/NavLink&gt;</code></pre>
+<p>Perfect for navbars where the current page should look different.</p>
+<blockquote>Nested routes are the single most powerful feature of React Router. Every dashboard, admin panel, and multi-section app is built with them.</blockquote>
+</div>
+
+<!-- ===== MODULE 6: API & CAPSTONE ===== -->
+<div class="src-read" data-l="api1">
+<p>No real app is complete without data. Fetching from an API is the most common side effect in React.</p>
+<h2>The pattern</h2>
+<p>Fetch data with <code>useEffect</code>, store it in state, handle loading and errors:</p>
+<pre><code>function Users() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    fetch("https://api.example.com/users")
+      .then(res =&gt; res.json())
+      .then(data =&gt; {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch(err =&gt; {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return &lt;p&gt;Loading…&lt;/p&gt;;
+  if (error) return &lt;p&gt;Error: {error}&lt;/p&gt;;
+  return (
+    &lt;ul&gt;
+      {users.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}
+    &lt;/ul&gt;
+  );
+}</code></pre>
+<p>Three states to track: the data, whether we're still loading, and whether something went wrong. Every fetch component has these.</p>
+<h2>Async/await version</h2>
+<p>Some people find promises with <code>.then()</code> hard to read. The async/await form is flatter:</p>
+<pre><code>useEffect(() =&gt; {
+  async function load() {
+    try {
+      const res = await fetch("https://api.example.com/users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  load();
+}, []);</code></pre>
+<p>You can't make <code>useEffect</code>'s callback itself async — it must return nothing or a cleanup function. So define an inner async function and call it.</p>
+<h2>Fetching in a custom hook</h2>
+<p>Extract the pattern so you can reuse it:</p>
+<pre><code>function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() =&gt; {
+    let cancelled = false;
+    setLoading(true);
+    fetch(url)
+      .then(r =&gt; r.json())
+      .then(d =&gt; { if (!cancelled) { setData(d); setLoading(false); } })
+      .catch(e =&gt; { if (!cancelled) { setError(e.message); setLoading(false); } });
+    return () =&gt; { cancelled = true; };
+  }, [url]);
+
+  return { data, loading, error };
+}</code></pre>
+<p>The <code>cancelled</code> flag prevents setting state on an unmounted component if the user navigates away mid-fetch.</p>
+<h2>The sandbox mock</h2>
+<p>In this course, <code>fetch</code> is mocked so you can practice without network access. Three endpoints are available:</p>
+<ul>
+<li><code>https://api.example.com/users</code></li>
+<li><code>https://api.example.com/todos</code></li>
+<li><code>https://api.example.com/posts</code></li>
+</ul>
+<p>Each returns realistic JSON after a 500 ms delay — so you can test loading states. In a real project, you'd swap the URL for a real one; the code is identical.</p>
+<blockquote>Use one of these patterns every time you fetch: an async function inside <code>useEffect</code>, three states (data, loading, error), and a cancel flag for safety. It's the standard.</blockquote>
+</div>
+
+<div class="src-read" data-l="api2">
+<p>Time to build. Over the final two lessons, you'll build a complete <strong>Task Manager</strong> — add, toggle, delete, and persist to <code>localStorage</code>. Everything you've learned gets used.</p>
+<h2>What the app does</h2>
+<ul>
+<li>Input to type a new task, plus an Add button</li>
+<li>A list of tasks, each showing the title and a done checkbox</li>
+<li>Delete button on each task</li>
+<li>Filter buttons: All / Active / Done</li>
+<li>Count of remaining active tasks</li>
+<li>Persists to <code>localStorage</code> — survives page reload</li>
+</ul>
+<h2>The data shape</h2>
+<p>We'll store tasks as an array of objects:</p>
+<pre><code>[
+  { id: 1, title: "Learn React", done: true },
+  { id: 2, title: "Build a project", done: false }
+]</code></pre>
+<p>Simple, JSON-friendly, easy to filter.</p>
+<h2>The component plan</h2>
+<ul>
+<li><code>App</code> — holds the state and handlers</li>
+<li><code>TaskForm</code> — input + Add button (receives <code>onAdd</code> prop)</li>
+<li><code>TaskItem</code> — one task row (receives <code>task</code>, <code>onToggle</code>, <code>onDelete</code>)</li>
+<li><code>TaskList</code> — the list of TaskItems (receives <code>tasks</code>, plus the handlers)</li>
+<li><code>FilterBar</code> — the three filter buttons</li>
+</ul>
+<h2>The rules</h2>
+<ol>
+<li><strong>State lives in the top-level component.</strong> Children receive data as props and events as callbacks.</li>
+<li><strong>Never mutate state.</strong> Use <code>setTasks(prev =&gt; [...])</code> — always return a new array.</li>
+<li><strong>Every task item has a stable key.</strong> We'll use the task's <code>id</code>.</li>
+</ol>
+<h2>Persisting to localStorage</h2>
+<p>Use the custom hook pattern from lesson hk2:</p>
+<pre><code>const [tasks, setTasks] = useLocalStorage("react-tasks", []);</code></pre>
+<p>Every time <code>tasks</code> changes, the hook writes it to <code>localStorage</code>. On page load, it reads the stored value — so the user's tasks come back.</p>
+<h2>Adding a task</h2>
+<pre><code>function addTask(title) {
+  setTasks(prev =&gt; [
+    ...prev,
+    { id: Date.now(), title, done: false }
+  ]);
+}</code></pre>
+<p><code>Date.now()</code> gives us a unique id for free. Not perfectly safe in theory, but fine for a local app.</p>
+<h2>Toggling done</h2>
+<pre><code>function toggleTask(id) {
+  setTasks(prev =&gt;
+    prev.map(t =&gt;
+      t.id === id ? { ...t, done: !t.done } : t
+    )
+  );
+}</code></pre>
+<p>The <code>.map</code> returns a new array, and each task is either copied with a flipped <code>done</code> or kept as-is. React sees a new array, re-renders, and the UI updates.</p>
+<h2>Deleting</h2>
+<pre><code>function deleteTask(id) {
+  setTasks(prev =&gt; prev.filter(t =&gt; t.id !== id));
+}</code></pre>
+<h2>Filtering</h2>
+<p>The filter is UI state, not data state — it doesn't need to persist:</p>
+<pre><code>const [filter, setFilter] = useState("all");
+
+const visible = tasks.filter(t =&gt; {
+  if (filter === "active") return !t.done;
+  if (filter === "done") return t.done;
+  return true;
+});</code></pre>
+<blockquote>That's the whole app. Every feature you've learned — components, props, useState, useEffect, custom hooks — gets used. When you finish, you have a real portfolio piece.</blockquote>
+</div>
+
+<!-- ===== STARTERS ===== -->
+<textarea class="src-code" data-l="rb1" data-kind="starter">
+function App() {
+  return (
+    <div>
+      <h1>Hello, React!</h1>
+      <p>Welcome to your first React app.</p>
+      <p>Written by a learner in Malawi.</p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rb2" data-kind="starter">
+function App() {
+  const name = "Chisomo";
+  const skills = ["HTML", "CSS", "JavaScript"];
+
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <p>2 + 2 = {2 + 2}</p>
+      <p>I know: {skills.join(", ")}</p>
+      <p className="note">This text uses className, not class.</p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="cm1" data-kind="starter">
+function Welcome({ name, age }) {
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <p>You are {age} years old.</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Welcome name="Chisomo" age={22} />
+      <Welcome name="Tadala" age={19} />
+      <Welcome name="Gift" age={25} />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="cm2" data-kind="starter">
+function Card({ title, children }) {
+  return (
+    <div style={{
+      border: "1px solid #e5e7eb",
+      borderRadius: "10px",
+      padding: "16px",
+      marginBottom: "12px"
+    }}>
+      <h3 style={{ marginTop: 0, color: "#1a2332" }}>{title}</h3>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function App() {
+  const users = [
+    { id: 1, name: "Chisomo" },
+    { id: 2, name: "Tadala" },
+    { id: 3, name: "Gift" }
+  ];
+
+  return (
+    <div>
+      <Card title="About">
+        <p>I am learning React in Malawi.</p>
+      </Card>
+
+      <Card title="Users">
+        <ul>
+          {users.map(u => (
+            <li key={u.id}>{u.name}</li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="st1" data-kind="starter">
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <p style={{ fontSize: "2rem", fontWeight: 700, color: "#00a844" }}>
+        {count}
+      </p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+      <button onClick={() => setCount(count - 1)} style={{ marginLeft: "8px" }}>
+        −1
+      </button>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Counter />);
+</textarea>
+
+<textarea class="src-code" data-l="st2" data-kind="starter">
+function NameForm() {
+  const [name, setName] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
+      <label style={{ display: "block", marginBottom: "6px", fontWeight: 600 }}>
+        Your name
+      </label>
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+        placeholder="Type here..."
+        style={{ width: "100%", padding: "10px 14px" }}
+      />
+      <button type="submit" style={{ marginTop: "12px" }}>Submit</button>
+
+      {submitted && name && (
+        <p style={{ marginTop: "12px", color: "#00a844" }}>
+          Hello, {name}!
+        </p>
+      )}
+    </form>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<NameForm />);
+</textarea>
+
+<textarea class="src-code" data-l="hk1" data-kind="starter">
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `Count: ${count}`;
+    console.log("Title updated to:", count);
+  }, [count]);
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <p style={{ fontSize: "1.5rem" }}>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Counter />);
+</textarea>
+
+<textarea class="src-code" data-l="hk2" data-kind="starter">
+function useCounter(initial = 0) {
+  const [count, setCount] = useState(initial);
+  const increment = () => setCount(c => c + 1);
+  const decrement = () => setCount(c => c - 1);
+  const reset = () => setCount(initial);
+  return { count, increment, decrement, reset };
+}
+
+function App() {
+  const { count, increment, decrement, reset } = useCounter(10);
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <p style={{ fontSize: "2rem", fontWeight: 700, color: "#00a844" }}>
+        {count}
+      </p>
+      <button onClick={increment}>+1</button>
+      <button onClick={decrement} style={{ marginLeft: "8px" }}>−1</button>
+      <button onClick={reset} style={{ marginLeft: "8px" }}>Reset</button>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rt1" data-kind="starter">
+function Home() {
+  return <h2>Home Page</h2>;
+}
+
+function About() {
+  return <h2>About Page</h2>;
+}
+
+function App() {
+  return (
+    <MemoryRouter>
+      <nav style={{ marginBottom: "20px" }}>
+        <Link to="/" style={{ marginRight: "16px" }}>Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rt2" data-kind="starter">
+const posts = [
+  { id: 1, title: "Hello React", body: "My first post" },
+  { id: 2, title: "Hooks are great", body: "useState and useEffect" },
+  { id: 3, title: "Routing basics", body: "React Router v6" }
+];
+
+function PostList() {
+  return (
+    <div>
+      <h2>Posts</h2>
+      <ul>
+        {posts.map(p => (
+          <li key={p.id}>
+            <Link to={`/posts/${p.id}`}>{p.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function PostDetail() {
+  const { id } = useParams();
+  const post = posts.find(p => p.id === Number(id));
+  if (!post) return <p>Post not found.</p>;
+  return (
+    <div>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+      <Link to="/">← Back to list</Link>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <MemoryRouter initialEntries={["/"]}>
+      <Routes>
+        <Route path="/" element={<PostList />} />
+        <Route path="/posts/:id" element={<PostDetail />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="api1" data-kind="starter">
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.example.com/users")
+      .then(res => res.json())
+      .then(data => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p>Loading users…</p>;
+  if (error) return <p style={{ color: "#dc2626" }}>Error: {error}</p>;
+
+  return (
+    <div>
+      <h2>Users</h2>
+      <ul>
+        {users.map(u => (
+          <li key={u.id}>
+            <strong>{u.name}</strong> — {u.city}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<UserList />);
+</textarea>
+
+<textarea class="src-code" data-l="api2" data-kind="starter">
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+function App() {
+  const [tasks, setTasks] = useLocalStorage("react-tasks", []);
+  const [input, setInput] = useState("");
+  const [filter, setFilter] = useState("all");
+
+  function addTask(e) {
+    e.preventDefault();
+    const text = input.trim();
+    if (!text) return;
+    setTasks(prev => [...prev, { id: Date.now(), title: text, done: false }]);
+    setInput("");
+  }
+
+  function toggleTask(id) {
+    setTasks(prev =>
+      prev.map(t => t.id === id ? { ...t, done: !t.done } : t)
+    );
+  }
+
+  function deleteTask(id) {
+    setTasks(prev => prev.filter(t => t.id !== id));
+  }
+
+  const visible = tasks.filter(t => {
+    if (filter === "active") return !t.done;
+    if (filter === "done") return t.done;
+    return true;
+  });
+
+  const activeCount = tasks.filter(t => !t.done).length;
+
+  return (
+    <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <h1>My Tasks</h1>
+
+      <form onSubmit={addTask} style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="What needs doing?"
+          style={{ flex: 1, padding: "10px 14px" }}
+        />
+        <button type="submit">Add</button>
+      </form>
+
+      <div style={{ marginBottom: "12px" }}>
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("active")} style={{ marginLeft: "6px" }}>Active</button>
+        <button onClick={() => setFilter("done")} style={{ marginLeft: "6px" }}>Done</button>
+      </div>
+
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {visible.map(task => (
+          <li
+            key={task.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "10px 14px",
+              border: "1px solid #e5e7eb",
+              borderRadius: "8px",
+              marginBottom: "8px",
+              textDecoration: task.done ? "line-through" : "none",
+              opacity: task.done ? 0.6 : 1
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={task.done}
+              onChange={() => toggleTask(task.id)}
+            />
+            <span style={{ flex: 1 }}>{task.title}</span>
+            <button onClick={() => deleteTask(task.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+
+      <p style={{ color: "#6b7280", marginTop: "16px" }}>
+        {activeCount} task{activeCount !== 1 ? "s" : ""} remaining
+      </p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<!-- ===== SOLUTIONS ===== -->
+<textarea class="src-code" data-l="rb1" data-kind="solution">
+function App() {
+  return (
+    <div>
+      <h1>Hello, React!</h1>
+      <p>Welcome to your first React app.</p>
+      <p>My name is Chisomo, and I am learning to build apps in Malawi.</p>
+      <p>React makes building UIs much easier than plain JavaScript.</p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rb2" data-kind="solution">
+function App() {
+  const name = "Chisomo";
+  const skills = ["HTML", "CSS", "JavaScript", "React"];
+  const year = 2025;
+
+  return (
+    <div>
+      <h1 className="greeting">Hello, {name}!</h1>
+      <p>2 + 2 = {2 + 2}</p>
+      <p>Year: {year}</p>
+      <p>Skills: {skills.join(", ")}</p>
+      <p>Total skills: {skills.length}</p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="cm1" data-kind="solution">
+function Welcome({ name, age, city = "Lilongwe" }) {
+  return (
+    <div style={{
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      padding: "12px",
+      marginBottom: "8px"
+    }}>
+      <h3 style={{ margin: 0, color: "#1a2332" }}>Hello, {name}!</h3>
+      <p style={{ margin: "4px 0", color: "#4b5563" }}>
+        Age: {age} · From: {city}
+      </p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Welcome name="Chisomo" age={22} />
+      <Welcome name="Tadala" age={19} city="Blantyre" />
+      <Welcome name="Gift" age={25} city="Mzuzu" />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="cm2" data-kind="solution">
+function Card({ title, children }) {
+  return (
+    <div style={{
+      border: "1px solid #e5e7eb",
+      borderRadius: "10px",
+      padding: "16px",
+      marginBottom: "12px",
+      background: "#fff"
+    }}>
+      <h3 style={{ marginTop: 0, color: "#1a2332" }}>{title}</h3>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function App() {
+  const users = [
+    { id: 1, name: "Chisomo" },
+    { id: 2, name: "Tadala" },
+    { id: 3, name: "Gift" }
+  ];
+
+  return (
+    <div>
+      <Card title="About">
+        <p>I am learning React in Malawi.</p>
+      </Card>
+
+      <Card title="Users">
+        {users.length === 0 ? (
+          <p style={{ color: "#6b7280" }}>No users yet.</p>
+        ) : (
+          <ul>
+            {users.map(u => (
+              <li key={u.id}>{u.name}</li>
+            ))}
+          </ul>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="st1" data-kind="solution">
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <p style={{ fontSize: "2.5rem", fontWeight: 700, color: "#00a844" }}>
+        {count}
+      </p>
+      <button onClick={() => setCount(c => c + 1)}>+1</button>
+      <button onClick={() => setCount(c => c - 1)} style={{ marginLeft: "8px" }}>
+        −1
+      </button>
+      <button onClick={() => setCount(0)} style={{ marginLeft: "8px" }}>
+        Reset
+      </button>
+      <p style={{ color: "#6b7280", marginTop: "16px" }}>
+        {count === 0 ? "Start counting" : count > 0 ? "Positive" : "Negative"}
+      </p>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Counter />);
+</textarea>
+
+<textarea class="src-code" data-l="st2" data-kind="solution">
+function SignupForm() {
+  const [form, setForm] = useState({ name: "", email: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim()) return;
+    setSubmitted(true);
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
+      <div style={{ marginBottom: "12px" }}>
+        <label style={{ display: "block", marginBottom: "6px", fontWeight: 600 }}>
+          Name
+        </label>
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Your name"
+          style={{ width: "100%", padding: "10px 14px" }}
+        />
+      </div>
+
+      <div style={{ marginBottom: "12px" }}>
+        <label style={{ display: "block", marginBottom: "6px", fontWeight: 600 }}>
+          Email
+        </label>
+        <input
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          style={{ width: "100%", padding: "10px 14px" }}
+        />
+      </div>
+
+      <button type="submit">Sign up</button>
+
+      {submitted && (
+        <p style={{ marginTop: "12px", color: "#00a844" }}>
+          Thanks, {form.name}! We'll reach you at {form.email}.
+        </p>
+      )}
+    </form>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<SignupForm />);
+</textarea>
+
+<textarea class="src-code" data-l="hk1" data-kind="solution">
+function Clock() {
+  const [time, setTime] = useState(new Date());
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    document.title = `Count is ${count}`;
+  }, [count]);
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h2>Live Clock</h2>
+      <p style={{ fontSize: "1.5rem", color: "#00a844", fontWeight: 700 }}>
+        {time.toLocaleTimeString()}
+      </p>
+
+      <hr style={{ margin: "20px 0" }} />
+
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(c => c + 1)}>Increment</button>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Clock />);
+</textarea>
+
+<textarea class="src-code" data-l="hk2" data-kind="solution">
+function useCounter(initial = 0) {
+  const [count, setCount] = useState(initial);
+  const increment = () => setCount(c => c + 1);
+  const decrement = () => setCount(c => c - 1);
+  const reset = () => setCount(initial);
+  return { count, increment, decrement, reset };
+}
+
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+function Counter() {
+  const { count, increment, decrement, reset } = useCounter(10);
+  return (
+    <div style={{ marginBottom: "20px" }}>
+      <p style={{ fontSize: "1.5rem" }}>{count}</p>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement} style={{ marginLeft: "6px" }}>−</button>
+      <button onClick={reset} style={{ marginLeft: "6px" }}>Reset</button>
+    </div>
+  );
+}
+
+function NameBox() {
+  const [name, setName] = useLocalStorage("react-name", "");
+  return (
+    <div>
+      <label style={{ display: "block", marginBottom: "6px", fontWeight: 600 }}>
+        Your name (persists across reloads)
+      </label>
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+        placeholder="Type here..."
+        style={{ padding: "10px 14px" }}
+      />
+      <p style={{ color: "#00a844", marginTop: "10px" }}>
+        {name ? `Hello, ${name}!` : "(nothing saved yet)"}
+      </p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div style={{ padding: "20px", maxWidth: "500px" }}>
+      <h2>Counter (via custom hook)</h2>
+      <Counter />
+      <h2>Persistent name (via custom hook)</h2>
+      <NameBox />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rt1" data-kind="solution">
+function Home() {
+  return (
+    <div>
+      <h2>Home Page</h2>
+      <p>Welcome to the home page.</p>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <div>
+      <h2>About Page</h2>
+      <p>I am learning React in Malawi.</p>
+    </div>
+  );
+}
+
+function Contact() {
+  return (
+    <div>
+      <h2>Contact Page</h2>
+      <p>Reach us at hello@example.mw</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <MemoryRouter initialEntries={["/"]}>
+      <nav style={{
+        padding: "12px 0",
+        borderBottom: "1px solid #e5e7eb",
+        marginBottom: "20px"
+      }}>
+        <Link to="/" style={{ marginRight: "16px" }}>Home</Link>
+        <Link to="/about" style={{ marginRight: "16px" }}>About</Link>
+        <Link to="/contact">Contact</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="rt2" data-kind="solution">
+const posts = [
+  { id: 1, title: "Hello React", body: "My first post" },
+  { id: 2, title: "Hooks are great", body: "useState and useEffect" },
+  { id: 3, title: "Routing basics", body: "React Router v6" }
+];
+
+function PostList() {
+  return (
+    <div>
+      <h2>Posts</h2>
+      <ul>
+        {posts.map(p => (
+          <li key={p.id} style={{ marginBottom: "6px" }}>
+            <Link to={`/posts/${p.id}`}>{p.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function PostDetail() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const index = posts.findIndex(p => p.id === Number(id));
+  const post = posts[index];
+
+  if (!post) return <p>Post not found.</p>;
+
+  const prev = posts[index - 1];
+  const next = posts[index + 1];
+
+  return (
+    <div>
+      <h2>{post.title}</h2>
+      <p>{post.body}</p>
+
+      <div style={{ marginTop: "20px" }}>
+        {prev && (
+          <button onClick={() => navigate(`/posts/${prev.id}`)}>
+            ← {prev.title}
+          </button>
+        )}
+        {next && (
+          <button
+            onClick={() => navigate(`/posts/${next.id}`)}
+            style={{ marginLeft: "8px" }}
+          >
+            {next.title} →
+          </button>
+        )}
+      </div>
+
+      <p style={{ marginTop: "20px" }}>
+        <Link to="/">← Back to list</Link>
+      </p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <MemoryRouter initialEntries={["/"]}>
+      <Routes>
+        <Route path="/" element={<PostList />} />
+        <Route path="/posts/:id" element={<PostDetail />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+<textarea class="src-code" data-l="api1" data-kind="solution">
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await fetch("https://api.example.com/users");
+        const data = await res.json();
+        if (!cancelled) {
+          setUsers(data);
+          setLoading(false);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err.message);
+          setLoading(false);
+        }
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) return <p>Loading users…</p>;
+  if (error) return <p style={{ color: "#dc2626" }}>Error: {error}</p>;
+
+  return (
+    <div>
+      <h2>Users ({users.length})</h2>
+      <ul>
+        {users.map(u => (
+          <li key={u.id} style={{ marginBottom: "8px" }}>
+            <strong>{u.name}</strong>
+            <br />
+            <span style={{ color: "#6b7280", fontSize: "0.9rem" }}>
+              {u.email} · {u.city}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<UserList />);
+</textarea>
+
+<textarea class="src-code" data-l="api2" data-kind="solution">
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+
+  return [value, setValue];
+}
+
+function TaskForm({ onAdd }) {
+  const [input, setInput] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const text = input.trim();
+    if (!text) return;
+    onAdd(text);
+    setInput("");
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+      <input
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        placeholder="What needs doing?"
+        style={{ flex: 1, padding: "10px 14px" }}
+      />
+      <button type="submit">Add</button>
+    </form>
+  );
+}
+
+function TaskItem({ task, onToggle, onDelete }) {
+  return (
+    <li
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        padding: "10px 14px",
+        border: "1px solid #e5e7eb",
+        borderRadius: "8px",
+        marginBottom: "8px",
+        textDecoration: task.done ? "line-through" : "none",
+        opacity: task.done ? 0.6 : 1,
+        background: task.done ? "#f9fafb" : "#fff"
+      }}
+    >
+      <input
+        type="checkbox"
+        checked={task.done}
+        onChange={() => onToggle(task.id)}
+      />
+      <span style={{ flex: 1 }}>{task.title}</span>
+      <button onClick={() => onDelete(task.id)}>Delete</button>
+    </li>
+  );
+}
+
+function App() {
+  const [tasks, setTasks] = useLocalStorage("react-tasks", []);
+  const [filter, setFilter] = useState("all");
+
+  function addTask(title) {
+    setTasks(prev => [...prev, { id: Date.now(), title, done: false }]);
+  }
+
+  function toggleTask(id) {
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  }
+
+  function deleteTask(id) {
+    setTasks(prev => prev.filter(t => t.id !== id));
+  }
+
+  function clearAll() {
+    if (confirm("Delete all tasks?")) setTasks([]);
+  }
+
+  const visible = tasks.filter(t => {
+    if (filter === "active") return !t.done;
+    if (filter === "done") return t.done;
+    return true;
+  });
+
+  const activeCount = tasks.filter(t => !t.done).length;
+
+  return (
+    <div style={{ maxWidth: "520px", margin: "0 auto" }}>
+      <h1>My Tasks</h1>
+
+      <TaskForm onAdd={addTask} />
+
+      <div style={{ marginBottom: "12px" }}>
+        <button onClick={() => setFilter("all")}>
+          All ({tasks.length})
+        </button>
+        <button onClick={() => setFilter("active")} style={{ marginLeft: "6px" }}>
+          Active ({activeCount})
+        </button>
+        <button onClick={() => setFilter("done")} style={{ marginLeft: "6px" }}>
+          Done ({tasks.length - activeCount})
+        </button>
+      </div>
+
+      {visible.length === 0 ? (
+        <p style={{ color: "#6b7280", fontStyle: "italic" }}>
+          {tasks.length === 0 ? "No tasks yet. Add one above." : "No tasks in this filter."}
+        </p>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {visible.map(task => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              onToggle={toggleTask}
+              onDelete={deleteTask}
+            />
+          ))}
+        </ul>
+      )}
+
+      <div style={{ marginTop: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ color: "#6b7280" }}>
+          {activeCount} task{activeCount !== 1 ? "s" : ""} remaining
+        </span>
+        {tasks.length > 0 && (
+          <button onClick={clearAll} style={{ color: "#dc2626" }}>
+            Clear all
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</textarea>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'react_dev_progress_v1';
+var CAPSTONE_KEY = 'react_dev_capstone_v1';
+var REACT_URL = 'https://unpkg.com/react@18.3.1/umd/react.production.min.js';
+var REACT_DOM_URL = 'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js';
+var ROUTER_URL = 'https://unpkg.com/react-router-dom@6.22.0/dist/umd/react-router-dom.production.min.js';
+
+var course = {
+  modules: [
+    {
+      id: 'react-basics', icon: '⚛️', title: 'React Basics',
+      lessons: [
+        { id:'rb1', title:'What is React?', time:'25 min',
+          challenge:'Add a second paragraph with your name and why you are learning React. Then change the heading to say "Hello, Malawi!" instead of "Hello, React!".',
+          quiz:[
+            { q:'What does JSX compile into?', options:['HTML strings','React.createElement() calls','CSS rules','JSON'], correct:1 },
+            { q:'What kind of programming does React use?', options:['Imperative','Declarative','Procedural','Object-oriented only'], correct:1 },
+            { q:'Which three pieces does a React app need?', options:['React, Vue, Angular','React, ReactDOM, Babel','HTML, CSS, JS','Node, npm, Git'], correct:1 }
+          ]},
+        { id:'rb2', title:'JSX & Rendering', time:'28 min',
+          challenge:'Add a variable <code>year</code> set to 2025. Print it with <code>{year}</code>. Then add a fourth skill to the array and rerun.',
+          quiz:[
+            { q:'How many top-level elements can a component return?', options:['Unlimited','Exactly one','Two','Depends on JSX version'], correct:1 },
+            { q:'Which attribute do you use for CSS classes in JSX?', options:['class','className','cssClass','style-class'], correct:1 },
+            { q:'How do you embed a JavaScript expression in JSX?', options:['{{ }}','${ }','( )','{ }'], correct:3 }
+          ]}
+      ]
+    },
+    {
+      id: 'components', icon: '🧩', title: 'Components',
+      lessons: [
+        { id:'cm1', title:'Function Components & Props', time:'28 min',
+          challenge:'Add a <code>city</code> prop with a default of <code>"Lilongwe"</code>. Pass a different city to one of the <code>&lt;Welcome /&gt;</code> instances.',
+          quiz:[
+            { q:'How do components receive data from their parent?', options:['State','Props','Refs','Context'], correct:1 },
+            { q:'What must the first letter of a component name be?', options:['Lowercase','Uppercase','A number','A symbol'], correct:1 },
+            { q:'Can a component modify its own props?', options:['Yes','No','Only if declared as let','Only in class components'], correct:1 }
+          ]},
+        { id:'cm2', title:'Composition & Lists', time:'30 min',
+          challenge:'Add a "no users" message that appears when the list is empty. Test it by emptying the array first.',
+          quiz:[
+            { q:'What prop name do children JSX elements use?', options:['inner','content','children','slot'], correct:2 },
+            { q:'Why does every list item need a key prop?', options:['For styling','So React can track which items changed','Because the browser requires it','It is optional'], correct:1 },
+            { q:'How do you loop over an array inside JSX?', options:['for loops','while loops','.map()','.forEach()'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'state-events', icon: '⚡', title: 'State & Events',
+      lessons: [
+        { id:'st1', title:'useState & Events', time:'30 min',
+          challenge:'Add a Reset button that sets count back to 0. Then display "Positive", "Negative", or "Zero" depending on the current value.',
+          quiz:[
+            { q:'Which hook gives a component memory?', options:['useEffect','useState','useRef','useMemo'], correct:1 },
+            { q:'How do you update state correctly?', options:['Direct assignment','The setter function','This.set()','Mutate the object'], correct:1 },
+            { q:'When does React re-render a component?', options:['Every 100ms','When its state or props change','Only when you call render()','Never'], correct:1 }
+          ]},
+        { id:'st2', title:'Forms & Controlled Inputs', time:'30 min',
+          challenge:'Add a second input for email. Store both in one state object. Show both values after submission.',
+          quiz:[
+            { q:'What makes an input "controlled"?', options:['It has a label','Its value comes from state','It has an id','It uses a placeholder'], correct:1 },
+            { q:'Why call event.preventDefault() in onSubmit?', options:['To speed up the form','To stop the page from reloading','To clear the form','To validate'], correct:1 },
+            { q:'How do you read the current value of an input?', options:['input.value','event.target.value','state.input','ref.value'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'hooks', icon: '🎣', title: 'Hooks',
+      lessons: [
+        { id:'hk1', title:'useEffect', time:'30 min',
+          challenge:'Add a live clock below the counter using <code>setInterval</code>. Remember to clean up the interval.',
+          quiz:[
+            { q:'When does useEffect with an empty array run?', options:['Every render','Once after the first render','Never','Only when props change'], correct:1 },
+            { q:'What does the cleanup function prevent?', options:['Rendering','Memory leaks from timers and listeners','State updates','Props changes'], correct:1 },
+            { q:'When does useEffect with [count] run?', options:['Only once','When count changes','Every render','Never'], correct:1 }
+          ]},
+        { id:'hk2', title:'Custom Hooks', time:'32 min',
+          challenge:'Create a <code>useLocalStorage</code> hook that persists a name input. Then reload the sandbox to see it restored.',
+          quiz:[
+            { q:'What must a custom hook name start with?', options:['get','use','hook','with'], correct:1 },
+            { q:'Where can you call hooks?', options:['Anywhere in a component','Only at the top level of components or custom hooks','Inside loops','Inside conditions'], correct:1 },
+            { q:'What is the main benefit of custom hooks?', options:['Faster code','Reusing stateful logic across components','Smaller bundles','Automatic testing'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'routing', icon: '🛣️', title: 'Routing',
+      lessons: [
+        { id:'rt1', title:'React Router Basics', time:'32 min',
+          challenge:'Add a third route at <code>/contact</code> showing a Contact component. Add a link to it in the nav.',
+          quiz:[
+            { q:'Which component wraps the app to enable routing?', options:['&lt;Router&gt;','&lt;BrowserRouter&gt;','&lt;Route&gt;','&lt;Switch&gt;'], correct:1 },
+            { q:'Which component should you use for internal navigation?', options:['&lt;a href&gt;','&lt;Link&gt;','&lt;Button&gt;','&lt;Nav&gt;'], correct:1 },
+            { q:'What does &lt;Routes&gt; do?', options:['Renders all routes','Picks the route matching the URL','Loads external pages','Handles forms'], correct:1 }
+          ]},
+        { id:'rt2', title:'URL Params & Nested Routes', time:'34 min',
+          challenge:'Add prev/next navigation to the PostDetail page. Use <code>useNavigate</code> to jump to the adjacent post.',
+          quiz:[
+            { q:'Which hook reads URL parameters?', options:['useURL','useParams','useRoute','useQuery'], correct:1 },
+            { q:'How do you mark a route as dynamic?', options:[':id','{id}','<id>','[id]'], correct:0 },
+            { q:'What does &lt;Outlet /&gt; render?', options:['The parent component','The matched child route','A navigation bar','An error page'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'api-capstone', icon: '🚀', title: 'API & Capstone',
+      lessons: [
+        { id:'api1', title:'Fetching Data', time:'34 min',
+          challenge:'Add error handling to the fetch with a try/catch. Display a friendly error message if the fetch fails.',
+          quiz:[
+            { q:'Which hook is used to fetch data on mount?', options:['useState','useEffect','useRef','useMemo'], correct:1 },
+            { q:'What states should a fetch component track?', options:['data, loading, error','data only','loading only','nothing'], correct:0 },
+            { q:'Why use a "cancelled" flag?', options:['For performance','To avoid setting state on unmounted components','To abort the fetch','For testing'], correct:1 }
+          ]},
+        { id:'api2', title:'Capstone — Task Manager', time:'45 min',
+          challenge:'Add a "Clear all" button that empties the list. Then add a count of remaining active tasks at the bottom.',
+          quiz:[
+            { q:'Why should state arrays be updated with map/filter instead of push/splice?', options:['Faster','React needs a new reference to detect changes','push is deprecated','It is a style choice'], correct:1 },
+            { q:'How do you persist state across reloads?', options:['useRef','useState only','localStorage + useEffect','Cookies'], correct:2 },
+            { q:'Where should the main state live in a small app?', options:['The deepest child','A random component','The top-level parent','A global variable'], correct:2 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'react::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I sketched the task manager layout and listed every feature' },
+  { id: 'm2', text: 'I created the App component and the useState for tasks' },
+  { id: 'm3', text: 'I wrote useLocalStorage and my tasks persist across reloads' },
+  { id: 'm4', text: 'Adding a new task works' },
+  { id: 'm5', text: 'Toggling a task done/undone works' },
+  { id: 'm6', text: 'Deleting a task works' },
+  { id: 'm7', text: 'I split the UI into TaskForm, TaskItem, and TaskList components' },
+  { id: 'm8', text: 'I added filter buttons (All / Active / Done)' },
+  { id: 'm9', text: 'I added a "clear all" button and remaining-count display' },
+  { id: 'm10', text: 'I pushed the project to GitHub with a README' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'rb1';
+var currentView = 'lessons';
+var lintTimer = null;
+var reactLoaded = false;
+var reactLoading = false;
+
+/* Preload React stack once (on first Run click) */
+function preloadReact(callback) {
+  if (reactLoaded) { callback(null); return; }
+  if (reactLoading) {
+    // poll until loaded
+    var iv = setInterval(function() {
+      if (reactLoaded) { clearInterval(iv); callback(null); }
+    }, 100);
+    return;
+  }
+  reactLoading = true;
+  var scripts = [REACT_URL, REACT_DOM_URL, ROUTER_URL];
+  var idx = 0;
+  function loadNext() {
+    if (idx >= scripts.length) {
+      reactLoaded = true;
+      reactLoading = false;
+      callback(null);
+      return;
+    }
+    var s = document.createElement('script');
+    s.src = scripts[idx];
+    s.onload = function() { idx++; loadNext(); };
+    s.onerror = function() { reactLoading = false; callback(new Error('Failed to load: ' + scripts[idx])); };
+    document.head.appendChild(s);
+  }
+  loadNext();
+}
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function buildReactSrcDoc(userCode) {
+  var prelude =
+    '(function(){' +
+    'function send(level, args){' +
+    'try{' +
+    'var out=[];' +
+    'for(var i=0;i<args.length;i++){' +
+    'var a=args[i];' +
+    'if(typeof a==="string")out.push(a);' +
+    'else if(a instanceof Error)out.push(a.message);' +
+    'else if(typeof a==="object")try{out.push(JSON.stringify(a))}catch(e){out.push(String(a))}' +
+    'else out.push(String(a));' +
+    '}' +
+    'parent.postMessage({__react:1,level:level,args:out},"*");' +
+    '}catch(e){}' +
+    '}' +
+    'var ol=console.log,ow=console.warn,oe=console.error;' +
+    'console.log=function(){send("log",arguments);try{ol.apply(console,arguments)}catch(e){}};' +
+    'console.warn=function(){send("warn",arguments);try{ow.apply(console,arguments)}catch(e){}};' +
+    'console.error=function(){send("error",arguments);try{oe.apply(console,arguments)}catch(e){}};' +
+    'window.addEventListener("error",function(e){send("error",[e.message+" (line "+e.lineno+")"]);});' +
+    'window.addEventListener("unhandledrejection",function(e){send("error",["Unhandled promise rejection: "+(e.reason&&e.reason.message?e.reason.message:String(e.reason))]);});' +
+    '})();';
+
+  var fetchMock =
+    '(function(){' +
+    'var db={' +
+    '"https://api.example.com/users":[' +
+    '{id:1,name:"Chisomo Banda",email:"chisomo@example.mw",city:"Lilongwe"},' +
+    '{id:2,name:"Tadala Mwale",email:"tadala@example.mw",city:"Blantyre"},' +
+    '{id:3,name:"Gift Phiri",email:"gift@example.mw",city:"Mzuzu"}' +
+    '],' +
+    '"https://api.example.com/todos":[' +
+    '{id:1,title:"Learn React",done:true},' +
+    '{id:2,title:"Build a project",done:false},' +
+    '{id:3,title:"Deploy to production",done:false}' +
+    '],' +
+    '"https://api.example.com/posts":[' +
+    '{id:1,title:"Hello React",body:"My first post"},' +
+    '{id:2,title:"Hooks are great",body:"useState and useEffect"},' +
+    '{id:3,title:"Routing basics",body:"React Router v6"}' +
+    ']};' +
+    'window.fetch=function(url){' +
+    'return new Promise(function(resolve,reject){' +
+    'setTimeout(function(){' +
+    'var data=db[url];' +
+    'if(data===undefined){reject(new Error("Mock fetch: no data for "+url+" — try /users, /todos, or /posts"));return;}' +
+    'resolve({ok:true,status:200,json:function(){return Promise.resolve(data)},text:function(){return Promise.resolve(JSON.stringify(data))}});' +
+    '},500);' +
+    '});' +
+    '};' +
+    '})();';
+
+  var safeUserCode = String(userCode).replace(/<\/script>/gi, '<\\/script>');
+
+  return '<!DOCTYPE html>' +
+    '<html><head><meta charset="utf-8">' +
+    '<script src="' + REACT_URL + '"><\/script>' +
+    '<script src="' + REACT_DOM_URL + '"><\/script>' +
+    '<script src="' + ROUTER_URL + '"><\/script>' +
+    '<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"><\/script>' +
+    '<style>body{font-family:system-ui,-apple-system,sans-serif;margin:0;padding:20px;color:#1f2937;background:#fff;line-height:1.55}' +
+    'button{cursor:pointer;font:inherit;padding:8px 16px;border:1.5px solid #d1d5db;background:#f9fafb;border-radius:6px;font-weight:500}' +
+    'button:hover{background:#f3f4f6}' +
+    'input{padding:8px 12px;border:1.5px solid #d1d5db;border-radius:6px;font:inherit;box-sizing:border-box}' +
+    'input:focus{outline:none;border-color:#00c853;box-shadow:0 0 0 3px rgba(0,200,83,.15)}' +
+    'h1,h2,h3{color:#1a2332}' +
+    'a{color:#00a844;text-decoration:none}a:hover{text-decoration:underline}' +
+    'ul{padding-left:22px}' +
+    '.loading{padding:20px;text-align:center;color:#6b7280;font-style:italic}' +
+    '</style>' +
+    '</head><body>' +
+    '<div id="root"><div class="loading">Compiling JSX… (first run downloads React ~700 KB, then cached)</div></div>' +
+    '<script>' + prelude + fetchMock + '<\/script>' +
+    '<script type="text/babel" data-presets="react">' +
+    'window.React=React;window.ReactDOM=ReactDOM;' +
+    'window.useState=React.useState;' +
+    'window.useEffect=React.useEffect;' +
+    'window.useRef=React.useRef;' +
+    'window.useMemo=React.useMemo;' +
+    'window.useCallback=React.useCallback;' +
+    'window.useContext=React.useContext;' +
+    'window.Fragment=React.Fragment;' +
+    'if(typeof ReactRouterDOM!=="undefined"){' +
+    'window.MemoryRouter=ReactRouterDOM.MemoryRouter;' +
+    'window.BrowserRouter=ReactRouterDOM.BrowserRouter;' +
+    'window.Routes=ReactRouterDOM.Routes;' +
+    'window.Route=ReactRouterDOM.Route;' +
+    'window.Link=ReactRouterDOM.Link;' +
+    'window.NavLink=ReactRouterDOM.NavLink;' +
+    'window.useParams=ReactRouterDOM.useParams;' +
+    'window.useNavigate=ReactRouterDOM.useNavigate;' +
+    'window.Outlet=ReactRouterDOM.Outlet;' +
+    '}' +
+    safeUserCode +
+    '<\/script>' +
+    '</body></html>';
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>⚛️ React + JSX</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Real React</span></h2>';
+    html += '<p class="ed-s">Write JSX. Click <strong>Run</strong> to compile and render. First run downloads React + Babel (~700 KB) — then it is cached for the rest of your session.</p>';
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>App.jsx</span><span class="pane-lb">JSX</span></div>';
+    html += '<textarea class="code-ta" id="jsxEditor" spellcheck="false" aria-label="React code editor"></textarea>';
+    html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Console output appears here.</div></div></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot live"></span>Preview</span><span class="pane-lb">Live</span></div>';
+    html += '<iframe class="prev-fr" id="previewFrame" sandbox="allow-scripts" title="React preview"></iframe></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .jsx</button>';
+    html += '<button class="btn btn-g btn-sm" id="clearConsoleBtn" type="button">Clear log</button>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some JSX — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('jsxEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+function attachEditor(lesson, starter) {
+  var ta = $('jsxEditor');
+  var iframe = $('previewFrame');
+  var conOut = $('consoleOutput');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Console output appears here.</div>';
+  }
+  function appendLine(level, text) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + (level === 'log' ? 'log' : level);
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = level;
+    var span = document.createElement('span');
+    span.textContent = text;
+    line.appendChild(badge);
+    line.appendChild(span);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+
+  window.addEventListener('message', function(e) {
+    var d = e.data;
+    if (!d || !d.__react) return;
+    var text = (d.args || []).join(' ');
+    appendLine(d.level || 'log', text);
+  });
+
+  function lintJsx(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+
+    // Return statement check
+    if (!/\breturn\b/.test(code) && /function\s+[A-Z]/.test(code)) {
+      issues.push({ level: 'warn', text: 'A component seems to be missing a return statement.' });
+    }
+
+    // Component naming
+    var funcMatches = code.match(/function\s+([a-z]\w*)\s*\(/g) || [];
+    funcMatches.forEach(function(m) {
+      var name = m.match(/function\s+(\w+)/)[1];
+      issues.push({ level: 'warn', text: 'Function component "' + name + '" should start with a capital letter.' });
+    });
+
+    // class vs className
+    if (/\bclass=/.test(code) && !/className=/.test(code)) {
+      issues.push({ level: 'error', text: 'Use className instead of class in JSX.' });
+    }
+
+    // Unbalanced JSX tags
+    var opens = (code.match(/<[a-zA-Z][^\/>]*>/g) || []).filter(function(t) { return !/\/>$/.test(t); });
+    var closes = code.match(/<\/[a-zA-Z][^>]*>/g) || [];
+    var selfClosing = code.match(/<[a-zA-Z][^>]*\/>/g) || [];
+    if (opens.length - selfClosing.length !== closes.length) {
+      issues.push({ level: 'warn', text: 'Possible unbalanced JSX tags — check that every opening tag has a closing tag.' });
+    }
+
+    // Missing key in map
+    if (/\.map\s*\(/.test(code) && !/key=/.test(code)) {
+      issues.push({ level: 'warn', text: 'List items rendered with .map() should have a unique key prop.' });
+    }
+
+    // useState without destructuring
+    if (/=\s*useState\(/.test(code) && !/\[\s*\w+\s*,\s*\w+\s*\]\s*=\s*useState/.test(code)) {
+      issues.push({ level: 'warn', text: 'useState returns an array — destructure it like: const [value, setValue] = useState(...)' });
+    }
+
+    // Empty dependency warning
+    if (/useEffect\s*\(\s*\([^)]*\)\s*=>\s*{[\s\S]*?\}\s*\)\s*;/.test(code) && !/,\s*\[/.test(code)) {
+      issues.push({ level: 'warn', text: 'useEffect without a dependency array runs after every render. Add [ ] for one-time effects.' });
+    }
+
+    // Unbalanced braces/parens/brackets
+    var braces = (code.match(/{/g) || []).length - (code.match(/}/g) || []).length;
+    if (braces !== 0) issues.push({ level: 'error', text: (braces > 0 ? braces + ' missing }' : Math.abs(braces) + ' extra }') + ' — check your braces.' });
+    var parens = (code.match(/\(/g) || []).length - (code.match(/\)/g) || []).length;
+    if (parens !== 0) issues.push({ level: 'error', text: (parens > 0 ? parens + ' missing )' : Math.abs(parens) + ' extra )') + ' — check your parentheses.' });
+
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintJsx(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  function run() {
+    clearConsole();
+    runBtn.disabled = true;
+    runBtn.textContent = '⏳ Loading…';
+    appendLine('info', 'Loading React runtime (one-time, ~700 KB)…');
+
+    preloadReact(function(err) {
+      runBtn.disabled = false;
+      runBtn.textContent = '▶ Run';
+      if (err) {
+        appendLine('error', 'Could not load React: ' + err.message);
+        return;
+      }
+      // Remove loading line
+      var firstInfo = conOut.querySelector('.con-line.info');
+      if (firstInfo) firstInfo.remove();
+
+      var doc = buildReactSrcDoc(ta.value);
+      try {
+        iframe.srcdoc = '';
+        setTimeout(function() {
+          try { iframe.srcdoc = doc; } catch (e) {
+            appendLine('error', 'Failed to render preview: ' + e.message);
+          }
+        }, 10);
+      } catch (e) {
+        appendLine('error', 'Failed to build preview: ' + e.message);
+      }
+    });
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      debLint();
+    }
+  });
+
+  runBtn.addEventListener('click', run);
+
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearConsole();
+  });
+
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.jsx';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  if ($('clearConsoleBtn')) $('clearConsoleBtn').addEventListener('click', clearConsole);
+
+  lintNow();
+}
+
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">React.js Development</h1>';
+  html += '<p class="pg-sub">Build modern, interactive web applications with the most popular JavaScript library in the world. Over 12 weeks you will go from writing your first JSX to a full task manager with hooks, routing, and persistent state.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>12 weeks</h3><p>18 hours across 6 modules and 12 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>Some JavaScript experience expected — you should be comfortable with functions, arrays, and objects.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⚛️</span>Real React</h3><p>Real JSX, real components, real hooks. The React runtime loads once and is cached.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>JSX &amp; components</h3><p>Write JSX, build reusable components, pass props, compose UIs.</p></div>';
+  html += '<div class="ov-card"><h3>State &amp; events</h3><p>useState, event handlers, controlled forms, one-way data flow.</p></div>';
+  html += '<div class="ov-card"><h3>Hooks</h3><p>useEffect for side effects, custom hooks for reusable logic.</p></div>';
+  html += '<div class="ov-card"><h3>Routing</h3><p>Client-side navigation, URL params, nested routes.</p></div>';
+  html += '<div class="ov-card"><h3>Data fetching</h3><p>fetch with async/await, loading and error states.</p></div>';
+  html += '<div class="ov-card"><h3>Capstone project</h3><p>A full task manager with localStorage persistence, split into components.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'React Basics', 'What React is, JSX syntax, rendering, the React way of thinking.'],
+    ['W3–4', 'Components', 'Function components, props, composition, rendering lists.'],
+    ['W5–6', 'State & Events', 'useState, event handlers, controlled forms.'],
+    ['W7–8', 'Hooks', 'useEffect, dependencies, cleanup, custom hooks.'],
+    ['W9–10', 'Routing', 'React Router v6, URL params, nested routes.'],
+    ['W11–12', 'API & Capstone', 'Fetching data, loading states, and the full task manager.'],
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. The React runtime loads on your first Run click — no installs, no build tools.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('rb1');
+    switchView('lessons');
+  });
+}
+
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A complete task manager built the React way — components, state, hooks, and localStorage persistence. Every concept in the course gets used.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three build stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. State &amp; persistence</h3><p>Set up <code>useState</code> for tasks and the <code>useLocalStorage</code> hook.</p></div>';
+  html += '<div class="ov-card"><h3>2. Components</h3><p>Split the UI into <code>TaskForm</code>, <code>TaskItem</code>, and <code>TaskList</code>.</p></div>';
+  html += '<div class="ov-card"><h3>3. Features</h3><p>Add filters, clear-all, and a remaining-count display.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpApi1" type="button">▶ Start Fetching Data</button>';
+  html += '<button class="btn btn-g" id="jumpApi2" type="button">Jump to Capstone</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpApi1').addEventListener('click', function() { selectLesson('api1'); switchView('lessons'); });
+  $('jumpApi2').addEventListener('click', function() { selectLesson('api2'); switchView('lessons'); });
+}
+
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to keep learning after this course.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'Official React Docs (react.dev)', 'The completely rewritten docs. Start with "Learn React".', 'https://react.dev/learn'],
+    ['📚', 'React Hooks Reference', 'Every hook, with examples.', 'https://react.dev/reference/react'],
+    ['🛣️', 'React Router v6 Docs', 'Official guide to routing.', 'https://reactrouter.com/'],
+    ['🎓', 'Thinking in React', 'The classic guide to breaking a UI into components.', 'https://react.dev/learn/thinking-in-react'],
+    ['💬', 'Stack Overflow — React', 'When you get stuck, someone has asked before.', 'https://stackoverflow.com/questions/tagged/reactjs'],
+    ['🎥', 'Web Dev Simplified (YouTube)', 'Short, focused React tutorials.', 'https://www.youtube.com/c/WebDevSimplified']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">React Cheatsheet</div><div class="res-d">A one-page reference covering JSX, hooks, props, and routing.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadStarterBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">⚛️</span>';
+  html += '<div><div class="res-t">Vite + React Starter</div><div class="res-d">Package.json and instructions to set up a real local React project.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['✏️', 'VS Code', 'The most popular free code editor.', 'https://code.visualstudio.com/'],
+    ['⚡', 'Vite', 'The modern build tool for React apps.', 'https://vitejs.dev/'],
+    ['🐙', 'GitHub', 'Host your code and capstone project. Free.', 'https://github.com/'],
+    ['🚀', 'Netlify / Vercel', 'Deploy React apps for free.', 'https://www.netlify.com/'],
+    ['🔧', 'React DevTools', 'Browser extension to inspect your components.', 'https://react.dev/learn/react-developer-tools']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadStarterBtn').addEventListener('click', downloadStarter);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  REACT.JS DEVELOPMENT — CHEATSHEET',
+    '============================================',
+    '',
+    '--- COMPONENT ---',
+    'function Welcome({ name }) {',
+    '  return <h1>Hello, {name}</h1>;',
+    '}',
+    '',
+    '--- JSX RULES ---',
+    'One top-level element (or a fragment <>...</>)',
+    'className not class',
+    'Self-close empty tags: <img /> <br />',
+    'Expressions in { }',
+    'Comments: {/* ... */}',
+    '',
+    '--- PROPS ---',
+    '<Welcome name="Chisomo" age={22} />',
+    'Props are read-only.',
+    'Children: <Card>{content}</Card> via props.children',
+    '',
+    '--- STATE ---',
+    'const [count, setCount] = useState(0);',
+    'setCount(count + 1);              // direct',
+    'setCount(prev => prev + 1);       // updater',
+    'Never mutate state directly.',
+    '',
+    '--- EFFECTS ---',
+    'useEffect(() => { ... }, []);           // once',
+    'useEffect(() => { ... }, [dep]);        // on dep',
+    'useEffect(() => {',
+    '  const id = setInterval(...);',
+    '  return () => clearInterval(id);       // cleanup',
+    '}, []);',
+    '',
+    '--- LISTS ---',
+    'items.map(item => <li key={item.id}>{item.name}</li>)',
+    '',
+    '--- CONDITIONALS ---',
+    '{isLoggedIn ? <A /> : <B />}',
+    '{items.length > 0 && <List />}',
+    'if (!show) return null;',
+    '',
+    '--- FORMS ---',
+    'const [name, setName] = useState("");',
+    '<input value={name} onChange={e => setName(e.target.value)} />',
+    'e.preventDefault() in onSubmit',
+    '',
+    '--- ROUTING ---',
+    'import { MemoryRouter, Routes, Route, Link } from "react-router-dom";',
+    '<MemoryRouter>',
+    '  <Link to="/about">About</Link>',
+    '  <Routes>',
+    '    <Route path="/" element={<Home />} />',
+    '    <Route path="/posts/:id" element={<Post />} />',
+    '  </Routes>',
+    '</MemoryRouter>',
+    '',
+    '--- HOOKS YOU WILL USE ---',
+    'useState       - component memory',
+    'useEffect      - side effects',
+    'useRef         - mutable refs, DOM access',
+    'useMemo        - memoize expensive values',
+    'useCallback    - memoize functions',
+    'useContext     - share state without prop drilling',
+    '',
+    '--- RULES OF HOOKS ---',
+    'Only at the top level — never in loops or conditions',
+    'Only inside React functions or other hooks',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — React.js Development',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'react-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadStarter() {
+  var readme = [
+    '# Vite + React Starter',
+    '',
+    '## Setup',
+    '',
+    '1. Install Node.js from https://nodejs.org',
+    '2. In your terminal, run:',
+    '',
+    '   npm create vite@latest my-react-app -- --template react',
+    '   cd my-react-app',
+    '   npm install',
+    '   npm run dev',
+    '',
+    '3. Open http://localhost:5173 in your browser.',
+    '',
+    '## Folder structure',
+    '',
+    '  my-react-app/',
+    '  ├── package.json',
+    '  ├── vite.config.js',
+    '  ├── index.html',
+    '  └── src/',
+    '      ├── main.jsx',
+    '      ├── App.jsx',
+    '      └── App.css',
+    '',
+    '## Your first component (src/App.jsx)',
+    '',
+    '  function App() {',
+    '    return <h1>Hello, React!</h1>;',
+    '  }',
+    '',
+    '  export default App;',
+    '',
+    '## Next steps',
+    '',
+    '- Build the task manager capstone in this project.',
+    '- Push to GitHub.',
+    '- Deploy for free on Vercel or Netlify.',
+    '',
+    '## Useful commands',
+    '',
+    '  npm run dev      # start dev server with hot reload',
+    '  npm run build    # create production build in dist/',
+    '  npm run preview  # preview the production build locally'
+  ].join('\n');
+
+  var blob = new Blob([readme], { type: 'text/markdown' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'react-starter-setup.md';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">React has one of the largest developer communities in the world. Learning is faster when you are not alone.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Study Group</h3><p>Active 24/7. Share your JSX, get feedback, ask questions.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer code snippets, project reviews, group study.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Publish your capstone, see other students\' work.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 How to get help fast</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Show your code</h3><p>Paste the component, the props, and the error. We cannot guess.</p></div>';
+  html += '<div class="ov-card"><h3>2. Describe what you tried</h3><p>"I expected X. I got Y. I tried Z." — the fastest format.</p></div>';
+  html += '<div class="ov-card"><h3>3. Share the console</h3><p>React errors are specific. Copy the full message, not just the first line.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Stuck on a hook?</h2>';
+  html += '<p>Ask the community. React has 10+ years of Stack Overflow answers — someone has solved your exact problem.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://stackoverflow.com/questions/tagged/reactjs" target="_blank" rel="noopener">Browse on Stack Overflow</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in React.js Development and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">React.js Development</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">12 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of React.js Development, demonstrating proficiency in JSX, function components, props, hooks, routing, data fetching, and building a complete task manager with localStorage persistence.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>React.js Development</h1>' +
+        '<div class="t">12 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of React.js Development,<br>demonstrating proficiency in JSX, function components, props, hooks,<br>routing, data fetching, and building a complete task manager<br>with localStorage persistence.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

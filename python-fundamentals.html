@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Fundamentals — Interactive Course</title>
+<meta name="description" content="Learn Python from variables to a backend-ready CLI project. 10 weeks, beginner level, with a live Python editor.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+/* Header */
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:14px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+
+/* Sidebar */
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+/* Main */
+.main{padding:40px 52px 80px;max-width:900px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Lesson hero */
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+/* Reading */
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+/* Editor */
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:260px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:4;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+.con-out{min-height:260px;max-height:400px;overflow-y:auto;padding:12px 14px;background:var(--navy3);font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#c9d1d9}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:4px 8px;margin:2px 0;border-radius:4px;display:flex;gap:8px;align-items:flex-start;word-break:break-word;white-space:pre-wrap}
+.con-line.out{color:#c9d1d9;background:rgba(255,255,255,.02)}
+.con-line.info{color:#7dd3fc;background:rgba(56,189,248,.08);border-left:2px solid #38bdf8}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-bdg{font-size:10px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:34px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ed-tip{font-size:12px;color:var(--t3);margin-left:auto}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+/* Quiz */
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+/* Complete bar */
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+/* Page views */
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+/* Resources */
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+/* Projects */
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+/* Certificate */
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input,.field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+.field textarea{min-height:80px;resize:vertical}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* Footer */
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:12px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+/* Responsive */
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .code-ta,.con-out{min-height:220px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .ed-tip{display:none}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:12px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">Py</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Python Fundamentals</div>
+        <div class="brand-sb">10 weeks · Beginner</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r">
+        <span class="spg-l">Progress</span>
+        <span class="spg-p" id="sidePct">0%</span>
+      </div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">Py</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Python Fundamentals</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2025 TechMountain Bootcamp · Built for low-bandwidth learners
+    </div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<!-- ============================================================
+     HIDDEN SOURCE CONTENT
+     ============================================================ -->
+<div hidden>
+
+<!-- ===================== BASICS: READINGS ===================== -->
+<div class="src-read" data-l="ba1">
+<p>Python is one of the most readable programming languages in the world. Its syntax is close to plain English, which makes it a perfect first language. Let's start with the building blocks.</p>
+<h2>Your first line of Python</h2>
+<pre><code>print("Hello, Malawi!")</code></pre>
+<p>That's it. No semicolons, no <code>main</code> function, no compilation. Save it to a <code>.py</code> file and run it with <code>python hello.py</code>. Here in the browser editor, just click <strong>Run</strong>.</p>
+<h2>Variables</h2>
+<p>In Python you assign a value to a name with the <code>=</code> sign. No need to declare the type — Python figures it out.</p>
+<pre><code>name = "Chisomo"
+age = 22
+height = 1.75
+is_student = True</code></pre>
+<p>Naming convention: <code>snake_case</code> for variables and functions. Uppercase for constants (<code>MAX_SIZE = 100</code>).</p>
+<h2>The four core data types</h2>
+<ul>
+<li><strong>str</strong> — text in quotes: <code>"hello"</code>, <code>'world'</code></li>
+<li><strong>int</strong> — whole numbers: <code>42</code>, <code>-7</code>, <code>0</code></li>
+<li><strong>float</strong> — decimal numbers: <code>3.14</code>, <code>-0.5</code></li>
+<li><strong>bool</strong> — <code>True</code> or <code>False</code> (capital first letter!)</li>
+</ul>
+<h2>Checking the type</h2>
+<p>Use <code>type()</code> to ask Python what something is:</p>
+<pre><code>print(type(name))      # &lt;class 'str'&gt;
+print(type(age))       # &lt;class 'int'&gt;
+print(type(3.14))      # &lt;class 'float'&gt;
+print(type(True))      # &lt;class 'bool'&gt;</code></pre>
+<h2>Converting between types</h2>
+<pre><code>number = int("42")     # string to int
+text = str(42)         # int to string
+decimal = float("3.14")</code></pre>
+<blockquote>Python is <strong>strongly typed</strong>: <code>"5" + 5</code> raises an error, unlike JavaScript. You must convert explicitly. This prevents a huge class of bugs.</blockquote>
+</div>
+
+<div class="src-read" data-l="ba2">
+<p>Text is everywhere in Python. Learning to work with strings is 30% of day-to-day programming.</p>
+<h2>f-strings (your new best friend)</h2>
+<p>Prefix a string with <code>f</code> and put variables inside <code>{ }</code>:</p>
+<pre><code>name = "Chisomo"
+age = 22
+print(f"My name is {name} and I am {age} years old.")</code></pre>
+<p>You can put any expression inside the braces:</p>
+<pre><code>print(f"Next year I will be {age + 1}.")</code></pre>
+<h2>Common string methods</h2>
+<pre><code>text = "  Hello World  "
+
+print(text.strip())        # "Hello World"
+print(text.upper())        # "  HELLO WORLD  "
+print(text.lower())        # "  hello world  "
+print(text.replace("World", "Malawi"))
+print(text.split())        # ['Hello', 'World']</code></pre>
+<h2>Getting input from the user</h2>
+<p><code>input()</code> always returns a <strong>string</strong>. Convert it if you need a number:</p>
+<pre><code>name = input("What is your name? ")
+age = int(input("How old are you? "))
+print(f"Hello {name}, you are {age} years old.")</code></pre>
+<blockquote>In this browser editor, <code>input()</code> opens a small dialog box. In a real terminal it just waits for typing.</blockquote>
+<h2>String formatting (the old way, still useful)</h2>
+<pre><code>price = 2500
+print("Price: {} KMW".format(price))
+print("Price: %d KMW" % price)</code></pre>
+<p>Prefer f-strings in new code — they're the clearest and fastest.</p>
+<h2>Multi-line strings</h2>
+<pre><code>message = """This is a
+multi-line string.
+It preserves line breaks."""
+print(message)</code></pre>
+</div>
+
+<!-- ===================== CONTROL FLOW: READINGS ===================== -->
+<div class="src-read" data-l="cf1">
+<p>Programs need to make decisions. Python makes this remarkably readable with <code>if</code>, <code>elif</code>, and <code>else</code>.</p>
+<h2>Basic if / else</h2>
+<pre><code>age = 20
+
+if age >= 18:
+    print("You may enter.")
+else:
+    print("Sorry, you are too young.")</code></pre>
+<p>Notice two things that are unique to Python:</p>
+<ul>
+<li>The <strong>colon</strong> <code>:</code> at the end of each condition</li>
+<li>The <strong>indentation</strong> (usually 4 spaces) that marks the block</li>
+</ul>
+<p>There are no curly braces. Indentation <em>is</em> the syntax.</p>
+<h2>elif — the middle branch</h2>
+<pre><code>score = 75
+
+if score >= 80:
+    grade = "A"
+elif score >= 70:
+    grade = "B"
+elif score >= 60:
+    grade = "C"
+else:
+    grade = "F"
+
+print(f"Grade: {grade}")</code></pre>
+<p>Python checks each condition top to bottom, running the first one that is <code>True</code>.</p>
+<h2>Comparison operators</h2>
+<ul>
+<li><code>==</code> — equal to</li>
+<li><code>!=</code> — not equal</li>
+<li><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code> — less / greater than</li>
+</ul>
+<h2>Logical operators</h2>
+<p>Python uses plain words instead of symbols:</p>
+<pre><code>age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("You may enter.")
+
+if age < 13 or age > 65:
+    print("Discount applies.")
+
+if not has_id:
+    print("You need ID.")</code></pre>
+<h2>Truthiness</h2>
+<p>Some values are automatically <code>False</code> in a boolean context: <code>0</code>, <code>0.0</code>, <code>""</code>, <code>[]</code>, <code>{}</code>, <code>None</code>. Everything else is <code>True</code>.</p>
+<pre><code>name = ""
+
+if name:
+    print(f"Hello {name}")
+else:
+    print("Name is empty")</code></pre>
+<blockquote>Python's use of <code>and</code>, <code>or</code>, <code>not</code> instead of <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> is one of the reasons it reads like English.</blockquote>
+</div>
+
+<div class="src-read" data-l="cf2">
+<p>Loops let you repeat work. Python has two kinds: <code>for</code> (for iterating) and <code>while</code> (for repeating until a condition changes).</p>
+<h2>for loops with range()</h2>
+<pre><code>for i in range(5):
+    print(i)</code></pre>
+<p>This prints <code>0 1 2 3 4</code>. <code>range(5)</code> produces <code>0,1,2,3,4</code> — starting at 0, ending <em>before</em> 5.</p>
+<pre><code>for i in range(1, 6):
+    print(i)</code></pre>
+<p>Now it prints <code>1 2 3 4 5</code>. <code>range(start, stop)</code> includes <code>start</code> but excludes <code>stop</code>.</p>
+<pre><code>for i in range(0, 10, 2):
+    print(i)</code></pre>
+<p>Prints <code>0 2 4 6 8</code>. The third argument is the step.</p>
+<h2>Looping over a list</h2>
+<pre><code>fruits = ["apple", "banana", "mango"]
+for fruit in fruits:
+    print(fruit)</code></pre>
+<p>You almost never need the index when looping in Python. Just iterate over the values directly.</p>
+<h2>If you need the index</h2>
+<pre><code>for i, fruit in enumerate(fruits):
+    print(f"{i + 1}. {fruit}")</code></pre>
+<h2>while loops</h2>
+<pre><code>count = 0
+while count < 5:
+    print(count)
+    count += 1</code></pre>
+<p>Use a <code>while</code> loop when you don't know how many iterations you need — only when to stop.</p>
+<h2>break and continue</h2>
+<pre><code>for n in range(10):
+    if n == 5:
+        break         # exit the loop entirely
+    print(n)
+
+for n in range(5):
+    if n == 2:
+        continue      # skip the rest of this iteration
+    print(n)</code></pre>
+<blockquote>Infinite loops: if you write <code>while True:</code> with no <code>break</code> inside, your program runs forever. Make sure every <code>while</code> loop has a way to end.</blockquote>
+</div>
+
+<!-- ===================== FUNCTIONS: READINGS ===================== -->
+<div class="src-read" data-l="fn1">
+<p>Functions let you package up code, give it a name, and reuse it. Python's function syntax is clean and readable.</p>
+<h2>Defining a function</h2>
+<pre><code>def greet(name):
+    return f"Hello, {name}!"
+
+message = greet("Chisomo")
+print(message)</code></pre>
+<p>Parts of a function:</p>
+<ul>
+<li><code>def</code> — the keyword that starts a function definition</li>
+<li><code>greet</code> — the function name (snake_case)</li>
+<li><code>(name)</code> — the parameter list</li>
+<li>Colon <code>:</code> and indented body</li>
+<li><code>return</code> — sends a value back (optional — if missing, the function returns <code>None</code>)</li>
+</ul>
+<h2>Default arguments</h2>
+<pre><code>def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+print(greet("Chisomo"))               # "Hello, Chisomo!"
+print(greet("Chisomo", "Moni"))       # "Moni, Chisomo!"</code></pre>
+<h2>Keyword arguments</h2>
+<p>When calling, you can name the parameters to make the call clearer:</p>
+<pre><code>def describe(name, age, city):
+    return f"{name}, {age}, from {city}"
+
+print(describe(city="Lilongwe", name="Chisomo", age=22))</code></pre>
+<h2>Returning multiple values</h2>
+<pre><code>def min_max(numbers):
+    return min(numbers), max(numbers)
+
+low, high = min_max([3, 1, 7, 2, 9])
+print(low, high)   # 1 9</code></pre>
+<p>Python actually packs them into a tuple and unpacks on the way out.</p>
+<h2>Scope</h2>
+<p>Variables created inside a function are local — they disappear when the function ends:</p>
+<pre><code>def example():
+    x = 10
+    print(x)
+
+example()       # 10
+print(x)        # NameError: name 'x' is not defined</code></pre>
+<blockquote>Name your functions like verbs: <code>calculate_total</code>, <code>format_date</code>, <code>is_valid_email</code>. Not <code>stuff</code> or <code>fn1</code>.</blockquote>
+</div>
+
+<div class="src-read" data-l="fn2">
+<p>Real programs crash. Learning to import modules and handle errors gracefully is what separates toy code from production code.</p>
+<h2>Importing modules</h2>
+<pre><code>import math
+import random
+import json
+
+print(math.sqrt(16))          # 4.0
+print(math.pi)                # 3.14159...
+print(random.randint(1, 10))  # a random number</code></pre>
+<h2>From imports</h2>
+<p>If you only need one thing, import just that:</p>
+<pre><code>from math import sqrt, pi
+print(sqrt(25))    # 5.0</code></pre>
+<h2>What is an exception?</h2>
+<p>When Python hits something it can't do, it "raises" an exception and stops. Common ones:</p>
+<ul>
+<li><code>ValueError</code> — right type, wrong value: <code>int("hello")</code></li>
+<li><code>TypeError</code> — wrong type: <code>"5" + 5</code></li>
+<li><code>NameError</code> — using an undefined variable</li>
+<li><code>ZeroDivisionError</code> — <code>10 / 0</code></li>
+<li><code>KeyError</code> — looking up a missing dict key</li>
+<li><code>FileNotFoundError</code> — opening a file that doesn't exist</li>
+</ul>
+<h2>try / except</h2>
+<pre><code>try:
+    age = int(input("Your age: "))
+    print(f"In 10 years you'll be {age + 10}")
+except ValueError:
+    print("That was not a valid number.")</code></pre>
+<p>The <code>try</code> block runs normally. If an exception is raised, Python jumps straight to the <code>except</code> block.</p>
+<h2>Catching specific exceptions</h2>
+<pre><code>try:
+    numbers = [1, 2, 3]
+    print(numbers[10])
+except IndexError:
+    print("That index does not exist.")
+
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero.")</code></pre>
+<h2>finally — always runs</h2>
+<pre><code>try:
+    f = open("data.txt")
+    print(f.read())
+except FileNotFoundError:
+    print("File not found.")
+finally:
+    print("Done trying.")</code></pre>
+<blockquote>Only catch exceptions you can actually handle. Writing a bare <code>except:</code> hides bugs — always catch a specific exception type.</blockquote>
+</div>
+
+<!-- ===================== DATA STRUCTURES: READINGS ===================== -->
+<div class="src-read" data-l="ds1">
+<p>Lists are Python's workhorse data structure. Mastering them is essential — you'll use them in every project.</p>
+<h2>Creating lists</h2>
+<pre><code>numbers = [10, 20, 30, 40]
+names = ["Chisomo", "Tadala", "Gift"]
+mixed = [1, "hello", 3.14, True]</code></pre>
+<h2>Accessing items</h2>
+<pre><code>print(numbers[0])       # 10  (first item)
+print(numbers[-1])      # 40  (last item)
+print(numbers[1:3])     # [20, 30]  (slice, end-exclusive)</code></pre>
+<p>Negative indexes count from the end. Slices are <code>list[start:stop]</code> — <code>stop</code> is excluded.</p>
+<h2>Modifying lists</h2>
+<pre><code>numbers.append(50)      # add to end
+numbers.insert(0, 5)    # insert at index 0
+numbers.remove(20)      # remove first occurrence of 20
+last = numbers.pop()    # remove & return last
+numbers[0] = 99         # replace at index 0</code></pre>
+<h2>Useful operations</h2>
+<pre><code>print(len(numbers))     # length
+print(sum(numbers))     # sum
+print(min(numbers))     # smallest
+print(max(numbers))     # largest
+print(sorted(numbers))  # new sorted list
+print(20 in numbers)    # True / False</code></pre>
+<h2>Looping</h2>
+<pre><code>for n in numbers:
+    print(n)
+
+for i, n in enumerate(numbers):
+    print(f"{i}: {n}")</code></pre>
+<h2>List comprehensions</h2>
+<p>A Pythonic way to build a list in one line:</p>
+<pre><code>squares = [n * n for n in range(1, 6)]
+# [1, 4, 9, 16, 25]
+
+evens = [n for n in range(10) if n % 2 == 0]
+# [0, 2, 4, 6, 8]</code></pre>
+<h2>Tuples — immutable lists</h2>
+<pre><code>point = (10, 20)
+x, y = point          # unpacking
+# point[0] = 99       # ERROR — tuples can't be modified</code></pre>
+<p>Use tuples for values that shouldn't change (coordinates, RGB colors, records).</p>
+</div>
+
+<div class="src-read" data-l="ds2">
+<p>Dictionaries map keys to values. If you remember one data structure from this course, make it this one.</p>
+<h2>Creating dictionaries</h2>
+<pre><code>user = {
+    "name": "Chisomo",
+    "age": 22,
+    "city": "Lilongwe"
+}
+
+scores = {"math": 85, "english": 92}</code></pre>
+<h2>Accessing and modifying</h2>
+<pre><code>print(user["name"])         # "Chisomo"
+user["age"] = 23            # update
+user["email"] = "c@m.mw"    # add new key
+
+print(user.get("phone"))    # None (safe)
+print(user.get("phone", "no phone"))   # fallback</code></pre>
+<p>Use <code>.get()</code> when a key might not exist — it returns <code>None</code> or a default instead of crashing.</p>
+<h2>Looping over a dict</h2>
+<pre><code>for key in user:
+    print(key, "=", user[key])
+
+for key, value in user.items():
+    print(f"{key}: {value}")
+
+for value in user.values():
+    print(value)</code></pre>
+<h2>Checking keys</h2>
+<pre><code>if "name" in user:
+    print("We have a name.")</code></pre>
+<h2>Nested structures</h2>
+<p>This is the shape of real data — a list of dicts:</p>
+<pre><code>students = [
+    {"name": "Chisomo", "score": 85},
+    {"name": "Tadala", "score": 92},
+    {"name": "Gift", "score": 78}
+]
+
+for s in students:
+    print(f"{s['name']} scored {s['score']}")</code></pre>
+<h2>Sets — unique collections</h2>
+<pre><code>colors = {"red", "green", "blue"}
+colors.add("yellow")
+
+numbers = [1, 2, 2, 3, 3, 3]
+unique = set(numbers)    # {1, 2, 3}</code></pre>
+<p>Sets are unordered and automatically remove duplicates. Great for membership checks: <code>if x in my_set</code> is faster than a list.</p>
+<blockquote>Dictionaries are the foundation of JSON, which is how almost every API communicates. Master dicts and you're ready for backend work.</blockquote>
+</div>
+
+<!-- ===================== BACKEND BASICS: READINGS ===================== -->
+<div class="src-read" data-l="bk1">
+<p>Python powers the backend of Instagram, Spotify, YouTube, and thousands of other services. In this lesson, you'll see what a real backend looks like.</p>
+<h2>What is a backend?</h2>
+<p>A backend is a program that runs on a server and:</p>
+<ul>
+<li>Listens for HTTP requests from browsers/apps</li>
+<li>Reads and writes to a database</li>
+<li>Returns data (usually JSON)</li>
+<li>Handles authentication, payments, business logic</li>
+</ul>
+<h2>Flask — the simplest Python web framework</h2>
+<p>Flask turns Python functions into web endpoints. Here's a complete Flask app:</p>
+<pre><code>from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# An in-memory "database"
+tasks = [
+    {"id": 1, "title": "Learn Python", "done": True},
+    {"id": 2, "title": "Build an API", "done": False}
+]
+
+@app.route("/tasks", methods=["GET"])
+def list_tasks():
+    return jsonify(tasks)
+
+@app.route("/tasks", methods=["POST"])
+def add_task():
+    data = request.get_json()
+    new_task = {
+        "id": len(tasks) + 1,
+        "title": data["title"],
+        "done": False
+    }
+    tasks.append(new_task)
+    return jsonify(new_task), 201
+
+@app.route("/tasks/&lt;int:task_id&gt;", methods=["DELETE"])
+def delete_task(task_id):
+    global tasks
+    tasks = [t for t in tasks if t["id"] != task_id]
+    return "", 204
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+<h2>What you're looking at</h2>
+<ul>
+<li><code>@app.route(...)</code> is a <strong>decorator</strong> — it tells Flask "when someone visits this URL, run this function"</li>
+<li>The function returns data. Flask automatically converts Python dicts to JSON</li>
+<li><code>methods=["GET"]</code> specifies which HTTP verbs are allowed</li>
+<li><code>&lt;int:task_id&gt;</code> captures part of the URL as a variable</li>
+</ul>
+<h2>Running it locally</h2>
+<pre><code># In your terminal:
+pip install flask
+python app.py
+
+# Then visit http://localhost:5000/tasks</code></pre>
+<h2>Why we can't run Flask here</h2>
+<p>Flask needs a real network socket and a persistent Python process. This browser editor runs Python in a sandbox without networking. So for this lesson, your exercise is to write the <strong>data-handling functions</strong> that a Flask route would call — the same logic, just without the HTTP layer.</p>
+<blockquote>When you're ready to run real Flask, follow the download link at the bottom of this lesson, install Python on your computer, and try the code above.</blockquote>
+</div>
+
+<div class="src-read" data-l="bk2">
+<p>Time to build. You're going to write a complete <strong>CLI task manager</strong> — a command-line app that stores tasks in a JSON file, persists between runs, and uses everything you've learned.</p>
+<h2>What the app does</h2>
+<ul>
+<li>Show a menu: <code>add</code>, <code>list</code>, <code>done</code>, <code>delete</code>, <code>quit</code></li>
+<li>Add a task → ask for a title, save it</li>
+<li>List all tasks with numbers and status</li>
+<li>Mark a task as done by its number</li>
+<li>Delete a task by its number</li>
+<li>Save everything to <code>tasks.json</code> on every change</li>
+<li>Load existing tasks when the program starts</li>
+</ul>
+<h2>The plan</h2>
+<ol>
+<li>Define <code>load_tasks()</code> and <code>save_tasks()</code> using <code>json</code></li>
+<li>Define <code>add_task(tasks)</code>, <code>list_tasks(tasks)</code>, <code>mark_done(tasks, index)</code>, <code>delete_task(tasks, index)</code></li>
+<li>Write a <code>main()</code> loop that reads input and dispatches to the right function</li>
+</ol>
+<h2>Why this project matters</h2>
+<p>Every backend is the same idea: receive input, process data, persist it, return a result. This CLI app is the smallest complete example of that pattern. When you later move to Flask, you'll see it's the same logic — just with HTTP instead of <code>input()</code>.</p>
+<h2>Sample interaction</h2>
+<pre><code>Task Manager
+1. Add task
+2. List tasks
+3. Mark done
+4. Delete task
+5. Quit
+Choose: 1
+Task title: Finish Python course
+Task added.
+
+Choose: 2
+1. [ ] Finish Python course
+
+Choose: 3
+Task number: 1
+Task marked as done.
+
+Choose: 5
+Goodbye! (tasks saved)</code></pre>
+<blockquote>Because <code>input()</code> in this browser uses dialog boxes, the starter code below uses a slightly different pattern: it processes a list of simulated inputs so you can test the whole flow without clicking dialogs twenty times. Read it carefully — the underlying logic is exactly what a real CLI would do.</blockquote>
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="ba1" data-kind="starter">
+# Basic variables and types
+name = "Chisomo"
+age = 22
+height = 1.75
+is_student = True
+
+print(f"Name: {name}")
+print(f"Age: {age}")
+print(f"Height: {height}m")
+print(f"Student: {is_student}")
+
+# Check the types
+print(type(name))
+print(type(age))
+print(type(height))
+print(type(is_student))
+</textarea>
+
+<textarea class="src-code" data-l="ba2" data-kind="starter">
+# Working with strings
+name = "Chisomo"
+age = 22
+
+# f-strings
+print(f"My name is {name} and I am {age} years old.")
+print(f"Next year I will be {age + 1}.")
+
+# String methods
+text = "  hello world  "
+print(text.strip())
+print(text.upper())
+print(text.replace("world", "Malawi"))
+print("apple,banana,mango".split(","))
+
+# Joining
+fruits = ["apple", "banana", "mango"]
+print(" | ".join(fruits))
+</textarea>
+
+<textarea class="src-code" data-l="cf1" data-kind="starter">
+# Grade calculator
+score = 75
+
+if score >= 80:
+    grade = "A"
+elif score >= 70:
+    grade = "B"
+elif score >= 60:
+    grade = "C"
+else:
+    grade = "F"
+
+print(f"Score: {score}, Grade: {grade}")
+
+# Logical operators
+age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("You may enter.")
+else:
+    print("Entry denied.")
+</textarea>
+
+<textarea class="src-code" data-l="cf2" data-kind="starter">
+# for loop with range
+for i in range(5):
+    print(f"i = {i}")
+
+print("---")
+
+# Loop over a list
+fruits = ["apple", "banana", "mango"]
+for fruit in fruits:
+    print(fruit)
+
+print("---")
+
+# With index
+for i, fruit in enumerate(fruits):
+    print(f"{i + 1}. {fruit}")
+
+print("---")
+
+# while loop
+count = 0
+while count < 3:
+    print(f"count = {count}")
+    count += 1
+
+print("---")
+
+# break and continue
+for n in range(10):
+    if n == 5:
+        break
+    print(n)
+</textarea>
+
+<textarea class="src-code" data-l="fn1" data-kind="starter">
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+print(greet("Chisomo"))
+print(greet("Tadala", "Moni"))
+
+def add(a, b):
+    return a + b
+
+def square(n):
+    return n * n
+
+print(f"3 + 5 = {add(3, 5)}")
+print(f"6 squared = {square(6)}")
+
+# Returning multiple values
+def min_max(numbers):
+    return min(numbers), max(numbers)
+
+low, high = min_max([3, 1, 7, 2, 9])
+print(f"Low: {low}, High: {high}")
+</textarea>
+
+<textarea class="src-code" data-l="fn2" data-kind="starter">
+import math
+import random
+
+print(f"sqrt(16) = {math.sqrt(16)}")
+print(f"pi = {math.pi:.4f}")
+print(f"random 1-100: {random.randint(1, 100)}")
+
+# Try / except
+try:
+    value = int("hello")
+    print(value)
+except ValueError:
+    print("That was not a valid number.")
+
+# Catching specific errors
+try:
+    numbers = [1, 2, 3]
+    print(numbers[10])
+except IndexError:
+    print("That index does not exist.")
+
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero.")
+
+print("Program finished cleanly.")
+</textarea>
+
+<textarea class="src-code" data-l="ds1" data-kind="starter">
+numbers = [10, 20, 30, 40, 50]
+
+print(numbers[0])       # first
+print(numbers[-1])      # last
+print(numbers[1:3])     # slice
+
+numbers.append(60)
+numbers.insert(0, 5)
+print(numbers)
+
+print(f"Length: {len(numbers)}")
+print(f"Sum: {sum(numbers)}")
+print(f"Min: {min(numbers)}")
+print(f"Max: {max(numbers)}")
+
+# List comprehension
+squares = [n * n for n in range(1, 6)]
+print(f"Squares: {squares}")
+
+evens = [n for n in range(10) if n % 2 == 0]
+print(f"Evens: {evens}")
+
+# Tuples
+point = (10, 20)
+x, y = point
+print(f"x = {x}, y = {y}")
+</textarea>
+
+<textarea class="src-code" data-l="ds2" data-kind="starter">
+user = {
+    "name": "Chisomo",
+    "age": 22,
+    "city": "Lilongwe"
+}
+
+print(user["name"])
+print(user.get("phone", "no phone on file"))
+
+user["email"] = "c@m.mw"
+user["age"] = 23
+
+for key, value in user.items():
+    print(f"{key}: {value}")
+
+# A list of dicts - the shape of real data
+students = [
+    {"name": "Chisomo", "score": 85},
+    {"name": "Tadala", "score": 92},
+    {"name": "Gift", "score": 78}
+]
+
+for s in students:
+    print(f"{s['name']} scored {s['score']}")
+
+# Sets remove duplicates
+numbers = [1, 2, 2, 3, 3, 3, 4]
+unique = set(numbers)
+print(f"Unique: {unique}")
+</textarea>
+
+<textarea class="src-code" data-l="bk1" data-kind="starter">
+# Simulated backend: task storage and handlers
+# This is the logic a Flask route would call.
+
+tasks = [
+    {"id": 1, "title": "Learn Python", "done": True},
+    {"id": 2, "title": "Build an API", "done": False},
+    {"id": 3, "title": "Deploy to server", "done": False}
+]
+
+
+def list_tasks():
+    """Simulate GET /tasks"""
+    return tasks
+
+
+def add_task(title):
+    """Simulate POST /tasks"""
+    new_id = max([t["id"] for t in tasks], default=0) + 1
+    new_task = {"id": new_id, "title": title, "done": False}
+    tasks.append(new_task)
+    return new_task
+
+
+def mark_done(task_id):
+    """Simulate PATCH /tasks/<id>"""
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return task
+    return None
+
+
+def delete_task(task_id):
+    """Simulate DELETE /tasks/<id>"""
+    for i, task in enumerate(tasks):
+        if task["id"] == task_id:
+            return tasks.pop(i)
+    return None
+
+
+# Simulate API calls
+print("=== GET /tasks ===")
+for t in list_tasks():
+    status = "✓" if t["done"] else "○"
+    print(f"  [{status}] #{t['id']} {t['title']}")
+
+print()
+print("=== POST /tasks ===")
+created = add_task("Write documentation")
+print(f"  Created: {created}")
+
+print()
+print("=== PATCH /tasks/3 ===")
+updated = mark_done(3)
+print(f"  Updated: {updated}")
+
+print()
+print("=== DELETE /tasks/2 ===")
+deleted = delete_task(2)
+print(f"  Deleted: {deleted}")
+
+print()
+print("=== Final state ===")
+for t in list_tasks():
+    print(f"  {t}")
+</textarea>
+
+<textarea class="src-code" data-l="bk2" data-kind="starter">
+# CAPSTONE: CLI Task Manager
+# This version uses simulated input so you can test the whole flow.
+# In a real terminal, replace the simulated_inputs list with input() calls.
+
+import json
+
+FILE = "tasks.json"
+
+
+def load_tasks():
+    """Load tasks from JSON file, or return empty list."""
+    try:
+        with open(FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        print("Warning: tasks.json was corrupted. Starting fresh.")
+        return []
+
+
+def save_tasks(tasks):
+    """Save tasks to JSON file."""
+    with open(FILE, "w") as f:
+        json.dump(tasks, f, indent=2)
+
+
+def add_task(tasks, title):
+    tasks.append({"title": title, "done": False})
+    print(f"Added: {title}")
+
+
+def list_tasks(tasks):
+    if not tasks:
+        print("No tasks yet.")
+        return
+    for i, task in enumerate(tasks, start=1):
+        mark = "✓" if task["done"] else "○"
+        print(f"{i}. [{mark}] {task['title']}")
+
+
+def mark_done(tasks, index):
+    if 0 <= index < len(tasks):
+        tasks[index]["done"] = True
+        print(f"Done: {tasks[index]['title']}")
+    else:
+        print("Invalid task number.")
+
+
+def delete_task(tasks, index):
+    if 0 <= index < len(tasks):
+        removed = tasks.pop(index)
+        print(f"Deleted: {removed['title']}")
+    else:
+        print("Invalid task number.")
+
+
+def main():
+    tasks = load_tasks()
+    print("Task Manager")
+
+    # Simulated input sequence (in a real CLI: input())
+    commands = ["add", "add", "list", "done 1", "list", "quit"]
+
+    for cmd in commands:
+        print(f"\n> {cmd}")
+        if cmd.startswith("add"):
+            title = input("Task title: ")
+            add_task(tasks, title)
+        elif cmd == "list":
+            list_tasks(tasks)
+        elif cmd.startswith("done"):
+            parts = cmd.split()
+            if len(parts) == 2:
+                try:
+                    mark_done(tasks, int(parts[1]) - 1)
+                except ValueError:
+                    print("Invalid number.")
+        elif cmd == "quit":
+            break
+
+    save_tasks(tasks)
+    print("\nGoodbye! Tasks saved.")
+
+
+main()
+</textarea>
+
+<!-- ===================== SOLUTIONS ===================== -->
+<textarea class="src-code" data-l="ba1" data-kind="solution">
+name = "Chisomo"
+age = 22
+height = 1.75
+is_student = True
+favorite_food = "Nsima"
+
+print(f"Name: {name}")
+print(f"Age: {age}")
+print(f"Height: {height}m")
+print(f"Student: {is_student}")
+print(f"Favorite food: {favorite_food}")
+
+# In 5 years
+print(f"In 5 years I will be {age + 5}.")
+
+# Types
+print(type(name))
+print(type(age))
+print(type(height))
+print(type(is_student))
+</textarea>
+
+<textarea class="src-code" data-l="ba2" data-kind="solution">
+name = "Chisomo"
+age = 22
+city = "Lilongwe"
+
+# f-string greeting
+print(f"My name is {name}, I am {age}, and I live in {city}.")
+
+# Clean up messy input
+raw = "   Python   "
+print(f"Cleaned: '{raw.strip()}'")
+
+# Split a CSV line
+line = "apple,banana,mango,orange"
+fruits = line.split(",")
+print(f"Fruits: {fruits}")
+print(f"Count: {len(fruits)}")
+
+# Join with a separator
+print(" - ".join(fruits))
+
+# Uppercase and lowercase
+print(f"Upper: {name.upper()}")
+print(f"Lower: {name.lower()}")
+</textarea>
+
+<textarea class="src-code" data-l="cf1" data-kind="solution">
+# Test with different scores
+for score in [95, 75, 65, 45]:
+    if score >= 80:
+        grade = "A"
+    elif score >= 70:
+        grade = "B"
+    elif score >= 60:
+        grade = "C"
+    else:
+        grade = "F"
+    print(f"Score: {score}, Grade: {grade}")
+
+print("---")
+
+# Logical operators
+age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("You may enter.")
+elif age >= 18 and not has_id:
+    print("You need ID.")
+else:
+    print("Too young.")
+
+# Nested condition
+temperature = 28
+if temperature > 30:
+    print("Hot!")
+elif temperature > 20:
+    print("Warm.")
+else:
+    print("Cool.")
+</textarea>
+
+<textarea class="src-code" data-l="cf2" data-kind="solution">
+# Even numbers from 2 to 10
+for n in range(2, 11, 2):
+    print(n)
+
+print("---")
+
+# Sum of 1 to 100
+total = 0
+for n in range(1, 101):
+    total += n
+print(f"Sum 1..100 = {total}")
+
+print("---")
+
+# FizzBuzz (classic interview question)
+for n in range(1, 16):
+    if n % 15 == 0:
+        print("FizzBuzz")
+    elif n % 3 == 0:
+        print("Fizz")
+    elif n % 5 == 0:
+        print("Buzz")
+    else:
+        print(n)
+
+print("---")
+
+# Multiplication table for 5
+for i in range(1, 11):
+    print(f"5 x {i} = {5 * i}")
+</textarea>
+
+<textarea class="src-code" data-l="fn1" data-kind="solution">
+def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+print(greet("Chisomo"))
+print(greet("Tadala", "Moni"))
+
+def square(n):
+    return n * n
+
+def is_even(n):
+    return n % 2 == 0
+
+print(f"7 squared = {square(7)}")
+print(f"4 is even? {is_even(4)}")
+print(f"7 is even? {is_even(7)}")
+
+def average(numbers):
+    if not numbers:
+        return 0
+    return sum(numbers) / len(numbers)
+
+print(f"Average: {average([10, 20, 30, 40])}")
+</textarea>
+
+<textarea class="src-code" data-l="fn2" data-kind="solution">
+import math
+import random
+
+def safe_int(text, default=0):
+    try:
+        return int(text)
+    except ValueError:
+        print(f"'{text}' is not a number. Using {default}.")
+        return default
+
+print(safe_int("42"))
+print(safe_int("hello"))
+print(safe_int("3.14"))
+
+def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        print("Cannot divide by zero.")
+        return None
+
+print(safe_divide(10, 2))
+print(safe_divide(10, 0))
+
+# Reading user input safely
+age_text = "not a number"
+age = safe_int(age_text)
+print(f"Age: {age}")
+</textarea>
+
+<textarea class="src-code" data-l="ds1" data-kind="solution">
+numbers = [10, 20, 30, 40, 50]
+
+print(numbers[0])
+print(numbers[-1])
+print(numbers[1:3])
+print(numbers[:2])       # first two
+print(numbers[-2:])      # last two
+
+numbers.append(60)
+numbers.insert(0, 5)
+print(numbers)
+
+# List comprehensions
+squares = [n * n for n in range(1, 11)]
+print(f"Squares 1-10: {squares}")
+
+evens = [n for n in range(1, 21) if n % 2 == 0]
+print(f"Evens 1-20: {evens}")
+
+# Remove duplicates while preserving order
+seen = []
+unique = []
+for n in [1, 2, 2, 3, 1, 4, 3]:
+    if n not in seen:
+        seen.append(n)
+        unique.append(n)
+print(f"Unique: {unique}")
+
+# Reverse
+print(numbers[::-1])
+</textarea>
+
+<textarea class="src-code" data-l="ds2" data-kind="solution">
+# A contact book as a dict of dicts
+contacts = {
+    "chisomo": {"name": "Chisomo Banda", "phone": "0999555123"},
+    "tadala": {"name": "Tadala Mwale", "phone": "0888123456"}
+}
+
+for key, contact in contacts.items():
+    print(f"{key}: {contact['name']} — {contact['phone']}")
+
+# Add a new contact
+contacts["gift"] = {"name": "Gift Phiri", "phone": "0777654321"}
+print(f"Total contacts: {len(contacts)}")
+
+# Word frequency counter (classic use of dicts)
+text = "the quick brown fox jumps over the lazy dog the fox"
+words = text.split()
+freq = {}
+for word in words:
+    freq[word] = freq.get(word, 0) + 1
+
+for word, count in sorted(freq.items(), key=lambda x: -x[1]):
+    print(f"{word}: {count}")
+
+# Sets for uniqueness
+print(f"Unique words: {len(set(words))}")
+</textarea>
+
+<textarea class="src-code" data-l="bk1" data-kind="solution">
+tasks = []
+
+
+def list_tasks():
+    return tasks
+
+
+def add_task(title):
+    new_id = max([t["id"] for t in tasks], default=0) + 1
+    new_task = {"id": new_id, "title": title, "done": False}
+    tasks.append(new_task)
+    return new_task
+
+
+def mark_done(task_id):
+    for task in tasks:
+        if task["id"] == task_id:
+            task["done"] = True
+            return task
+    return None
+
+
+def delete_task(task_id):
+    for i, task in enumerate(tasks):
+        if task["id"] == task_id:
+            return tasks.pop(i)
+    return None
+
+
+def count_done():
+    return sum(1 for t in tasks if t["done"])
+
+
+# Simulate a workflow
+add_task("Learn Python")
+add_task("Build an API")
+add_task("Write tests")
+
+print(f"Total: {len(list_tasks())}")
+print(f"Done:  {count_done()}")
+
+mark_done(1)
+delete_task(3)
+
+print("\nFinal list:")
+for t in list_tasks():
+    status = "✓" if t["done"] else "○"
+    print(f"  [{status}] #{t['id']} {t['title']}")
+
+print(f"\nDone: {count_done()} / {len(tasks)}")
+</textarea>
+
+<textarea class="src-code" data-l="bk2" data-kind="solution">
+import json
+
+FILE = "tasks.json"
+
+
+def load_tasks():
+    try:
+        with open(FILE, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        print("Warning: tasks.json corrupted. Starting fresh.")
+        return []
+
+
+def save_tasks(tasks):
+    with open(FILE, "w") as f:
+        json.dump(tasks, f, indent=2)
+
+
+def add_task(tasks, title):
+    tasks.append({"title": title.strip(), "done": False})
+    print(f"Added: {title}")
+
+
+def list_tasks(tasks):
+    if not tasks:
+        print("  (no tasks yet)")
+        return
+    for i, task in enumerate(tasks, start=1):
+        mark = "✓" if task["done"] else "○"
+        print(f"  {i}. [{mark}] {task['title']}")
+
+
+def mark_done(tasks, index):
+    if 0 <= index < len(tasks):
+        tasks[index]["done"] = True
+        print(f"Marked done: {tasks[index]['title']}")
+    else:
+        print("Invalid task number.")
+
+
+def delete_task(tasks, index):
+    if 0 <= index < len(tasks):
+        removed = tasks.pop(index)
+        print(f"Deleted: {removed['title']}")
+    else:
+        print("Invalid task number.")
+
+
+def menu():
+    print("\nTask Manager")
+    print("1. Add task")
+    print("2. List tasks")
+    print("3. Mark done")
+    print("4. Delete task")
+    print("5. Quit")
+
+
+def main():
+    tasks = load_tasks()
+    print(f"Loaded {len(tasks)} tasks from {FILE}.")
+
+    # Simulated user input
+    actions = [
+        ("add", "Finish Python course"),
+        ("add", "Build capstone CLI app"),
+        ("add", "Push to GitHub"),
+        ("list", None),
+        ("done", 1),
+        ("done", 2),
+        ("list", None),
+        ("delete", 3),
+        ("list", None),
+        ("quit", None)
+    ]
+
+    for action, arg in actions:
+        print(f"\n> {action}")
+        if action == "add":
+            add_task(tasks, arg)
+        elif action == "list":
+            list_tasks(tasks)
+        elif action == "done":
+            mark_done(tasks, arg - 1)
+        elif action == "delete":
+            delete_task(tasks, arg - 1)
+        elif action == "quit":
+            break
+        save_tasks(tasks)
+
+    save_tasks(tasks)
+    print(f"\nGoodbye! {len(tasks)} tasks saved to {FILE}.")
+
+
+main()
+</textarea>
+
+</div>
+
+<!-- ============================================================
+     APPLICATION SCRIPT
+     ============================================================ -->
+<script>
+(function () {
+'use strict';
+
+/* ========== CONFIG ========== */
+var STORAGE_KEY = 'python_fundamentals_progress_v1';
+var CAPSTONE_KEY = 'python_fundamentals_capstone_v1';
+var SKULPT_URL = 'https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js';
+var SKULPT_STDLIB_URL = 'https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js';
+
+/* ========== COURSE DATA ========== */
+var course = {
+  modules: [
+    {
+      id: 'basics', icon: '🌱', title: 'Basics',
+      lessons: [
+        { id:'ba1', title:'Variables & Data Types', time:'20 min',
+          challenge:'Create a variable <code>favorite_food</code> set to your favourite meal. Print it with an f-string that also includes your name. Then print <code>age + 5</code> to see your age in 5 years.',
+          quiz:[
+            { q:'Which symbol do you use to assign a value to a variable in Python?', options:[':=','=','==','<-'], correct:1 },
+            { q:'What type is the value True in Python?', options:['int','str','bool','None'], correct:2 },
+            { q:'How do you check the type of a value?', options:['typeof x','x.type()','type(x)','x instanceof'], correct:2 }
+          ]},
+        { id:'ba2', title:'Strings & Input/Output', time:'22 min',
+          challenge:'Write an f-string that introduces you with your name, age, and city. Then use <code>.split()</code> on the string <code>"apple,banana,mango"</code> and print each item on its own line.',
+          quiz:[
+            { q:'Which prefix creates an f-string?', options:['s"..."','f"..."','format"..."','py"..."'], correct:1 },
+            { q:'What does "  hi  ".strip() return?', options:['"  hi  "','"hi"','"HI"','"  hi"'], correct:1 },
+            { q:'What does input() always return?', options:['int','str','bool','varies'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'control-flow', icon: '🔀', title: 'Control Flow',
+      lessons: [
+        { id:'cf1', title:'Conditionals (if / elif / else)', time:'22 min',
+          challenge:'Write a program that prints the correct greeting based on the hour: "Good morning" (before 12), "Good afternoon" (12–17), "Good evening" (after 17). Test it with hour = 14.',
+          quiz:[
+            { q:'What must come at the end of an if statement line?', options:['semicolon','colon','comma','nothing'], correct:1 },
+            { q:'Which keyword checks a second condition?', options:['else if','elseif','elif','otherwise'], correct:2 },
+            { q:'How does Python express logical AND?', options:['&&','and','AND','&'], correct:1 }
+          ]},
+        { id:'cf2', title:'Loops (for, while)', time:'24 min',
+          challenge:'Write a <code>for</code> loop that prints only the even numbers from 2 to 20. Then write a <code>while</code> loop that counts down from 5 to 1 and prints "Liftoff!" at the end.',
+          quiz:[
+            { q:'What does range(5) produce?', options:['1,2,3,4,5','0,1,2,3,4','0,1,2,3,4,5','5,4,3,2,1'], correct:1 },
+            { q:'Which keyword immediately exits a loop?', options:['exit','stop','break','end'], correct:2 },
+            { q:'Which loop is best when you do not know how many iterations you need?', options:['for','while','do-while','foreach'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'functions', icon: '⚙️', title: 'Functions',
+      lessons: [
+        { id:'fn1', title:'Defining Functions', time:'24 min',
+          challenge:'Write a function <code>square(n)</code> that returns n squared. Then write <code>is_even(n)</code> that returns True or False. Test both with print().',
+          quiz:[
+            { q:'Which keyword defines a function?', options:['function','def','func','define'], correct:1 },
+            { q:'What does a function return if it has no return statement?', options:['0','None','""','Error'], correct:1 },
+            { q:'What is a "default argument"?', options:['A required argument','A parameter with a fallback value','The first argument','The last argument'], correct:1 }
+          ]},
+        { id:'fn2', title:'Modules & Error Handling', time:'24 min',
+          challenge:'Write a <code>safe_int(text)</code> function that returns the integer, or 0 if the text is not a number. Test it with "42", "hello", and "3.14".',
+          quiz:[
+            { q:'Which keyword starts an error-handling block?', options:['catch','rescue','try','attempt'], correct:2 },
+            { q:'Which exception does int("hello") raise?', options:['TypeError','ValueError','NameError','CastError'], correct:1 },
+            { q:'What does the finally block do?', options:['Runs only on error','Runs only on success','Always runs','Skips the try'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'data-structures', icon: '📦', title: 'Data Structures',
+      lessons: [
+        { id:'ds1', title:'Lists & Tuples', time:'26 min',
+          challenge:'Create a list of 5 numbers. Print the first, last, and middle three items. Then use a list comprehension to produce a new list with each number squared.',
+          quiz:[
+            { q:'Which method adds an item to the end of a list?', options:['push','append','add','insert'], correct:1 },
+            { q:'What does numbers[-1] return?', options:['An error','The first item','The last item','None'], correct:2 },
+            { q:'What is a key difference between lists and tuples?', options:['Tuples are faster','Tuples are immutable','Lists hold fewer items','No difference'], correct:1 }
+          ]},
+        { id:'ds2', title:'Dictionaries & Sets', time:'26 min',
+          challenge:'Create a dictionary of 3 countries → capitals. Loop over it and print each pair on its own line. Then add a fourth country and print the total count.',
+          quiz:[
+            { q:'How do you safely look up a key that might not exist?', options:['dict[key]','dict.get(key)','dict.find(key)','dict.fetch(key)'], correct:1 },
+            { q:'Which method returns key-value pairs for looping?', options:['.keys()','.values()','.items()','.pairs()'], correct:2 },
+            { q:'What is a set best used for?', options:['Ordered data','Unique items','Nested data','Large files'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'backend', icon: '🚀', title: 'Backend Basics',
+      lessons: [
+        { id:'bk1', title:'Intro to Flask', time:'28 min',
+          challenge:'Add a <code>count_done()</code> function that returns how many tasks are marked done. Call it and print the result.',
+          quiz:[
+            { q:'What does the @app.route decorator do?', options:['Handles routing','Defines a URL endpoint','Starts the server','Imports Flask'], correct:1 },
+            { q:'Which HTTP method is used to create a new resource?', options:['GET','POST','DELETE','PUT'], correct:1 },
+            { q:'Why cannot we run Flask in this browser editor?', options:['Flask is too slow','It needs a real network socket','Skulpt does not support imports','Flask is Python 2 only'], correct:1 }
+          ]},
+        { id:'bk2', title:'Capstone — CLI Task Manager', time:'40 min',
+          challenge:'Add a <code>count_done(tasks)</code> function that returns how many tasks are marked done. Print it at the end of the program. Then add a "clear all" simulated command that empties the list.',
+          quiz:[
+            { q:'What does json.dump(data, f) do?', options:['Reads JSON','Writes JSON to a file','Deletes JSON','Validates JSON'], correct:1 },
+            { q:'Which exception do you catch when a file does not exist?', options:['FileMissingError','FileNotFoundError','IOError','OpenError'], correct:1 },
+            { q:'Why do we call save_tasks() after every change?', options:['To be safe','So the file always reflects the current state','Because Python requires it','For performance'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+/* ========== FLATTEN ========== */
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+/* ========== SOURCE MAPS ========== */
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+/* ========== SKULPT LAZY LOADER ========== */
+var skulptLoaded = false;
+var skulptLoading = false;
+var skulptQueue = [];
+
+function loadSkulpt(callback) {
+  if (skulptLoaded) { callback(null); return; }
+  skulptQueue.push(callback);
+  if (skulptLoading) return;
+  skulptLoading = true;
+
+  var s1 = document.createElement('script');
+  s1.src = SKULPT_URL;
+  s1.onload = function() {
+    var s2 = document.createElement('script');
+    s2.src = SKULPT_STDLIB_URL;
+    s2.onload = function() {
+      skulptLoaded = true;
+      skulptLoading = false;
+      var q = skulptQueue.slice();
+      skulptQueue = [];
+      q.forEach(function(cb) { cb(null); });
+    };
+    s2.onerror = function() {
+      skulptLoading = false;
+      var q = skulptQueue.slice();
+      skulptQueue = [];
+      q.forEach(function(cb) { cb(new Error('Failed to load Python standard library.')); });
+    };
+    document.head.appendChild(s2);
+  };
+  s1.onerror = function() {
+    skulptLoading = false;
+    var q = skulptQueue.slice();
+    skulptQueue = [];
+    q.forEach(function(cb) { cb(new Error('Failed to load Python engine.')); });
+  };
+  document.head.appendChild(s1);
+}
+
+/* ========== PROGRESS ========== */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {}
+}
+function lk(id) { return 'py::' + id; }
+function isDone(id) {
+  var p = loadProgress();
+  return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed');
+}
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+/* ========== CAPSTONE MILESTONES ========== */
+var MILESTONES = [
+  { id: 'm1', text: 'I planned the CLI task manager: listed all required features' },
+  { id: 'm2', text: 'I wrote load_tasks() and save_tasks() using the json module' },
+  { id: 'm3', text: 'Adding a task works — it appears in tasks.json' },
+  { id: 'm4', text: 'Listing tasks works with numbers and done/not-done status' },
+  { id: 'm5', text: 'Marking a task as done works' },
+  { id: 'm6', text: 'Deleting a task works' },
+  { id: 'm7', text: 'My tasks survive a restart (loaded from JSON on startup)' },
+  { id: 'm8', text: 'My program handles invalid input without crashing (try/except)' },
+  { id: 'm9', text: 'I added a count_done() function to summarize progress' },
+  { id: 'm10', text: 'I pushed the project to GitHub with a README' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) {
+  try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {}
+}
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+/* ========== STATE ========== */
+var currentLessonId = 'ba1';
+var currentView = 'lessons';
+var lintTimer = null;
+
+/* ========== HELPERS ========== */
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+/* ========== METER ========== */
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+/* ========== SIDEBAR ========== */
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+/* ========== VIEW SWITCH ========== */
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+/* ========== RENDER LESSON ========== */
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>🐍 Python exercise</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Real Python</span></h2>';
+    html += '<p class="ed-s">Write Python on the left. Click <strong>Run</strong> to execute it. The Python engine loads once and is then cached.</p>';
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>Python</span><span class="pane-lb">.py</span></div>';
+    html += '<textarea class="code-ta" id="pyEditor" spellcheck="false" aria-label="Python editor"></textarea></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Output</span><button id="clearConsoleBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+    html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Click Run to execute your Python code.</div></div></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .py</button>';
+    html += '<span class="ed-tip">Tab inserts 4 spaces · input() opens a dialog</span>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some code — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('pyEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+/* ========== EDITOR ========== */
+function attachEditor(lesson, starter) {
+  var ta = $('pyEditor');
+  var conOut = $('consoleOutput');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+  var clearBtn = $('clearConsoleBtn');
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Click Run to execute your Python code.</div>';
+  }
+  function appendLine(type, text) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + type;
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = type === 'out' ? 'out' : (type === 'info' ? 'info' : 'err');
+    var span = document.createElement('span');
+    span.textContent = text;
+    line.appendChild(badge);
+    line.appendChild(span);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+  function appendOutput(raw) {
+    // Skulpt calls output with raw strings (already containing \n from print)
+    var parts = String(raw).split('\n');
+    // If the last element is '', it means the string ended with \n
+    // so we can ignore it
+    for (var i = 0; i < parts.length; i++) {
+      if (i === parts.length - 1 && parts[i] === '') continue;
+      appendLine('out', parts[i]);
+    }
+  }
+  function appendError(text) {
+    var lines = String(text).split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      if (lines[i].trim() === '') continue;
+      appendLine('error', lines[i]);
+    }
+  }
+
+  function pythonRead(x) {
+    if (typeof Sk === 'undefined') return '';
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles['files'][x] === undefined) {
+      throw "File not found: '" + x + "'";
+    }
+    return Sk.builtinFiles['files'][x];
+  }
+
+  function run() {
+    if (!window.Sk) {
+      // Load Skulpt on first run
+      runBtn.disabled = true;
+      runBtn.textContent = '⏳ Loading Python…';
+      appendLine('info', 'Downloading the Python engine (~700 KB, one time only)…');
+      loadSkulpt(function(err) {
+        runBtn.disabled = false;
+        runBtn.textContent = '▶ Run';
+        if (err) {
+          appendError('Could not load Python: ' + err.message);
+          return;
+        }
+        // Remove the "downloading" info line
+        var firstInfo = conOut.querySelector('.con-line.info');
+        if (firstInfo) firstInfo.remove();
+        executePython();
+      });
+    } else {
+      executePython();
+    }
+  }
+
+  function executePython() {
+    clearConsole();
+    var code = ta.value;
+
+    try {
+      Sk.configure({
+        output: appendOutput,
+        read: pythonRead,
+        inputfun: function(prompt) {
+          return window.prompt(prompt || 'Input:');
+        },
+        inputfunTakesPrompt: true,
+        __future__: Sk.python3,
+        execLimit: 8000
+      });
+
+      Sk.misceval.asyncToPromise(function() {
+        return Sk.importMainWithBody('<stdin>', false, code, true);
+      }).then(function() {
+        appendLine('info', 'Program finished.');
+      }).catch(function(err) {
+        appendError(err.toString());
+      });
+    } catch (e) {
+      appendError(e.toString());
+    }
+  }
+
+  function lintPython(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+    var lines = code.split('\n');
+    var hasMixedIndent = false;
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (/^\t+ +/.test(line) || /^ +\t+/.test(line)) hasMixedIndent = true;
+    }
+    if (hasMixedIndent) issues.push({ level: 'error', text: 'Mixed tabs and spaces detected — Python does not allow this. Use 4 spaces consistently.' });
+
+    // Colon check for keyword lines
+    for (var j = 0; j < lines.length; j++) {
+      var l = lines[j];
+      if (/^\s*(if|elif|else|for|while|def|class|try|except|finally|with|async def)\b.*[^:]\s*$/.test(l) && !l.trim().startsWith('#')) {
+        if (/\b(if|elif|else|for|while|def|class|try|except|finally|with|async def)\b/.test(l)) {
+          if (!/:\s*$/.test(l.trim()) && !/:\s*#/.test(l)) {
+            issues.push({ level: 'warn', text: 'Line ' + (j + 1) + ': "' + l.trim().slice(0, 40) + '…" may be missing a colon at the end.' });
+          }
+        }
+      }
+    }
+
+    // Python 2 print
+    if (/\bprint\s+["'`(]/.test(code) && !/print\s*\(/.test(code)) {
+      issues.push({ level: 'error', text: 'Python 2 syntax detected: print is a function in Python 3 — use print("hello").' });
+    }
+    // Bare except
+    if (/except\s*:/.test(code)) issues.push({ level: 'warn', text: 'Bare except: catches everything — catch a specific exception type.' });
+    // Unbalanced parens
+    var openP = (code.match(/\(/g) || []).length;
+    var closeP = (code.match(/\)/g) || []).length;
+    if (openP !== closeP) issues.push({ level: 'error', text: (openP > closeP ? (openP - closeP) + ' missing )' : (closeP - openP) + ' extra )') + ' — check your parentheses.' });
+    // Unbalanced brackets
+    var openB = (code.match(/\[/g) || []).length;
+    var closeB = (code.match(/\]/g) || []).length;
+    if (openB !== closeB) issues.push({ level: 'error', text: (openB > closeB ? (openB - closeB) + ' missing ]' : (closeB - openB) + ' extra ]') + ' — check your brackets.' });
+    // Unbalanced braces
+    var openC = (code.match(/{/g) || []).length;
+    var closeC = (code.match(/}/g) || []).length;
+    if (openC !== closeC) issues.push({ level: 'error', text: (openC > closeC ? (openC - closeC) + ' missing }' : (closeC - openC) + ' extra }') + ' — check your braces.' });
+
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintPython(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      var indent = '    ';
+      var lineStart = ta.value.lastIndexOf('\n', s - 1) + 1;
+      var inIndent = /^\s*$/.test(ta.value.substring(lineStart, s));
+      if (inIndent && e.shiftKey === false && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        ta.value = ta.value.substring(0, s) + indent + ta.value.substring(en);
+        ta.selectionStart = ta.selectionEnd = s + indent.length;
+      } else {
+        ta.value = ta.value.substring(0, s) + indent + ta.value.substring(en);
+        ta.selectionStart = ta.selectionEnd = s + indent.length;
+      }
+      debLint();
+    }
+  });
+
+  runBtn.addEventListener('click', run);
+
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearConsole();
+  });
+
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'text/x-python' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.py';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+
+  if (clearBtn) clearBtn.addEventListener('click', clearConsole);
+
+  lintNow();
+}
+
+/* ========== QUIZ ========== */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ========== OVERVIEW ========== */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Python Fundamentals</h1>';
+  html += '<p class="pg-sub">Learn the most versatile programming language in the world. In 10 weeks you will go from your first print statement to a working backend-ready CLI app — the same foundations used in data science, automation, and web backends at Instagram, Spotify, and YouTube.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>10 weeks</h3><p>15 hours of structured learning across 5 modules and 10 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Beginner</h3><p>No programming experience needed. Perfect first language.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐍</span>Real Python</h3><p>Write and run Python directly in your browser. The engine loads once, then it is cached.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Syntax &amp; types</h3><p>Variables, f-strings, input/output, type conversion.</p></div>';
+  html += '<div class="ov-card"><h3>Control flow</h3><p>if / elif / else, for, while, break, continue, range.</p></div>';
+  html += '<div class="ov-card"><h3>Functions</h3><p>Defining, parameters, defaults, return values, scope.</p></div>';
+  html += '<div class="ov-card"><h3>Modules &amp; errors</h3><p>import, try / except, the exceptions you will actually hit.</p></div>';
+  html += '<div class="ov-card"><h3>Data structures</h3><p>Lists, tuples, dictionaries, sets, comprehensions.</p></div>';
+  html += '<div class="ov-card"><h3>Backend basics</h3><p>Flask concepts, JSON persistence, and a full CLI capstone.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'Basics', 'print, variables, the four core types, f-strings, input.'],
+    ['W3–4', 'Control Flow', 'if / elif / else, logical operators, for and while loops.'],
+    ['W5–6', 'Functions & Errors', 'def, parameters, return, imports, try / except.'],
+    ['W7–8', 'Data Structures', 'Lists, tuples, dicts, sets, comprehensions, enumerate.'],
+    ['W9', 'Backend Basics', 'How Flask works, routing, JSON, in-memory databases.'],
+    ['W10', 'Capstone', 'Build a CLI task manager with JSON file persistence.'],
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson — no setup, no installs. The Python engine loads on your first Run click.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('ba1');
+    switchView('lessons');
+  });
+}
+
+/* ========== PROJECTS ========== */
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A command-line task manager that stores tasks in a JSON file, persists between runs, and demonstrates every concept from the course.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three build stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Persistence</h3><p>Write <code>load_tasks()</code> and <code>save_tasks()</code> using the <code>json</code> module.</p></div>';
+  html += '<div class="ov-card"><h3>2. Core functions</h3><p>Add, list, mark done, and delete — each as a small, testable function.</p></div>';
+  html += '<div class="ov-card"><h3>3. Main loop</h3><p>Read user input, dispatch to the right function, save after every change.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpBk1" type="button">▶ Backend Basics Intro</button>';
+  html += '<button class="btn btn-g" id="jumpBk2" type="button">Jump to Capstone</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpBk1').addEventListener('click', function() { selectLesson('bk1'); switchView('lessons'); });
+  $('jumpBk2').addEventListener('click', function() { selectLesson('bk2'); switchView('lessons'); });
+}
+
+/* ========== RESOURCES ========== */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your Python learning.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'Official Python Tutorial', 'The official docs from python.org. Clear and complete.', 'https://docs.python.org/3/tutorial/'],
+    ['📚', 'Real Python', 'Deep, practical articles on every Python topic.', 'https://realpython.com/'],
+    ['🎓', 'Automate the Boring Stuff', 'A free, beginner-friendly book about practical Python.', 'https://automatetheboringstuff.com/'],
+    ['🔍', 'Python Cheatsheet', 'A one-page reference for common syntax.', 'https://www.pythoncheatsheet.org/'],
+    ['🌐', 'Flask Documentation', 'When you are ready for real web backends.', 'https://flask.palletsprojects.com/'],
+    ['💬', 'r/learnpython', 'Friendly community for beginner questions.', 'https://www.reddit.com/r/learnpython/']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Python Cheatsheet</div><div class="res-d">A one-page reference covering all syntax from this course. Generated live.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadFlaskBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">🌐</span>';
+  html += '<div><div class="res-t">Flask Starter App</div><div class="res-d">A complete Flask REST API starter. Run it locally with pip install flask.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['🐍', 'Python 3 Installer', 'For running Python locally on your computer.', 'https://www.python.org/downloads/'],
+    ['✏️', 'Visual Studio Code', 'The most popular free code editor.', 'https://code.visualstudio.com/'],
+    ['🐙', 'GitHub', 'Host your code and capstone project. Free.', 'https://github.com/'],
+    ['🚀', 'Replit', 'Browser-based Python if you cannot install locally.', 'https://replit.com/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadFlaskBtn').addEventListener('click', downloadFlaskStarter);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  PYTHON FUNDAMENTALS — CHEATSHEET',
+    '============================================',
+    '',
+    '--- VARIABLES ---',
+    'name = "Chisomo"         # str',
+    'age = 22                 # int',
+    'height = 1.75            # float',
+    'is_student = True        # bool',
+    '',
+    '--- STRINGS ---',
+    'f"My name is {name}"',
+    '"  hi  ".strip()        # "hi"',
+    '"a,b,c".split(",")      # ["a", "b", "c"]',
+    '" ".join(["a","b"])     # "a b"',
+    'text.upper() / text.lower()',
+    '',
+    '--- CONTROL FLOW ---',
+    'if x > 10:',
+    '    ...',
+    'elif x > 5:',
+    '    ...',
+    'else:',
+    '    ...',
+    '',
+    'for i in range(5): ...',
+    'while cond: ...',
+    'break / continue',
+    '',
+    '--- FUNCTIONS ---',
+    'def greet(name, greeting="Hello"):',
+    '    return f"{greeting}, {name}!"',
+    '',
+    '--- LISTS ---',
+    'nums = [1, 2, 3]',
+    'nums.append(4)',
+    'nums[0] / nums[-1]',
+    'nums[1:3]              # slice',
+    '[n*n for n in nums]    # comprehension',
+    '',
+    '--- DICTS ---',
+    'user = {"name": "Chisomo", "age": 22}',
+    'user["name"] / user.get("phone", "none")',
+    'for k, v in user.items(): ...',
+    '',
+    '--- SETS ---',
+    'unique = set([1, 2, 2, 3])   # {1, 2, 3}',
+    '',
+    '--- IMPORTS ---',
+    'import math / random / json',
+    'from math import sqrt, pi',
+    '',
+    '--- ERRORS ---',
+    'try:',
+    '    ...',
+    'except ValueError:',
+    '    ...',
+    'finally:',
+    '    ...',
+    '',
+    '--- FILE I/O ---',
+    'with open("file.txt", "w") as f:',
+    '    f.write("hello")',
+    '',
+    'with open("file.txt", "r") as f:',
+    '    content = f.read()',
+    '',
+    'import json',
+    'json.dump(data, f)',
+    'data = json.load(f)',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Python Fundamentals',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'python-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadFlaskStarter() {
+  var appPy = [
+    'from flask import Flask, jsonify, request',
+    '',
+    'app = Flask(__name__)',
+    '',
+    '# In-memory database',
+    'tasks = [',
+    '    {"id": 1, "title": "Learn Python", "done": True},',
+    '    {"id": 2, "title": "Build an API", "done": False},',
+    ']',
+    '',
+    '',
+    '@app.route("/tasks", methods=["GET"])',
+    'def list_tasks():',
+    '    return jsonify(tasks)',
+    '',
+    '',
+    '@app.route("/tasks", methods=["POST"])',
+    'def add_task():',
+    '    data = request.get_json()',
+    '    if not data or "title" not in data:',
+    '        return jsonify({"error": "title is required"}), 400',
+    '    new_id = max((t["id"] for t in tasks), default=0) + 1',
+    '    new_task = {"id": new_id, "title": data["title"], "done": False}',
+    '    tasks.append(new_task)',
+    '    return jsonify(new_task), 201',
+    '',
+    '',
+    '@app.route("/tasks/<int:task_id>", methods=["PATCH"])',
+    'def update_task(task_id):',
+    '    for task in tasks:',
+    '        if task["id"] == task_id:',
+    '            task["done"] = True',
+    '            return jsonify(task)',
+    '    return jsonify({"error": "not found"}), 404',
+    '',
+    '',
+    '@app.route("/tasks/<int:task_id>", methods=["DELETE"])',
+    'def delete_task(task_id):',
+    '    global tasks',
+    '    tasks = [t for t in tasks if t["id"] != task_id]',
+    '    return "", 204',
+    '',
+    '',
+    'if __name__ == "__main__":',
+    '    app.run(debug=True)'
+  ].join('\n');
+
+  var blob = new Blob([appPy], { type: 'text/x-python' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'app.py';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ========== COMMUNITY ========== */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Learning alone is hard. Join hundreds of other Python learners in Malawi, share your code, ask questions, and celebrate each other\'s wins.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp</h3><p>Our main study group. Active 24/7, moderated by instructors. The fastest way to get help.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp Group</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>For file sharing, longer code snippets, and project reviews. Great for group study sessions.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram Group</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Share your capstone project and see what others built. Great for your portfolio too.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">View Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Community guidelines</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Be kind</h3><p>Everyone starts somewhere. Never mock a beginner question.</p></div>';
+  html += '<div class="ov-card"><h3>Show your code</h3><p>Paste the code and the error message. We can help much faster with both.</p></div>';
+  html += '<div class="ov-card"><h3>Share wins</h3><p>Finished a lesson? Built something cool? Post it — motivates everyone.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Questions? Just ask.</h2>';
+  html += '<p>No question is too simple. If you are stuck, another student has been stuck on the same thing — ask away.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ========== CERTIFICATE ========== */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in Python Fundamentals and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Python Fundamentals</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">10 Weeks · Beginner</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Python Fundamentals, demonstrating proficiency in variables, control flow, functions, error handling, data structures, and building a full CLI capstone project with JSON persistence.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Python Fundamentals</h1>' +
+        '<div class="t">10 Weeks · Beginner</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Python Fundamentals,<br>demonstrating proficiency in variables, control flow, functions,<br>error handling, data structures, and building a full CLI capstone<br>project with JSON persistence.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+/* ========== INIT ========== */
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

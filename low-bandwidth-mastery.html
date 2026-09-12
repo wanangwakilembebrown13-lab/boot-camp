@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Building for Low Bandwidth — the Malawi Advantage. A free TechMountain Bootcamp course on page weight, image compression, lazy loading, PWAs and data-cost-aware design.">
+<meta name="theme-color" content="#1a2332">
+<title>Building for Low Bandwidth — TechMountain Bootcamp</title>
+<style>
+:root{
+  --clr-primary:#1a2332;--clr-primary-light:#2c3e50;--clr-primary-lighter:#3d4f63;
+  --clr-accent:#00c853;--clr-accent-hover:#00a844;--clr-accent-soft:rgba(0,200,83,.12);
+  --clr-bg:#f8f9fa;--clr-surface:#fff;--clr-text:#2d3436;--clr-text-muted:#6c757d;
+  --clr-border:#e0e0e0;--clr-danger:#e53935;--clr-warning:#ffa000;
+  --font-stack:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Courier New",Courier,monospace;
+  --radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-full:9999px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --transition:.25s cubic-bezier(.4,0,.2,1);--header-h:60px;--subnav-h:48px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-stack);background:var(--clr-bg);color:var(--clr-text);line-height:1.6;font-size:16px;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--clr-accent);text-decoration:none}
+a:hover{color:var(--clr-accent-hover)}
+button{cursor:pointer;font-family:inherit;font-size:inherit}
+input,select{font-family:inherit;font-size:inherit}
+.container{max-width:1280px;margin:0 auto;padding:0 20px}
+:focus-visible{outline:3px solid var(--clr-accent);outline-offset:2px}
+
+.site-header{background:var(--clr-primary);color:#fff;position:sticky;top:0;z-index:1000;height:var(--header-h);display:flex;align-items:center;box-shadow:var(--shadow-md)}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:1.05rem}
+.logo-icon{background:var(--clr-accent);color:var(--clr-primary);width:34px;height:34px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;flex-shrink:0}
+.crumb{color:rgba(255,255,255,.55);font-size:.82rem}
+.header-progress{display:flex;align-items:center;gap:10px;color:#fff;font-size:.82rem}
+.mini-bar{width:80px;height:6px;background:rgba(255,255,255,.2);border-radius:var(--radius-full);overflow:hidden}
+.mini-bar-fill{height:100%;background:var(--clr-accent);border-radius:var(--radius-full);transition:width .4s ease}
+
+.subnav{background:var(--clr-primary-light);position:sticky;top:var(--header-h);z-index:999;height:var(--subnav-h);overflow-x:auto}
+.subnav .container{display:flex;gap:2px;height:100%;align-items:center}
+.subnav-btn{background:transparent;border:none;color:rgba(255,255,255,.75);padding:0 16px;height:100%;font-weight:600;font-size:.88rem;white-space:nowrap;border-bottom:3px solid transparent}
+.subnav-btn:hover{color:#fff}
+.subnav-btn.active{color:#fff;border-bottom-color:var(--clr-accent)}
+
+.course-layout{display:grid;grid-template-columns:290px 1fr;flex:1;min-height:calc(100vh - var(--header-h) - var(--subnav-h))}
+.course-sidebar{background:var(--clr-surface);border-right:1px solid var(--clr-border);padding:20px;overflow-y:auto;max-height:calc(100vh - var(--header-h) - var(--subnav-h));position:sticky;top:calc(var(--header-h) + var(--subnav-h))}
+.sidebar-title{font-weight:800;color:var(--clr-primary);font-size:1.02rem;margin-bottom:2px}
+.sidebar-sub{color:var(--clr-text-muted);font-size:.8rem;margin-bottom:16px}
+.overall-progress{margin-bottom:18px}
+.overall-progress .bar{height:8px;background:var(--clr-border);border-radius:var(--radius-full);overflow:hidden;margin-top:6px}
+.overall-progress .bar-fill{height:100%;background:var(--clr-accent);border-radius:var(--radius-full);transition:width .4s ease}
+.overall-progress .label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--clr-text-muted)}
+
+.module-block{margin-bottom:6px;border:1px solid var(--clr-border);border-radius:var(--radius-md);overflow:hidden}
+.module-head{width:100%;background:var(--clr-surface);border:none;padding:12px 14px;display:flex;align-items:center;gap:10px;text-align:left}
+.module-head:hover{background:var(--clr-accent-soft)}
+.module-icon{font-size:1.15rem}
+.module-name{flex:1}
+.module-name strong{display:block;font-size:.9rem;color:var(--clr-primary)}
+.module-name span{font-size:.73rem;color:var(--clr-text-muted)}
+.module-pct{font-size:.73rem;font-weight:700;color:var(--clr-accent)}
+.module-chevron{transition:transform var(--transition);color:var(--clr-text-muted)}
+.module-block.open .module-chevron{transform:rotate(90deg)}
+.module-lessons{list-style:none;display:none}
+.module-block.open .module-lessons{display:block}
+.lesson-btn{width:100%;background:transparent;border:none;text-align:left;padding:9px 14px 9px 38px;font-size:.85rem;color:var(--clr-text);border-top:1px solid var(--clr-border);display:flex;align-items:center;gap:8px}
+.lesson-btn:hover{background:var(--clr-accent-soft)}
+.lesson-btn.active{background:var(--clr-accent-soft);color:var(--clr-primary);font-weight:700;box-shadow:inset 3px 0 0 var(--clr-accent)}
+.lesson-btn[disabled]{color:#b0b6bb;cursor:not-allowed}
+.lesson-check{color:var(--clr-accent);font-weight:800;flex-shrink:0;width:14px}
+.lesson-lock{color:#b0b6bb;flex-shrink:0}
+.quick-links{margin-top:18px;padding-top:16px;border-top:1px solid var(--clr-border)}
+.quick-links h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.4px;color:var(--clr-text-muted);margin-bottom:8px}
+.quick-link-btn{display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--clr-text);font-size:.85rem;padding:7px 8px;border-radius:var(--radius-sm)}
+.quick-link-btn:hover{background:var(--clr-accent-soft);color:var(--clr-primary)}
+
+.course-main{padding:28px 36px 60px;max-width:900px}
+.page-eyebrow{color:var(--clr-text-muted);font-size:.85rem;margin-bottom:6px}
+.page-h1{font-size:1.85rem;font-weight:800;color:var(--clr-primary);margin-bottom:14px}
+.lead{color:var(--clr-text-muted);font-size:1.03rem;max-width:660px;margin-bottom:24px}
+.badge-inline{display:inline-block;background:var(--clr-accent-soft);color:var(--clr-accent);border:1px solid rgba(0,200,83,.3);padding:4px 12px;border-radius:var(--radius-full);font-size:.8rem;font-weight:700;margin-bottom:14px}
+
+.overview-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:22px 0}
+.overview-card{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:18px}
+.overview-card .icon{font-size:1.6rem;margin-bottom:8px}
+.overview-card h3{color:var(--clr-primary);font-size:1rem;margin-bottom:6px}
+.overview-card p{color:var(--clr-text-muted);font-size:.88rem}
+
+.tablist{display:flex;gap:4px;border-bottom:2px solid var(--clr-border);margin-bottom:22px;flex-wrap:wrap}
+.tab-btn{background:transparent;border:none;padding:10px 16px;font-weight:600;font-size:.9rem;color:var(--clr-text-muted);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn.active{color:var(--clr-primary);border-bottom-color:var(--clr-accent)}
+.tab-btn:hover{color:var(--clr-primary)}
+.tabpanel{display:none}
+.tabpanel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.reading p{margin-bottom:14px}
+.reading h3{color:var(--clr-primary);font-size:1.05rem;margin:18px 0 8px}
+.reading ul,.reading ol{margin:0 0 14px 22px}
+.reading code{background:var(--clr-primary);color:var(--clr-accent);padding:2px 7px;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.87em}
+.reading pre{background:var(--clr-primary);color:#e6e6e6;padding:16px;border-radius:var(--radius-md);overflow-x:auto;margin:10px 0 18px;font-family:var(--font-mono);font-size:.83rem;line-height:1.55}
+.reading pre code{background:transparent;color:inherit;padding:0}
+.reading table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:.88rem}
+.reading th,.reading td{border:1px solid var(--clr-border);padding:8px 10px;text-align:left}
+.reading th{background:var(--clr-bg);color:var(--clr-primary)}
+
+/* tool widgets (calculators, demos) */
+.tool-card{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px}
+.tool-card h3{color:var(--clr-primary);margin-bottom:10px;font-size:1.02rem}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:14px}
+.tool-field label{display:block;font-size:.78rem;font-weight:700;color:var(--clr-text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.tool-field input{width:100%;padding:9px 12px;border:2px solid var(--clr-border);border-radius:var(--radius-md)}
+.tool-field input:focus{border-color:var(--clr-accent)}
+.tool-result{background:var(--clr-primary);color:#fff;border-radius:var(--radius-md);padding:16px;margin-top:6px}
+.tool-result .big{font-size:1.6rem;font-weight:800;color:var(--clr-accent)}
+.tool-result table{width:100%;margin-top:10px;font-size:.85rem;border-collapse:collapse}
+.tool-result td{padding:5px 4px;border-bottom:1px solid rgba(255,255,255,.1)}
+.tool-note{font-size:.78rem;color:var(--clr-text-muted);margin-top:8px}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:10px}
+.compare-tile{border-radius:var(--radius-md);padding:24px 16px;text-align:center;font-weight:700;color:#fff}
+.compare-tile.before{background:var(--clr-danger)}
+.compare-tile.after{background:var(--clr-accent);color:var(--clr-primary)}
+.compare-tile .size{display:block;font-size:1.3rem;margin-top:6px}
+
+.font-race-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px}
+.font-box{border:2px solid var(--clr-border);border-radius:var(--radius-md);padding:20px;text-align:center;min-height:90px;display:flex;flex-direction:column;justify-content:center}
+.font-box.system{font-family:system-ui,-apple-system,sans-serif}
+.font-box.web{font-family:Georgia,serif;opacity:.4;transition:opacity .3s ease,font-family .3s ease}
+.font-box.web.loaded{opacity:1;font-family:"Brush Script MT",cursive}
+.font-box .label{font-size:.75rem;text-transform:uppercase;color:var(--clr-text-muted);margin-bottom:8px;font-family:var(--font-stack)!important;opacity:1!important}
+
+.lazy-scroll{height:230px;overflow-y:auto;border:2px solid var(--clr-border);border-radius:var(--radius-md);padding:10px;background:var(--clr-bg)}
+.lazy-item{height:80px;border-radius:var(--radius-md);margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-weight:700;background:#d8dee2;color:var(--clr-text-muted);transition:background .3s ease,color .3s ease}
+.lazy-item.loaded{background:var(--clr-accent-soft);color:var(--clr-primary);border:1px solid var(--clr-accent)}
+.lazy-log{background:#0d1117;color:#c9d1d9;font-family:var(--font-mono);font-size:.78rem;border-radius:var(--radius-md);padding:10px 12px;min-height:70px;max-height:120px;overflow-y:auto;margin-top:10px}
+
+.challenge-card{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px}
+.challenge-card h3{color:var(--clr-primary);margin-bottom:8px;font-size:1.02rem}
+.challenge-checklist{list-style:none;margin-top:10px}
+.challenge-checklist li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:.9rem}
+.challenge-checklist input{margin-top:3px}
+
+.quiz-question{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:16px}
+.quiz-question p.q-text{font-weight:700;color:var(--clr-primary);margin-bottom:10px}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:var(--radius-md);border:1px solid transparent;font-size:.9rem}
+.quiz-option:hover{background:var(--clr-bg)}
+.quiz-option input{margin-top:3px}
+.quiz-option.correct{background:var(--clr-accent-soft);border-color:var(--clr-accent)}
+.quiz-option.incorrect{background:rgba(229,57,53,.08);border-color:var(--clr-danger)}
+.quiz-explain{font-size:.83rem;color:var(--clr-text-muted);margin-top:8px;display:none}
+.quiz-explain.show{display:block}
+.quiz-score{font-weight:700;color:var(--clr-primary);margin-top:6px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--radius-full);font-weight:700;font-size:.88rem;border:2px solid transparent;transition:all var(--transition)}
+.btn-primary{background:var(--clr-accent);color:var(--clr-primary);border-color:var(--clr-accent)}
+.btn-primary:hover{background:var(--clr-accent-hover);border-color:var(--clr-accent-hover)}
+.btn-secondary{background:transparent;color:var(--clr-primary);border-color:var(--clr-primary)}
+.btn-secondary:hover{background:var(--clr-primary);color:#fff}
+.btn-sm{padding:7px 16px;font-size:.82rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.complete-bar{margin-top:26px;padding-top:18px;border-top:1px solid var(--clr-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.complete-bar .hint{font-size:.84rem;color:var(--clr-text-muted)}
+.lesson-nav-arrows{display:flex;justify-content:space-between;margin-top:26px;gap:12px}
+
+.step-list{list-style:none;counter-reset:step;margin:16px 0}
+.step-list li{counter-increment:step;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--clr-border)}
+.step-list li::before{content:counter(step);background:var(--clr-accent);color:var(--clr-primary);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.step-list h4{color:var(--clr-primary);font-size:.95rem;margin-bottom:2px}
+.step-list p{color:var(--clr-text-muted);font-size:.87rem}
+
+.resource-group{margin-bottom:22px}
+.resource-group h3{color:var(--clr-primary);font-size:1rem;margin-bottom:10px}
+.resource-list{list-style:none}
+.resource-list li{border:1px solid var(--clr-border);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:8px;background:var(--clr-surface)}
+.resource-list a{font-weight:700}
+.resource-list p{color:var(--clr-text-muted);font-size:.84rem;margin-top:2px}
+
+.qa-item{border:1px solid var(--clr-border);border-radius:var(--radius-md);margin-bottom:8px;overflow:hidden;background:var(--clr-surface)}
+.qa-q{width:100%;background:transparent;border:none;text-align:left;padding:14px 16px;font-weight:700;color:var(--clr-primary);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.qa-plus{transition:transform var(--transition);color:var(--clr-accent);font-size:1.2rem}
+.qa-item.open .qa-plus{transform:rotate(45deg)}
+.qa-a{max-height:0;overflow:hidden;transition:max-height var(--transition);padding:0 16px;color:var(--clr-text-muted);font-size:.9rem}
+.qa-item.open .qa-a{max-height:220px;padding:0 16px 14px}
+.whatsapp-cta{margin-top:20px;background:var(--clr-primary);color:#fff;border-radius:var(--radius-lg);padding:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.whatsapp-cta p{color:rgba(255,255,255,.75);font-size:.88rem}
+
+.cert-form{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;max-width:420px}
+.cert-form label{display:block;font-weight:700;font-size:.85rem;color:var(--clr-primary);margin-bottom:6px}
+.cert-form input{width:100%;padding:11px 14px;border:2px solid var(--clr-border);border-radius:var(--radius-md);margin-bottom:12px}
+.cert-preview{background:var(--clr-primary);color:#fff;border-radius:var(--radius-lg);padding:40px;text-align:center;border:3px solid var(--clr-accent);max-width:640px}
+.cert-preview .cert-brand{color:var(--clr-accent);font-weight:800;letter-spacing:1px;font-size:.85rem}
+.cert-preview .cert-name{font-size:1.8rem;font-weight:800;color:var(--clr-accent);margin:18px 0 8px}
+.cert-locked{background:var(--clr-surface);border:1px dashed var(--clr-border);border-radius:var(--radius-lg);padding:30px;text-align:center;color:var(--clr-text-muted);max-width:640px}
+
+.site-footer{background:var(--clr-primary);color:rgba(255,255,255,.8);padding:34px 0 18px;margin-top:auto}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;margin-bottom:24px}
+.footer-heading{color:#fff;font-weight:700;margin-bottom:10px;font-size:.98rem}
+.footer-link{display:block;color:rgba(255,255,255,.7);margin-bottom:6px;font-size:.88rem}
+.footer-link:hover{color:var(--clr-accent)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.6)}
+
+@media (max-width:1024px){
+  .course-layout{grid-template-columns:1fr}
+  .course-sidebar{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--clr-border)}
+}
+@media (max-width:640px){
+  .course-main{padding:20px 16px 48px}
+  .page-h1{font-size:1.4rem}
+  .crumb{display:none}
+  .compare-grid,.font-race-grid{grid-template-columns:1fr}
+  .whatsapp-cta{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="index.html#home" class="logo" aria-label="Back to TechMountain Bootcamp">
+      <span class="logo-icon" aria-hidden="true">📶</span>
+      <span>Low Bandwidth Mastery<span class="crumb"> · TechMountain</span></span>
+    </a>
+    <div class="header-progress" aria-label="Overall course progress">
+      <span>Progress</span>
+      <div class="mini-bar"><div class="mini-bar-fill" id="headerBarFill" style="width:0%"></div></div>
+      <span id="headerPct">0%</span>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav" aria-label="Course sections" id="subnav">
+  <div class="container" role="tablist" id="subnavTabs"></div>
+</nav>
+
+<div class="course-layout">
+  <aside class="course-sidebar" aria-label="Course modules">
+    <div class="sidebar-title">Low Bandwidth Mastery</div>
+    <p class="sidebar-sub">3 modules · 8 lessons · self-paced</p>
+    <div class="overall-progress">
+      <div class="label"><span>Overall</span><span id="sidebarPctLabel">0 / 8 lessons</span></div>
+      <div class="bar"><div class="bar-fill" id="sidebarBarFill" style="width:0%"></div></div>
+    </div>
+    <nav id="moduleNav" aria-label="Modules and lessons"></nav>
+    <div class="quick-links">
+      <h4>Quick Links</h4>
+      <button class="quick-link-btn" data-jump="toolkit">🧮 Toolkit</button>
+      <button class="quick-link-btn" data-jump="resources">📚 Resources</button>
+      <button class="quick-link-btn" data-jump="qa">💬 Q&amp;A / Get Help</button>
+      <button class="quick-link-btn" data-jump="certificate">🏆 Certificate</button>
+    </div>
+  </aside>
+
+  <main class="course-main" id="courseMain" role="main" aria-live="polite"></main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3 class="footer-heading">TechMountain Bootcamp</h3>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:12px;">Empowering Malawi's next generation of tech talent.</p>
+        <a href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" class="btn btn-primary btn-sm">View All Courses</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">This Course</h3>
+        <a href="#" class="footer-link" data-jump-module="cost">Understanding the Cost</a>
+        <a href="#" class="footer-link" data-jump-module="shrink">Shrinking the Payload</a>
+        <a href="#" class="footer-link" data-jump-module="loading">Loading Smart</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">More Courses</h3>
+        <a href="html-css-course.html" class="footer-link">HTML &amp; CSS Course</a>
+        <a href="javascript-essentials.html" class="footer-link">JavaScript Essentials</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">Get Help</h3>
+        <a href="https://wa.me/265999555123" class="footer-link">WhatsApp: +265 999 555 123</a>
+        <a href="https://t.me/techmountain" class="footer-link">Telegram: @techmountain</a>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2025 TechMountain Bootcamp — Lilongwe, Malawi. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+var courseId = 'low-bandwidth-mastery';
+
+/* =========================================================
+   COURSE DATA — 3 modules, 8 real lessons + placeholders
+========================================================= */
+var courseData = [
+{ id:'cost', title:'Understanding the Cost', sub:'Why It Matters', icon:'📊', lessons:[
+  { id:'c1', title:'Why Page Weight Matters', demo:'weight',
+    reading:'<p>"Page weight" is the total size, in kilobytes, of everything a browser downloads to show your page: HTML, CSS, JavaScript, images, and fonts. Every extra kilobyte costs a real visitor real time — and, on a mobile bundle, real money.</p>'+
+      '<p>Most tutorials are written by developers on fibre connections who never feel this cost. In Malawi, a huge share of users are on 2G/3G mobile data — so a heavy page is not a minor inconvenience, it can be the difference between someone using your site and someone giving up.</p>'+
+      '<h3>How to measure it</h3><p>Open your browser\'s DevTools → Network tab → reload the page. The bottom bar shows total requests and total transferred size. That number is your real page weight.</p>'+
+      '<p>Use the calculator on the right to see how the same page behaves across different connection speeds.</p>',
+    solution:null },
+  { id:'c2', title:'Data Cost as a UX Constraint', demo:'datacost',
+    reading:'<p>In many markets, mobile data is billed by the bundle — a fixed number of MB or GB for a fixed price. That means every page view has a real, calculable cost to your user, not just a load-time cost.</p>'+
+      '<p>This reframes performance as a UX problem, not just a technical one: a 3MB page that a user visits ten times a month is not "a bit slow" — it is a specific number of Kwacha spent just to use your product.</p>'+
+      '<h3>Designing around it</h3><ul><li>Cache aggressively so repeat visits cost far less than the first visit</li><li>Avoid auto-playing video or large background images</li><li>Let users opt into heavier content (e.g. "Load images")</li><li>Be honest in your UI about anything that will use noticeable data</li></ul>'+
+      '<p>Use the calculator to estimate the real cost of your own page, using your own mobile bundle\'s price and size.</p>' },
+  { id:'c3', title:'Auditing a Real Site', locked:true }
+]},
+
+{ id:'shrink', title:'Shrinking the Payload', sub:'Compression & Fonts', icon:'🗜️', lessons:[
+  { id:'s1', title:'Compressing Images', demo:'compare',
+    reading:'<p>Images are usually the single biggest contributor to page weight. A photo straight from a phone camera can be 2–4MB; the same photo, properly compressed, is often under 200KB with no visible quality loss for web use.</p>'+
+      '<h3>Tools worth knowing</h3><ul><li><strong>Squoosh</strong> (squoosh.app) — free, runs in your browser, lets you compare formats and quality side by side before downloading.</li><li><strong>TinyPNG</strong> (tinypng.com) — quick drag-and-drop compression for PNG and JPEG.</li><li><strong>WebP</strong> — a modern image format that is typically 25–35% smaller than JPEG at similar quality, supported by all current browsers.</li></ul>'+
+      '<p>Rule of thumb: resize the image to the size it will actually display at (do not ship a 4000px-wide photo into a 400px-wide box), then compress, then consider WebP.</p>' },
+  { id:'s2', title:'System Fonts vs Google Fonts', demo:'fontrace',
+    reading:'<p>A hosted web font (like a typical Google Fonts embed) means an extra network request — sometimes several, for different weights and styles — before your text renders in its final style. On a slow connection that delay is very visible: text either stays invisible (FOIT) or swaps fonts abruptly once the file arrives (FOUT).</p>'+
+      '<h3>The low-bandwidth alternative</h3><pre><code>body {\n  font-family: system-ui, -apple-system,\n    "Segoe UI", Roboto, sans-serif;\n}</code></pre>'+
+      '<p>A "system font stack" uses whatever font is already installed on the user\'s device — zero extra requests, zero extra kilobytes, and text renders instantly. It is not always the flashiest choice, but for a Malawian audience it is often the right one.</p>'+
+      '<p>Press play on the demo to see the difference a font-loading delay makes — then try "Simulate 2G" to see it exaggerated.</p>' },
+  { id:'s3', title:'When Not to Use a Framework', demo:'framework',
+    reading:'<p>Frameworks like React or Vue are excellent for large, complex, long-lived applications with many interactive states. But they are not free — the framework code itself has to be downloaded before your page can do anything.</p>'+
+      '<p>For a mostly-static site (a landing page, a course page like this one, a small business site), plain HTML/CSS/JavaScript often loads dramatically faster and is easier to maintain for a small team.</p>'+
+      '<h3>A rough size comparison</h3><table><tr><th>Approach</th><th>Typical baseline JS cost*</th></tr>'+
+      '<tr><td>Vanilla HTML/CSS/JS (this course\'s approach)</td><td>0 KB extra</td></tr>'+
+      '<tr><td>Preact</td><td>~4 KB gzipped</td></tr>'+
+      '<tr><td>Vue</td><td>~30–35 KB gzipped</td></tr>'+
+      '<tr><td>React + ReactDOM</td><td>~40 KB gzipped</td></tr></table>'+
+      '<p style="font-size:.82rem;color:var(--clr-text-muted);">*Approximate and version-dependent — always check the current numbers for the version you plan to ship, e.g. with Bundlephobia.</p>'+
+      '<p><strong>Ask before reaching for a framework:</strong> does this page genuinely need complex, changing UI state — or is it mostly content that a framework would just add weight to?</p>' },
+  { id:'s4', title:'Minifying & Bundling Basics', locked:true }
+]},
+
+{ id:'loading', title:'Loading Smart', sub:'Lazy Loading & PWAs', icon:'⚡', lessons:[
+  { id:'l1', title:'Lazy Loading, Code Splitting & Caching', demo:'lazy',
+    reading:'<p>Not everything on a page needs to load immediately. <strong>Lazy loading</strong> defers offscreen images and other heavy content until the user is about to scroll to them.</p>'+
+      '<pre><code>&lt;img src="photo.jpg" loading="lazy" alt="..."&gt;</code></pre>'+
+      '<h3>Code splitting</h3><p>For JavaScript, code splitting means only sending the code a page actually needs right now, and loading the rest later via dynamic import.</p>'+
+      '<pre><code>button.addEventListener("click", async () => {\n  const { openModal } = await import("./modal.js");\n  openModal();\n});</code></pre>'+
+      '<h3>Caching</h3><p>Once an asset is downloaded, HTTP caching headers (and, for offline support, a service worker cache) let repeat visits skip the network entirely for files that have not changed.</p>'+
+      '<p>Scroll the demo below to see lazy loading in action — items only "load" once they enter the visible area.</p>' },
+  { id:'l2', title:'Testing on Throttled Connections', demo:'steps',
+    reading:'<p>You cannot know if a page is fast on 2G by testing it on office WiFi. Deliberately throttling your own connection is the only reliable way to feel what your users feel.</p>' },
+  { id:'l3', title:'Progressive Web Apps & Offline-First', demo:'pwa',
+    reading:'<p>A Progressive Web App (PWA) can be "installed" from the browser and can keep working with poor or no connectivity, because a <strong>service worker</strong> caches key assets ahead of time.</p>'+
+      '<h3>The two building blocks</h3><p>A <code>manifest.json</code> describes your app (name, icons, start URL, display mode):</p>'+
+      '<pre><code>{\n  "name": "TechMountain",\n  "short_name": "TM",\n  "start_url": "/",\n  "display": "standalone",\n  "background_color": "#1a2332",\n  "theme_color": "#1a2332",\n  "icons": [{ "src": "icon.png", "sizes": "192x192", "type": "image/png" }]\n}</code></pre>'+
+      '<p>And a service worker caches assets so the app still opens offline:</p>'+
+      '<pre><code>self.addEventListener("install", (e) => {\n  e.waitUntil(\n    caches.open("v1").then((cache) =>\n      cache.addAll(["/", "/style.css", "/app.js"])\n    )\n  );\n});</code></pre>'+
+      '<p>For a data-cost-conscious audience, offline-first design is not a luxury feature — it means a user who loses signal for five minutes does not lose their work.</p>' },
+  { id:'l4', title:'Building a Service Worker', locked:true }
+]}
+];
+
+/* per-lesson challenge + quiz content, keyed by lesson id (kept separate to keep the array above readable) */
+var EXTRA = {
+  c1:{ challenge:{ text:'Open DevTools → Network on any real website, reload, and note the total transferred size. Then plug that number into the calculator and compare load times across connections.', checklist:['Measured a real page\'s total KB using DevTools','Entered it into the Page Weight Calculator','Compared the 2G vs 4G estimate'] },
+       quiz:[
+        { q:'Where can you find a page\'s real total transferred size?', options:['Browser DevTools → Network tab','The page\'s HTML source only','The domain registrar dashboard'], correct:0, explain:'The Network tab totals every request the browser actually made to render the page.' },
+        { q:'Why does page weight matter more in Malawi than in many rich-world markets?', options:['It does not — connections are the same everywhere','A large share of users are on 2G/3G mobile data with limited bundles','Malawian browsers are technically different'], correct:1, explain:'Slower, often-metered mobile connections make every extra kilobyte more costly in time and money.' }
+       ] },
+  c2:{ challenge:{ text:'Using your own (or a friend\'s) mobile data bundle price and size, estimate the monthly cost of visiting a 3MB page 30 times.', checklist:['Entered a real bundle price and size','Entered 3072 KB as the page weight and 30 as visits','Read off the estimated monthly cost'] },
+       quiz:[
+        { q:'Why is a metered mobile bundle relevant to UX design?', options:['It is not, cost is a business problem only','Every extra KB has a direct, calculable cost to the user','It only affects developers, not users'], correct:1, explain:'When data is billed by the MB, page weight becomes a direct cost the user feels every visit.' },
+        { q:'Which of these best reduces the cost of repeat visits?', options:['Aggressive caching so unchanged assets are not re-downloaded','Auto-playing background video','Loading all images at full resolution always'], correct:0, explain:'Caching means a returning visitor pays the data cost once, not on every single visit.' }
+       ] },
+  s1:{ challenge:{ text:'Pick one real image you use somewhere (a profile photo, a project screenshot) and run it through Squoosh or TinyPNG. Note the before and after file sizes.', checklist:['Uploaded an image to Squoosh or TinyPNG','Recorded the original KB and the compressed KB','Compared the percentage saved'] },
+       quiz:[
+        { q:'What is a realistic reason a phone photo might be several MB?', options:['Phones intentionally add watermarks','High resolution and minimal compression, meant for print or storage, not the web','All images are exactly the same size'], correct:1, explain:'Camera photos are optimized for quality and storage, not for fast web delivery — they usually need resizing and compression first.' },
+        { q:'Roughly how much smaller is WebP than an equivalent-quality JPEG?', options:['About 25–35% smaller, typically','Exactly 90% smaller, always','WebP is usually larger'], correct:0, explain:'WebP commonly achieves noticeably smaller file sizes than JPEG at similar visual quality, though results vary by image.' }
+       ] },
+  s2:{ challenge:{ text:'Find a page you control that uses a Google Font, and try swapping it for a system font stack. Note whether the visual difference is worth the extra network request.', checklist:['Located a font-family declaration using a hosted web font','Replaced it with a system-ui stack, even temporarily','Judged whether the visual trade-off is worth it for that page'] },
+       quiz:[
+        { q:'What does a "system font stack" avoid?', options:['All CSS entirely','An extra network request to download a font file','The need for a stylesheet'], correct:1, explain:'System fonts are already installed on the device, so no extra file needs to be downloaded.' },
+        { q:'What is FOUT/FOIT describing?', options:['A CSS layout bug','The visible delay or flash caused by waiting for a web font to load','A type of image compression'], correct:1, explain:'FOIT (flash of invisible text) and FOUT (flash of unstyled text) both describe the visible cost of loading a custom font.' }
+       ] },
+  s3:{ challenge:{ text:'Think of one page you plan to build. Decide honestly: does it need a framework, or would plain HTML/CSS/JS actually be faster to build and load?', checklist:['Named a specific planned page or project','Listed what interactive state (if any) it truly needs','Made a decision and can explain why'] },
+       quiz:[
+        { q:'What kind of project usually benefits most from a framework?', options:['A static one-page brochure site','A large, long-lived app with lots of changing interactive state','A single blog post'], correct:1, explain:'Frameworks earn their weight when they manage complex, evolving UI state across a big application.' },
+        { q:'What is the main performance trade-off of adding a framework?', options:['None, frameworks are always free','The framework\'s own code must be downloaded before your page can do anything','Frameworks make images load faster automatically'], correct:1, explain:'Every framework ships its own runtime code, which is extra weight the browser must fetch and parse first.' }
+       ] },
+  l1:{ challenge:{ text:'Find a page with several images below the fold and add loading="lazy" to those images.', checklist:['Identified at least one offscreen/below-the-fold image','Added the loading="lazy" attribute','Confirmed images above the fold still load immediately'] },
+       quiz:[
+        { q:'What attribute defers an image until it is near the viewport?', options:['loading="lazy"','defer="true"','async="image"'], correct:0, explain:'The native loading="lazy" attribute tells the browser to delay fetching that image until needed.' },
+        { q:'What problem does code splitting solve?', options:['It makes images smaller','It avoids sending JavaScript the current page does not need yet','It replaces the need for a server'], correct:1, explain:'Code splitting loads only the JS required right now, deferring the rest until it is actually needed.' }
+       ] },
+  l2:{ challenge:{ text:'Throttle your browser to "Slow 3G" or "Fast 3G" in DevTools, reload a page you built, and time how long it takes to become usable.', checklist:['Opened DevTools → Network → throttling dropdown','Selected a slow profile and reloaded','Noted the real, felt load time — not just the WiFi speed'] },
+       quiz:[
+        { q:'Why test on a throttled connection instead of office WiFi?', options:['Throttled testing is required by law','It reveals what real users on slow connections actually experience','It makes the page load faster'], correct:1, explain:'WiFi hides real-world slowness — throttling simulates the conditions many of your actual users are in.' },
+        { q:'Which of these is a real tool for measuring page performance from outside your own browser?', options:['WebPageTest.org','Notepad','A spreadsheet'], correct:0, explain:'WebPageTest (and Google PageSpeed Insights) run real, independent load tests and report detailed metrics.' }
+       ] },
+  l3:{ challenge:{ text:'Sketch (on paper or in a text file) a manifest.json for a project of yours: name, short_name, start_url, display mode, and one icon size.', checklist:['Included name and short_name','Included start_url and display: "standalone"','Listed at least one icon with a size and type'] },
+       quiz:[
+        { q:'What does a service worker enable that plain caching headers cannot?', options:['Faster typing speed','Fine-grained, offline-capable caching controlled by your own JavaScript','Automatic image compression'], correct:1, explain:'A service worker runs your own caching logic, including serving cached content when there is no network at all.' },
+        { q:'What file describes a PWA\'s name, icons and display mode?', options:['manifest.json','package.json','robots.txt'], correct:0, explain:'The web app manifest (manifest.json) is what browsers read to know how to install and present your PWA.' }
+       ] }
+};
+courseData.forEach(function(mod){ mod.lessons.forEach(function(l){ if (EXTRA[l.id]) Object.assign(l, EXTRA[l.id]); }); });
+
+/* =========================================================
+   PROGRESS STORE (Supabase-compatible row shape)
+========================================================= */
+var STORAGE_KEY = 'tm_lb_progress_v1';
+var CERT_KEY = 'tm_lb_cert_name_v1';
+var USER_ID = 'guest-local';
+
+function loadRows(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){ return []; } }
+function saveRows(rows){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); }catch(e){} }
+function findRow(moduleId, lessonId){ return loadRows().find(function(r){ return r.module_id===moduleId && r.lesson_id===lessonId; }); }
+function upsertRow(moduleId, lessonId, patch){
+  var rows = loadRows();
+  var idx = rows.findIndex(function(r){ return r.module_id===moduleId && r.lesson_id===lessonId; });
+  var base = { id: courseId+'_'+moduleId+'_'+lessonId, user_id:USER_ID, course_id:courseId, module_id:moduleId, lesson_id:lessonId, completed:false, completed_at:null, quiz_score:null, quiz_total:null };
+  var row = idx>-1 ? Object.assign({}, rows[idx], patch) : Object.assign({}, base, patch);
+  if (idx>-1) rows[idx]=row; else rows.push(row);
+  saveRows(rows); return row;
+}
+function isComplete(moduleId, lessonId){ var r=findRow(moduleId, lessonId); return !!(r && r.completed); }
+function countableLessons(mod){ return mod.lessons.filter(function(l){ return !l.locked; }); }
+function moduleProgress(mod){
+  var total = countableLessons(mod).length;
+  var done = countableLessons(mod).filter(function(l){ return isComplete(mod.id,l.id); }).length;
+  return { done:done, total:total, pct: total? Math.round(done/total*100):0 };
+}
+function overallProgress(){
+  var done=0,total=0;
+  courseData.forEach(function(mod){ var p=moduleProgress(mod); done+=p.done; total+=p.total; });
+  return { done:done, total:total, pct: total? Math.round(done/total*100):0 };
+}
+
+/* =========================================================
+   STATE
+========================================================= */
+var state = { topTab:'overview', moduleId:'cost', lessonId:'c1', lessonTab:'reading', quizAttempted:{} };
+var TOP_TABS = [
+  { id:'overview', label:'Overview' },
+  { id:'lessons', label:'Lessons' },
+  { id:'toolkit', label:'Toolkit' },
+  { id:'resources', label:'Resources' },
+  { id:'qa', label:'Q&A' },
+  { id:'certificate', label:'Certificate' }
+];
+var LESSON_TABS = [
+  { id:'reading', label:'Reading' },
+  { id:'demo', label:'Interactive Demo' },
+  { id:'challenge', label:'Try It Yourself' },
+  { id:'quiz', label:'Quiz' }
+];
+
+var mainEl = document.getElementById('courseMain');
+var moduleNavEl = document.getElementById('moduleNav');
+
+function findLesson(moduleId, lessonId){
+  var mod = courseData.find(function(m){ return m.id===moduleId; });
+  var lesson = mod.lessons.find(function(l){ return l.id===lessonId; });
+  return { mod:mod, lesson:lesson };
+}
+function flatLessons(){
+  var out=[];
+  courseData.forEach(function(m){ m.lessons.forEach(function(l){ if(!l.locked) out.push({m:m,l:l}); }); });
+  return out;
+}
+
+/* =========================================================
+   SUBNAV + SIDEBAR
+========================================================= */
+function renderSubnav(){
+  var el = document.getElementById('subnavTabs');
+  el.innerHTML = '';
+  TOP_TABS.forEach(function(t){
+    var b = document.createElement('button');
+    b.className = 'subnav-btn'+(state.topTab===t.id?' active':'');
+    b.setAttribute('role','tab'); b.textContent = t.label;
+    b.addEventListener('click', function(){ state.topTab=t.id; renderAll(); });
+    el.appendChild(b);
+  });
+}
+function renderSidebar(){
+  moduleNavEl.innerHTML = '';
+  courseData.forEach(function(mod){
+    var p = moduleProgress(mod);
+    var isOpen = mod.id === state.moduleId && state.topTab==='lessons';
+    var block = document.createElement('div');
+    block.className = 'module-block'+(isOpen?' open':'');
+    var head = document.createElement('button');
+    head.className = 'module-head'; head.setAttribute('aria-expanded', isOpen);
+    head.innerHTML = '<span class="module-icon" aria-hidden="true">'+mod.icon+'</span>'+
+      '<span class="module-name"><strong>'+mod.title+'</strong><span>'+mod.sub+'</span></span>'+
+      '<span class="module-pct">'+p.pct+'%</span><span class="module-chevron" aria-hidden="true">›</span>';
+    head.addEventListener('click', function(){
+      var wasOpen = block.classList.contains('open');
+      document.querySelectorAll('.module-block').forEach(function(b){ b.classList.remove('open'); });
+      if (!wasOpen) block.classList.add('open');
+    });
+    block.appendChild(head);
+    var list = document.createElement('ul'); list.className='module-lessons';
+    mod.lessons.forEach(function(lesson,i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.className = 'lesson-btn'+((state.topTab==='lessons' && mod.id===state.moduleId && lesson.id===state.lessonId)?' active':'');
+      var mark = lesson.locked ? '<span class="lesson-lock" aria-hidden="true">🔒</span>' :
+        (isComplete(mod.id,lesson.id) ? '<span class="lesson-check" aria-hidden="true">✓</span>' : '<span class="lesson-check" aria-hidden="true" style="opacity:.25">○</span>');
+      btn.innerHTML = mark+'<span>'+(i+1)+'. '+lesson.title+'</span>';
+      if (lesson.locked){ btn.disabled=true; btn.title='Coming soon'; }
+      else btn.addEventListener('click', function(){
+        state.moduleId=mod.id; state.lessonId=lesson.id; state.lessonTab='reading'; state.topTab='lessons';
+        renderAll(); mainEl.focus();
+      });
+      li.appendChild(btn); list.appendChild(li);
+    });
+    block.appendChild(list); moduleNavEl.appendChild(block);
+  });
+  var overall = overallProgress();
+  document.getElementById('sidebarBarFill').style.width = overall.pct+'%';
+  document.getElementById('sidebarPctLabel').textContent = overall.done+' / '+overall.total+' lessons';
+  document.getElementById('headerBarFill').style.width = overall.pct+'%';
+  document.getElementById('headerPct').textContent = overall.pct+'%';
+}
+
+/* =========================================================
+   INTERACTIVE DEMO WIDGETS
+========================================================= */
+function fmtTime(sec){ return sec < 1 ? Math.round(sec*1000)+' ms' : sec.toFixed(1)+' s'; }
+
+function buildWeightCalculator(root){
+  root.innerHTML =
+    '<div class="tool-card"><h3>📦 Page Weight Calculator</h3>'+
+    '<div class="tool-grid">'+
+      ['HTML','CSS','JavaScript','Images','Fonts'].map(function(f,i){
+        return '<div class="tool-field"><label for="wc'+i+'">'+f+' (KB)</label><input type="number" min="0" id="wc'+i+'" value="'+[8,12,20,150,0][i]+'"></div>';
+      }).join('')+
+    '</div><button class="btn btn-primary btn-sm" type="button" id="wcCalc">Calculate</button>'+
+    '<div class="tool-result" id="wcResult"></div></div>';
+  function calc(){
+    var total = 0;
+    for (var i=0;i<5;i++) total += parseFloat(document.getElementById('wc'+i).value) || 0;
+    var speeds = [ ['2G (poor, ~50 kbps)',50], ['2G (average, ~150 kbps)',150], ['3G (~750 kbps)',750], ['4G/LTE (~4 Mbps)',4000], ['WiFi (~10 Mbps)',10000] ];
+    var rows = speeds.map(function(s){ var seconds = (total*8)/s[1]; return '<tr><td>'+s[0]+'</td><td style="text-align:right;">'+fmtTime(seconds)+'</td></tr>'; }).join('');
+    document.getElementById('wcResult').innerHTML =
+      '<div class="big">'+total.toFixed(0)+' KB total</div>'+
+      '<table>'+rows+'</table>'+
+      '<p class="tool-note" style="color:rgba(255,255,255,.6)">Best-case estimates from transfer size alone — real-world load times are usually slower due to latency, DNS lookups and packet loss.</p>';
+  }
+  document.getElementById('wcCalc').addEventListener('click', calc);
+  calc();
+}
+
+function buildDataCostCalculator(root){
+  root.innerHTML =
+    '<div class="tool-card"><h3>💰 Data Cost Calculator</h3>'+
+    '<div class="tool-grid">'+
+      '<div class="tool-field"><label for="dcWeight">Page weight (KB)</label><input type="number" min="0" id="dcWeight" value="800"></div>'+
+      '<div class="tool-field"><label for="dcVisits">Visits per month</label><input type="number" min="0" id="dcVisits" value="20"></div>'+
+      '<div class="tool-field"><label for="dcPrice">Your bundle price</label><input type="number" min="0" id="dcPrice" value="1000"></div>'+
+      '<div class="tool-field"><label for="dcSize">Your bundle size (MB)</label><input type="number" min="0" id="dcSize" value="500"></div>'+
+    '</div><button class="btn btn-primary btn-sm" type="button" id="dcCalc">Calculate</button>'+
+    '<div class="tool-result" id="dcResult"></div></div>';
+  function calc(){
+    var weightKB = parseFloat(document.getElementById('dcWeight').value)||0;
+    var visits = parseFloat(document.getElementById('dcVisits').value)||0;
+    var price = parseFloat(document.getElementById('dcPrice').value)||0;
+    var bundleMB = parseFloat(document.getElementById('dcSize').value)||1;
+    var costPerMB = price/bundleMB;
+    var totalMB = (weightKB*visits)/1024;
+    var totalCost = totalMB*costPerMB;
+    document.getElementById('dcResult').innerHTML =
+      '<div class="big">~ '+totalCost.toFixed(0)+' (your currency) / month</div>'+
+      '<table><tr><td>Cost per MB</td><td style="text-align:right;">'+costPerMB.toFixed(2)+'</td></tr>'+
+      '<tr><td>Total data used</td><td style="text-align:right;">'+totalMB.toFixed(2)+' MB</td></tr></table>'+
+      '<p class="tool-note" style="color:rgba(255,255,255,.6)">Figures come entirely from what you entered — plug in your own real bundle price and size for an accurate result.</p>';
+  }
+  document.getElementById('dcCalc').addEventListener('click', calc);
+  calc();
+}
+
+function buildCompareDemo(root){
+  root.innerHTML =
+    '<div class="tool-card"><h3>🖼️ Before / After Compression</h3>'+
+    '<div class="compare-grid">'+
+      '<div class="compare-tile before">Original JPEG<span class="size">2.4 MB</span></div>'+
+      '<div class="compare-tile after">Compressed WebP<span class="size">180 KB</span></div>'+
+    '</div><p class="tool-note">Same visual quality for web use — roughly 13x smaller, purely from resizing and re-encoding. Try this yourself for free at squoosh.app.</p></div>';
+}
+
+function buildFontRaceDemo(root, prefix){
+  root.innerHTML =
+    '<div class="tool-card"><h3>🔤 Font Loading Race</h3>'+
+    '<div class="font-race-grid">'+
+      '<div class="font-box system"><div class="label">System Font</div><div>Loads instantly</div></div>'+
+      '<div class="font-box web" id="'+prefix+'webbox"><div class="label">Web Font (simulated)</div><div id="'+prefix+'webtext">Waiting for font file…</div></div>'+
+    '</div><div class="editor-actions">'+
+      '<button class="btn btn-primary btn-sm" type="button" id="'+prefix+'play">▶ Play (Fast connection)</button>'+
+      '<button class="btn btn-secondary btn-sm" type="button" id="'+prefix+'play2g">Simulate 2G</button>'+
+    '</div></div>';
+  function play(delay){
+    var box = document.getElementById(prefix+'webbox');
+    var text = document.getElementById(prefix+'webtext');
+    box.classList.remove('loaded');
+    text.textContent = 'Waiting for font file… ('+delay+'ms)';
+    setTimeout(function(){ box.classList.add('loaded'); text.textContent = 'Font loaded — text just changed style'; }, delay);
+  }
+  document.getElementById(prefix+'play').addEventListener('click', function(){ play(600); });
+  document.getElementById(prefix+'play2g').addEventListener('click', function(){ play(3200); });
+}
+
+function buildFrameworkDemo(root){
+  root.innerHTML = '<div class="tool-card"><h3>📐 Rule of Thumb</h3>'+
+    '<p style="font-size:.92rem;color:var(--clr-text-muted);">Before adding a framework, ask: does this page have complex state that changes a lot (a dashboard, an editor, a live feed)? If it is mostly content — a course page, a landing page, a menu — plain HTML/CSS/JS will almost always load faster and be simpler to maintain.</p></div>';
+}
+
+function buildLazyDemo(root, prefix){
+  root.innerHTML =
+    '<div class="tool-card"><h3>🖱️ Scroll to Lazy-Load</h3>'+
+    '<div class="lazy-scroll" id="'+prefix+'scroll">'+
+      [1,2,3,4,5,6].map(function(n){ return '<div class="lazy-item" data-n="'+n+'">🚫 Image '+n+' — not loaded</div>'; }).join('')+
+    '</div><div class="lazy-log" id="'+prefix+'log">Scroll the box above — items load only when visible.</div></div>';
+  var container = document.getElementById(prefix+'scroll');
+  var log = document.getElementById(prefix+'log');
+  function addLog(msg){ var d=document.createElement('div'); d.textContent = msg; log.appendChild(d); log.scrollTop = log.scrollHeight; }
+  var items = container.querySelectorAll('.lazy-item');
+  if ('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting && !entry.target.classList.contains('loaded')){
+          var n = entry.target.getAttribute('data-n');
+          setTimeout(function(){
+            entry.target.classList.add('loaded');
+            entry.target.textContent = '✅ Image '+n+' — loaded on demand';
+            addLog('[lazy] Image '+n+' entered viewport → fetched');
+          }, 300);
+        }
+      });
+    }, { root: container, threshold:0.4 });
+    items.forEach(function(it){ obs.observe(it); });
+  }
+}
+
+function buildStepsDemo(root){
+  root.innerHTML =
+    '<div class="tool-card"><h3>🐢 Throttle Your Own Connection</h3><ul class="step-list">'+
+    [
+      ['Open DevTools','Right-click anywhere on a page and choose "Inspect", or press F12.'],
+      ['Go to the Network tab','This shows every request the page makes and how big each one is.'],
+      ['Find the throttling dropdown','It usually says "No throttling" by default, near the top of the panel.'],
+      ['Select "Slow 3G" or "Fast 3G"','This simulates realistic mobile speeds instead of your office WiFi.'],
+      ['Reload the page','Watch — and feel — how long it takes to become usable.'],
+      ['Cross-check with WebPageTest.org or PageSpeed Insights','These run independent tests from real locations and give you a shareable report.']
+    ].map(function(s){ return '<li><div><h4>'+s[0]+'</h4><p>'+s[1]+'</p></div></li>'; }).join('')+
+    '</ul></div>';
+}
+
+function buildPwaDemo(root){
+  root.innerHTML = '<div class="tool-card"><h3>✅ Installable PWA Checklist</h3><ul class="challenge-checklist">'+
+    ['Served over HTTPS','Has a linked manifest.json with name, icons and start_url','Has a registered service worker','Caches at least a basic offline fallback page','Works (in some reduced form) with the network turned off']
+    .map(function(c){ return '<li><input type="checkbox"> <span>'+c+'</span></li>'; }).join('')+
+    '</ul></div>';
+}
+
+function renderDemo(root, lesson, prefix){
+  if (!lesson.demo){ root.innerHTML = '<p>No interactive demo for this lesson yet.</p>'; return; }
+  if (lesson.demo==='weight') buildWeightCalculator(root);
+  else if (lesson.demo==='datacost') buildDataCostCalculator(root);
+  else if (lesson.demo==='compare') buildCompareDemo(root);
+  else if (lesson.demo==='fontrace') buildFontRaceDemo(root, prefix);
+  else if (lesson.demo==='framework') buildFrameworkDemo(root);
+  else if (lesson.demo==='lazy') buildLazyDemo(root, prefix);
+  else if (lesson.demo==='steps') buildStepsDemo(root);
+  else if (lesson.demo==='pwa') buildPwaDemo(root);
+  else root.innerHTML = '<p>No interactive demo for this lesson yet.</p>';
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+function renderQuiz(root, mod, lesson){
+  var qs = lesson.quiz;
+  if (!qs){ root.innerHTML = '<p>Quiz coming soon.</p>'; return; }
+  var html='';
+  qs.forEach(function(q,qi){
+    html += '<div class="quiz-question" data-qi="'+qi+'"><p class="q-text">'+(qi+1)+'. '+q.q+'</p>';
+    q.options.forEach(function(opt,oi){
+      html += '<label class="quiz-option"><input type="radio" name="quiz-'+lesson.id+'-'+qi+'" value="'+oi+'"> <span>'+opt+'</span></label>';
+    });
+    html += '<p class="quiz-explain">'+q.explain+'</p></div>';
+  });
+  html += '<button class="btn btn-primary" type="button" id="checkQuizBtn">Check Answers</button><p class="quiz-score" id="quizScoreText" aria-live="polite"></p>';
+  root.innerHTML = html;
+  document.getElementById('checkQuizBtn').addEventListener('click', function(){
+    var score=0;
+    qs.forEach(function(q,qi){
+      var block = root.querySelector('.quiz-question[data-qi="'+qi+'"]');
+      var selected = block.querySelector('input[type="radio"]:checked');
+      block.querySelectorAll('.quiz-option').forEach(function(optEl,oi){
+        optEl.classList.remove('correct','incorrect');
+        if (oi===q.correct) optEl.classList.add('correct');
+        else if (selected && parseInt(selected.value,10)===oi) optEl.classList.add('incorrect');
+      });
+      block.querySelector('.quiz-explain').classList.add('show');
+      if (selected && parseInt(selected.value,10)===q.correct) score++;
+    });
+    document.getElementById('quizScoreText').textContent = 'Score: '+score+' / '+qs.length;
+    state.quizAttempted[mod.id+'_'+lesson.id] = { score:score, total:qs.length };
+    upsertRow(mod.id, lesson.id, { quiz_score:score, quiz_total:qs.length });
+    updateCompleteBar(mod, lesson);
+  });
+}
+
+/* =========================================================
+   LESSON PAGE
+========================================================= */
+function updateCompleteBar(mod, lesson){
+  var btn = document.getElementById('markCompleteBtn');
+  var hint = document.getElementById('completeHint');
+  if (!btn) return;
+  var attempted = !!state.quizAttempted[mod.id+'_'+lesson.id] || isComplete(mod.id, lesson.id);
+  var already = isComplete(mod.id, lesson.id);
+  btn.disabled = !attempted || already;
+  btn.textContent = already ? '✓ Completed' : 'Mark Lesson Complete';
+  hint.textContent = already ? 'Saved to your progress.' : (attempted ? 'You can mark this lesson complete now.' : 'Answer the quiz first to unlock this button.');
+}
+
+function renderLessonsPage(){
+  var found = findLesson(state.moduleId, state.lessonId);
+  var mod = found.mod, lesson = found.lesson;
+  var idx = mod.lessons.indexOf(lesson)+1;
+
+  mainEl.innerHTML =
+    '<p class="page-eyebrow">'+mod.title+' Module · Lesson '+idx+' of '+mod.lessons.length+'</p>'+
+    '<h1 class="page-h1">'+lesson.title+'</h1>'+
+    '<div class="tablist" role="tablist" aria-label="Lesson sections" id="tablist"></div>'+
+    '<div id="panel-reading" class="tabpanel" role="tabpanel"><div class="reading"></div></div>'+
+    '<div id="panel-demo" class="tabpanel" role="tabpanel"></div>'+
+    '<div id="panel-challenge" class="tabpanel" role="tabpanel"></div>'+
+    '<div id="panel-quiz" class="tabpanel" role="tabpanel"></div>'+
+    '<div class="complete-bar"><p class="hint" id="completeHint"></p>'+
+      '<button class="btn btn-primary" type="button" id="markCompleteBtn" disabled>Mark Lesson Complete</button></div>'+
+    '<div class="lesson-nav-arrows">'+
+      '<button class="btn btn-secondary" type="button" id="prevLessonBtn">← Previous</button>'+
+      '<button class="btn btn-secondary" type="button" id="nextLessonBtn">Next →</button></div>';
+
+  var tablist = document.getElementById('tablist');
+  LESSON_TABS.forEach(function(t){
+    var b = document.createElement('button');
+    b.className = 'tab-btn'+(state.lessonTab===t.id?' active':'');
+    b.setAttribute('role','tab'); b.textContent=t.label;
+    b.addEventListener('click', function(){ state.lessonTab=t.id; renderLessonsPage(); });
+    tablist.appendChild(b);
+  });
+  LESSON_TABS.forEach(function(t){ document.getElementById('panel-'+t.id).classList.toggle('active', state.lessonTab===t.id); });
+
+  mainEl.querySelector('#panel-reading .reading').innerHTML = lesson.reading || '<p>Content coming soon.</p>';
+  renderDemo(document.getElementById('panel-demo'), lesson, 'demo_'+lesson.id+'_');
+
+  var challengeRoot = document.getElementById('panel-challenge');
+  if (lesson.challenge){
+    challengeRoot.innerHTML = '<div class="challenge-card"><h3>🎯 Challenge</h3><p>'+lesson.challenge.text+'</p>'+
+      '<ul class="challenge-checklist">'+lesson.challenge.checklist.map(function(c){ return '<li><input type="checkbox"> <span>'+c+'</span></li>'; }).join('')+'</ul></div>';
+  } else challengeRoot.innerHTML = '<p>Challenge coming soon.</p>';
+
+  renderQuiz(document.getElementById('panel-quiz'), mod, lesson);
+
+  document.getElementById('markCompleteBtn').addEventListener('click', function(){
+    var attempt = state.quizAttempted[mod.id+'_'+lesson.id];
+    upsertRow(mod.id, lesson.id, { completed:true, completed_at:new Date().toISOString(), quiz_score: attempt?attempt.score:null, quiz_total: attempt?attempt.total:null });
+    renderSidebar(); updateCompleteBar(mod, lesson);
+  });
+  updateCompleteBar(mod, lesson);
+
+  var flat = flatLessons();
+  var curIdx = flat.findIndex(function(f){ return f.m.id===mod.id && f.l.id===lesson.id; });
+  var prevBtn = document.getElementById('prevLessonBtn'), nextBtn = document.getElementById('nextLessonBtn');
+  prevBtn.disabled = curIdx<=0; nextBtn.disabled = curIdx===-1 || curIdx>=flat.length-1;
+  prevBtn.addEventListener('click', function(){ if(curIdx>0){ state.moduleId=flat[curIdx-1].m.id; state.lessonId=flat[curIdx-1].l.id; state.lessonTab='reading'; renderAll(); } });
+  nextBtn.addEventListener('click', function(){ if(curIdx<flat.length-1){ state.moduleId=flat[curIdx+1].m.id; state.lessonId=flat[curIdx+1].l.id; state.lessonTab='reading'; renderAll(); } });
+}
+
+/* =========================================================
+   OVERVIEW PAGE
+========================================================= */
+function renderOverviewPage(){
+  mainEl.innerHTML =
+    '<span class="badge-inline">🇲🇼 The Malawi Advantage</span>'+
+    '<h1 class="page-h1">Building for Low Bandwidth</h1>'+
+    '<p class="lead">Most developers worldwide have never built for a 2G connection. You live it. A graduate who can say "I build websites that load in under 2 seconds on 2G" has a real, defensible skill few bootcamps anywhere can teach as authentically.</p>'+
+    '<div class="overview-cards">'+
+      courseData.map(function(mod){
+        var p = moduleProgress(mod);
+        return '<div class="overview-card"><div class="icon">'+mod.icon+'</div><h3>'+mod.title+'</h3><p>'+countableLessons(mod).length+' lessons · '+p.pct+'% complete</p></div>';
+      }).join('')+
+    '</div>'+
+    '<button class="btn btn-primary btn-lg" id="startLearningBtn" style="padding:14px 30px;">Start Learning →</button>'+
+    '<div style="margin-top:30px;"><h3 style="color:var(--clr-primary);margin-bottom:10px;">What this course covers</h3>'+
+      '<p class="lead" style="margin-bottom:0;">Measuring and reducing page weight, compressing images, choosing fonts wisely, knowing when to skip a framework, lazy loading and caching, and building offline-first with PWAs — using live calculators and demos, not just theory.</p></div>';
+  document.getElementById('startLearningBtn').addEventListener('click', function(){
+    state.topTab='lessons'; state.moduleId='cost'; state.lessonId='c1'; state.lessonTab='reading'; renderAll();
+  });
+}
+
+/* =========================================================
+   TOOLKIT PAGE
+========================================================= */
+function renderToolkitPage(){
+  mainEl.innerHTML =
+    '<p class="page-eyebrow">Keep These Handy</p>'+
+    '<h1 class="page-h1">Toolkit</h1>'+
+    '<p class="lead">The same calculators from the lessons, always available here for quick, real-world use on your own projects.</p>'+
+    '<div id="toolWeight"></div><div id="toolCost"></div><div id="toolCompare"></div>';
+  buildWeightCalculator(document.getElementById('toolWeight'));
+  buildDataCostCalculator(document.getElementById('toolCost'));
+  buildCompareDemo(document.getElementById('toolCompare'));
+}
+
+/* =========================================================
+   RESOURCES PAGE
+========================================================= */
+var RESOURCES = [
+  { group:'Measuring Performance', links:[
+    { title:'PageSpeed Insights', url:'https://pagespeed.web.dev/', desc:'Free Google tool — scores a URL and lists specific fixes.' },
+    { title:'WebPageTest', url:'https://www.webpagetest.org/', desc:'Independent, detailed load tests from real locations and connection speeds.' }
+  ]},
+  { group:'Image Compression', links:[
+    { title:'Squoosh', url:'https://squoosh.app/', desc:'Compare compression formats and quality side by side in your browser.' },
+    { title:'TinyPNG', url:'https://tinypng.com/', desc:'Fast drag-and-drop PNG/JPEG compression.' }
+  ]},
+  { group:'Reference Guides', links:[
+    { title:'web.dev — Fast load times', url:'https://web.dev/explore/fast', desc:'Google\'s curated collection of performance best practices.' },
+    { title:'MDN — loading attribute', url:'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading', desc:'Reference for native lazy loading of images.' },
+    { title:'MDN — Service Worker API', url:'https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API', desc:'The full reference for building offline-capable apps.' }
+  ]}
+];
+function renderResourcesPage(){
+  mainEl.innerHTML = '<p class="page-eyebrow">Keep Learning</p><h1 class="page-h1">Resources</h1>'+
+    '<p class="lead">Free, external tools and references for going deeper on everything in this course.</p>'+
+    RESOURCES.map(function(g){
+      return '<div class="resource-group"><h3>'+g.group+'</h3><ul class="resource-list">'+
+        g.links.map(function(l){ return '<li><a href="'+l.url+'" target="_blank" rel="noopener">'+l.title+'</a><p>'+l.desc+'</p></li>'; }).join('')+
+      '</ul></div>';
+    }).join('');
+}
+
+/* =========================================================
+   Q&A PAGE
+========================================================= */
+var FAQS = [
+  { q:'Is this course only useful for Malawian developers?', a:'No — the skills apply anywhere, but they are especially valuable where users are commonly on slower or metered connections, which describes a large share of the world, not just Malawi.' },
+  { q:'Do I need special tools to practice this?', a:'No installs required. Your browser\'s built-in DevTools cover measuring page weight and throttling; Squoosh and TinyPNG both run for free in the browser too.' },
+  { q:'What if I don\'t know my mobile bundle\'s exact price?', a:'Check your provider\'s app or a recent SMS confirmation — the Data Cost Calculator only needs your own numbers to be useful, and any rough estimate still illustrates the idea.' },
+  { q:'Can I really skip frameworks entirely?', a:'Not always — some projects genuinely need one. The goal of this course is to make that a deliberate choice, not a default.' },
+  { q:'How is my progress saved?', a:'Locally in your browser via localStorage — no account needed, tied to this device and browser.' },
+  { q:'Where can I get help if I\'m stuck?', a:'Message the community on WhatsApp or Telegram below.' }
+];
+function renderQaPage(){
+  mainEl.innerHTML = '<p class="page-eyebrow">Support</p><h1 class="page-h1">Questions &amp; Answers</h1><div id="qaAccordion"></div>'+
+    '<div class="whatsapp-cta"><div><strong>Still stuck?</strong><p>The community usually replies within a few hours.</p></div>'+
+    '<a href="https://wa.me/265999555123" class="btn btn-primary">💬 Ask on WhatsApp</a></div>';
+  var acc = document.getElementById('qaAccordion');
+  FAQS.forEach(function(item){
+    var div = document.createElement('div'); div.className='qa-item';
+    div.innerHTML = '<button class="qa-q" aria-expanded="false"><span>'+item.q+'</span><span class="qa-plus" aria-hidden="true">+</span></button><div class="qa-a">'+item.a+'</div>';
+    div.querySelector('.qa-q').addEventListener('click', function(){
+      var opening = !div.classList.contains('open'); div.classList.toggle('open'); this.setAttribute('aria-expanded', opening);
+    });
+    acc.appendChild(div);
+  });
+}
+
+/* =========================================================
+   CERTIFICATE PAGE
+========================================================= */
+function renderCertificatePage(){
+  var overall = overallProgress();
+  var unlocked = overall.total>0 && overall.done>=overall.total;
+  var savedName = localStorage.getItem(CERT_KEY) || '';
+  mainEl.innerHTML = '<p class="page-eyebrow">Milestone</p><h1 class="page-h1">Certificate</h1>'+
+    '<p class="lead">'+overall.done+' / '+overall.total+' lessons complete. '+(unlocked?'Your certificate is ready!':'Finish every lesson to unlock your certificate.')+'</p>'+
+    (unlocked ?
+      '<div class="cert-form"><label for="certName">Your full name</label><input type="text" id="certName" placeholder="e.g., Chisomo Banda" value="'+savedName+'">'+
+      '<button class="btn btn-primary" id="genCertBtn">Generate Certificate</button></div><div id="certPreviewWrap"></div>'
+      : '<div class="cert-locked">🔒 Complete all 8 lessons (and their quizzes) to unlock your certificate. You are '+overall.pct+'% of the way there.</div>');
+  if (unlocked){
+    var wrap = document.getElementById('certPreviewWrap');
+    function draw(name){
+      wrap.innerHTML = '<div class="cert-preview"><div class="cert-brand">TECHMOUNTAIN BOOTCAMP</div>'+
+        '<p style="color:rgba(255,255,255,.75);margin-top:6px;">Certificate of Completion</p>'+
+        '<div class="cert-name">'+(name||'Your Name')+'</div>'+
+        '<p style="color:rgba(255,255,255,.85);">has successfully completed</p>'+
+        '<p style="font-weight:800;font-size:1.15rem;margin:6px 0 16px;">Building for Low Bandwidth</p>'+
+        '<p style="color:rgba(255,255,255,.6);font-size:.85rem;">Issued '+new Date().toLocaleDateString()+'</p></div>'+
+        '<button class="btn btn-primary" id="downloadCertBtn" style="margin-top:16px;">⬇ Download Certificate (PNG)</button>';
+      document.getElementById('downloadCertBtn').addEventListener('click', function(){ downloadCertificateImage(name || 'Your Name'); });
+    }
+    draw(savedName);
+    document.getElementById('genCertBtn').addEventListener('click', function(){
+      var name = document.getElementById('certName').value.trim();
+      localStorage.setItem(CERT_KEY, name); draw(name);
+    });
+  }
+}
+function downloadCertificateImage(name){
+  var canvas = document.createElement('canvas'); canvas.width=1000; canvas.height=700;
+  var ctx = canvas.getContext('2d');
+  ctx.fillStyle='#1a2332'; ctx.fillRect(0,0,1000,700);
+  ctx.strokeStyle='#00c853'; ctx.lineWidth=8; ctx.strokeRect(20,20,960,660);
+  ctx.textAlign='center';
+  ctx.fillStyle='#00c853'; ctx.font='bold 26px sans-serif'; ctx.fillText('TECHMOUNTAIN BOOTCAMP', 500, 130);
+  ctx.fillStyle='#fff'; ctx.font='18px sans-serif'; ctx.fillText('Certificate of Completion', 500, 170);
+  ctx.fillStyle='#00c853'; ctx.font='bold 38px sans-serif'; ctx.fillText(name, 500, 330);
+  ctx.fillStyle='#fff'; ctx.font='18px sans-serif'; ctx.fillText('has successfully completed', 500, 380);
+  ctx.font='bold 22px sans-serif'; ctx.fillText('Building for Low Bandwidth', 500, 415);
+  ctx.font='16px sans-serif'; ctx.fillStyle='rgba(255,255,255,.7)';
+  ctx.fillText('Issued '+new Date().toLocaleDateString(), 500, 610);
+  var link = document.createElement('a');
+  link.download = 'techmountain-low-bandwidth-certificate.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* =========================================================
+   ROOT RENDER
+========================================================= */
+function renderAll(){
+  renderSubnav(); renderSidebar();
+  if (state.topTab==='overview') renderOverviewPage();
+  else if (state.topTab==='lessons') renderLessonsPage();
+  else if (state.topTab==='toolkit') renderToolkitPage();
+  else if (state.topTab==='resources') renderResourcesPage();
+  else if (state.topTab==='qa') renderQaPage();
+  else if (state.topTab==='certificate') renderCertificatePage();
+}
+document.querySelectorAll('.quick-link-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){ state.topTab = btn.getAttribute('data-jump'); renderAll(); window.scrollTo({top:0,behavior:'smooth'}); });
+});
+document.querySelectorAll('.footer-link[data-jump-module]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var modId = a.getAttribute('data-jump-module');
+    var mod = courseData.find(function(m){ return m.id===modId; });
+    state.topTab='lessons'; state.moduleId=modId; state.lessonId=mod.lessons.find(function(l){return !l.locked;}).id; state.lessonTab='reading';
+    renderAll(); window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+renderAll();
+})();
+</script>
+</body>
+</html>

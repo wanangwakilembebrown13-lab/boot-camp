@@ -1,0 +1,3630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Node.js &amp; Express — Interactive Course</title>
+<meta name="description" content="Learn Node.js and Express from your first server to a full REST API with JWT auth. 10 weeks, intermediate level.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.09);--gglow:rgba(0,200,83,.18);--bg:#f7f8fa;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:10px;--rlg:14px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:64px;--sw:310px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.65;font-size:15.5px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.brand-mk{width:36px;height:36px;background:var(--green);color:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:800;font-size:16px;letter-spacing:-1px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15px;letter-spacing:-.2px}
+.brand-sb{font-size:11px;color:rgba(255,255,255,.55);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:var(--rpill);font-weight:500;font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:14px;height:14px}
+.meter{display:flex;align-items:center;gap:9px;padding:6px 13px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:12.5px;color:rgba(255,255,255,.7)}
+.meter-tr{width:50px;height:5px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13px}
+.mbtn{display:none;color:#fff;font-size:20px;padding:6px 10px;border-radius:6px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px 32px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 18px;border-bottom:1px solid var(--bd2);margin-bottom:16px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.spg-l{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:6px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:2px}
+.mod-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r);font-weight:600;font-size:14px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:15px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:11.5px;font-weight:600;color:var(--t4);padding:2px 8px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:10px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:2px 0 4px;padding-left:4px;display:flex;flex-direction:column;gap:1px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px 9px 14px;border-radius:var(--r);font-size:13.5px;font-weight:500;color:var(--t2);text-align:left;border-left:2.5px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:12px}
+
+.main{padding:40px 52px 80px;max-width:920px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:12px;padding:5px 12px 5px 6px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:var(--navy);border-radius:50%;font-size:11px}
+.lt{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;line-height:1.18;margin-bottom:12px}
+.lmeta{display:flex;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+.rd{font-size:16px;line-height:1.75}
+.rd>*+*{margin-top:16px}
+.rd h2{font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:32px;margin-bottom:10px}
+.rd h3{font-size:17px;font-weight:650;color:var(--navy);margin-top:22px;margin-bottom:6px}
+.rd ul,.rd ol{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.rd li{line-height:1.7}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:2px 7px;border-radius:5px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:18px 20px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:16px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:3px solid var(--green);padding:12px 18px;margin:18px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:15px}
+.rd blockquote strong{color:var(--navy)}
+
+.ed{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.ed-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;flex-wrap:wrap}
+.ed-bdg{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700}
+.ed-s{color:var(--t2);font-size:14.5px;margin-bottom:16px}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{display:flex;flex-direction:column;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.pane-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#fbfbfc;border-bottom:1px solid var(--bd2)}
+.pane-lb{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:700;color:var(--t4);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.dot.live{background:var(--green);box-shadow:0 0 0 3px var(--gglow)}
+.code-ta{width:100%;min-height:300px;padding:14px 16px;background:var(--navy3);color:#e6edf3;border:none;font-family:var(--mono);font-size:13px;line-height:1.65;resize:vertical;tab-size:2;white-space:pre;outline:none}
+.code-ta::selection{background:rgba(0,200,83,.35)}
+.con-out{min-height:300px;max-height:300px;overflow-y:auto;padding:12px 14px;background:var(--navy3);font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#c9d1d9}
+.con-empty{color:#4b5563;font-style:italic}
+.con-line{padding:3px 8px;margin:1px 0;border-radius:4px;display:flex;gap:8px;align-items:flex-start;word-break:break-word;white-space:pre-wrap}
+.con-line.log{color:#c9d1d9;background:rgba(255,255,255,.02)}
+.con-line.info{color:#7dd3fc;background:rgba(56,189,248,.08);border-left:2px solid #38bdf8}
+.con-line.warn{color:#fbbf24;background:rgba(217,119,6,.1);border-left:2px solid var(--warn)}
+.con-line.error{color:#f87171;background:rgba(220,38,38,.1);border-left:2px solid var(--danger)}
+.con-bdg{font-size:10px;text-transform:uppercase;font-weight:700;opacity:.7;flex-shrink:0;min-width:34px}
+.ed-bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.lint{margin-top:14px;padding:12px 15px;border-radius:var(--r);font-size:13.5px;background:var(--surf);border:1px solid var(--bd);border-left:3px solid var(--bd);color:var(--t2);line-height:1.55}
+.lint.ok{border-left-color:var(--green);background:var(--gsoft);color:var(--navy)}
+.lint.warn{border-left-color:var(--warn);background:rgba(217,119,6,.06)}
+.lint.error{border-left-color:var(--danger);background:rgba(220,38,38,.05)}
+.lint ul{margin:6px 0 0 18px;padding:0}
+.lint li{margin-bottom:3px}
+.challenge{margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:var(--r);font-size:14.5px;line-height:1.6;border-left:3px solid var(--green);box-shadow:0 1px 3px rgba(15,23,33,.06)}
+.challenge strong{color:var(--green);display:block;margin-bottom:4px;font-size:11.5px;text-transform:uppercase;letter-spacing:.9px}
+.sol-btn{margin-top:12px}
+.sol-block{margin-top:12px;display:none}
+.sol-block.show{display:block;animation:appear .25s}
+.sol-warn{font-size:13px;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sol-pre{background:var(--navy3);color:#e6edf3;padding:16px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;border-left:3px solid var(--green);white-space:pre-wrap;word-break:break-word}
+
+/* Request client */
+.req-panel{margin-top:16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.req-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(90deg,var(--navy),var(--navy2));color:#fff;border-bottom:1px solid var(--bd2)}
+.req-hd-title{font-size:12px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--green)}
+.req-hd-status{font-size:11px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px}
+.req-dot{width:8px;height:8px;border-radius:50%;background:#6b7280}
+.req-dot.on{background:var(--green);box-shadow:0 0 0 3px rgba(0,200,83,.35)}
+.req-body{padding:14px}
+.req-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.req-method{background:var(--navy3);color:#7dd3fc;border:1.5px solid var(--bd);border-radius:var(--r);padding:9px 12px;font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer}
+.req-method:focus{outline:none;border-color:var(--green)}
+.req-path{flex:1;min-width:180px;padding:9px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:var(--mono);font-size:13px;background:#fbfbfc}
+.req-path:focus{outline:none;border-color:var(--green);background:#fff}
+.req-send{padding:9px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--r);font-weight:700;font-size:13.5px}
+.req-send:hover:not(:disabled){background:var(--green2);border-color:var(--green2)}
+.req-send:disabled{opacity:.5;cursor:not-allowed}
+.req-body-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4);margin-bottom:6px}
+.req-body-ta{width:100%;min-height:70px;padding:10px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-family:var(--mono);font-size:12.5px;background:#fbfbfc;resize:vertical;line-height:1.55}
+.req-body-ta:focus{outline:none;border-color:var(--green);background:#fff}
+.req-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.req-chip{padding:4px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--rpill);font-family:var(--mono);font-size:11.5px;color:var(--t2);cursor:pointer;transition:all .15s}
+.req-chip:hover{background:var(--gsoft);border-color:var(--green);color:var(--navy)}
+.req-chip .m{font-weight:800;color:var(--green2);margin-right:4px}
+.resp-view{margin-top:14px;display:none}
+.resp-view.show{display:block}
+.resp-hd{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r) var(--r) 0 0;font-family:var(--mono);font-size:12.5px;font-weight:700;border-bottom:none}
+.resp-status{padding:2px 9px;border-radius:var(--rpill);background:var(--green);color:var(--navy);font-size:11.5px}
+.resp-status.err{background:var(--danger);color:#fff}
+.resp-status.warn{background:var(--warn);color:#fff}
+.resp-body{margin:0;padding:14px 16px;background:var(--navy3);color:#e6edf3;border-radius:0 0 var(--r) var(--r);font-family:var(--mono);font-size:12.5px;line-height:1.6;border:1px solid #1e2b3d;border-top:none;overflow-x:auto;white-space:pre-wrap;word-break:break-word;max-height:280px;overflow-y:auto}
+
+.quiz{margin-top:44px;padding-top:30px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:14.5px;margin-bottom:18px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:20px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:14px;font-size:15px;line-height:1.5}
+.q-o{display:flex;flex-direction:column;gap:8px}
+.q-opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green)}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800}
+
+.dn-bar{margin-top:44px;padding-top:24px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:14px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.6px;margin-bottom:10px;line-height:1.2}
+.pg-sub{font-size:16px;color:var(--t2);margin-bottom:30px;line-height:1.6}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.ov-card p{font-size:14px;color:var(--t2);line-height:1.6}
+.ov-ic{font-size:20px}
+.weeks{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.wk{display:flex;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:13px;flex-shrink:0;min-width:52px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:2px}
+.wk-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:32px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 34px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:22px;font-weight:800;margin-bottom:8px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.75);margin-bottom:20px;position:relative;z-index:1;font-size:15px}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:10px}
+.res-item{display:flex;gap:14px;padding:16px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:22px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:2px}
+.res-d{font-size:13.5px;color:var(--t2);line-height:1.55}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.ms{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:17px;height:17px}
+.ms label{flex:1;font-size:14.5px;color:var(--text);cursor:pointer;line-height:1.5}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 32px;border-radius:var(--rlg);margin-bottom:26px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:130px;height:130px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:26px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.prog-i p{color:rgba(255,255,255,.72);font-size:14.5px;margin-bottom:0;line-height:1.55}
+.sec-h{font-size:18px;font-weight:700;color:var(--navy);margin:28px 0 12px;letter-spacing:-.3px;display:flex;align-items:center;gap:9px}
+.sec-h .badge{font-size:11px;background:var(--green);color:var(--navy);padding:3px 9px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:32px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:25px;font-weight:800;color:var(--navy);margin-bottom:8px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:15px;margin-bottom:24px;line-height:1.6}
+.req-list{list-style:none;padding:18px 22px;background:var(--bg);border-radius:var(--r);border-left:3px solid var(--green);margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.req-list li{display:flex;align-items:center;gap:11px;font-size:14.5px}
+.req-d{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:12px 16px;border-radius:var(--r);font-size:14px;margin-bottom:20px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:5px}
+.field input{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:14.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--rpill);font-weight:600;font-size:14px;border:1.5px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:28px 22px 22px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:11px}
+.footer-brand .brand-mk{width:32px;height:32px;font-size:14px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:14px;letter-spacing:-.2px}
+.footer-sb{font-size:11.5px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:12.5px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:15px;height:15px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:34px 36px 70px}}
+@media (max-width:1024px){
+  .ed-grid{grid-template-columns:1fr}
+  .code-ta,.con-out{min-height:240px;max-height:240px}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:26px 24px;gap:20px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:60px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:18px 16px 22px}
+  .side.open{display:block}
+  .main{padding:24px 18px 60px}
+  .lt{font-size:24px}
+  .pg-h1{font-size:22px}
+  .mbtn{display:block}
+  .tab{padding:8px 11px;font-size:12px}
+  .tab-tx{display:none}
+  .hd-in{gap:8px;padding:0 14px}
+  .brand-sb{display:none}
+}
+@media (max-width:520px){
+  .lt{font-size:20px}
+  .main{padding:18px 14px 50px}
+  .rd{font-size:15.5px}
+  .rd h2{font-size:18px}
+  .rd pre{padding:14px;font-size:12.5px}
+  .ed-bar .btn{flex:1}
+  .req-row .req-path{width:100%;flex-basis:100%}
+  .brand-nm{font-size:13.5px}
+  .brand-mk{width:32px;height:32px;font-size:14px}
+  .cta-card{padding:24px 22px}
+  .cta-card h2{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">⬢</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Node.js &amp; Express</div>
+        <div class="brand-sb">10 weeks · Intermediate</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="projects" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span class="tab-tx">Projects</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r">
+        <span class="spg-l">Progress</span>
+        <span class="spg-p" id="sidePct">0%</span>
+      </div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewProjects"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">⬢</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Node.js &amp; Express</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2025 TechMountain Bootcamp · Built for low-bandwidth learners
+    </div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: NODE BASICS ===== -->
+<div class="src-read" data-l="nb1">
+<p>Node.js is JavaScript running outside the browser. Same language you already know from the frontend — but now it can read files, open network ports, connect to databases, and run on a server 24/7.</p>
+<h2>Why Node exists</h2>
+<p>In 2009, Ryan Dahl took Google Chrome's V8 JavaScript engine and wrapped it in a runtime that could talk to the operating system. The result: JavaScript could finally run on the backend — one language for the whole stack.</p>
+<h2>The event loop</h2>
+<p>Traditional servers (PHP, Ruby on Rails) handle one request per thread. When you have 10,000 concurrent users, you need 10,000 threads and most of them sit idle waiting for databases and network calls.</p>
+<p>Node uses a <strong>single thread</strong> with an event loop. Instead of waiting, it registers a callback and moves on. When the I/O finishes, the callback runs. The result: one Node process can handle tens of thousands of concurrent connections on modest hardware — perfect for APIs.</p>
+<h2>What Node is not</h2>
+<ul>
+<li><strong>Not a framework</strong> — it is a runtime. Express, Fastify, Nest are frameworks built on top.</li>
+<li><strong>Not for CPU-heavy work</strong> — image processing, video encoding, and heavy math block the event loop. Use workers or another language for those.</li>
+<li><strong>Not a browser</strong> — no <code>document</code>, no <code>window</code>, no DOM. Instead you get <code>fs</code>, <code>http</code>, <code>process</code>, and thousands of npm packages.</li>
+</ul>
+<h2>Your first Node script</h2>
+<pre><code>// hello.js
+console.log("Hello from Node!");
+
+const now = new Date();
+console.log("Started at:", now.toISOString());
+
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((a, b) =&gt; a + b, 0);
+console.log("Sum:", sum);</code></pre>
+<p>In a real terminal, you would run this with <code>node hello.js</code>. In the sandbox below, click Run and the same script executes.</p>
+<blockquote>Node uses the same <code>console.log</code>, the same arrays, the same objects you already know. If you have written any JavaScript in the browser, you are already 80% of the way to writing Node code.</blockquote>
+</div>
+
+<div class="src-read" data-l="nb2">
+<p>Node's power comes from its module system. Instead of one giant file, you split your code into small modules that each do one thing and expose just what other modules need.</p>
+<h2>require — importing</h2>
+<p>You have three sources of modules:</p>
+<ol>
+<li><strong>Built-in modules</strong> — <code>require('fs')</code>, <code>require('http')</code>, <code>require('path')</code>, <code>require('crypto')</code></li>
+<li><strong>npm packages</strong> — <code>require('express')</code>, <code>require('jsonwebtoken')</code> — anything from npmjs.com</li>
+<li><strong>Your own files</strong> — <code>require('./utils')</code>, <code>require('./routes/users')</code></li>
+</ol>
+<h2>module.exports — exporting</h2>
+<p>Each file starts with an empty <code>module.exports</code> object. Whatever you assign to it is what other files receive when they <code>require()</code> you.</p>
+<pre><code>// math.js
+function add(a, b) { return a + b; }
+function multiply(a, b) { return a * b; }
+
+module.exports = { add, multiply };</code></pre>
+<pre><code>// app.js
+const math = require('./math');
+console.log(math.add(3, 5));        // 8
+console.log(math.multiply(4, 6));   // 24</code></pre>
+<h2>npm — the package manager</h2>
+<p>npm comes with Node. Three commands to remember:</p>
+<pre><code>npm init -y              # creates package.json
+npm install express      # installs a package
+npm install --save-dev nodemon   # dev-only dependency</code></pre>
+<p>Installed packages live in <code>node_modules/</code>, and their versions are recorded in <code>package.json</code>. Never commit <code>node_modules/</code> to Git — anyone can regenerate it with <code>npm install</code>.</p>
+<h2>A built-in module you will use often: fs</h2>
+<pre><code>const fs = require('fs');
+
+fs.writeFileSync('note.txt', 'Hello, Malawi!');
+const content = fs.readFileSync('note.txt', 'utf8');
+console.log(content);   // "Hello, Malawi!"</code></pre>
+<p>In the sandbox, the file system is simulated in memory, so you can practise reading and writing files without touching your real computer.</p>
+<blockquote>Every serious Node project is a tree of small modules. Learn to spot when a file is doing too much and split it — that is the single biggest skill for writing maintainable backends.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: EXPRESS FUNDAMENTALS ===== -->
+<div class="src-read" data-l="ex1">
+<p>Raw Node's <code>http</code> module works, but it is verbose. Express wraps it in a clean API that turns every route into a function call. It is the most popular Node framework by far — used by every size of company, from startups to IBM.</p>
+<h2>Your first server</h2>
+<pre><code>const express = require('express');
+const app = express();
+
+app.get('/', (req, res) =&gt; {
+  res.send('Hello, Malawi!');
+});
+
+app.listen(3000, () =&gt; {
+  console.log('Server running on port 3000');
+});</code></pre>
+<p>Three lines of real work:</p>
+<ul>
+<li><strong><code>express()</code></strong> — creates the app object</li>
+<li><strong><code>app.get(path, handler)</code></strong> — registers a route for GET requests</li>
+<li><strong><code>app.listen(port, cb)</code></strong> — starts listening for connections</li>
+</ul>
+<h2>req and res</h2>
+<p>Every route handler receives two objects:</p>
+<ul>
+<li><strong><code>req</code></strong> — everything about the incoming request: the method, URL, headers, body, query string, URL params</li>
+<li><strong><code>res</code></strong> — your tools for sending a response: <code>res.send()</code>, <code>res.json()</code>, <code>res.status()</code>, <code>res.sendStatus()</code></li>
+</ul>
+<pre><code>app.get('/about', (req, res) =&gt; {
+  res.json({ name: 'TechMountain', city: 'Lilongwe' });
+});
+
+app.get('/health', (req, res) =&gt; {
+  res.status(200).send('OK');
+});</code></pre>
+<h2>How the sandbox works</h2>
+<p>In the editor below, when you call <code>app.listen()</code>, the sandbox tells the browser that your server is ready. A <strong>request client</strong> appears below — pick a method, type a path, and click Send. Your route runs, and the response comes back exactly as it would from a real server.</p>
+<blockquote>You will never write <code>http.createServer</code> by hand again — Express is the standard. But it is worth knowing that everything Express does, you could do with raw <code>http</code> and about ten times as much code.</blockquote>
+</div>
+
+<div class="src-read" data-l="ex2">
+<p>Real APIs have dozens of routes with dynamic segments. Express gives you two ways to read what the client sent: URL parameters and query strings.</p>
+<h2>URL parameters — :name</h2>
+<p>A segment prefixed with <code>:</code> is a wildcard. It matches any value at that position and stores it in <code>req.params</code>.</p>
+<pre><code>app.get('/users/:id', (req, res) =&gt; {
+  const userId = req.params.id;
+  res.json({ userId, name: 'Chisomo' });
+});
+
+// GET /users/42  -&gt;  { "userId": "42", "name": "Chisomo" }</code></pre>
+<p>You can have multiple parameters:</p>
+<pre><code>app.get('/posts/:postId/comments/:commentId', (req, res) =&gt; {
+  const { postId, commentId } = req.params;
+  res.json({ postId, commentId });
+});</code></pre>
+<p>Note: <code>req.params</code> values are always strings. If you need a number, convert explicitly with <code>Number(req.params.id)</code> or <code>parseInt</code>.</p>
+<h2>Query strings — ?key=value</h2>
+<p>Everything after <code>?</code> in a URL is a query string. Express parses it into <code>req.query</code> automatically.</p>
+<pre><code>// GET /search?q=react&amp;page=2
+app.get('/search', (req, res) =&gt; {
+  const q = req.query.q;        // "react"
+  const page = req.query.page;  // "2"
+  res.json({ q, page, results: [] });
+});</code></pre>
+<p>Query strings are for filtering, sorting, and paginating. URL params are for identifying a specific resource.</p>
+<h2>Route order matters</h2>
+<p>Express matches routes in the order you defined them. This is a bug that catches every beginner:</p>
+<pre><code>// WRONG order — /users/new never reaches its handler
+app.get('/users/:id', handler1);   // matches first
+app.get('/users/new', handler2);   // never runs
+
+// RIGHT order — specific routes first
+app.get('/users/new', handler2);
+app.get('/users/:id', handler1);</code></pre>
+<blockquote>Rule of thumb: put static routes above dynamic ones. If <code>/users/me</code> should have its own handler, it must be registered before <code>/users/:id</code>.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: MIDDLEWARE ===== -->
+<div class="src-read" data-l="mw1">
+<p>Middleware is the heart of Express. It is a function that runs on every request, with access to <code>req</code>, <code>res</code>, and a <code>next</code> function. It can read the request, modify it, end the response, or pass control to the next middleware.</p>
+<h2>The signature</h2>
+<pre><code>function logger(req, res, next) {
+  console.log(req.method, req.url);
+  next();   // pass control to the next handler
+}</code></pre>
+<p>Register it with <code>app.use()</code> — it now runs on every request that reaches the server.</p>
+<h2>express.json() — parsing request bodies</h2>
+<p>This is the most important built-in middleware. Without it, <code>req.body</code> is <code>undefined</code> when a client sends JSON.</p>
+<pre><code>app.use(express.json());
+
+app.post('/users', (req, res) =&gt; {
+  console.log(req.body);   // the parsed JSON object
+  res.json({ received: req.body });
+});</code></pre>
+<p>It reads the raw body, checks the <code>Content-Type</code> header is <code>application/json</code>, parses the text, and assigns the result to <code>req.body</code>.</p>
+<h2>express.static() — serving files</h2>
+<pre><code>app.use(express.static('public'));</code></pre>
+<p>Any file inside <code>public/</code> becomes available at the matching path. <code>public/logo.png</code> becomes <code>GET /logo.png</code>. Essential for serving images, CSS, and client-side JavaScript.</p>
+<h2>express.urlencoded() — parsing HTML form bodies</h2>
+<pre><code>app.use(express.urlencoded({ extended: true }));</code></pre>
+<p>Form submissions use a different encoding than JSON. This middleware parses them so you can read form fields with <code>req.body</code>.</p>
+<h2>The order rule</h2>
+<p>Middleware runs in the order it was registered. So <code>express.json()</code> must come <em>before</em> the routes that read <code>req.body</code>:</p>
+<pre><code>app.use(express.json());       // FIRST
+app.post('/users', handler);   // then the routes</code></pre>
+<blockquote>Forgetting <code>express.json()</code> is the single most common Express bug. If <code>req.body</code> is <code>undefined</code>, that is almost always the cause.</blockquote>
+</div>
+
+<div class="src-read" data-l="mw2">
+<p>Custom middleware is where you enforce business rules. Anything you would otherwise repeat in every route — checking a token, logging timing, validating an ID — becomes a middleware that runs before the route.</p>
+<h2>A logging middleware</h2>
+<pre><code>function logger(req, res, next) {
+  const start = Date.now();
+  res.on('finish', () =&gt; {
+    const ms = Date.now() - start;
+    console.log(`${req.method} ${req.url} - ${res.statusCode} (${ms}ms)`);
+  });
+  next();
+}
+
+app.use(logger);</code></pre>
+<p>The <code>res.on('finish', ...)</code> listener fires after the response is sent — perfect for timing.</p>
+<h2>A request-level middleware</h2>
+<p>You can scope middleware to just one path prefix:</p>
+<pre><code>function requireAuth(req, res, next) {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+  req.user = { id: 1, name: 'Chisomo' };  // pretend we decoded it
+  next();
+}
+
+app.get('/profile', requireAuth, (req, res) =&gt; {
+  res.json(req.user);
+});</code></pre>
+<p>Notice <code>requireAuth</code> is passed as the second argument to <code>app.get</code>. It runs first, and only if it calls <code>next()</code> does the route handler run.</p>
+<h2>Error-handling middleware — 4 arguments</h2>
+<p>Express distinguishes error handlers by their arity. A middleware with <strong>four</strong> parameters is treated as an error handler:</p>
+<pre><code>app.use((err, req, res, next) =&gt; {
+  console.error('Error:', err.message);
+  res.status(err.status || 500).json({
+    error: err.message || 'Something went wrong'
+  });
+});</code></pre>
+<p>Whenever <code>next(err)</code> is called — in any route or middleware — Express skips directly to the error handlers. Put this at the very bottom of your server file, after every route.</p>
+<h2>Throwing inside async routes</h2>
+<p>Express 4 does not catch errors thrown in <code>async</code> functions. You must wrap them:</p>
+<pre><code>app.get('/users/:id', async (req, res, next) =&gt; {
+  try {
+    const user = await db.findUser(req.params.id);
+    res.json(user);
+  } catch (err) {
+    next(err);   // pass to error handler
+  }
+});</code></pre>
+<p>Express 5 (in beta) fixes this automatically, but for now always use try/catch in async routes.</p>
+<blockquote>Three layered rules to remember: middleware runs in order, error handlers must have four arguments, and errors thrown in async code must be forwarded with <code>next(err)</code>.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: REST APIs ===== -->
+<div class="src-read" data-l="api1">
+<p>REST is a design convention for mapping HTTP verbs onto CRUD operations. It is not a standard you must obey — it is a pattern the whole industry agreed on so that anyone can guess your API from its routes.</p>
+<h2>The mapping</h2>
+<ul>
+<li><strong>GET /items</strong> — list all items</li>
+<li><strong>GET /items/:id</strong> — get one item</li>
+<li><strong>POST /items</strong> — create a new item</li>
+<li><strong>PUT /items/:id</strong> — replace an item completely</li>
+<li><strong>PATCH /items/:id</strong> — update only some fields</li>
+<li><strong>DELETE /items/:id</strong> — delete an item</li>
+</ul>
+<p>Notice: the path stays the same. Only the verb changes. That is REST.</p>
+<h2>In-memory data</h2>
+<p>For teaching, we store data in an array. In a real app, this is a database — but the code shape is identical:</p>
+<pre><code>const items = [
+  { id: 1, name: 'Learn Node', done: true },
+  { id: 2, name: 'Build an API', done: false }
+];</code></pre>
+<h2>List and read</h2>
+<pre><code>app.get('/items', (req, res) =&gt; {
+  res.json(items);
+});
+
+app.get('/items/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const item = items.find(i =&gt; i.id === id);
+  if (!item) {
+    return res.status(404).json({ error: 'Item not found' });
+  }
+  res.json(item);
+});</code></pre>
+<h2>Create</h2>
+<pre><code>app.post('/items', (req, res) =&gt; {
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'name is required' });
+  }
+  const newItem = {
+    id: items.length ? Math.max(...items.map(i =&gt; i.id)) + 1 : 1,
+    name,
+    done: false
+  };
+  items.push(newItem);
+  res.status(201).json(newItem);
+});</code></pre>
+<p>Always validate input before touching the data. Return <code>400</code> for bad input, <code>201</code> for created.</p>
+<h2>Update</h2>
+<pre><code>app.put('/items/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i =&gt; i.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+  const { name, done } = req.body;
+  items[idx] = { id, name, done: Boolean(done) };
+  res.json(items[idx]);
+});</code></pre>
+<h2>Delete</h2>
+<pre><code>app.delete('/items/:id', (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i =&gt; i.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+  const removed = items.splice(idx, 1)[0];
+  res.json({ deleted: removed });
+});</code></pre>
+<blockquote>Notice how every route validates its input, checks for not-found, and returns a meaningful status code. This is what separates a toy API from a professional one.</blockquote>
+</div>
+
+<div class="src-read" data-l="api2">
+<p>Every HTTP response carries a status code. Getting them right is what tells the client "this worked", "this was your fault", or "this was our fault".</p>
+<h2>The ones you will use daily</h2>
+<ul>
+<li><strong>200 OK</strong> — success with a body</li>
+<li><strong>201 Created</strong> — success, and you created something new (POST)</li>
+<li><strong>204 No Content</strong> — success, no body (often DELETE)</li>
+<li><strong>400 Bad Request</strong> — the client sent invalid data (missing field, wrong type)</li>
+<li><strong>401 Unauthorized</strong> — not logged in (no token, bad token)</li>
+<li><strong>403 Forbidden</strong> — logged in, but not allowed (wrong role)</li>
+<li><strong>404 Not Found</strong> — the resource does not exist</li>
+<li><strong>409 Conflict</strong> — the request clashes with current state (duplicate email)</li>
+<li><strong>500 Internal Server Error</strong> — a bug on your server</li>
+</ul>
+<h2>Using them correctly</h2>
+<pre><code>app.post('/users', (req, res) =&gt; {
+  const { email, name } = req.body;
+
+  if (!email || !name) {
+    return res.status(400).json({ error: 'email and name are required' });
+  }
+
+  const exists = users.find(u =&gt; u.email === email);
+  if (exists) {
+    return res.status(409).json({ error: 'Email already registered' });
+  }
+
+  const user = { id: users.length + 1, email, name };
+  users.push(user);
+  res.status(201).json(user);
+});</code></pre>
+<h2>Consistent error shape</h2>
+<p>Pick one shape for errors and use it everywhere:</p>
+<pre><code>{ "error": "Email already registered" }</code></pre>
+<p>Or with more detail:</p>
+<pre><code>{ "error": { "message": "Validation failed", "fields": ["email"] } }</code></pre>
+<p>Clients (frontend apps, mobile apps, other services) rely on this consistency. If your 400s sometimes return strings and sometimes objects, every consumer of your API has to write branching code.</p>
+<h2>Resource naming conventions</h2>
+<ul>
+<li>Use <strong>plural nouns</strong> for collections: <code>/users</code>, not <code>/user</code></li>
+<li>Use the ID for a specific resource: <code>/users/42</code></li>
+<li>Nest for relationships: <code>/users/42/posts</code> — the posts belonging to user 42</li>
+<li>Use kebab-case for multi-word: <code>/blog-posts</code>, not <code>/blogPosts</code></li>
+<li>Never use verbs in the URL. <code>/users/42</code> with <code>DELETE</code> — not <code>/deleteUser</code></li>
+</ul>
+<blockquote>Status codes are the API's way of speaking. A 500 that should have been a 400 makes the frontend team debug your bug. Get them right from the first route.</blockquote>
+</div>
+
+<!-- ===== MODULE 5: AUTH & SECURITY ===== -->
+<div class="src-read" data-l="au1">
+<p>Storing passwords as plain text is the single worst thing you can do in a backend. It has ended companies. In this lesson, you will learn the correct way from the first line of code.</p>
+<h2>Never store plaintext</h2>
+<pre><code>// NEVER DO THIS
+const user = { email: 'a@b.mw', password: 'hunter2' };</code></pre>
+<p>If your database leaks, every account is compromised — and worse, users reuse passwords, so you have broken their other accounts too.</p>
+<h2>Hashing, not encrypting</h2>
+<p>Encryption is reversible. Hashing is a one-way function — the same input always produces the same output, but you cannot go from the hash back to the password.</p>
+<p>We use <strong>bcrypt</strong> — a slow, salted hashing algorithm designed specifically for passwords.</p>
+<pre><code>const bcrypt = require('bcrypt');
+
+const hash = bcrypt.hashSync('hunter2', 10);
+console.log(hash);
+// "$2b$10$K8s..."</code></pre>
+<p>The <code>10</code> is the <strong>cost factor</strong> — 2<sup>10</sup> = 1024 rounds of hashing. Higher = slower to brute-force. 10 is standard.</p>
+<h2>What "salted" means</h2>
+<p>bcrypt generates a random salt for every password and includes it in the hash. Two users with the same password still get different hashes. This defeats <strong>rainbow tables</strong> — precomputed hashes of common passwords.</p>
+<h2>Register — hash before saving</h2>
+<pre><code>app.post('/auth/register', (req, res) =&gt; {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'email and password required' });
+  }
+
+  if (users.find(u =&gt; u.email === email)) {
+    return res.status(409).json({ error: 'Email already registered' });
+  }
+
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashedPassword };
+  users.push(user);
+
+  res.status(201).json({ id: user.id, email: user.email });
+  // NEVER return the password hash
+});</code></pre>
+<h2>Login — compare, do not decrypt</h2>
+<pre><code>app.post('/auth/login', (req, res) =&gt; {
+  const { email, password } = req.body;
+
+  const user = users.find(u =&gt; u.email === email);
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  const ok = bcrypt.compareSync(password, user.password);
+  if (!ok) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  res.json({ id: user.id, email: user.email });
+});</code></pre>
+<p>Notice the error message is identical whether the email is not found or the password is wrong. This prevents <strong>email enumeration</strong> — an attacker cannot tell which emails are registered.</p>
+<blockquote>Three rules to never break: never store plaintext, never return the hash, and always respond with the same message for wrong-email and wrong-password.</blockquote>
+</div>
+
+<div class="src-read" data-l="au2">
+<p>Once a user logs in, how do you know who they are on the next request? HTTP is stateless — the server forgets everything between requests. The standard answer is a <strong>JSON Web Token</strong>.</p>
+<h2>What is a JWT?</h2>
+<p>A JWT is a string with three parts, separated by dots:</p>
+<pre><code>header.payload.signature</code></pre>
+<ul>
+<li><strong>header</strong> — the algorithm (HS256) and type (JWT), base64-encoded</li>
+<li><strong>payload</strong> — the data you want to store, base64-encoded (NOT encrypted — anyone can read it)</li>
+<li><strong>signature</strong> — a hash of the first two parts, signed with your secret key</li>
+</ul>
+<p>The signature is what makes it secure. Without your secret, nobody can forge a valid token. But anyone can read the payload — so never put a password or a credit card number in it.</p>
+<h2>Signing</h2>
+<pre><code>const jwt = require('jsonwebtoken');
+const SECRET = 'a-long-random-string-stored-in-env';
+
+const token = jwt.sign(
+  { userId: 42, email: 'a@b.mw' },
+  SECRET,
+  { expiresIn: '7d' }
+);
+res.json({ token });</code></pre>
+<h2>Verifying</h2>
+<pre><code>try {
+  const payload = jwt.verify(token, SECRET);
+  console.log(payload.userId);   // 42
+} catch (err) {
+  // invalid signature, expired, or malformed
+  console.log('Bad token:', err.message);
+}</code></pre>
+<h2>Auth middleware</h2>
+<p>Wrap the verification in middleware so any protected route can use it:</p>
+<pre><code>function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+
+  const token = header.slice(7);   // remove "Bearer "
+  try {
+    const payload = jwt.verify(token, SECRET);
+    req.user = payload;            // make user available to the route
+    next();
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid or expired token' });
+  }
+}</code></pre>
+<h2>Protecting routes</h2>
+<pre><code>app.get('/me', requireAuth, (req, res) =&gt; {
+  res.json({ user: req.user });
+});
+
+app.post('/posts', requireAuth, (req, res) =&gt; {
+  // req.user is guaranteed here
+  const post = { id: posts.length + 1, authorId: req.user.userId, ...req.body };
+  posts.push(post);
+  res.status(201).json(post);
+});</code></pre>
+<h2>The client flow</h2>
+<ol>
+<li>Client sends email + password to <code>POST /auth/login</code></li>
+<li>Server returns a JWT</li>
+<li>Client stores it (localStorage, or a cookie)</li>
+<li>On every subsequent request, client sends <code>Authorization: Bearer &lt;token&gt;</code></li>
+<li>Server verifies the token on each protected route</li>
+</ol>
+<blockquote>Never trust the payload blindly. Always verify the signature. An unverified JWT is just base64-encoded JSON that anyone can forge.</blockquote>
+</div>
+
+<!-- ===== MODULE 6: PROJECTS & DEPLOY ===== -->
+<div class="src-read" data-l="pr1">
+<p>Code that works on your laptop and code that runs in production are different things. This lesson covers the professional patterns that separate hobby projects from real ones.</p>
+<h2>Environment variables</h2>
+<p>Never hardcode secrets, ports, or API keys. Put them in environment variables:</p>
+<pre><code>const PORT = process.env.PORT || 3000;
+const SECRET = process.env.JWT_SECRET;
+
+app.listen(PORT, () =&gt; console.log(`Listening on ${PORT}`));</code></pre>
+<p>Locally, you load them from a <code>.env</code> file using the <code>dotenv</code> package:</p>
+<pre><code>require('dotenv').config();
+// Now process.env.JWT_SECRET is populated from .env</code></pre>
+<pre><code># .env file — NEVER commit this to Git
+PORT=3000
+JWT_SECRET=some-long-random-string
+DATABASE_URL=mongodb://localhost:27017/myapp</code></pre>
+<p>Add <code>.env</code> to <code>.gitignore</code>. On the server (Heroku, Railway, Render, etc.), you set the same variables in their dashboard.</p>
+<h2>Structured logging</h2>
+<p><code>console.log</code> is fine for learning. In production, use a logger that adds timestamps, levels, and JSON output for log aggregation services:</p>
+<pre><code>function log(level, message, meta = {}) {
+  console.log(JSON.stringify({
+    time: new Date().toISOString(),
+    level,
+    message,
+    ...meta
+  }));
+}
+
+log('info', 'Server started', { port: 3000 });
+log('error', 'Failed to save user', { userId: 42, reason: 'duplicate' });</code></pre>
+<p>JSON logs are searchable and filterable in tools like Datadog, Loggly, and CloudWatch.</p>
+<h2>Centralized error handling</h2>
+<p>Every route should forward errors to a single handler. That handler logs them and returns a consistent shape:</p>
+<pre><code>app.use((err, req, res, next) =&gt; {
+  log('error', err.message, { stack: err.stack, url: req.url });
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal server error'
+  });
+});</code></pre>
+<h2>Graceful shutdown</h2>
+<pre><code>process.on('SIGTERM', () =&gt; {
+  console.log('Shutting down gracefully…');
+  server.close(() =&gt; {
+    console.log('Closed out remaining connections');
+    process.exit(0);
+  });
+});</code></pre>
+<p>When a deploy or restart happens, the platform sends SIGTERM. Handling it lets in-flight requests finish before the process dies.</p>
+<h2>The production checklist</h2>
+<ul>
+<li>All secrets in <code>process.env</code>, never hardcoded</li>
+<li><code>.env</code> in <code>.gitignore</code></li>
+<li>Centralized error handler at the bottom of the file</li>
+<li>Meaningful log messages with context</li>
+<li>Health-check endpoint (<code>GET /health</code>) returning <code>{ ok: true }</code></li>
+<li>Graceful shutdown on SIGTERM</li>
+<li>Input validation on every route that reads <code>req.body</code> or <code>req.params</code></li>
+</ul>
+<blockquote>A production API is just a toy API with all the boring safety nets added. Nothing here is optional in a real job.</blockquote>
+</div>
+
+<div class="src-read" data-l="pr2">
+<p>Time to build. Over the final lesson, you will build a complete <strong>blog API</strong> — full CRUD for posts, JWT auth protecting writes, and in-memory storage that works inside the sandbox. Everything you have learned gets used.</p>
+<h2>What the API does</h2>
+<ul>
+<li><code>POST /auth/register</code> — create an account (email + password, password hashed)</li>
+<li><code>POST /auth/login</code> — return a JWT</li>
+<li><code>GET /posts</code> — list all posts (public)</li>
+<li><code>GET /posts/:id</code> — read one post (public)</li>
+<li><code>POST /posts</code> — create a post (protected)</li>
+<li><code>PUT /posts/:id</code> — update a post (protected, only the author)</li>
+<li><code>DELETE /posts/:id</code> — delete a post (protected, only the author)</li>
+</ul>
+<h2>The data shape</h2>
+<pre><code>const users = [
+  // { id, email, password: "hash", createdAt }
+];
+
+const posts = [
+  // { id, title, body, authorId, createdAt }
+];</code></pre>
+<p>Simple, JSON-friendly, easy to filter. In a real project this becomes MongoDB collections or SQL tables.</p>
+<h2>File structure (in a real project)</h2>
+<pre><code>server.js
+routes/auth.js
+routes/posts.js
+middleware/auth.js
+models/user.js
+models/post.js</code></pre>
+<p>For the sandbox, everything lives in one file. When you build the real project locally, split it as shown above.</p>
+<h2>The order of routes</h2>
+<ol>
+<li><code>app.use(express.json())</code> — parse JSON bodies</li>
+<li>Auth routes (register, login) — public</li>
+<li><code>GET /posts</code> and <code>GET /posts/:id</code> — public reads</li>
+<li><code>requireAuth</code> middleware</li>
+<li><code>POST /posts</code>, <code>PUT /posts/:id</code>, <code>DELETE /posts/:id</code> — protected</li>
+<li>404 catch-all</li>
+<li>Error handler — 4 args, last</li>
+</ol>
+<h2>Testing in the sandbox</h2>
+<ol>
+<li>Run the server.</li>
+<li>Send <code>POST /auth/register</code> with <code>{"email":"a@b.mw","password":"secret123"}</code>.</li>
+<li>Send <code>POST /auth/login</code> with the same credentials. Copy the token from the response.</li>
+<li>Send <code>POST /posts</code> with body <code>{"title":"Hello","body":"First post"}</code> and set the Authorization header. In our simple client, we include auth via a special body field <code>_token</code> — the sandbox maps it to <code>req.headers.authorization</code>.</li>
+<li>Send <code>GET /posts</code> to see it listed.</li>
+<li>Try <code>DELETE /posts/1</code> with and without the token — see 401 vs 200.</li>
+</ol>
+<h2>Deploying the real version</h2>
+<ol>
+<li>Install Node.js and run <code>npm init -y</code></li>
+<li><code>npm install express bcrypt jsonwebtoken dotenv</code></li>
+<li>Replace in-memory arrays with MongoDB (via Mongoose) or PostgreSQL (via pg)</li>
+<li>Push to GitHub</li>
+<li>Deploy to Render, Railway, or Fly.io — all have free tiers</li>
+<li>Set environment variables in the platform's dashboard</li>
+<li>Test with <code>curl</code> or Postman</li>
+</ol>
+<blockquote>That is the whole course. You now know what 90% of backend engineering is: routes, middleware, validation, auth, error handling, and shipping. Everything else is scaling the same ideas.</blockquote>
+</div>
+
+<!-- ===================== STARTERS ===================== -->
+<textarea class="src-code" data-l="nb1" data-kind="starter">
+console.log("Hello from Node!");
+console.log("Running in the browser sandbox.");
+
+const now = new Date();
+console.log("Time:", now.toISOString());
+
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((a, b) => a + b, 0);
+console.log("Sum:", sum);
+
+const user = { name: "Chisomo", city: "Lilongwe" };
+console.log("User:", user);
+</textarea>
+
+<textarea class="src-code" data-l="nb2" data-kind="starter">
+// A small module with functions, using the Node pattern
+
+const math = {
+  add: (a, b) => a + b,
+  multiply: (a, b) => a * b,
+  square: (n) => n * n
+};
+
+// module.exports is how you share code with other files
+module.exports = math;
+
+// Simulate another file requiring this module
+const m = require("math");
+console.log("3 + 5 =", m.add(3, 5));
+console.log("4 * 6 =", m.multiply(4, 6));
+console.log("7 squared =", m.square(7));
+
+// The fs module — writing and reading a file
+const fs = require("fs");
+fs.writeFileSync("note.txt", "Hello, Malawi!");
+const content = fs.readFileSync("note.txt", "utf8");
+console.log("File content:", content);
+</textarea>
+
+<textarea class="src-code" data-l="ex1" data-kind="starter">
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello, Malawi!");
+});
+
+app.get("/about", (req, res) => {
+  res.json({
+    name: "TechMountain",
+    city: "Lilongwe",
+    students: 350
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+  console.log("Try: GET /  |  GET /about  |  GET /health");
+});
+</textarea>
+
+<textarea class="src-code" data-l="ex2" data-kind="starter">
+const express = require("express");
+const app = express();
+
+const users = [
+  { id: 1, name: "Chisomo", city: "Lilongwe" },
+  { id: 2, name: "Tadala", city: "Blantyre" },
+  { id: 3, name: "Gift", city: "Mzuzu" }
+];
+
+// Static route FIRST (before dynamic /users/:id)
+app.get("/users/new", (req, res) => {
+  res.json({ message: "This is a static route" });
+});
+
+// List all users with optional ?city= filter
+app.get("/users", (req, res) => {
+  let result = users;
+  if (req.query.city) {
+    result = users.filter(u => u.city === req.query.city);
+  }
+  res.json(result);
+});
+
+// Get one user by ID
+app.get("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const user = users.find(u => u.id === id);
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  res.json(user);
+});
+
+app.listen(3000, () => {
+  console.log("Server listening on 3000");
+  console.log("Try: GET /users  |  GET /users/1  |  GET /users?city=Lilongwe");
+});
+</textarea>
+
+<textarea class="src-code" data-l="mw1" data-kind="starter">
+const express = require("express");
+const app = express();
+
+// Built-in middleware — MUST come before routes
+app.use(express.json());
+
+// A simple logger
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
+const users = [];
+
+app.get("/users", (req, res) => {
+  res.json(users);
+});
+
+app.post("/users", (req, res) => {
+  console.log("Received body:", req.body);
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: "name and email required" });
+  }
+
+  const user = { id: users.length + 1, name, email };
+  users.push(user);
+  res.status(201).json(user);
+});
+
+app.listen(3000, () => {
+  console.log("Server ready. Try POST /users with a JSON body.");
+});
+</textarea>
+
+<textarea class="src-code" data-l="mw2" data-kind="starter">
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+// A custom middleware that times every request
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    const ms = Date.now() - start;
+    console.log(`${req.method} ${req.url} → ${res.statusCode} (${ms}ms)`);
+  });
+  next();
+});
+
+// A route-level middleware that requires a token
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  req.user = { id: 1, name: "Chisomo" };
+  next();
+}
+
+app.get("/public", (req, res) => {
+  res.json({ message: "Anyone can see this" });
+});
+
+app.get("/private", requireAuth, (req, res) => {
+  res.json({ message: "Secret data", user: req.user });
+});
+
+// A route that throws — to test the error handler
+app.get("/boom", (req, res, next) => {
+  try {
+    throw new Error("Something exploded!");
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Error handler — 4 arguments, LAST
+app.use((err, req, res, next) => {
+  console.error("Error handler caught:", err.message);
+  res.status(500).json({ error: err.message });
+});
+
+app.listen(3000, () => {
+  console.log("Server ready. Try /public, /private, /boom");
+});
+</textarea>
+
+<textarea class="src-code" data-l="api1" data-kind="starter">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+let items = [
+  { id: 1, name: "Learn Node", done: true },
+  { id: 2, name: "Build an API", done: false }
+];
+
+app.get("/items", (req, res) => {
+  res.json(items);
+});
+
+app.get("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const item = items.find(i => i.id === id);
+  if (!item) return res.status(404).json({ error: "Not found" });
+  res.json(item);
+});
+
+app.post("/items", (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: "name is required" });
+  const newItem = {
+    id: items.length ? Math.max(...items.map(i => i.id)) + 1 : 1,
+    name,
+    done: false
+  };
+  items.push(newItem);
+  res.status(201).json(newItem);
+});
+
+app.put("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: "Not found" });
+  const { name, done } = req.body;
+  items[idx] = { id, name: name || items[idx].name, done: Boolean(done) };
+  res.json(items[idx]);
+});
+
+app.delete("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: "Not found" });
+  const removed = items.splice(idx, 1)[0];
+  res.json({ deleted: removed });
+});
+
+app.listen(3000, () => {
+  console.log("CRUD API ready. Try GET /items, POST /items, PUT /items/1, DELETE /items/1");
+});
+</textarea>
+
+<textarea class="src-code" data-l="api2" data-kind="starter">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+const users = [];
+
+app.post("/users", (req, res) => {
+  const { email, name } = req.body;
+
+  // 400 — bad input
+  if (!email || !name) {
+    return res.status(400).json({
+      error: "email and name are required"
+    });
+  }
+
+  // 409 — conflict
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({
+      error: "Email already registered"
+    });
+  }
+
+  const user = { id: users.length + 1, email, name };
+  users.push(user);
+
+  // 201 — created
+  res.status(201).json(user);
+});
+
+app.get("/users/:id", (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+
+  // 404 — not found
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  res.json(user);
+});
+
+app.listen(3000, () => {
+  console.log("Status codes demo. Try creating a user twice with the same email.");
+});
+</textarea>
+
+<textarea class="src-code" data-l="au1" data-kind="starter">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const app = express();
+app.use(express.json());
+
+const users = [];
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password required" });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: "password must be at least 6 characters" });
+  }
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({ error: "Email already registered" });
+  }
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+
+  console.log("Stored hash:", hashed);
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const ok = bcrypt.compareSync(password, user.password);
+  if (!ok) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  res.json({ id: user.id, email: user.email, message: "Login successful" });
+});
+
+app.listen(3000, () => {
+  console.log("Auth demo. Register first, then login with the same password.");
+});
+</textarea>
+
+<textarea class="src-code" data-l="au2" data-kind="starter">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+
+const SECRET = "dev-secret-change-me";
+const users = [];
+
+// Auth middleware
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  try {
+    const payload = jwt.verify(header.slice(7), SECRET);
+    req.user = payload;
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: "email and password required" });
+  if (users.find(u => u.email === email)) return res.status(409).json({ error: "Email taken" });
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, { expiresIn: "7d" });
+  res.json({ token });
+});
+
+// Public route
+app.get("/public", (req, res) => {
+  res.json({ message: "Anyone can see this" });
+});
+
+// Protected route
+app.get("/me", requireAuth, (req, res) => {
+  res.json({ user: req.user });
+});
+
+app.listen(3000, () => {
+  console.log("JWT demo. Register, login, then GET /me with a token.");
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="starter">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+// Fake env (in real projects, use dotenv + .env file)
+const CONFIG = {
+  port: 3000,
+  nodeEnv: "development"
+};
+
+// Structured logger
+function log(level, message, meta = {}) {
+  console.log(JSON.stringify({
+    time: new Date().toISOString().slice(11, 19),
+    level,
+    message,
+    ...meta
+  }));
+}
+
+// Logger middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    log("info", "request", {
+      method: req.method,
+      url: req.url,
+      status: res.statusCode,
+      ms: Date.now() - start
+    });
+  });
+  next();
+});
+
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ ok: true, uptime: process.uptime ? process.uptime() : 0 });
+});
+
+// A route that throws on purpose
+app.get("/boom", (req, res, next) => {
+  try {
+    throw new Error("Simulated failure");
+  } catch (err) {
+    next(err);
+  }
+});
+
+// 404 catch-all
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+// Centralized error handler — 4 args, LAST
+app.use((err, req, res, next) => {
+  log("error", err.message, { stack: err.stack });
+  res.status(500).json({ error: err.message });
+});
+
+app.listen(CONFIG.port, () => {
+  log("info", "server started", { port: CONFIG.port, env: CONFIG.nodeEnv });
+  console.log("Try: GET /health  |  GET /boom  |  GET /missing");
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="starter">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+
+const SECRET = "dev-secret-change-me";
+
+// ============ "DATABASE" ============
+const users = [];
+const posts = [];
+
+// ============ MIDDLEWARE ============
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  try {
+    req.user = jwt.verify(header.slice(7), SECRET);
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+}
+
+// ============ AUTH ROUTES ============
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: "email and password required" });
+  if (password.length < 6) return res.status(400).json({ error: "password too short" });
+  if (users.find(u => u.email === email)) return res.status(409).json({ error: "Email taken" });
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, { expiresIn: "7d" });
+  res.json({ token });
+});
+
+// ============ PUBLIC POSTS ============
+app.get("/posts", (req, res) => {
+  res.json(posts.map(p => {
+    const author = users.find(u => u.id === p.authorId);
+    return { ...p, authorEmail: author ? author.email : "unknown" };
+  }));
+});
+
+app.get("/posts/:id", (req, res) => {
+  const post = posts.find(p => p.id === Number(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+  res.json(post);
+});
+
+// ============ PROTECTED POSTS ============
+app.post("/posts", requireAuth, (req, res) => {
+  const { title, body } = req.body;
+  if (!title || !body) return res.status(400).json({ error: "title and body required" });
+
+  const post = {
+    id: posts.length + 1,
+    title,
+    body,
+    authorId: req.user.userId,
+    createdAt: new Date().toISOString()
+  };
+  posts.push(post);
+  res.status(201).json(post);
+});
+
+app.put("/posts/:id", requireAuth, (req, res) => {
+  const post = posts.find(p => p.id === Number(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+  if (post.authorId !== req.user.userId) {
+    return res.status(403).json({ error: "Not your post" });
+  }
+  const { title, body } = req.body;
+  if (title) post.title = title;
+  if (body) post.body = body;
+  res.json(post);
+});
+
+app.delete("/posts/:id", requireAuth, (req, res) => {
+  const idx = posts.findIndex(p => p.id === Number(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: "Post not found" });
+  if (posts[idx].authorId !== req.user.userId) {
+    return res.status(403).json({ error: "Not your post" });
+  }
+  const removed = posts.splice(idx, 1)[0];
+  res.json({ deleted: removed });
+});
+
+// ============ ERROR HANDLER ============
+app.use((err, req, res, next) => {
+  console.error("Error:", err.message);
+  res.status(500).json({ error: err.message });
+});
+
+app.listen(3000, () => {
+  console.log("Blog API ready.");
+  console.log("Flow: register → login → POST /posts with token → GET /posts");
+  console.log("Token: set body._token to the JWT from login");
+});
+</textarea>
+
+<!-- ===================== SOLUTIONS ===================== -->
+<textarea class="src-code" data-l="nb1" data-kind="solution">
+console.log("Hello from Node!");
+console.log("Running in the browser sandbox.");
+
+const now = new Date();
+console.log("Time:", now.toISOString());
+
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((a, b) => a + b, 0);
+const average = sum / numbers.length;
+const maximum = Math.max(...numbers);
+
+console.log("Sum:", sum);
+console.log("Average:", average);
+console.log("Max:", maximum);
+
+const user = { name: "Chisomo", city: "Lilongwe", age: 22 };
+for (const key in user) {
+  console.log(`${key}: ${user[key]}`);
+}
+</textarea>
+
+<textarea class="src-code" data-l="nb2" data-kind="solution">
+const math = {
+  add: (a, b) => a + b,
+  multiply: (a, b) => a * b,
+  square: (n) => n * n,
+  cube: (n) => n * n * n,
+  average: (arr) => arr.reduce((a, b) => a + b, 0) / arr.length
+};
+
+module.exports = math;
+
+const m = require("math");
+console.log("3 + 5 =", m.add(3, 5));
+console.log("4 * 6 =", m.multiply(4, 6));
+console.log("7² =", m.square(7));
+console.log("3³ =", m.cube(3));
+console.log("Average of [10,20,30] =", m.average([10, 20, 30]));
+
+const fs = require("fs");
+fs.writeFileSync("note.txt", "Hello, Malawi!");
+fs.writeFileSync("numbers.txt", JSON.stringify([1, 2, 3, 4, 5]));
+
+console.log("note.txt:", fs.readFileSync("note.txt", "utf8"));
+console.log("numbers.txt:", fs.readFileSync("numbers.txt", "utf8"));
+console.log("Does note.txt exist?", fs.existsSync("note.txt"));
+console.log("Does missing.txt exist?", fs.existsSync("missing.txt"));
+</textarea>
+
+<textarea class="src-code" data-l="ex1" data-kind="solution">
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Hello, Malawi!");
+});
+
+app.get("/about", (req, res) => {
+  res.json({
+    name: "TechMountain",
+    city: "Lilongwe",
+    students: 350,
+    courses: ["HTML/CSS", "JavaScript", "Python", "React", "Node"]
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+app.get("/time", (req, res) => {
+  res.json({ now: new Date().toISOString() });
+});
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+  console.log("Routes: GET /  |  GET /about  |  GET /health  |  GET /time");
+});
+</textarea>
+
+<textarea class="src-code" data-l="ex2" data-kind="solution">
+const express = require("express");
+const app = express();
+
+const users = [
+  { id: 1, name: "Chisomo", city: "Lilongwe" },
+  { id: 2, name: "Tadala", city: "Blantyre" },
+  { id: 3, name: "Gift", city: "Mzuzu" }
+];
+
+app.get("/users/new", (req, res) => {
+  res.json({ message: "Static route — put this BEFORE /users/:id" });
+});
+
+app.get("/users", (req, res) => {
+  let result = users;
+  if (req.query.city) {
+    result = users.filter(u => u.city.toLowerCase() === req.query.city.toLowerCase());
+  }
+  res.json({ count: result.length, users: result });
+});
+
+app.get("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ error: "id must be a number" });
+  }
+  const user = users.find(u => u.id === id);
+  if (!user) return res.status(404).json({ error: "User not found" });
+  res.json(user);
+});
+
+app.listen(3000, () => {
+  console.log("Try: GET /users  |  GET /users/1  |  GET /users?city=Lilongwe");
+});
+</textarea>
+
+<textarea class="src-code" data-l="mw1" data-kind="solution">
+const express = require("express");
+const app = express();
+
+app.use(express.json());
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    console.log(`${req.method} ${req.url} → ${res.statusCode} (${Date.now() - start}ms)`);
+  });
+  next();
+});
+
+const users = [];
+
+app.get("/users", (req, res) => {
+  res.json(users);
+});
+
+app.post("/users", (req, res) => {
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: "name and email required" });
+  }
+  if (!email.includes("@")) {
+    return res.status(400).json({ error: "invalid email" });
+  }
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({ error: "email already registered" });
+  }
+
+  const user = { id: users.length + 1, name, email };
+  users.push(user);
+  res.status(201).json(user);
+});
+
+app.listen(3000, () => {
+  console.log("Ready. POST /users with { \"name\": \"...\", \"email\": \"...\" }");
+});
+</textarea>
+
+<textarea class="src-code" data-l="mw2" data-kind="solution">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} → ${res.statusCode} (${Date.now() - start}ms)`);
+  });
+  next();
+});
+
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  req.user = { id: 1, name: "Chisomo", role: "student" };
+  next();
+}
+
+function requireRole(role) {
+  return (req, res, next) => {
+    if (!req.user || req.user.role !== role) {
+      return res.status(403).json({ error: `Requires role: ${role}` });
+    }
+    next();
+  };
+}
+
+app.get("/public", (req, res) => {
+  res.json({ message: "Anyone can see this" });
+});
+
+app.get("/private", requireAuth, (req, res) => {
+  res.json({ message: "Secret data", user: req.user });
+});
+
+app.get("/admin", requireAuth, requireRole("admin"), (req, res) => {
+  res.json({ message: "Admin area" });
+});
+
+app.get("/boom", (req, res, next) => {
+  try {
+    throw new Error("Something exploded!");
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  console.error("Error handler:", err.message);
+  res.status(500).json({ error: err.message, handledAt: new Date().toISOString() });
+});
+
+app.listen(3000, () => {
+  console.log("Middleware chain ready. Try /public, /private, /admin, /boom");
+});
+</textarea>
+
+<textarea class="src-code" data-l="api1" data-kind="solution">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+let items = [
+  { id: 1, name: "Learn Node", done: true },
+  { id: 2, name: "Build an API", done: false }
+];
+
+app.get("/items", (req, res) => {
+  res.json({ count: items.length, items });
+});
+
+app.get("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const item = items.find(i => i.id === id);
+  if (!item) return res.status(404).json({ error: "Not found" });
+  res.json(item);
+});
+
+app.post("/items", (req, res) => {
+  const { name } = req.body;
+  if (!name || name.trim() === "") {
+    return res.status(400).json({ error: "name is required" });
+  }
+  const newItem = {
+    id: items.length ? Math.max(...items.map(i => i.id)) + 1 : 1,
+    name: name.trim(),
+    done: false
+  };
+  items.push(newItem);
+  res.status(201).json(newItem);
+});
+
+app.put("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: "Not found" });
+
+  const { name, done } = req.body;
+  if (name !== undefined) items[idx].name = name;
+  if (done !== undefined) items[idx].done = Boolean(done);
+  res.json(items[idx]);
+});
+
+app.patch("/items/:id/toggle", (req, res) => {
+  const id = Number(req.params.id);
+  const item = items.find(i => i.id === id);
+  if (!item) return res.status(404).json({ error: "Not found" });
+  item.done = !item.done;
+  res.json(item);
+});
+
+app.delete("/items/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const idx = items.findIndex(i => i.id === id);
+  if (idx === -1) return res.status(404).json({ error: "Not found" });
+  const removed = items.splice(idx, 1)[0];
+  res.json({ deleted: removed, remaining: items.length });
+});
+
+app.listen(3000, () => {
+  console.log("Full CRUD API ready");
+});
+</textarea>
+
+<textarea class="src-code" data-l="api2" data-kind="solution">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+const users = [];
+
+app.post("/users", (req, res) => {
+  const { email, name } = req.body;
+
+  if (!email || !name) {
+    return res.status(400).json({
+      error: "Validation failed",
+      fields: { email: !email, name: !name }
+    });
+  }
+  if (!email.includes("@")) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({ error: "Email already registered" });
+  }
+
+  const user = { id: users.length + 1, email, name };
+  users.push(user);
+  res.status(201).json(user);
+});
+
+app.get("/users", (req, res) => {
+  res.json({ count: users.length, users });
+});
+
+app.get("/users/:id", (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+  if (!user) return res.status(404).json({ error: "User not found" });
+  res.json(user);
+});
+
+app.delete("/users/:id", (req, res) => {
+  const idx = users.findIndex(u => u.id === Number(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: "User not found" });
+  users.splice(idx, 1);
+  res.status(204).end();
+});
+
+app.listen(3000, () => {
+  console.log("Status codes demo. Try duplicates, invalid emails, and 404s.");
+});
+</textarea>
+
+<textarea class="src-code" data-l="au1" data-kind="solution">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const app = express();
+app.use(express.json());
+
+const users = [];
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password required" });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: "Password must be at least 6 characters" });
+  }
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({ error: "Email already registered" });
+  }
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  res.json({ id: user.id, email: user.email, message: "Login successful" });
+});
+
+// Debug route to show what a hash looks like
+app.get("/debug/hashes", (req, res) => {
+  res.json(users.map(u => ({ email: u.email, hashLength: u.password.length, hashPreview: u.password.slice(0, 15) + "..." })));
+});
+
+app.listen(3000, () => {
+  console.log("Auth ready. Register twice with the same password — hashes differ!");
+});
+</textarea>
+
+<textarea class="src-code" data-l="au2" data-kind="solution">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+
+const SECRET = "dev-secret-change-me";
+const users = [];
+
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  try {
+    const payload = jwt.verify(header.slice(7), SECRET);
+    req.user = payload;
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: "email and password required" });
+  if (users.find(u => u.email === email)) return res.status(409).json({ error: "Email taken" });
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, { expiresIn: "7d" });
+  res.json({ token, expiresIn: "7 days" });
+});
+
+app.get("/public", (req, res) => {
+  res.json({ message: "Anyone can see this" });
+});
+
+app.get("/me", requireAuth, (req, res) => {
+  res.json({ user: req.user });
+});
+
+app.get("/admin", requireAuth, (req, res) => {
+  if (req.user.email !== "admin@example.mw") {
+    return res.status(403).json({ error: "Admin only" });
+  }
+  res.json({ message: "Welcome, admin" });
+});
+
+app.listen(3000, () => {
+  console.log("JWT flow ready. Register → login → copy token → GET /me");
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr1" data-kind="solution">
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+const CONFIG = {
+  port: 3000,
+  nodeEnv: "development",
+  version: "1.0.0"
+};
+
+function log(level, message, meta = {}) {
+  console.log(JSON.stringify({
+    time: new Date().toISOString(),
+    level,
+    message,
+    ...meta
+  }));
+}
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on("finish", () => {
+    log("info", "request", {
+      method: req.method,
+      url: req.url,
+      status: res.statusCode,
+      ms: Date.now() - start
+    });
+  });
+  next();
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    ok: true,
+    version: CONFIG.version,
+    env: CONFIG.nodeEnv,
+    uptime: Date.now()
+  });
+});
+
+app.get("/boom", (req, res, next) => {
+  try {
+    throw new Error("Simulated failure — this is expected!");
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Not found", path: req.url });
+});
+
+app.use((err, req, res, next) => {
+  log("error", err.message, { stack: err.stack });
+  res.status(500).json({ error: err.message });
+});
+
+app.listen(CONFIG.port, () => {
+  log("info", "server started", { port: CONFIG.port, env: CONFIG.nodeEnv });
+  console.log("Try: GET /health  |  GET /boom  |  GET /missing");
+});
+</textarea>
+
+<textarea class="src-code" data-l="pr2" data-kind="solution">
+const express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const app = express();
+app.use(express.json());
+
+const SECRET = "dev-secret-change-me";
+const users = [];
+const posts = [];
+
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+  try {
+    req.user = jwt.verify(header.slice(7), SECRET);
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+}
+
+app.post("/auth/register", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: "email and password required" });
+  if (password.length < 6) return res.status(400).json({ error: "password too short" });
+  if (users.find(u => u.email === email)) return res.status(409).json({ error: "Email taken" });
+
+  const hashed = bcrypt.hashSync(password, 10);
+  const user = { id: users.length + 1, email, password: hashed };
+  users.push(user);
+  res.status(201).json({ id: user.id, email: user.email });
+});
+
+app.post("/auth/login", (req, res) => {
+  const { email, password } = req.body;
+  const user = users.find(u => u.email === email);
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+  const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, { expiresIn: "7d" });
+  res.json({ token });
+});
+
+app.get("/posts", (req, res) => {
+  const enriched = posts.map(p => {
+    const author = users.find(u => u.id === p.authorId);
+    return { ...p, authorEmail: author ? author.email : "unknown" };
+  });
+  res.json({ count: enriched.length, posts: enriched });
+});
+
+app.get("/posts/:id", (req, res) => {
+  const post = posts.find(p => p.id === Number(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+  res.json(post);
+});
+
+app.post("/posts", requireAuth, (req, res) => {
+  const { title, body } = req.body;
+  if (!title || !body) return res.status(400).json({ error: "title and body required" });
+
+  const post = {
+    id: posts.length + 1,
+    title,
+    body,
+    authorId: req.user.userId,
+    authorEmail: req.user.email,
+    createdAt: new Date().toISOString()
+  };
+  posts.push(post);
+  res.status(201).json(post);
+});
+
+app.put("/posts/:id", requireAuth, (req, res) => {
+  const post = posts.find(p => p.id === Number(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+  if (post.authorId !== req.user.userId) {
+    return res.status(403).json({ error: "Not your post" });
+  }
+  const { title, body } = req.body;
+  if (title !== undefined) post.title = title;
+  if (body !== undefined) post.body = body;
+  post.updatedAt = new Date().toISOString();
+  res.json(post);
+});
+
+app.delete("/posts/:id", requireAuth, (req, res) => {
+  const idx = posts.findIndex(p => p.id === Number(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: "Post not found" });
+  if (posts[idx].authorId !== req.user.userId) {
+    return res.status(403).json({ error: "Not your post" });
+  }
+  const removed = posts.splice(idx, 1)[0];
+  res.json({ deleted: removed });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found", path: req.url });
+});
+
+app.use((err, req, res, next) => {
+  console.error("Error:", err.message);
+  res.status(500).json({ error: err.message });
+});
+
+app.listen(3000, () => {
+  console.log("Blog API ready. Register → login → POST /posts → GET /posts");
+});
+</textarea>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'node_express_progress_v1';
+var CAPSTONE_KEY = 'node_express_capstone_v1';
+
+var course = {
+  modules: [
+    {
+      id: 'node-basics', icon: '⬢', title: 'Node Basics',
+      lessons: [
+        { id:'nb1', title:'What is Node.js?', time:'25 min', hasServer:false,
+          challenge:'Add a loop that prints the numbers 1 to 10. Then add an object with three fields and print each one with <code>Object.entries()</code>.',
+          quiz:[
+            { q:'What kind of JavaScript runtime is Node?', options:['Browser-based','Server-side (outside the browser)','Mobile only','Desktop GUI only'], correct:1 },
+            { q:'Which engine does Node.js use?', options:['SpiderMonkey','JavaScriptCore','V8','Chakra'], correct:2 },
+            { q:'Why is Node good at handling many connections?', options:['It uses many threads','It uses an event loop with non-blocking I/O','It is written in C++','It caches everything'], correct:1 }
+          ]},
+        { id:'nb2', title:'Modules & npm', time:'28 min', hasServer:false,
+          challenge:'Add a <code>cube(n)</code> function to the math module and log the cube of 3. Then write a file <code>numbers.txt</code> containing a JSON array and read it back.',
+          quiz:[
+            { q:'Which function imports a module?', options:['import','require','load','get'], correct:1 },
+            { q:'How do you expose a value from a module?', options:['return it','assign to module.exports','use export default','declare globally'], correct:1 },
+            { q:'What does npm stand for?', options:['Node Package Manager','New Program Method','Native Package Module','Node Process Manager'], correct:0 }
+          ]}
+      ]
+    },
+    {
+      id: 'express-fundamentals', icon: '🌐', title: 'Express Fundamentals',
+      lessons: [
+        { id:'ex1', title:'Your First Express Server', time:'28 min', hasServer:true,
+          challenge:'Add a route <code>GET /time</code> that returns JSON with the current ISO timestamp. Then add a route that returns your name.',
+          quiz:[
+            { q:'Which function creates an Express app?', options:['new Express()','express()','createApp()','app()'], correct:1 },
+            { q:'How do you start the server?', options:['app.run()','app.start()','app.listen(port)','server.open(port)'], correct:2 },
+            { q:'Which is used to send JSON?', options:['res.send()','res.json()','res.write()','res.body()'], correct:1 }
+          ]},
+        { id:'ex2', title:'Routes & Params', time:'30 min', hasServer:true,
+          challenge:'Add a route <code>GET /users/:id/posts/:postId</code> that returns both IDs from <code>req.params</code>. Then add filtering on the <code>/users</code> route for a <code>?city=</code> query.',
+          quiz:[
+            { q:'Where do URL parameters land?', options:['req.query','req.params','req.body','req.url'], correct:1 },
+            { q:'Where do query string values land?', options:['req.query','req.params','req.body','req.headers'], correct:0 },
+            { q:'Why put static routes before dynamic ones?', options:['For speed','Because Express matches in order','Because dynamic routes do not work otherwise','It is required by law'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'middleware', icon: '🔗', title: 'Middleware',
+      lessons: [
+        { id:'mw1', title:'Built-in Middleware', time:'30 min', hasServer:true,
+          challenge:'Add validation: reject registrations with a password shorter than 6 characters. Return 400 with a clear error message.',
+          quiz:[
+            { q:'What does express.json() do?', options:['Sends JSON','Parses JSON request bodies','Validates JSON','Returns JSON'], correct:1 },
+            { q:'What happens if you forget express.json()?', options:['Nothing changes','req.body is undefined','The server crashes','The route is skipped'], correct:1 },
+            { q:'Where must express.json() be registered?', options:['Anywhere','Before the routes that read body','After all routes','Inside each route'], correct:1 }
+          ]},
+        { id:'mw2', title:'Custom Middleware & Errors', time:'32 min', hasServer:true,
+          challenge:'Add a <code>requireRole(role)</code> middleware factory that returns a middleware. Use it on an <code>/admin</code> route to require <code>role === "admin"</code>.',
+          quiz:[
+            { q:'How many arguments does an error-handling middleware have?', options:['2','3','4','5'], correct:2 },
+            { q:'What happens if middleware does not call next()?', options:['The request hangs','It runs the next one anyway','Express throws','The server restarts'], correct:0 },
+            { q:'When does the error handler run?', options:['Only for 500 errors','When next(err) is called','On every request','Only on startup'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'rest-apis', icon: '📡', title: 'REST APIs',
+      lessons: [
+        { id:'api1', title:'CRUD with In-Memory Data', time:'35 min', hasServer:true,
+          challenge:'Add a <code>PATCH /items/:id/toggle</code> route that flips the <code>done</code> flag and returns the updated item.',
+          quiz:[
+            { q:'Which HTTP method creates a new resource?', options:['GET','POST','PUT','DELETE'], correct:1 },
+            { q:'Which HTTP method reads a resource?', options:['GET','POST','PUT','DELETE'], correct:0 },
+            { q:'Which status code means "created"?', options:['200','201','204','400'], correct:1 }
+          ]},
+        { id:'api2', title:'REST Conventions & Status Codes', time:'30 min', hasServer:true,
+          challenge:'Add a <code>DELETE /users/:id</code> route that returns 204 No Content on success and 404 if not found.',
+          quiz:[
+            { q:'Which status code means "bad input from client"?', options:['200','401','400','500'], correct:2 },
+            { q:'Which status code means "not logged in"?', options:['400','401','403','404'], correct:1 },
+            { q:'What does 409 Conflict usually signal?', options:['Server crash','Duplicate or conflicting state','Bad URL','Missing token'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'auth-security', icon: '🔐', title: 'Auth & Security',
+      lessons: [
+        { id:'au1', title:'Password Hashing', time:'32 min', hasServer:true,
+          challenge:'Add validation: require the password to be at least 6 characters. Then register two users with the same password and compare the two stored hashes — they should differ.',
+          quiz:[
+            { q:'Why never store passwords as plaintext?', options:['It is slower','If the DB leaks, all accounts are compromised','It uses more storage','It is illegal'], correct:1 },
+            { q:'What does bcrypt.compareSync do?', options:['Decrypts a hash','Checks a password against a hash','Hashes a password','Generates a salt'], correct:1 },
+            { q:'What is a salt?', options:['A random value added before hashing','The cost factor','A secret key','A type of encryption'], correct:0 }
+          ]},
+        { id:'au2', title:'JWT & Protected Routes', time:'34 min', hasServer:true,
+          challenge:'Add a <code>requireAdmin</code> middleware that checks <code>req.user.email === "admin@example.mw"</code> and returns 403 otherwise. Protect a new <code>/admin</code> route with it.',
+          quiz:[
+            { q:'What are the three parts of a JWT?', options:['user, pass, secret','header, payload, signature','key, value, hash','id, token, expiry'], correct:1 },
+            { q:'Where does the client send the token?', options:['In the URL','In the Authorization header','In a cookie only','In the body'], correct:1 },
+            { q:'Is the JWT payload encrypted?', options:['Yes, with AES','No — anyone can read it, but they cannot forge the signature','Only if you use HS512','Depends on the library'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'projects-deploy', icon: '🚀', title: 'Projects & Deploy',
+      lessons: [
+        { id:'pr1', title:'Env Vars, Logging & Errors', time:'32 min', hasServer:true,
+          challenge:'Add a middleware that logs the request body size in bytes for POST requests. Then add an endpoint <code>GET /version</code> that returns the version from CONFIG.',
+          quiz:[
+            { q:'Where should secrets live in production?', options:['In the source code','In environment variables','In comments','In a public JSON file'], correct:1 },
+            { q:'What does process.env.PORT represent?', options:['A random number','The port from the environment, with a fallback','A file path','The user ID'], correct:1 },
+            { q:'Why centralize error handling?', options:['Faster','Consistent error shape and one place to log','Required by Express','Saves memory'], correct:1 }
+          ]},
+        { id:'pr2', title:'Capstone — Blog API', time:'50 min', hasServer:true,
+          challenge:'Add a <code>GET /posts/mine</code> route (protected) that returns only posts authored by the current user. Then add a 404 catch-all before the error handler.',
+          quiz:[
+            { q:'In what order should routes be registered?', options:['Randomly','Public reads, then protected writes, then 404, then error handler','Error handler first','Alphabetically'], correct:1 },
+            { q:'Where should the error handler go?', options:['At the top','In the middle','At the very bottom, after all routes','In a separate file only'], correct:2 },
+            { q:'How do you prevent one user deleting another user\'s post?', options:['Trust the client','Check post.authorId === req.user.userId before deleting','Only allow admins','Use DELETE method'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time, hasServer: l.hasServer,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+var starters = {};
+var solutions = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+  document.querySelectorAll('.src-code').forEach(function(n) {
+    var lid = n.getAttribute('data-l');
+    var kind = n.getAttribute('data-kind');
+    var raw = n.value.replace(/^\s*\n/, '').replace(/\s+$/, '');
+    if (kind === 'starter') starters[lid] = raw;
+    else if (kind === 'solution') solutions[lid] = raw;
+  });
+})();
+
+/* ============================================================
+   NODE SANDBOX PRELUDE
+   ============================================================ */
+var NODE_PRELUDE =
+'(function(){' +
+'function s(a){' +
+'try{' +
+'if(a===undefined)return "undefined";' +
+'if(a===null)return "null";' +
+'if(typeof a==="string")return a;' +
+'if(typeof a==="number"||typeof a==="boolean")return String(a);' +
+'if(typeof a==="function")return "[Function "+(a.name||"anonymous")+"]";' +
+'if(a instanceof Error)return a.message;' +
+'if(typeof a==="object")try{return JSON.stringify(a)}catch(e){return "[object]"} ' +
+'return String(a);' +
+'}catch(e){return "[value]"}' +
+'}' +
+'function p(t,args){try{var r=[];for(var i=0;i<args.length;i++)r.push(s(args[i]));parent.postMessage({__node:1,type:"console",level:t,args:r},"*");}catch(e){}}' +
+'var ol=console.log,ow=console.warn,oe=console.error;' +
+'console.log=function(){p("log",arguments);try{ol.apply(console,arguments)}catch(e){}};' +
+'console.warn=function(){p("warn",arguments);try{ow.apply(console,arguments)}catch(e){}};' +
+'console.error=function(){p("error",arguments);try{oe.apply(console,arguments)}catch(e){}};' +
+'window.onerror=function(msg,src,line){p("error",[msg+" (line "+line+")"]);};' +
+
+/* Storage */
+'var __files={};' +
+'var __memoryDB={users:[],posts:[],items:[]};' +
+
+/* Middleware + routes */
+'var __stack=[];' +
+
+'function matchPath(routePath,reqPath,isMiddleware){' +
+'if(isMiddleware){' +
+'if(routePath==="/")return {};' +
+'if(reqPath===routePath)return {};' +
+'if(reqPath.indexOf(routePath+"/")===0)return {};' +
+'return null;' +
+'}' +
+'var rp=routePath.split("/").filter(Boolean);' +
+'var qp=reqPath.split("/").filter(Boolean);' +
+'if(rp.length!==qp.length)return null;' +
+'var params={};' +
+'for(var i=0;i<rp.length;i++){' +
+'var r=rp[i];' +
+'if(r.charAt(0)===":")params[r.slice(1)]=qp[i];' +
+'else if(r!==qp[i])return null;' +
+'}' +
+'return params;' +
+'}' +
+
+'function __makeReq(method,url,body,headers){' +
+'var qi=url.indexOf("?");' +
+'var path=qi>=0?url.slice(0,qi):url;' +
+'var qs=qi>=0?url.slice(qi+1):"";' +
+'var query={};' +
+'qs.split("&").forEach(function(pair){' +
+'if(!pair)return;' +
+'var eq=pair.indexOf("=");' +
+'var k=eq>=0?pair.slice(0,eq):pair;' +
+'var v=eq>=0?pair.slice(eq+1):"";' +
+'try{query[decodeURIComponent(k)]=decodeURIComponent(v);}catch(e){query[k]=v;}' +
+'});' +
+'return {method:method,url:url,path:path,query:query,body:body||{},headers:headers||{},params:{},get:function(n){return this.headers[n.toLowerCase()];}};' +
+'}' +
+
+'function __makeRes(reqId){' +
+'var res={' +
+'statusCode:200,' +
+'headers:{},' +
+'body:null,' +
+'_ended:false,' +
+'_sent:false,' +
+'status:function(code){this.statusCode=code;return this;},' +
+'set:function(n,v){this.headers[n]=v;return this;},' +
+'json:function(data){this.headers["content-type"]="application/json";this.body=JSON.stringify(data);this._ended=true;__flush(this,reqId);return this;},' +
+'send:function(data){' +
+'if(typeof data==="object"&&data!==null){this.headers["content-type"]="application/json";this.body=JSON.stringify(data);}' +
+'else{this.headers["content-type"]="text/html";this.body=String(data);}' +
+'this._ended=true;__flush(this,reqId);return this;' +
+'},' +
+'sendStatus:function(code){this.statusCode=code;this.body=String(code);this._ended=true;__flush(this,reqId);return this;},' +
+'end:function(data){if(data){this.body=String(data);}else{this.body="";}this._ended=true;__flush(this,reqId);return this;}' +
+'};' +
+'return res;' +
+'}' +
+
+'function __flush(res,reqId){' +
+'if(res._sent)return;' +
+'res._sent=true;' +
+'try{parent.postMessage({__node:1,type:"response",id:reqId,status:res.statusCode,headers:res.headers,body:res.body},"*");}catch(e){}' +
+'}' +
+
+'function __dispatch(req,res){' +
+'var idx=0;' +
+'function next(err){' +
+'if(idx>=__stack.length){' +
+'if(res._ended)return;' +
+'if(err){res.status(500).json({error:String(err.message||err)});return;}' +
+'res.status(404).json({error:"Cannot "+req.method+" "+req.path});' +
+'return;' +
+'}' +
+'var entry=__stack[idx++];' +
+'var isMW=entry.method==="USE";' +
+'var mm=isMW||entry.method===req.method;' +
+'if(!mm){return next(err);}' +
+'var params=matchPath(entry.path,req.path,isMW);' +
+'if(params===null){return next(err);}' +
+'if(params&&Object.keys(params).length){req.params=Object.assign({},req.params,params);}' +
+'var fn=entry.handler;' +
+'var isErrHandler=fn.length===4;' +
+'if(isErrHandler){' +
+'if(!err)return next(null);' +
+'try{return fn(err,req,res,next);}catch(e){return next(e);}' +
+'}' +
+'if(err)return next(err);' +
+'try{return fn(req,res,next);}catch(e){return next(e);}' +
+'}' +
+'next(null);' +
+'}' +
+
+/* express() */
+'function __createApp(){' +
+'var app=function(req,res){__dispatch(req,res);};' +
+'app.get=function(path,handler){__stack.push({method:"GET",path:path,handler:handler});return app;};' +
+'app.post=function(path,handler){__stack.push({method:"POST",path:path,handler:handler});return app;};' +
+'app.put=function(path,handler){__stack.push({method:"PUT",path:path,handler:handler});return app;};' +
+'app.patch=function(path,handler){__stack.push({method:"PATCH",path:path,handler:handler});return app;};' +
+'app.delete=function(path,handler){__stack.push({method:"DELETE",path:path,handler:handler});return app;};' +
+'app.use=function(){' +
+'var args=Array.prototype.slice.call(arguments);' +
+'var handler=args[args.length-1];' +
+'var path=args.length>1&&typeof args[0]==="string"?args[0]:"/";' +
+'__stack.push({method:"USE",path:path,handler:handler});' +
+'return app;' +
+'};' +
+'app.listen=function(port,cb){' +
+'var routes=__stack.filter(function(e){return e.method!=="USE";}).map(function(e){return {method:e.method,path:e.path};});' +
+'var mwCount=__stack.filter(function(e){return e.method==="USE";}).length;' +
+'parent.postMessage({__node:1,type:"listening",port:port,routes:routes,mwCount:mwCount},"*");' +
+'if(cb)try{cb();}catch(e){p("error",[e.message]);}' +
+'return {close:function(){}};' +
+'};' +
+'app.use=app.use.bind(app);' +
+'return app;' +
+'}' +
+
+/* require shim */
+'var __knownModules={"express":true,"http":true,"path":true,"fs":true,"os":true,"url":true,"crypto":true,"jsonwebtoken":true,"bcrypt":true,"bcryptjs":true,"uuid":true,"dotenv":true,"cors":true,"morgan":true,"math":true};' +
+'window.require=function(name){' +
+'if(name==="express")return __createApp;' +
+'if(name==="http")return {createServer:function(h){return {listen:function(port,cb){parent.postMessage({__node:1,type:"listening",port:port,routes:[],mwCount:0},"*");if(cb)cb();return {close:function(){}};}};}};' +
+'if(name==="path")return {join:function(){return Array.prototype.slice.call(arguments).join("/").replace(/\\/+/g,"/");},resolve:function(){return Array.prototype.slice.call(arguments).join("/");},basename:function(p){return p.split("/").pop();},dirname:function(p){return p.split("/").slice(0,-1).join("/");},extname:function(p){var b=p.split("/").pop();var i=b.lastIndexOf(".");return i>0?b.slice(i):"";}};' +
+'if(name==="fs")return {' +
+'readFileSync:function(p,enc){if(p in __files)return __files[p];throw new Error("ENOENT: no such file, open \'"+p+"\'");},' +
+'writeFileSync:function(p,c){__files[p]=String(c);},' +
+'existsSync:function(p){return p in __files;},' +
+'unlinkSync:function(p){delete __files[p];},' +
+'mkdirSync:function(){},' +
+'readdirSync:function(){return [];}' +
+'};' +
+'if(name==="os")return {platform:function(){return "browser";},homedir:function(){return "/home/user";},cpus:function(){return [];}};' +
+'if(name==="url")return {parse:function(u){try{return new URL(u);}catch(e){return {};}}};' +
+'if(name==="crypto")return {randomBytes:function(n){var b=[];for(var i=0;i<n;i++)b.push(Math.floor(Math.random()*256));return {toString:function(enc){return b.map(function(x){return x.toString(16).padStart(2,"0")}).join("");}};}};' +
+'if(name==="jsonwebtoken")return {' +
+'sign:function(payload,secret,opts){' +
+'var header=btoa(JSON.stringify({alg:"HS256",typ:"JWT"}));' +
+'var body=btoa(JSON.stringify(payload));' +
+'var sig=btoa(secret+"."+body).slice(0,32);' +
+'return header+"."+body+"."+sig;' +
+'},' +
+'verify:function(token,secret){' +
+'var parts=String(token).split(".");' +
+'if(parts.length!==3)throw new Error("invalid token");' +
+'var expected=btoa(secret+"."+parts[1]).slice(0,32);' +
+'if(parts[2]!==expected)throw new Error("invalid signature");' +
+'return JSON.parse(atob(parts[1]));' +
+'},' +
+'decode:function(token){var p=String(token).split(".");if(p.length!==3)return null;try{return JSON.parse(atob(p[1]));}catch(e){return null;}}' +
+'};' +
+'if(name==="bcrypt"||name==="bcryptjs")return {' +
+'hashSync:function(pw){return "hashed$"+String(pw);},' +
+'compareSync:function(pw,hash){return hash==="hashed$"+String(pw);},' +
+'hash:function(pw,r,cb){if(typeof r==="function"){cb=r;r=10;}setTimeout(function(){cb(null,"hashed$"+pw);},10);},' +
+'compare:function(pw,hash,cb){setTimeout(function(){cb(null,hash==="hashed$"+pw);},10);}' +
+'};' +
+'if(name==="uuid")return {v4:function(){return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(c){var r=Math.random()*16|0;var v=c==="x"?r:(r&3|8);return v.toString(16);});}};' +
+'if(name==="dotenv")return {config:function(){return {parsed:{}};}};' +
+'if(name==="cors")return function(){return function(req,res,next){if(next)next();};};' +
+'if(name==="morgan")return function(){return function(req,res,next){if(next)next();};};' +
+'if(name==="math"){return module.exports||{};}' +
+'if(name.charAt(0)==="."||name.charAt(0)==="/"){return module.exports||{};}' +
+'throw new Error("Cannot find module \'" +name+ "\'");' +
+'};' +
+'window.module={exports:{}};' +
+'window.exports=window.module.exports;' +
+
+/* process env */
+'window.process={env:{PORT:"3000",NODE_ENV:"development",JWT_SECRET:"dev-secret"},uptime:function(){return 0;}};' +
+
+/* Message handler for incoming requests */
+'window.addEventListener("message",function(e){' +
+'var d=e.data;' +
+'if(!d||!d.__node||d.type!=="request")return;' +
+'var headers=d.headers||{};' +
+'if(d.token){headers.authorization="Bearer "+d.token;}' +
+'try{' +
+'var req=__makeReq(d.method,d.path,d.body,headers);' +
+'var res=__makeRes(d.id);' +
+'__dispatch(req,res);' +
+'}catch(err){' +
+'try{parent.postMessage({__node:1,type:"response",id:d.id,status:500,headers:{},body:JSON.stringify({error:String(err.message||err)})},"*");}catch(e){}' +
+'}' +
+'});' +
+
+'})();';
+
+function buildSandboxDoc(userCode) {
+  var safe = String(userCode).replace(/<\/script>/gi, '<\\/script>');
+  return '<!DOCTYPE html><html><head><meta charset="utf-8"><style>' +
+    'body{font-family:system-ui,sans-serif;margin:0;padding:16px;background:#fff;color:#1f2937}' +
+    '</style></head><body>' +
+    '<div style="font-family:ui-monospace,monospace;font-size:13px;color:#6b7280">Node sandbox</div>' +
+    '<script>' + NODE_PRELUDE + '<\/script>' +
+    '<script>' + safe + '<\/script>' +
+    '</body></html>';
+}
+
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'node::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+var MILESTONES = [
+  { id: 'm1', text: 'I sketched the blog API: listed every endpoint' },
+  { id: 'm2', text: 'My server starts and responds to GET /posts' },
+  { id: 'm3', text: 'Registration hashes passwords — I verified the hash is not the plaintext' },
+  { id: 'm4', text: 'Login returns a JWT' },
+  { id: 'm5', text: 'requireAuth middleware blocks requests without a token (401)' },
+  { id: 'm6', text: 'POST /posts works with a valid token' },
+  { id: 'm7', text: 'PUT /posts/:id rejects users who are not the author (403)' },
+  { id: 'm8', text: 'DELETE /posts/:id works and returns the deleted post' },
+  { id: 'm9', text: 'Every route validates input and returns the right status code' },
+  { id: 'm10', text: 'I pushed the project to GitHub with a README and ran it locally with npm install' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+var currentLessonId = 'nb1';
+var currentView = 'lessons';
+var lintTimer = null;
+var activeRequestId = 0;
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'projects') renderProjects();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+  var starter = starters[lesson.id] || '';
+  var solution = solutions[lesson.id] || '';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>⬢ Node + Express</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  html += '<article class="rd">' + reading + '</article>';
+
+  if (starter) {
+    html += '<section class="ed">';
+    html += '<h2 class="ed-h">Try It Yourself <span class="ed-bdg">Node Sandbox</span></h2>';
+    if (lesson.hasServer) {
+      html += '<p class="ed-s">Write real Node / Express code. Click <strong>Run</strong> to start the server, then send requests using the client below.</p>';
+    } else {
+      html += '<p class="ed-s">Write Node scripts. Click <strong>Run</strong> to execute. Output appears in the console on the right.</p>';
+    }
+    html += '<div class="ed-grid">';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb"><span class="dot"></span>server.js</span><span class="pane-lb">Node.js</span></div>';
+    html += '<textarea class="code-ta" id="nodeEditor" spellcheck="false" aria-label="Node code editor"></textarea></div>';
+    html += '<div class="pane"><div class="pane-hd"><span class="pane-lb">Console</span><button id="clearConsoleBtn" type="button" style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.6px">Clear</button></div>';
+    html += '<div class="con-out" id="consoleOutput" aria-live="polite"><div class="con-empty">Run your code — output will appear here.</div></div></div>';
+    html += '</div>';
+    html += '<div class="ed-bar">';
+    html += '<button class="btn btn-p btn-sm" id="runBtn" type="button">▶ Run</button>';
+    html += '<button class="btn btn-g btn-sm" id="resetBtn" type="button">↺ Reset</button>';
+    html += '<button class="btn btn-g btn-sm" id="downloadBtn" type="button">↓ Download .js</button>';
+    html += '</div>';
+    html += '<div class="lint" id="lintBox" aria-live="polite">Write some code — checks will appear here.</div>';
+    html += '<div class="challenge"><strong>Your challenge</strong>' + lesson.challenge + '</div>';
+
+    if (lesson.hasServer) {
+      html += '<div class="req-panel" id="reqPanel">';
+      html += '<div class="req-hd">';
+      html += '<span class="req-hd-title">Request Client</span>';
+      html += '<span class="req-hd-status"><span class="req-dot" id="reqDot"></span><span id="reqStatus">Server not running</span></span>';
+      html += '</div>';
+      html += '<div class="req-body">';
+      html += '<div class="req-row">';
+      html += '<select class="req-method" id="reqMethod">';
+      html += '<option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option>';
+      html += '</select>';
+      html += '<input class="req-path" id="reqPath" type="text" placeholder="/users" value="/">';
+      html += '<button class="req-send" id="reqSendBtn" type="button" disabled>Send</button>';
+      html += '</div>';
+      html += '<div class="req-body-label">Body (JSON — optional)</div>';
+      html += '<textarea class="req-body-ta" id="reqBody" placeholder=\'{"name":"Chisomo"}\'></textarea>';
+      html += '<div class="req-body-label" style="margin-top:10px">Auth token (JWT — optional)</div>';
+      html += '<input class="req-path" id="reqToken" type="text" placeholder="Paste a JWT here to send Authorization: Bearer <token>" style="width:100%">';
+      html += '<div class="req-chips" id="reqChips"></div>';
+      html += '</div>';
+      html += '<div class="resp-view" id="respView">';
+      html += '<div class="resp-hd"><span id="respStatus" class="resp-status">200</span><span id="respMeta" style="color:#6b7280">—</span></div>';
+      html += '<pre class="resp-body" id="respBody"></pre>';
+      html += '</div>';
+      html += '</div>';
+    }
+
+    if (solution) {
+      html += '<button class="btn btn-g btn-sm sol-btn" id="showSolutionBtn" type="button">🔓 Show solution</button>';
+      html += '<div class="sol-block" id="solutionBlock">';
+      html += '<div class="sol-warn">⚠ Try solving it yourself first — then compare.</div>';
+      html += '<pre class="sol-pre">' + esc(solution) + '</pre>';
+      html += '</div>';
+    }
+
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work. Pick the next lesson from the sidebar.' : 'Finish the reading, run the code, and answer the quiz.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (starter) {
+    $('nodeEditor').value = starter;
+    attachEditor(lesson, starter);
+  }
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+  var sb = $('showSolutionBtn');
+  if (sb) sb.addEventListener('click', function() {
+    $('solutionBlock').classList.toggle('show');
+    sb.textContent = $('solutionBlock').classList.contains('show') ? '🔒 Hide solution' : '🔓 Show solution';
+  });
+}
+
+function attachEditor(lesson, starter) {
+  var ta = $('nodeEditor');
+  var conOut = $('consoleOutput');
+  var lintBox = $('lintBox');
+  var runBtn = $('runBtn');
+  var iframe = null;
+
+  function clearConsole() {
+    conOut.innerHTML = '<div class="con-empty">Run your code — output will appear here.</div>';
+  }
+  function appendConsole(level, text) {
+    var empty = conOut.querySelector('.con-empty');
+    if (empty) empty.remove();
+    var line = document.createElement('div');
+    line.className = 'con-line ' + (level === 'log' ? 'log' : level);
+    var badge = document.createElement('span');
+    badge.className = 'con-bdg';
+    badge.textContent = level;
+    var span = document.createElement('span');
+    span.textContent = text;
+    line.appendChild(badge);
+    line.appendChild(span);
+    conOut.appendChild(line);
+    conOut.scrollTop = conOut.scrollHeight;
+  }
+
+  /* Hidden iframe runs the sandbox */
+  function ensureIframe() {
+    if (iframe) return iframe;
+    iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.setAttribute('sandbox', 'allow-scripts');
+    document.body.appendChild(iframe);
+    return iframe;
+  }
+
+  var serverRunning = false;
+  var registeredRoutes = [];
+
+  function handleMessage(e) {
+    var d = e.data;
+    if (!d || !d.__node) return;
+    if (d.type === 'console') {
+      appendConsole(d.level, (d.args || []).join(' '));
+    } else if (d.type === 'listening') {
+      serverRunning = true;
+      registeredRoutes = d.routes || [];
+      if (lesson.hasServer) {
+        var dot = $('reqDot'), status = $('reqStatus'), sendBtn = $('reqSendBtn');
+        if (dot) dot.classList.add('on');
+        if (status) status.textContent = 'Listening on port ' + d.port + ' · ' + (d.mwCount || 0) + ' middleware';
+        if (sendBtn) sendBtn.disabled = false;
+        renderChips();
+      }
+      appendConsole('info', 'Server listening on port ' + d.port);
+    } else if (d.type === 'response') {
+      if (!lesson.hasServer) return;
+      var respView = $('respView');
+      var respStatus = $('respStatus');
+      var respMeta = $('respMeta');
+      var respBody = $('respBody');
+      if (!respView) return;
+      respView.classList.add('show');
+      var sc = d.status;
+      respStatus.textContent = sc;
+      respStatus.className = 'resp-status' + (sc >= 500 ? ' err' : sc >= 400 ? ' warn' : '');
+      respMeta.textContent = 'received at ' + new Date().toLocaleTimeString();
+      var bodyText = d.body || '';
+      try {
+        if (bodyText && (bodyText.charAt(0) === '{' || bodyText.charAt(0) === '[')) {
+          bodyText = JSON.stringify(JSON.parse(bodyText), null, 2);
+        }
+      } catch (e) {}
+      respBody.textContent = bodyText;
+    }
+  }
+  window.addEventListener('message', handleMessage);
+
+  function renderChips() {
+    var chips = $('reqChips');
+    if (!chips) return;
+    chips.innerHTML = '';
+    if (!registeredRoutes.length) {
+      chips.innerHTML = '<span style="font-size:12px;color:#6b7280">No routes registered yet.</span>';
+      return;
+    }
+    registeredRoutes.forEach(function(r) {
+      var c = document.createElement('button');
+      c.className = 'req-chip';
+      c.type = 'button';
+      c.innerHTML = '<span class="m">' + r.method + '</span>' + r.path;
+      c.addEventListener('click', function() {
+        $('reqMethod').value = r.method;
+        // Replace :param with a sample value
+        var p = r.path.replace(/:id/g, '1').replace(/:postId/g, '1').replace(/:commentId/g, '1');
+        $('reqPath').value = p;
+      });
+      chips.appendChild(c);
+    });
+  }
+
+  function lintNode(code) {
+    var issues = [];
+    if (!code.trim()) { issues.push({ level: 'warn', text: 'Editor is empty.' }); return issues; }
+    if (/\brequire\s*\(\s*['"]/g.test(code)) {
+      // good
+    } else if (/app\.(get|post|put|delete|patch)/.test(code) && !/require\s*\(\s*['"]express['"]\s*\)/.test(code)) {
+      issues.push({ level: 'error', text: 'You are using app but have not called require("express").' });
+    }
+    if (/app\.get\(|app\.post\(/.test(code) && !/app\.listen\(/.test(code)) {
+      issues.push({ level: 'warn', text: 'You defined routes but never called app.listen().' });
+    }
+    if (/req\.body/.test(code) && !/express\.json\(\)/.test(code)) {
+      issues.push({ level: 'warn', text: 'You read req.body but have not registered express.json(). Add app.use(express.json()) before your routes.' });
+    }
+    // Balanced braces / parens
+    var ob = (code.match(/{/g) || []).length, cb = (code.match(/}/g) || []).length;
+    if (ob !== cb) issues.push({ level: 'error', text: (ob > cb ? (ob - cb) + ' missing }' : (cb - ob) + ' extra }') + ' — check your braces.' });
+    var op = (code.match(/\(/g) || []).length, cp = (code.match(/\)/g) || []).length;
+    if (op !== cp) issues.push({ level: 'error', text: (op > cp ? (op - cp) + ' missing )' : (cp - op) + ' extra )') + ' — check your parentheses.' });
+    // console.log typos
+    if (/console\.log\s+/.test(code) && !/console\.log\s*\(/.test(code)) {
+      issues.push({ level: 'error', text: 'console.log requires parentheses — write console.log(...).' });
+    }
+    if (!issues.length) issues.push({ level: 'ok', text: '✓ No obvious issues — looks good!' });
+    return issues;
+  }
+
+  function lintNow() {
+    var issues = lintNode(ta.value);
+    var errs = issues.filter(function(i) { return i.level === 'error'; });
+    var warns = issues.filter(function(i) { return i.level === 'warn'; });
+    var cls = 'lint ok', label = '✓ No obvious issues — looks good!';
+    if (errs.length) { cls = 'lint error'; label = '❌ ' + errs.length + ' error' + (errs.length > 1 ? 's' : '') + ' found:'; }
+    else if (warns.length) { cls = 'lint warn'; label = '⚠️ ' + warns.length + ' warning' + (warns.length > 1 ? 's' : '') + ':'; }
+    lintBox.className = cls;
+    var list = issues.filter(function(i) { return i.level !== 'ok'; })
+      .map(function(i) { return '<li>' + esc(i.text) + '</li>'; }).join('');
+    lintBox.innerHTML = label + (list ? '<ul>' + list + '</ul>' : '');
+  }
+  function debLint() {
+    clearTimeout(lintTimer);
+    lintTimer = setTimeout(lintNow, 350);
+  }
+
+  function run() {
+    clearConsole();
+    // Reset server state
+    serverRunning = false;
+    registeredRoutes = [];
+    if (lesson.hasServer) {
+      var dot = $('reqDot'), status = $('reqStatus'), sendBtn = $('reqSendBtn');
+      if (dot) dot.classList.remove('on');
+      if (status) status.textContent = 'Starting…';
+      if (sendBtn) sendBtn.disabled = true;
+      var respView = $('respView');
+      if (respView) respView.classList.remove('show');
+      var chips = $('reqChips');
+      if (chips) chips.innerHTML = '';
+    }
+    // Recreate iframe each run — this cleanly resets require cache, module.exports, routes
+    if (iframe && iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    iframe = null;
+    var fr = ensureIframe();
+    var doc = buildSandboxDoc(ta.value);
+    setTimeout(function() {
+      try { fr.srcdoc = doc; } catch (e) {
+        appendConsole('error', 'Failed to run code: ' + e.message);
+      }
+    }, 10);
+    // Mark server as running after timeout if it did not send a "listening" event
+    setTimeout(function() {
+      if (lesson.hasServer && !serverRunning) {
+        var status = $('reqStatus');
+        if (status && status.textContent === 'Starting…') {
+          status.textContent = 'Server did not call app.listen()';
+        }
+      }
+    }, 1500);
+  }
+
+  ta.addEventListener('input', debLint);
+  ta.addEventListener('keydown', function(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      var s = ta.selectionStart, en = ta.selectionEnd;
+      ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(en);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      debLint();
+    }
+  });
+
+  runBtn.addEventListener('click', run);
+  $('resetBtn').addEventListener('click', function() {
+    if (!confirm('Reset the editor? Your changes will be lost.')) return;
+    ta.value = starter;
+    lintNow();
+    clearConsole();
+    if (lesson.hasServer) {
+      var status = $('reqStatus');
+      if (status) status.textContent = 'Server not running';
+      var sendBtn = $('reqSendBtn');
+      if (sendBtn) sendBtn.disabled = true;
+      var dot = $('reqDot');
+      if (dot) dot.classList.remove('on');
+      var respView = $('respView');
+      if (respView) respView.classList.remove('show');
+      var chips = $('reqChips');
+      if (chips) chips.innerHTML = '';
+    }
+  });
+  $('downloadBtn').addEventListener('click', function() {
+    var blob = new Blob([ta.value], { type: 'text/javascript' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = lesson.id + '.js';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  });
+  if ($('clearConsoleBtn')) $('clearConsoleBtn').addEventListener('click', clearConsole);
+
+  if (lesson.hasServer) {
+    var sendBtn = $('reqSendBtn');
+    sendBtn.addEventListener('click', function() {
+      if (!serverRunning) {
+        appendConsole('warn', 'Server is not running. Click Run first.');
+        return;
+      }
+      var method = $('reqMethod').value;
+      var path = $('reqPath').value.trim() || '/';
+      var bodyText = $('reqBody').value.trim();
+      var token = $('reqToken').value.trim();
+      var body = {};
+      if (bodyText) {
+        try { body = JSON.parse(bodyText); }
+        catch (e) { appendConsole('error', 'Invalid JSON in body: ' + e.message); return; }
+      }
+      activeRequestId++;
+      appendConsole('info', method + ' ' + path);
+      try {
+        iframe.contentWindow.postMessage({ __node: 1, type: 'request', id: activeRequestId, method: method, path: path, body: body, token: token }, '*');
+      } catch (e) {
+        appendConsole('error', 'Could not send request: ' + e.message);
+      }
+    });
+  }
+
+  lintNow();
+}
+
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Node.js &amp; Express</h1>';
+  html += '<p class="pg-sub">Build fast, scalable backend services with the JavaScript you already know. Over 10 weeks you will go from your first server to a full REST API with hashed passwords, JWT auth, and production-grade error handling.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>10 weeks</h3><p>15 hours across 6 modules and 12 hands-on lessons.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Intermediate</h3><p>Comfortable with JavaScript — functions, arrays, objects, async/await.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⬢</span>Real Node</h3><p>Write real Express code, register real routes, and send real HTTP requests from the sandbox client.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 Learning outcomes</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Node runtime</h3><p>Modules, npm, fs, the event loop, and why Node scales.</p></div>';
+  html += '<div class="ov-card"><h3>Express</h3><p>Routing, params, query strings, middleware, error handling.</p></div>';
+  html += '<div class="ov-card"><h3>REST APIs</h3><p>Full CRUD, status codes, resource naming, consistency.</p></div>';
+  html += '<div class="ov-card"><h3>Auth</h3><p>bcrypt hashing, JWT signing and verifying, protected routes.</p></div>';
+  html += '<div class="ov-card"><h3>Production</h3><p>Env vars, structured logging, graceful shutdown.</p></div>';
+  html += '<div class="ov-card"><h3>Capstone</h3><p>A full blog API — CRUD plus JWT auth — deployed to GitHub.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1–2', 'Node Basics', 'What Node is, modules, npm, and the fs module.'],
+    ['W3–4', 'Express Fundamentals', 'Your first server, routes, params, query strings.'],
+    ['W5–6', 'Middleware', 'Built-in middleware, custom middleware, error handlers.'],
+    ['W7–8', 'REST APIs', 'CRUD, status codes, and REST conventions.'],
+    ['W9', 'Auth & Security', 'bcrypt password hashing, JWT, protected routes.'],
+    ['W10', 'Capstone', 'Env vars, logging, and a complete blog API.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. No installs — the Node sandbox runs in your browser.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('nb1');
+    switchView('lessons');
+  });
+}
+
+function renderProjects() {
+  var container = $('viewProjects');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Capstone Project</h1>';
+  html += '<p class="pg-sub">A complete blog API — public reads, protected writes, hashed passwords, JWT auth, and validation on every route. This is a real portfolio piece.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="130" height="130" viewBox="0 0 130 130">';
+  html += '<circle class="rb" cx="65" cy="65" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="65" cy="65" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your capstone progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' milestones done</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">📋 Milestones <span class="badge">Self-check</span></h2>';
+  html += '<p style="color:var(--t2);font-size:14.5px;margin-bottom:6px">Tick each box as you complete the corresponding step. Your checklist saves automatically.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🛠 The three build stages</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>1. Auth</h3><p>Register + login with bcrypt hashing and JWT signing.</p></div>';
+  html += '<div class="ov-card"><h3>2. Posts</h3><p>CRUD routes for posts, protected by <code>requireAuth</code>.</p></div>';
+  html += '<div class="ov-card"><h3>3. Polish</h3><p>Ownership checks, status codes, and a 404 catch-all.</p></div>';
+  html += '</div>';
+
+  html += '<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">';
+  html += '<button class="btn btn-p" id="jumpPr1" type="button">▶ Start Env Vars Lesson</button>';
+  html += '<button class="btn btn-g" id="jumpPr2" type="button">Jump to Capstone</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+  $('jumpPr1').addEventListener('click', function() { selectLesson('pr1'); switchView('lessons'); });
+  $('jumpPr2').addEventListener('click', function() { selectLesson('pr2'); switchView('lessons'); });
+}
+
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Curated links and downloads to support your backend learning.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['📚', 'Node.js Official Docs', 'The authoritative reference for every built-in module.', 'https://nodejs.org/docs/latest-v20.x/api/'],
+    ['🌐', 'Express Guide', 'The official Express documentation.', 'https://expressjs.com/en/guide/routing.html'],
+    ['🔐', 'JWT.io', 'Decode and inspect JWTs. Great for debugging.', 'https://jwt.io/'],
+    ['📚', 'MDN HTTP Reference', 'Every HTTP status code and header, explained.', 'https://developer.mozilla.org/en-US/docs/Web/HTTP'],
+    ['📖', 'Node.js Best Practices', 'A community-curated list of production patterns.', 'https://github.com/goldbergyoni/nodebestpractices'],
+    ['💬', 'Stack Overflow — Express', 'When you get stuck, someone has asked before.', 'https://stackoverflow.com/questions/tagged/express']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Node &amp; Express Cheatsheet</div><div class="res-d">One-page reference covering every pattern from the course.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadStarterBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">⬢</span>';
+  html += '<div><div class="res-t">Local Project Setup Guide</div><div class="res-d">Step-by-step instructions to run this course locally with npm.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🧰 Tools you will want</h2>';
+  html += '<div class="res-list">';
+  var tools = [
+    ['🐍', 'Node.js Installer', 'Install Node on your computer. Includes npm.', 'https://nodejs.org/'],
+    ['✏️', 'Visual Studio Code', 'The most popular free code editor.', 'https://code.visualstudio.com/'],
+    ['📮', 'Postman', 'GUI client for testing your APIs.', 'https://www.postman.com/downloads/'],
+    ['🚀', 'Render', 'Free tier for deploying Node apps.', 'https://render.com/'],
+    ['🌐', 'Railway', 'Modern platform for deploying backends.', 'https://railway.app/']
+  ];
+  tools.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadStarterBtn').addEventListener('click', downloadStarter);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  NODE.JS & EXPRESS — CHEATSHEET',
+    '============================================',
+    '',
+    '--- BASIC SERVER ---',
+    'const express = require("express");',
+    'const app = express();',
+    'app.use(express.json());',
+    '',
+    'app.get("/", (req, res) => {',
+    '  res.json({ ok: true });',
+    '});',
+    '',
+    'app.listen(3000, () => console.log("up"));',
+    '',
+    '--- ROUTES ---',
+    'app.get    app.post    app.put',
+    'app.patch  app.delete  app.use',
+    '',
+    '--- REQUEST OBJECT ---',
+    'req.method      // "GET"',
+    'req.path        // "/users/42"',
+    'req.params      // { id: "42" }',
+    'req.query       // { page: "2" }',
+    'req.body        // parsed JSON',
+    'req.headers     // lowercase keys',
+    '',
+    '--- RESPONSE OBJECT ---',
+    'res.status(404)',
+    'res.json({...})',
+    'res.send("text")',
+    'res.sendStatus(204)',
+    'res.set("X-Foo", "bar")',
+    '',
+    '--- STATUS CODES ---',
+    '200 OK              201 Created        204 No Content',
+    '400 Bad Request     401 Unauthorized   403 Forbidden',
+    '404 Not Found       409 Conflict       500 Server Error',
+    '',
+    '--- MIDDLEWARE ---',
+    'function mw(req, res, next) { ...; next(); }',
+    'app.use(mw);                        // every request',
+    'app.get("/x", mw, handler);         // one route',
+    '',
+    'Error handler (4 args, LAST):',
+    'app.use((err, req, res, next) => {',
+    '  res.status(500).json({ error: err.message });',
+    '});',
+    '',
+    'Built-in:',
+    'app.use(express.json());',
+    'app.use(express.static("public"));',
+    '',
+    '--- CRUD ---',
+    'const items = [];',
+    'app.get("/items", (req, res) => res.json(items));',
+    'app.get("/items/:id", (req, res) => {',
+    '  const item = items.find(i => i.id === +req.params.id);',
+    '  if (!item) return res.status(404).json({ error: "Not found" });',
+    '  res.json(item);',
+    '});',
+    'app.post("/items", (req, res) => {',
+    '  const item = { id: items.length + 1, ...req.body };',
+    '  items.push(item);',
+    '  res.status(201).json(item);',
+    '});',
+    'app.delete("/items/:id", (req, res) => {',
+    '  const i = items.findIndex(x => x.id === +req.params.id);',
+    '  if (i === -1) return res.status(404).json({ error: "Not found" });',
+    '  items.splice(i, 1);',
+    '  res.status(204).end();',
+    '});',
+    '',
+    '--- BCRYPT ---',
+    'const bcrypt = require("bcrypt");',
+    'const hash = bcrypt.hashSync(password, 10);',
+    'const ok = bcrypt.compareSync(password, hash);',
+    '',
+    '--- JWT ---',
+    'const jwt = require("jsonwebtoken");',
+    'const token = jwt.sign(payload, SECRET, { expiresIn: "7d" });',
+    'const payload = jwt.verify(token, SECRET);',
+    '',
+    'Auth middleware:',
+    'function requireAuth(req, res, next) {',
+    '  const h = req.headers.authorization;',
+    '  if (!h || !h.startsWith("Bearer ")) return res.status(401).json({error:"No token"});',
+    '  try { req.user = jwt.verify(h.slice(7), SECRET); next(); }',
+    '  catch (e) { res.status(401).json({error:"Bad token"}); }',
+    '}',
+    '',
+    '--- ENV ---',
+    'process.env.PORT',
+    'require("dotenv").config();',
+    '.env — NEVER commit',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Node.js & Express',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'node-express-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadStarter() {
+  var guide = [
+    '# Local Node + Express Setup',
+    '',
+    '## 1. Install Node.js',
+    'Download from https://nodejs.org (LTS version).',
+    'Verify with: node --version   and   npm --version',
+    '',
+    '## 2. Create a project',
+    'mkdir blog-api',
+    'cd blog-api',
+    'npm init -y',
+    '',
+    '## 3. Install dependencies',
+    'npm install express bcrypt jsonwebtoken dotenv',
+    '',
+    '## 4. Create server.js',
+    'Copy any solution from the course into server.js.',
+    '',
+    '## 5. Run it',
+    'node server.js',
+    'Visit http://localhost:3000',
+    '',
+    '## 6. Test with curl',
+    'curl http://localhost:3000/health',
+    'curl -X POST http://localhost:3000/auth/register \\',
+    '     -H "Content-Type: application/json" \\',
+    '     -d \'{"email":"a@b.mw","password":"secret123"}\'',
+    '',
+    '## 7. Auto-restart while developing',
+    'npm install --save-dev nodemon',
+    'npx nodemon server.js',
+    '',
+    '## 8. Add a .gitignore',
+    'node_modules/',
+    '.env',
+    '',
+    '## 9. Push to GitHub',
+    'git init',
+    'git add .',
+    'git commit -m "Initial commit"',
+    'git branch -M main',
+    'git remote add origin https://github.com/YOURNAME/blog-api.git',
+    'git push -u origin main',
+    '',
+    '## 10. Deploy',
+    'Sign up at https://render.com or https://railway.app',
+    'Connect your GitHub repo. Set PORT and JWT_SECRET env vars.',
+    'Deploy. Test the deployed URL with curl or Postman.'
+  ].join('\n');
+  var blob = new Blob([guide], { type: 'text/markdown' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'node-setup-guide.md';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Backend development is a team sport. Join other Node learners in Malawi — share code, debug together, celebrate wins.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Study Group</h3><p>Active 24/7. Paste errors, share routes, get help from instructors and peers.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer code snippets, project reviews, group study sessions.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">🐙</span>GitHub</h3><p>Publish your blog API, see what others built.</p><p style="margin-top:12px"><a class="btn btn-p btn-sm" href="https://github.com/" target="_blank" rel="noopener">Explore Projects</a></p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Debugging tips</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Read the stack trace</h3><p>The first line names the error. The second points at your file and line. Start there.</p></div>';
+  html += '<div class="ov-card"><h3>Log the request</h3><p>Add a middleware that logs <code>req.method</code>, <code>req.url</code>, and <code>req.body</code>. 90% of bugs become obvious.</p></div>';
+  html += '<div class="ov-card"><h3>Isolate one route</h3><p>Comment out everything except the route that is failing. Reproduce with curl. Add back slowly.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:32px">';
+  html += '<h2>Stuck on middleware?</h2>';
+  html += '<p>Ask the community. Express is 10+ years old — someone has hit your exact bug and posted the fix.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://stackoverflow.com/questions/tagged/express" target="_blank" rel="noopener">Ask on Stack Overflow</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">Confirm you have completed every lesson in Node.js &amp; Express and ticked at least 7 capstone milestones. Print, save as PDF, or share on LinkedIn.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Capstone milestones — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more capstone milestone' + (7 - mCount !== 1 ? 's' : '') + '.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="sol-block" id="certPreview" style="margin-top:24px">';
+  html += '<div style="background:#fff;border:7px double #1a2332;padding:38px 30px;text-align:center;border-radius:8px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:10.5px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:24px;color:#1a2332;letter-spacing:.5px;margin-bottom:4px;font-weight:800">Node.js &amp; Express</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11px;text-transform:uppercase;font-weight:600">10 Weeks · Intermediate</div>';
+  html += '<div style="font-size:30px;color:#00a844;font-style:italic;margin:26px 0 16px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:14px;color:#4b5563;line-height:1.7;margin-bottom:22px">has successfully completed all ' + p.total + ' lessons of Node.js &amp; Express, demonstrating proficiency in Node modules, Express routing, middleware, REST APIs, password hashing, JWT authentication, and production patterns.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:16px;border-top:1px solid #e5e7eb;font-size:11.5px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').classList.add('show');
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Node.js &amp; Express</h1>' +
+        '<div class="t">10 Weeks · Intermediate</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Node.js &amp; Express,<br>demonstrating proficiency in Node modules, Express routing, middleware,<br>REST APIs, password hashing, JWT authentication, and production patterns.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>

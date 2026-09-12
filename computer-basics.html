@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Basics &amp; Digital Literacy — Interactive Course</title>
+<meta name="description" content="Learn typing, file management, email, and internet safety. 4 weeks, absolute beginner, with a friendly interactive sandbox.">
+<style>
+:root{--navy:#1a2332;--navy2:#232d40;--navy3:#0f1721;--green:#00c853;--green2:#00a844;--gsoft:rgba(0,200,83,.1);--gglow:rgba(0,200,83,.2);--bg:#f8f9fb;--surf:#fff;--text:#1f2937;--t2:#4b5563;--t3:#6b7280;--t4:#9ca3af;--bd:#e5e7eb;--bd2:#eef0f2;--danger:#dc2626;--warn:#d97706;--r:12px;--rlg:16px;--rpill:9999px;--ease:cubic-bezier(.4,0,.2,1);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--hh:68px;--sw:320px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;font-size:17px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+a{color:var(--green2);text-decoration:none}
+a:hover{color:var(--green)}
+button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+
+/* Header */
+.hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(15,23,33,.1)}
+.hd-in{max-width:1500px;margin:0 auto;padding:0 22px;height:var(--hh);display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-mk{width:40px;height:40px;background:var(--green);color:var(--navy);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand-tx{line-height:1.2}
+.brand-nm{font-weight:700;font-size:15.5px;letter-spacing:-.2px}
+.brand-sb{font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
+.tabs{display:flex;gap:2px;margin-left:auto;background:rgba(255,255,255,.05);padding:4px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 15px;border-radius:var(--rpill);font-weight:500;font-size:13.5px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:6px;transition:all .18s var(--ease);white-space:nowrap;flex-shrink:0}
+.tab:hover{color:#fff;background:rgba(255,255,255,.06)}
+.tab.active{background:var(--green);color:var(--navy);font-weight:600}
+.tab svg{width:15px;height:15px}
+.meter{display:flex;align-items:center;gap:9px;padding:7px 14px;background:rgba(255,255,255,.06);border-radius:var(--rpill);border:1px solid rgba(255,255,255,.08);font-size:13px;color:rgba(255,255,255,.7)}
+.meter-tr{width:52px;height:6px;background:rgba(255,255,255,.14);border-radius:var(--rpill);overflow:hidden}
+.meter-fl{height:100%;background:var(--green);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.meter strong{color:var(--green);font-weight:700;font-size:13.5px}
+.mbtn{display:none;color:#fff;font-size:22px;padding:6px 12px;border-radius:8px}
+.mbtn:hover{background:rgba(255,255,255,.08)}
+
+/* Shell */
+.shell{display:grid;grid-template-columns:var(--sw) 1fr;min-height:calc(100vh - var(--hh));flex:1;max-width:1500px;margin:0 auto;width:100%}
+.side{background:var(--surf);border-right:1px solid var(--bd);padding:24px 18px 34px;position:sticky;top:var(--hh);align-self:start;max-height:calc(100vh - var(--hh));overflow-y:auto}
+.spg{padding:0 6px 20px;border-bottom:1px solid var(--bd2);margin-bottom:18px}
+.spg-r{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px}
+.spg-l{font-size:12px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;color:var(--t4)}
+.spg-p{font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.spg-b{height:7px;background:var(--bd2);border-radius:var(--rpill);overflow:hidden}
+.spg-f{height:100%;background:linear-gradient(90deg,var(--green),#00e05f);border-radius:var(--rpill);transition:width .5s var(--ease);width:0}
+.mod{margin-bottom:3px}
+.mod-b{width:100%;display:flex;align-items:center;gap:11px;padding:12px 12px;border-radius:var(--r);font-weight:600;font-size:14.5px;color:var(--navy);text-align:left;transition:background .15s}
+.mod-b:hover{background:var(--gsoft)}
+.mod-ic{font-size:16px}
+.mod-nm{flex:1}
+.mod-cnt{font-size:12px;font-weight:600;color:var(--t4);padding:3px 9px;background:var(--bg);border-radius:var(--rpill)}
+.mod-ch{font-size:11px;color:var(--t4);transition:transform .22s var(--ease)}
+.mod.collapsed .mod-ch{transform:rotate(-90deg)}
+.mod.collapsed .mod-l{display:none}
+.mod-l{list-style:none;margin:3px 0 5px;padding-left:4px;display:flex;flex-direction:column;gap:2px}
+.lsn-b{width:100%;display:flex;align-items:center;gap:10px;padding:10px 13px 10px 15px;border-radius:var(--r);font-size:14px;font-weight:500;color:var(--t2);text-align:left;border-left:3px solid transparent;transition:all .15s;line-height:1.4}
+.lsn-b:hover{background:var(--gsoft);color:var(--navy)}
+.lsn-b.active{background:var(--gsoft);border-left-color:var(--green);color:var(--navy);font-weight:600}
+.lsn-tx{flex:1}
+.lsn-ck{color:var(--green);font-weight:800;font-size:13px}
+
+/* Main */
+.main{padding:44px 56px 90px;max-width:980px;width:100%}
+.view{display:none}
+.view.active{display:block;animation:appear .28s var(--ease)}
+@keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lh{margin-bottom:36px;padding-bottom:26px;border-bottom:1px solid var(--bd)}
+.lk{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.1px;color:var(--green2);margin-bottom:14px;padding:6px 14px 6px 7px;background:var(--gsoft);border-radius:var(--rpill)}
+.lk-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--green);color:var(--navy);border-radius:50%;font-size:12px}
+.lt{font-size:34px;font-weight:800;color:var(--navy);letter-spacing:-.8px;line-height:1.15;margin-bottom:14px}
+.lmeta{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--t2)}
+.lmeta .dn{color:var(--green2);font-weight:600}
+
+/* Reading */
+.rd{font-size:17.5px;line-height:1.8}
+.rd>*+*{margin-top:18px}
+.rd h2{font-size:23px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-top:36px;margin-bottom:12px}
+.rd h3{font-size:18px;font-weight:650;color:var(--navy);margin-top:26px;margin-bottom:8px}
+.rd ul,.rd ol{padding-left:24px;display:flex;flex-direction:column;gap:8px}
+.rd li{line-height:1.8}
+.rd strong{color:var(--navy);font-weight:650}
+.rd code{background:rgba(15,23,33,.06);color:var(--navy);padding:3px 8px;border-radius:6px;font-family:var(--mono);font-size:.87em;font-weight:500}
+.rd pre{background:var(--navy3);color:#e6edf3;padding:20px 22px;border-radius:var(--r);overflow-x:auto;font-family:var(--mono);font-size:14px;line-height:1.7;margin:18px 0;border:1px solid #1e2b3d}
+.rd pre code{background:transparent;color:inherit;padding:0;font-size:1em;font-weight:400}
+.rd blockquote{border-left:4px solid var(--green);padding:14px 20px;margin:22px 0;background:var(--gsoft);border-radius:0 var(--r) var(--r) 0;color:var(--t2);font-size:16px;line-height:1.75}
+.rd blockquote strong{color:var(--navy)}
+
+/* Listen button */
+.listen-bar{display:flex;align-items:center;gap:12px;margin:0 0 24px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.listen-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 22px;background:var(--green);color:var(--navy);border:1.5px solid var(--green);border-radius:var(--rpill);font-weight:700;font-size:14.5px;transition:all .18s var(--ease);white-space:nowrap}
+.listen-btn:hover{background:var(--green2);border-color:var(--green2)}
+.listen-btn.speaking{background:var(--danger);border-color:var(--danger);color:#fff}
+.listen-hint{font-size:14px;color:var(--t2);flex:1}
+.listen-hint strong{color:var(--navy)}
+
+/* Exercise area */
+.ex{margin-top:48px;padding-top:32px;border-top:1px solid var(--bd)}
+.ex-h{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:8px;flex-wrap:wrap}
+.ex-bdg{font-size:11.5px;text-transform:uppercase;letter-spacing:.8px;background:var(--green);color:var(--navy);padding:4px 11px;border-radius:var(--rpill);font-weight:700}
+.ex-s{color:var(--t2);font-size:15.5px;margin-bottom:20px;line-height:1.6}
+.ex-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:24px;box-shadow:0 1px 3px rgba(15,23,33,.05)}
+.ex-bar{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;align-items:center}
+.ex-result{margin-top:18px;padding:16px 18px;border-radius:var(--r);font-size:15.5px;line-height:1.6;display:none}
+.ex-result.show{display:block;animation:appear .3s}
+.ex-result.good{background:var(--gsoft);border-left:4px solid var(--green);color:var(--navy)}
+.ex-result.bad{background:rgba(220,38,38,.06);border-left:4px solid var(--danger);color:var(--navy)}
+.ex-result.info{background:rgba(56,189,248,.08);border-left:4px solid #38bdf8;color:var(--navy)}
+.ex-result strong{color:var(--navy)}
+
+/* Typing trainer */
+.typing-display{padding:22px 24px;background:var(--navy3);border-radius:var(--r);font-family:var(--mono);font-size:22px;line-height:1.9;letter-spacing:.5px;color:#6b7280;margin-bottom:16px;word-break:break-word}
+.typing-display span{transition:color .1s}
+.typing-display .ok{color:#22c55e}
+.typing-display .wrong{color:#f87171;background:rgba(220,38,38,.15);border-radius:3px}
+.typing-display .cur{color:#fff;background:rgba(0,200,83,.35);border-radius:3px}
+.typing-input{width:100%;padding:16px 18px;border:2px solid var(--bd);border-radius:var(--r);font-family:var(--mono);font-size:18px;background:#fff;transition:border-color .15s}
+.typing-input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 4px var(--gglow)}
+.kb{display:flex;justify-content:center;gap:6px;margin-top:14px}
+.kb-key{min-width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--surf);border:1.5px solid var(--bd);border-radius:6px;font-family:var(--mono);font-size:13px;color:var(--t2);font-weight:600;transition:all .15s}
+.kb-key.hi{background:var(--green);color:var(--navy);border-color:var(--green);transform:translateY(-2px);box-shadow:0 4px 10px var(--gglow)}
+.typing-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.typing-stat{background:var(--bg);padding:14px;border-radius:var(--r);text-align:center}
+.typing-stat-num{font-size:26px;font-weight:800;color:var(--navy);line-height:1;letter-spacing:-.5px}
+.typing-stat-lbl{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-top:5px}
+
+/* Extension quiz */
+.ext-item{background:var(--bg);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.ext-file{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ext-icon{font-size:24px}
+.ext-name{font-family:var(--mono);font-size:15.5px;font-weight:600;color:var(--navy)}
+.ext-opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ext-opt{padding:10px 6px;background:var(--surf);border:1.5px solid var(--bd);border-radius:var(--r);font-size:13.5px;font-weight:600;color:var(--t2);text-align:center;transition:all .15s}
+.ext-opt:hover{border-color:var(--green);color:var(--navy)}
+.ext-opt.correct{background:var(--green);border-color:var(--green);color:var(--navy)}
+.ext-opt.wrong{background:rgba(220,38,38,.08);border-color:var(--danger);color:var(--danger)}
+
+/* File organizer */
+.fo-wrap{background:var(--bg);border-radius:var(--rlg);padding:20px}
+.fo-desk{background:var(--surf);border:2px dashed var(--bd);border-radius:var(--r);padding:14px;margin-bottom:16px;min-height:80px}
+.fo-desk-label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--t4);font-weight:700;margin-bottom:10px}
+.fo-files{display:flex;flex-wrap:wrap;gap:8px}
+.fo-file{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;background:var(--surf);border:2px solid var(--bd);border-radius:var(--r);font-family:var(--mono);font-size:13px;color:var(--navy);cursor:pointer;transition:all .15s;font-weight:500}
+.fo-file:hover{border-color:var(--green)}
+.fo-file.selected{background:var(--gsoft);border-color:var(--green);box-shadow:0 0 0 4px var(--gglow)}
+.fo-file.placed{opacity:.5;cursor:default;pointer-events:none}
+.fo-file .fo-ic{font-size:15px}
+.fo-folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.fo-folder{background:var(--surf);border:2px solid var(--bd);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .15s;min-height:90px}
+.fo-folder:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,200,83,.1)}
+.fo-folder.target{border-color:var(--green);background:var(--gsoft);border-style: dashed}
+.fo-folder-name{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--navy);font-size:14.5px;margin-bottom:8px}
+.fo-folder-name .fo-fic{font-size:19px}
+.fo-folder-contents{font-size:12.5px;color:var(--t2);line-height:1.6}
+.fo-folder-contents .item{padding:3px 8px;background:var(--bg);border-radius:5px;display:inline-block;margin:2px 3px 2px 0;font-family:var(--mono);font-size:11.5px}
+
+/* Mock email client */
+.mc-wrap{background:#f0f1f5;border-radius:var(--rlg);padding:14px;overflow:hidden}
+.mc-window{background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 16px rgba(15,23,33,.08)}
+.mc-topbar{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px}
+.mc-dots{display:flex;gap:6px}
+.mc-dots span{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.25)}
+.mc-dots span:nth-child(1){background:#ff5f57}
+.mc-dots span:nth-child(2){background:#febc2e}
+.mc-dots span:nth-child(3){background:#28c840}
+.mc-title{margin-left:auto;color:rgba(255,255,255,.7);font-weight:600}
+.mc-toolbar{padding:10px 16px;background:#fbfbfc;border-bottom:1px solid var(--bd2);display:flex;gap:8px;align-items:center}
+.mc-tool{padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--t2);border-radius:6px;transition:background .15s}
+.mc-tool:hover{background:var(--bg)}
+.mc-tool.send{background:var(--green);color:var(--navy);margin-left:auto}
+.mc-tool.send:hover{background:var(--green2)}
+.mc-fields{padding:4px 16px}
+.mc-field{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd2);font-size:14.5px}
+.mc-field:last-child{border-bottom:none}
+.mc-fl{font-weight:700;color:var(--t2);width:70px;flex-shrink:0;font-size:13.5px}
+.mc-fi{flex:1;padding:6px 10px;border:none;background:transparent;font-size:14.5px;color:var(--navy);outline:none;font-family:inherit}
+.mc-fi:focus{background:var(--bg);border-radius:5px}
+.mc-body{padding:16px;border-top:1px solid var(--bd2);min-height:170px}
+.mc-body textarea{width:100%;border:none;outline:none;resize:vertical;font-family:inherit;font-size:15px;line-height:1.7;min-height:150px;background:transparent}
+.mc-attach{padding:10px 16px;border-top:1px solid var(--bd2);background:#fbfbfc;font-size:13px;color:var(--t2);display:flex;gap:10px;align-items:center}
+.mc-attach-btn{padding:6px 12px;font-size:12.5px;background:var(--surf);border:1.5px solid var(--bd);border-radius:6px;font-weight:600;color:var(--t2)}
+.mc-attach-btn:hover{border-color:var(--green);color:var(--navy)}
+.mc-attached{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--gsoft);border-radius:var(--rpill);font-size:12.5px;color:var(--navy);font-weight:600}
+
+/* Phishing / scenario quiz */
+.ph-item{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ph-meta{font-family:var(--mono);font-size:13px;color:var(--t2);margin-bottom:8px;line-height:1.7}
+.ph-meta strong{color:var(--navy);font-weight:700;display:inline-block;width:56px}
+.ph-subject{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:10px}
+.ph-body{font-size:15px;color:var(--text);line-height:1.7;padding:14px;background:var(--bg);border-radius:var(--r);margin-bottom:14px;font-style:italic}
+.ph-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ph-btn{padding:11px 22px;background:var(--surf);border:2px solid var(--bd);border-radius:var(--rpill);font-size:14px;font-weight:600;color:var(--t2);transition:all .15s}
+.ph-btn:hover{border-color:var(--green);color:var(--navy)}
+.ph-btn.correct{background:var(--green);border-color:var(--green);color:var(--navy)}
+.ph-btn.wrong{background:rgba(220,38,38,.08);border-color:var(--danger);color:var(--danger)}
+.ph-why{margin-top:14px;padding:12px 16px;border-radius:var(--r);background:var(--gsoft);border-left:4px solid var(--green);font-size:14.5px;line-height:1.6;color:var(--navy);display:none}
+.ph-why.show{display:block;animation:appear .25s}
+
+/* Password strength */
+.pw-item{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.pw-value{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--navy);flex:1;min-width:180px;letter-spacing:.5px}
+.pw-opts{display:flex;gap:8px}
+.pw-opt{padding:9px 18px;background:var(--surf);border:2px solid var(--bd);border-radius:var(--rpill);font-size:13.5px;font-weight:600;color:var(--t2);transition:all .15s}
+.pw-opt:hover{border-color:var(--green)}
+.pw-opt.correct{background:var(--green);border-color:var(--green);color:var(--navy)}
+.pw-opt.wrong{background:rgba(220,38,38,.08);border-color:var(--danger);color:var(--danger)}
+
+/* Scenario quiz (safe browsing) */
+.sc-item{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:20px;margin-bottom:14px}
+.sc-q{font-size:15.5px;font-weight:600;color:var(--navy);margin-bottom:12px;line-height:1.55}
+.sc-opts{display:flex;flex-direction:column;gap:8px}
+.sc-opt{display:flex;align-items:flex-start;gap:11px;padding:12px 16px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:14.5px;transition:all .15s;background:var(--surf);text-align:left;line-height:1.55}
+.sc-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.sc-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.sc-opt.wrong{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.sc-opt-letter{font-weight:800;color:var(--green2);flex-shrink:0}
+
+/* Quiz section (knowledge check) */
+.quiz{margin-top:48px;padding-top:32px;border-top:1px solid var(--bd)}
+.q-h{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:-.3px}
+.q-s{color:var(--t2);font-size:15.5px;margin-bottom:20px}
+.q{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);padding:22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.q-t{font-weight:600;color:var(--navy);margin-bottom:16px;font-size:16px;line-height:1.55}
+.q-o{display:flex;flex-direction:column;gap:9px}
+.q-opt{display:flex;align-items:center;gap:12px;padding:13px 17px;border:1.5px solid var(--bd);border-radius:var(--r);cursor:pointer;font-size:15px;transition:all .15s;background:var(--surf)}
+.q-opt:hover{border-color:var(--green);background:var(--gsoft)}
+.q-opt input{accent-color:var(--green);width:18px;height:18px}
+.q-opt.correct{border-color:var(--green);background:var(--gsoft);font-weight:600}
+.q-opt.incorrect{border-color:var(--danger);background:rgba(220,38,38,.05)}
+.q-opt.correct::after{content:'✓';margin-left:auto;color:var(--green2);font-weight:800;font-size:17px}
+.q-opt.incorrect::after{content:'✕';margin-left:auto;color:var(--danger);font-weight:800;font-size:17px}
+
+.dn-bar{margin-top:48px;padding-top:26px;border-top:2px solid var(--bd);display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.dn-note{font-size:15px;color:var(--t2);flex:1;min-width:200px}
+
+.pg-h1{font-size:32px;font-weight:800;color:var(--navy);letter-spacing:-.7px;margin-bottom:12px;line-height:1.2}
+.pg-sub{font-size:17px;color:var(--t2);margin-bottom:32px;line-height:1.65}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+.ov-card{background:var(--surf);border:1px solid var(--bd);border-radius:var(--rlg);padding:22px;box-shadow:0 1px 3px rgba(15,23,33,.04)}
+.ov-card h3{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:9px;display:flex;align-items:center;gap:9px}
+.ov-card p{font-size:15px;color:var(--t2);line-height:1.65}
+.ov-ic{font-size:22px}
+.weeks{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+.wk{display:flex;gap:16px;padding:16px 20px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.wk-n{font-family:var(--mono);font-weight:700;color:var(--green2);font-size:14px;flex-shrink:0;min-width:56px}
+.wk-b{flex:1}
+.wk-t{font-weight:600;color:var(--navy);font-size:15.5px;margin-bottom:3px}
+.wk-d{font-size:14.5px;color:var(--t2);line-height:1.55}
+.cta-card{margin-top:36px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:36px 38px;border-radius:var(--rlg);box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.cta-card::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.cta-card h2{font-size:24px;font-weight:800;margin-bottom:10px;position:relative;z-index:1}
+.cta-card p{color:rgba(255,255,255,.78);margin-bottom:22px;position:relative;z-index:1;font-size:16px;line-height:1.6}
+.cta-card .btn{position:relative;z-index:1}
+
+.res-list{display:flex;flex-direction:column;gap:12px}
+.res-item{display:flex;gap:16px;padding:18px 20px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);text-decoration:none;color:inherit;transition:all .15s;box-shadow:0 1px 2px rgba(15,23,33,.04)}
+.res-item:hover{border-color:var(--green);box-shadow:0 4px 12px rgba(0,200,83,.12);transform:translateY(-1px)}
+.res-ic{font-size:24px;flex-shrink:0}
+.res-t{font-weight:600;color:var(--navy);font-size:16px;margin-bottom:3px}
+.res-d{font-size:14.5px;color:var(--t2);line-height:1.6}
+
+.ms-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.ms{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);transition:all .15s}
+.ms:hover{border-color:var(--green)}
+.ms input{accent-color:var(--green);margin-top:4px;flex-shrink:0;width:20px;height:20px}
+.ms label{flex:1;font-size:15.5px;color:var(--text);cursor:pointer;line-height:1.6}
+.ms.done{background:var(--gsoft);border-color:var(--green)}
+.ms.done label{color:var(--navy);font-weight:550}
+.prog-ring-row{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:32px 36px;border-radius:var(--rlg);margin-bottom:28px;box-shadow:0 10px 30px rgba(15,23,33,.1);position:relative;overflow:hidden}
+.prog-ring-row::after{content:'';position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:radial-gradient(circle,var(--gglow) 0%,transparent 70%);pointer-events:none}
+.ring{width:140px;height:140px;position:relative;flex-shrink:0}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .rb{fill:none;stroke:rgba(255,255,255,.1);stroke-width:11}
+.ring .rf{fill:none;stroke:var(--green);stroke-width:11;stroke-linecap:round;transition:stroke-dasharray .8s var(--ease)}
+.ring-ct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-n{font-size:28px;font-weight:800;color:var(--green);line-height:1;letter-spacing:-1px}
+.ring-l{font-size:10.5px;color:rgba(255,255,255,.6);letter-spacing:1.5px;text-transform:uppercase;margin-top:5px}
+.prog-i{position:relative;z-index:1}
+.prog-i h2{font-size:24px;font-weight:800;margin-bottom:7px}
+.prog-i p{color:rgba(255,255,255,.75);font-size:15.5px;margin-bottom:0;line-height:1.6}
+.sec-h{font-size:19px;font-weight:700;color:var(--navy);margin:32px 0 14px;letter-spacing:-.3px;display:flex;align-items:center;gap:10px}
+.sec-h .badge{font-size:11.5px;background:var(--green);color:var(--navy);padding:4px 10px;border-radius:var(--rpill);font-weight:700;letter-spacing:.4px}
+
+/* Certificate */
+.cert-wrap{background:var(--surf);border-radius:var(--rlg);padding:36px;box-shadow:0 1px 3px rgba(15,23,33,.06);border:1px solid var(--bd)}
+.cert-wrap h1{font-size:27px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:-.5px}
+.cert-lead{color:var(--t2);font-size:16px;margin-bottom:26px;line-height:1.65}
+.req-list{list-style:none;padding:20px 24px;background:var(--bg);border-radius:var(--r);border-left:4px solid var(--green);margin-bottom:26px;display:flex;flex-direction:column;gap:12px}
+.req-list li{display:flex;align-items:center;gap:12px;font-size:15.5px}
+.req-d{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex-shrink:0}
+.req-d.on{background:var(--green);border-color:var(--green)}
+.cert-status{padding:14px 18px;border-radius:var(--r);font-size:15.5px;margin-bottom:22px;font-weight:500}
+.cert-status.ready{background:var(--gsoft);color:var(--green2)}
+.cert-status.locked{background:rgba(217,119,6,.07);color:var(--warn)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.field input{width:100%;padding:13px 16px;border:1.5px solid var(--bd);border-radius:var(--r);font-size:15.5px;background:#fbfbfc;transition:all .15s}
+.field input:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 4px var(--gglow)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 26px;border-radius:var(--rpill);font-weight:600;font-size:15.5px;border:2px solid transparent;transition:all .18s var(--ease);line-height:1.3;white-space:nowrap}
+.btn-p{background:var(--green);color:var(--navy);border-color:var(--green)}
+.btn-p:hover:not(:disabled){background:var(--green2);border-color:var(--green2);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-g{background:transparent;color:var(--navy);border-color:var(--bd)}
+.btn-g:hover:not(:disabled){border-color:var(--navy);background:var(--navy);color:#fff}
+.btn-sm{padding:10px 18px;font-size:14px}
+.btn-lg{padding:15px 32px;font-size:17px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* Footer */
+.site-footer{background:var(--navy);color:rgba(255,255,255,.75);padding:30px 22px 24px;margin-top:auto;border-top:1px solid rgba(255,255,255,.06)}
+.footer-in{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{display:flex;align-items:center;gap:12px}
+.footer-brand .brand-mk{width:36px;height:36px;font-size:18px}
+.footer-tx{line-height:1.3}
+.footer-nm{font-weight:700;color:#fff;font-size:15px;letter-spacing:-.2px}
+.footer-sb{font-size:12px;color:rgba(255,255,255,.5)}
+.footer-meta{font-size:13px;color:rgba(255,255,255,.5);text-align:center;flex:1;min-width:200px}
+.btn-view-all{display:inline-flex;align-items:center;gap:9px;padding:12px 24px;background:var(--green);color:var(--navy);border:2px solid var(--green);border-radius:var(--rpill);font-weight:700;font-size:14.5px;text-decoration:none;transition:all .18s var(--ease);white-space:nowrap}
+.btn-view-all:hover{background:var(--green2);border-color:var(--green2);color:var(--navy);transform:translateY(-1px);box-shadow:0 6px 16px var(--gglow)}
+.btn-view-all svg{width:16px;height:16px}
+@media (max-width:640px){.footer-in{flex-direction:column;text-align:center}.footer-meta{order:3}}
+
+@media (max-width:1160px){.main{padding:36px 40px 80px}}
+@media (max-width:1024px){
+  .ext-opts{grid-template-columns:repeat(2,1fr)}
+  .meter{display:none}
+  .prog-ring-row{grid-template-columns:1fr;text-align:center;padding:28px 26px;gap:22px}
+  .ring{margin:0 auto}
+}
+@media (max-width:880px){
+  :root{--hh:62px}
+  .shell{grid-template-columns:1fr}
+  .side{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--bd);display:none;padding:20px 18px 24px}
+  .side.open{display:block}
+  .main{padding:26px 20px 60px}
+  .lt{font-size:26px}
+  .pg-h1{font-size:24px}
+  .mbtn{display:block}
+  .tab{padding:8px 12px;font-size:13px}
+  .tab-tx{display:none}
+  .hd-in{gap:10px;padding:0 16px}
+  .brand-sb{display:none}
+  .typing-display{font-size:18px}
+  .typing-input{font-size:16px}
+}
+@media (max-width:520px){
+  .lt{font-size:22px}
+  .main{padding:20px 16px 50px}
+  .rd{font-size:16.5px}
+  .rd h2{font-size:20px}
+  .rd pre{padding:16px;font-size:13px}
+  .btn-sm{padding:9px 15px;font-size:13.5px}
+  .ex-bar .btn{flex:1}
+  .brand-nm{font-size:14px}
+  .brand-mk{width:34px;height:34px;font-size:17px}
+  .cta-card{padding:26px 24px}
+  .cta-card h2{font-size:20px}
+  .pw-item{flex-direction:column;align-items:flex-start}
+  .pw-opts{width:100%;flex-wrap:wrap}
+  .pw-opt{flex:1;min-width:80px}
+  .ext-opts{grid-template-columns:repeat(2,1fr)}
+  .kb-key{min-width:30px;height:32px;font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hd" role="banner">
+  <div class="hd-in">
+    <div class="brand">
+      <div class="brand-mk" aria-hidden="true">💡</div>
+      <div class="brand-tx">
+        <div class="brand-nm">Computer Basics &amp; Digital Literacy</div>
+        <div class="brand-sb">4 weeks · Absolute Beginner</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Course views">
+      <button class="tab" data-view="overview" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="tab-tx">Overview</span>
+      </button>
+      <button class="tab active" data-view="lessons" role="tab" aria-selected="true" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span class="tab-tx">Lessons</span>
+      </button>
+      <button class="tab" data-view="practice" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span class="tab-tx">Practice</span>
+      </button>
+      <button class="tab" data-view="resources" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="tab-tx">Resources</span>
+      </button>
+      <button class="tab" data-view="community" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="tab-tx">Community</span>
+      </button>
+      <button class="tab" data-view="certificate" role="tab" aria-selected="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg><span class="tab-tx">Certificate</span>
+      </button>
+    </nav>
+    <div class="meter" aria-hidden="true">
+      <div class="meter-tr"><div class="meter-fl" id="meterFill"></div></div>
+      <strong id="meterText">0%</strong>
+    </div>
+    <button class="mbtn" id="menuBtn" aria-label="Toggle module navigation" aria-expanded="false" type="button">☰</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="side" id="sidePanel" aria-label="Module navigation">
+    <div class="spg">
+      <div class="spg-r"><span class="spg-l">Progress</span><span class="spg-p" id="sidePct">0%</span></div>
+      <div class="spg-b"><div class="spg-f" id="sideFill"></div></div>
+    </div>
+    <nav id="sideNav" aria-label="Lessons"></nav>
+  </aside>
+
+  <main class="main" id="mainContent" role="main" tabindex="-1">
+    <div class="view" id="viewOverview"></div>
+    <div class="view active" id="viewLessons"></div>
+    <div class="view" id="viewPractice"></div>
+    <div class="view" id="viewResources"></div>
+    <div class="view" id="viewCommunity"></div>
+    <div class="view" id="viewCertificate"></div>
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-in">
+    <div class="footer-brand">
+      <div class="brand-mk" aria-hidden="true">💡</div>
+      <div class="footer-tx">
+        <div class="footer-nm">Computer Basics &amp; Digital Literacy</div>
+        <div class="footer-sb">TechMountain Bootcamp · Malawi</div>
+      </div>
+    </div>
+    <div class="footer-meta">© 2025 TechMountain Bootcamp · Built for low-bandwidth learners</div>
+    <a class="btn-view-all" href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      View All Courses
+    </a>
+  </div>
+</footer>
+
+<div hidden>
+
+<!-- ===== MODULE 1: TYPING SKILLS ===== -->
+<div class="src-read" data-l="t1">
+<p>Welcome! If this is your first time using a computer, you have come to the right place. We will take it slow, and you will be typing on your own within a few minutes.</p>
+<h2>What is a keyboard?</h2>
+<p>The keyboard is the flat rectangle with many small buttons (called <strong>keys</strong>) in front of you. Each key does something different. Pressing the letter keys types that letter.</p>
+<h2>Special keys you will use every day</h2>
+<ul>
+<li><strong>Space bar</strong> — the long key at the bottom. It adds a blank space between words.</li>
+<li><strong>Enter</strong> (or Return) — the big key on the right. It starts a new line or confirms a choice.</li>
+<li><strong>Shift</strong> — hold it down while pressing a letter to make a capital letter.</li>
+<li><strong>Backspace</strong> — deletes the character to the left of your cursor. Use it to fix mistakes.</li>
+<li><strong>Caps Lock</strong> — makes every letter capital until you press it again. Watch out for this one!</li>
+</ul>
+<h2>The home row</h2>
+<p>Place your fingers on these keys, called the <strong>home row</strong>:</p>
+<pre><code>A S D F   J K L ;</code></pre>
+<p>Your left hand sits on <strong>A S D F</strong> and your right hand sits on <strong>J K L ;</strong>. Your two thumbs rest on the space bar.</p>
+<p>The F and J keys usually have small raised bumps. You can find them by feel without looking. That is your anchor point.</p>
+<h2>Where do the other letters live?</h2>
+<p>Every letter key is one row above or below the home row. You reach for them with the nearest finger, then return to the home row.</p>
+<p>Do not worry about speed yet. Speed comes from accuracy. Type slowly and correctly, and the speed will follow.</p>
+<blockquote><strong>Tip:</strong> Do not look at the keyboard while you type. Look at the screen instead. It feels strange at first, but after a few days your fingers will know where the keys are.</blockquote>
+</div>
+
+<div class="src-read" data-l="t2">
+<p>You can do most things on a computer much faster using <strong>keyboard shortcuts</strong>. A shortcut is a combination of keys you press at the same time. They save you from clicking through menus.</p>
+<h2>The most useful shortcuts</h2>
+<ul>
+<li><strong>Ctrl + C</strong> — Copy. Remembers whatever you have selected.</li>
+<li><strong>Ctrl + V</strong> — Paste. Puts the copied item where the cursor is.</li>
+<li><strong>Ctrl + X</strong> — Cut. Like Copy, but removes the original.</li>
+<li><strong>Ctrl + Z</strong> — Undo. Reverses your last action. Use this when you make a mistake!</li>
+<li><strong>Ctrl + S</strong> — Save. Saves the file you are working on.</li>
+<li><strong>Ctrl + A</strong> — Select All. Highlights everything in the current window.</li>
+<li><strong>Ctrl + F</strong> — Find. Searches for a word on the page or document.</li>
+</ul>
+<p>On a Mac, use <strong>Cmd</strong> instead of <strong>Ctrl</strong>.</p>
+<h2>How to use them</h2>
+<p>Hold the Ctrl key down, then press the other key, then release both. For example:</p>
+<ol>
+<li>Hold <strong>Ctrl</strong> down with your little finger (left hand).</li>
+<li>Press <strong>C</strong> with your index finger.</li>
+<li>Release both. The item is now copied.</li>
+</ol>
+<h2>Why this matters</h2>
+<p>If you write emails, fill in forms, or apply for jobs online, you will use copy and paste constantly. Copy your ID number once, paste it wherever it is needed. Copy a job description, paste it into a document to prepare for the interview.</p>
+<p>Ctrl + Z is your safety net. If you ever delete something by accident, press Ctrl + Z immediately. It will come back.</p>
+<blockquote><strong>Practice tip:</strong> Every time you use a mouse or trackpad to do something, ask yourself: is there a shortcut for this? After a week, you will be twice as fast.</blockquote>
+</div>
+
+<!-- ===== MODULE 2: FILE MANAGEMENT ===== -->
+<div class="src-read" data-l="f1">
+<p>Everything on a computer is a <strong>file</strong> — a document, a photo, a song, a video. Files are stored inside <strong>folders</strong>, which are like the paper folders in a filing cabinet.</p>
+<h2>What is a file name?</h2>
+<p>Every file has a name, and the name ends with a dot and a few letters. That ending is called the <strong>extension</strong>. It tells the computer what kind of file it is.</p>
+<h2>The extensions you will see most</h2>
+<ul>
+<li><strong>.docx</strong> — Word document (a letter, CV, report)</li>
+<li><strong>.pdf</strong> — A document that looks the same on every computer (job adverts, contracts, certificates)</li>
+<li><strong>.jpg</strong> or <strong>.png</strong> — A picture or photo</li>
+<li><strong>.mp3</strong> — A song or audio recording</li>
+<li><strong>.mp4</strong> — A video</li>
+<li><strong>.xlsx</strong> — Excel spreadsheet (tables of numbers)</li>
+<li><strong>.zip</strong> — A bundle of files packed together (smaller to download)</li>
+</ul>
+<h2>Why extensions matter</h2>
+<p>The extension tells the computer which program to open the file with. A <code>.docx</code> file opens in Word. A <code>.jpg</code> opens in your image viewer. A <code>.pdf</code> opens in a PDF reader.</p>
+<p>If you rename a <code>.jpg</code> file to <code>.docx</code>, the computer will try to open it in Word — and it will fail. The extension is not just a label. It is an instruction.</p>
+<h2>What about folders?</h2>
+<p>Folders hold files. You can also put folders inside folders. This lets you organise things clearly.</p>
+<p>A typical arrangement:</p>
+<pre><code>My Documents/
+├── Job Applications/
+│   ├── CV.docx
+│   └── Cover Letter.docx
+├── Personal/
+│   └── National ID.pdf
+└── Photos/
+    └── Graduation.jpg</code></pre>
+<p>When you need your CV, you know exactly where to look. No more searching through a messy desktop.</p>
+<blockquote><strong>Good habit:</strong> the moment you save a new file, put it in the right folder and give it a clear name. "CV 2025 - Chisomo Banda.docx" is much better than "document1.docx".</blockquote>
+</div>
+
+<div class="src-read" data-l="f2">
+<p>Now that you know what files and folders are, let's practise organising them. This is the skill that will save you the most time over the years.</p>
+<h2>Step 1: Create a folder before you save</h2>
+<p>Before starting anything new, create a folder for it. Right-click on the desktop or inside another folder, then choose <strong>New &gt; Folder</strong>. Type the folder name and press Enter.</p>
+<p>Good folder names are short and clear: <strong>Job Applications</strong>, not <strong>Stuff</strong> or <strong>New Folder (3)</strong>.</p>
+<h2>Step 2: Save into the right folder</h2>
+<p>When you write a document, use <strong>Save As</strong> (or press <strong>Ctrl + Shift + S</strong> in most programs). A window opens showing your folders. Click into the right one, give the file a good name, and save.</p>
+<h2>Step 3: Rename files when they are unclear</h2>
+<p>Right-click on a file and choose <strong>Rename</strong>. Change it to something you will recognise in six months. "Invoice - Airtel - March 2025.pdf" is far better than "doc.pdf".</p>
+<h2>Step 4: Move files into folders</h2>
+<p>Click a file once to select it, then drag it into a folder. On a phone or tablet, press and hold the file, then choose Move and pick the folder.</p>
+<h2>Step 5: Delete what you do not need</h2>
+<p>Right-click and choose <strong>Delete</strong>. On most systems, the file goes to a <strong>Recycle Bin</strong> (Windows) or <strong>Trash</strong> (Mac). It stays there until you empty it — so if you delete something by mistake, you can still get it back.</p>
+<h2>Naming rules that will save you</h2>
+<ul>
+<li>Use spaces or underscores: <strong>Cover Letter.docx</strong> or <strong>Cover_Letter.docx</strong></li>
+<li>Include the date: <strong>2025-03-15 Invoice.pdf</strong></li>
+<li>Use a consistent style. If you use dates, always use the same date format.</li>
+<li>Avoid symbols like <code>/ \ : * ? " &lt; &gt; |</code> — the computer does not allow them in file names.</li>
+</ul>
+<blockquote><strong>Tip:</strong> A well-named file is a gift to your future self. When you are in a hurry and someone asks for your CV, you want to find it in three seconds — not thirty.</blockquote>
+</div>
+
+<!-- ===== MODULE 3: EMAIL BASICS ===== -->
+<div class="src-read" data-l="e1">
+<p>Email is still the most important tool on the internet for work and job applications. In Malawi, most employers ask for applications by email. Learning to write a clear email is a life skill.</p>
+<h2>Setting up an email account</h2>
+<p>You can create a free email account in about five minutes. The most common options are:</p>
+<ul>
+<li><strong>Gmail</strong> (Google) — <code>gmail.com</code>. The most widely used in Malawi.</li>
+<li><strong>Outlook</strong> (Microsoft) — <code>outlook.com</code>. Popular in offices.</li>
+<li><strong>Yahoo Mail</strong> — <code>mail.yahoo.com</code>. Older but still works.</li>
+</ul>
+<p>You will need a phone number to verify your account, and a password that you will remember. Use a strong password — we cover that in Module 4.</p>
+<h2>Choosing your email address</h2>
+<p>Your email address says something about you. Choose something professional:</p>
+<ul>
+<li><strong>Good:</strong> <code>chisomo.banda@gmail.com</code>, <code>c.banda.mw@gmail.com</code></li>
+<li><strong>Avoid:</strong> <code>sexyboy2003@gmail.com</code>, <code>chisomo_loves_music@yahoo.com</code></li>
+</ul>
+<p>If you already have an informal address, create a new one for job applications. It is free.</p>
+<h2>What does an email look like?</h2>
+<p>Every email has five parts:</p>
+<ol>
+<li><strong>To</strong> — the email address you are sending to. For a job, this is the HR department: <code>hr@company.mw</code>.</li>
+<li><strong>Subject</strong> — one short line that says what the email is about. "Application for Accounts Assistant position" is perfect.</li>
+<li><strong>Body</strong> — the message itself. Keep it short and clear.</li>
+<li><strong>Attachment</strong> — any files you are sending (your CV, a certificate).</li>
+<li><strong>Signature</strong> — your name and phone number at the bottom, so they can contact you.</li>
+</ol>
+<h2>The perfect job application email</h2>
+<pre><code>To: hr@techmountain.mw
+Subject: Application for Junior Developer Position
+
+Dear Sir/Madam,
+
+I am writing to apply for the Junior Developer position
+advertised on your website on 10 March 2025.
+
+I have completed the HTML, CSS and JavaScript courses at
+TechMountain Bootcamp and I am confident that I can
+contribute to your team. My CV and certificates are attached.
+
+I am available for an interview at any time.
+
+Thank you for your consideration.
+
+Yours faithfully,
+Chisomo Banda
++265 999 555 123
+chisomo.banda@gmail.com</code></pre>
+<p>Notice how short it is. Five short paragraphs. That is all you need.</p>
+<blockquote><strong>Rule:</strong> Never leave the Subject blank. An email without a subject looks careless. It may be deleted without being read.</blockquote>
+</div>
+
+<div class="src-read" data-l="e2">
+<p>A well-written email gets a reply. A carelessly written one does not. Let's cover the small things that make a big difference.</p>
+<h2>Replying vs replying to all</h2>
+<ul>
+<li><strong>Reply</strong> — sends only to the person who wrote to you.</li>
+<li><strong>Reply All</strong> — sends to everyone who was on the original email. Use this only when everyone needs to know.</li>
+</ul>
+<p>If a job advert was sent to 20 people and you click Reply All, all 20 see your reply. That is embarrassing. When in doubt, use Reply.</p>
+<h2>The greeting</h2>
+<ul>
+<li>If you know the person's name: <strong>Dear Mr Banda,</strong> or <strong>Dear Mrs Phiri,</strong></li>
+<li>If you do not know the name: <strong>Dear Sir/Madam,</strong> or <strong>Dear Hiring Manager,</strong></li>
+<li>To a friend: <strong>Hi Chisomo,</strong> or <strong>Hello,</strong></li>
+</ul>
+<h2>The sign-off</h2>
+<ul>
+<li><strong>Yours faithfully,</strong> — when the greeting was Dear Sir/Madam</li>
+<li><strong>Yours sincerely,</strong> — when you used the person's name</li>
+<li><strong>Best regards,</strong> or <strong>Kind regards,</strong> — safe, professional, works everywhere</li>
+<li><strong>Thanks,</strong> — fine for a colleague or friend, less formal for a first email</li>
+</ul>
+<h2>Attachments</h2>
+<p>Before you click Send, always ask: <strong>did I actually attach the file?</strong> The most common email mistake in the world is writing "please find attached" and forgetting to attach.</p>
+<p>Tips for attachments:</p>
+<ul>
+<li>Attach your CV as a PDF, not Word. PDFs look the same everywhere.</li>
+<li>Name the file properly: <strong>CV - Chisomo Banda.pdf</strong>, not <strong>cv.pdf</strong>.</li>
+<li>Keep total attachments under 10 MB. Big files may not send.</li>
+<li>If you must send many files, zip them into one file.</li>
+</ul>
+<h2>Email etiquette</h2>
+<ul>
+<li><strong>Reply within 24 hours</strong> if possible. Even a short "thank you, I will reply tomorrow" is better than silence.</li>
+<li><strong>Do not write in all caps.</strong> CAPS LOCK LOOKS LIKE YOU ARE SHOUTING.</li>
+<li><strong>Do not use too many exclamation marks!!!</strong> One is enough.</li>
+<li><strong>Proofread before sending.</strong> Read it out loud. Fix typos. Check names.</li>
+<li><strong>Do not forward chain letters or scam messages.</strong> They waste everyone's time.</li>
+</ul>
+<blockquote><strong>The rule of email:</strong> write it as if the whole world will read it. Because in a way, it will — emails can be forwarded, printed, and screenshotted. Never write anything you would be embarrassed to see on a screen in front of your boss.</blockquote>
+</div>
+
+<!-- ===== MODULE 4: INTERNET SAFETY ===== -->
+<div class="src-read" data-l="s1">
+<p>The internet is wonderful. It also contains people who want to trick you. Learning to spot them is not paranoia — it is the digital equivalent of locking your front door.</p>
+<h2>Passwords: your first line of defence</h2>
+<p>A weak password takes a criminal about one second to guess. A strong one takes years.</p>
+<p><strong>Weak passwords (never use these):</strong></p>
+<ul>
+<li><code>password</code>, <code>123456</code>, <code>qwerty</code></li>
+<li>Your name, phone number, or birthday</li>
+<li>Your child's name or your village</li>
+</ul>
+<p><strong>Strong passwords:</strong></p>
+<ul>
+<li>At least 12 characters long</li>
+<li>Mix of upper and lower case, numbers, and symbols</li>
+<li>Not a word in the dictionary</li>
+<li>Different for every account</li>
+</ul>
+<p>A good pattern: pick three random words and join them with a symbol and a number. <strong>Mango!Chair7River</strong> is long and easy to remember, but hard to guess.</p>
+<p>Never use the same password twice. If one site is hacked, criminals will try the same password on your email, your bank, and your Facebook.</p>
+<h2>What is phishing?</h2>
+<p><strong>Phishing</strong> is when a criminal sends you a message pretending to be from a company you trust. They want you to click a link and enter your password, or send them money.</p>
+<p>Common phishing messages look like:</p>
+<ul>
+<li>"Your Airtel Money account has been suspended. Click here to reactivate."</li>
+<li>"Congratulations! You have won MWK 500,000. Send your details to claim."</li>
+<li>"Your parcel is waiting. Pay a small fee to release it."</li>
+</ul>
+<h2>How to spot a phishing message</h2>
+<ul>
+<li><strong>Urgency.</strong> "Act now!" "Your account will be closed in 24 hours!" Real companies do not threaten you like this.</li>
+<li><strong>Wrong email address.</strong> The sender may look like <code>support@airtel-mw-secure.com</code> instead of <code>support@airtel.mw</code>. Read carefully.</li>
+<li><strong>Bad spelling or grammar.</strong> Real companies proofread.</li>
+<li><strong>They ask for your password or PIN.</strong> No legitimate company will ever ask for your password, PIN, or full card number.</li>
+<li><strong>Links that do not match.</strong> Hover over a link before clicking. The real destination might be different from what is shown.</li>
+</ul>
+<h2>What to do if you receive one</h2>
+<ol>
+<li><strong>Do not click.</strong> Do not reply. Do not call any number in the message.</li>
+<li>Delete the message, or report it as spam.</li>
+<li>If it claims to be from your bank or Airtel, call them directly on the official number from their website to check.</li>
+</ol>
+<blockquote><strong>The golden rule:</strong> If a message asks for your password, PIN, or money, it is almost certainly a scam. Real banks never ask. Real Airtel never asks. Real Microsoft never calls you out of the blue.</blockquote>
+</div>
+
+<div class="src-read" data-l="s2">
+<p>The internet is safe when you use it carefully. This lesson covers the everyday habits that keep you, your money, and your family safe online.</p>
+<h2>At internet cafés</h2>
+<p>Internet cafés are useful, but shared computers carry risks.</p>
+<ul>
+<li><strong>Always log out</strong> of email and social media when you finish. Not just close the window — actually click Log Out.</li>
+<li><strong>Never check your bank or mobile money</strong> at a café if you can avoid it.</li>
+<li><strong>Never let the computer remember your password.</strong> If it asks, say no.</li>
+<li><strong>Clear the browser history</strong> when you finish, especially on a shared computer.</li>
+<li><strong>Do not plug in a USB drive</strong> you do not trust. It might contain a virus.</li>
+</ul>
+<h2>On public WiFi</h2>
+<ul>
+<li>Free WiFi at a mall or hotel is usually safe for browsing but risky for banking. Save banking for your home connection.</li>
+<li>If you must use public WiFi for something sensitive, look for the padlock icon in your browser. It means the connection is encrypted.</li>
+<li>Turn off file sharing when you are on public WiFi.</li>
+</ul>
+<h2>Downloading files and apps</h2>
+<ul>
+<li>Only download from official websites — the real <code>microsoft.com</code>, the real <code>whatsapp.com</code>, or your phone's official app store.</li>
+<li>Never download "free" versions of paid software from unknown sites. They often come with viruses.</li>
+<li>Never open an attachment from someone you do not know, even if the subject looks interesting.</li>
+</ul>
+<h2>What you share online</h2>
+<p>Everything you post online can live forever. Before you post a photo, ask yourself: would I be happy if my employer saw this in 5 years?</p>
+<p>Never share publicly:</p>
+<ul>
+<li>Your ID number or passport number</li>
+<li>Your home address</li>
+<li>Your bank or mobile money PIN</li>
+<li>Photos showing your bank card or phone number</li>
+<li>Where your children go to school</li>
+</ul>
+<h2>Social media safety</h2>
+<ul>
+<li>Set your profile to private. Not everyone needs to see your posts.</li>
+<li>Do not accept friend requests from strangers, especially if they look like fake profiles.</li>
+<li>If someone asks for money, gifts, or your bank details — stop the conversation. It is a scam.</li>
+<li>Never send money to someone you met only online, no matter what story they tell.</li>
+</ul>
+<h2>If something goes wrong</h2>
+<ol>
+<li><strong>Change your password immediately</strong> on the affected account and any account that used the same password.</li>
+<li><strong>Enable two-factor authentication</strong> if the service offers it. You will get a code on your phone each time you log in.</li>
+<li><strong>Tell your bank or mobile money provider</strong> straight away if money is involved.</li>
+<li><strong>Tell someone you trust</strong> — a friend, family member, or the police. You are not the first person this has happened to and you will not be the last.</li>
+</ol>
+<blockquote><strong>You are now digitally literate.</strong> You know how to type, organise files, write emails, and stay safe online. Those four skills are the foundation of everything else on a computer. Well done.</blockquote>
+</div>
+
+</div>
+
+<script>
+(function () {
+'use strict';
+
+var STORAGE_KEY = 'computer_basics_progress_v1';
+var CAPSTONE_KEY = 'computer_basics_skills_v1';
+
+/* ========== COURSE DATA ========== */
+var course = {
+  modules: [
+    {
+      id: 'typing', icon: '⌨️', title: 'Typing Skills',
+      lessons: [
+        { id:'t1', title:'Meet the Keyboard', time:'20 min', practice: 'typing',
+          practiceData: {
+            prompt: 'Type this sentence: the quick brown fox jumps over the lazy dog',
+            target: 'the quick brown fox',
+            homeRowHint: true
+          },
+          challenge:'Type the phrase above without looking at your keyboard. Focus on accuracy first, speed second. Use the home row as your base.',
+          quiz:[
+            { q:'Which keys are on the home row for your left hand?', options:['Q W E R','A S D F','Z X C V','1 2 3 4'], correct:1 },
+            { q:'What does the Space bar do?', options:['Starts a new line','Adds a blank space between words','Deletes the last character','Makes letters capital'], correct:1 },
+            { q:'Which key confirms a choice or starts a new line?', options:['Shift','Backspace','Enter','Caps Lock'], correct:2 }
+          ]},
+        { id:'t2', title:'Everyday Shortcuts', time:'22 min', practice: 'typing',
+          practiceData: {
+            prompt: 'Type this sentence: copy and paste save time',
+            target: 'copy and paste',
+            homeRowHint: false
+          },
+          challenge:'Practise using Ctrl+C, Ctrl+V, and Ctrl+Z in any document you have open. Copy a sentence, paste it three times, then press Ctrl+Z three times to undo.',
+          quiz:[
+            { q:'What does Ctrl + C do?', options:['Cuts text','Copies the selected item','Clears the screen','Closes the window'], correct:1 },
+            { q:'What does Ctrl + Z do?', options:['Zooms in','Reverses your last action','Saves the file','Deletes everything'], correct:1 },
+            { q:'What does Ctrl + S do?', options:['Selects all','Saves the file','Shows the source','Slows down the computer'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'files', icon: '📁', title: 'File Management',
+      lessons: [
+        { id:'f1', title:'Files, Folders & Extensions', time:'24 min', practice: 'extquiz',
+          practiceData: {
+            questions: [
+              { file: 'CV.docx', icon: '📄', correct: 'Document' },
+              { file: 'photo.jpg', icon: '🖼️', correct: 'Image' },
+              { file: 'song.mp3', icon: '🎵', correct: 'Audio' },
+              { file: 'holiday.mp4', icon: '🎬', correct: 'Video' },
+              { file: 'invoice.pdf', icon: '📋', correct: 'Document' },
+              { file: 'receipt.png', icon: '🖼️', correct: 'Image' },
+              { file: 'notes.xlsx', icon: '📊', correct: 'Spreadsheet' }
+            ],
+            options: ['Document', 'Image', 'Audio', 'Video', 'Spreadsheet']
+          },
+          challenge:'Look at 5 files on your own computer. Say out loud what kind of file each one is based on its extension.',
+          quiz:[
+            { q:'What does a file extension tell you?', options:['The file size','The kind of file it is','The date it was created','The owner'], correct:1 },
+            { q:'Which file is a picture?', options:['report.docx','song.mp3','photo.jpg','notes.xlsx'], correct:2 },
+            { q:'What is a folder for?', options:['Making files bigger','Organising files','Deleting files','Printing files'], correct:1 }
+          ]},
+        { id:'f2', title:'Organise Your Files', time:'26 min', practice: 'fileorg',
+          practiceData: {
+            files: [
+              { id: 'a', name: 'CV.docx', icon: '📄', target: 'Job Applications' },
+              { id: 'b', name: 'Cover_Letter.docx', icon: '📄', target: 'Job Applications' },
+              { id: 'c', name: 'Certificate.pdf', icon: '📋', target: 'Job Applications' },
+              { id: 'd', name: 'Family.jpg', icon: '🖼️', target: 'Photos' },
+              { id: 'e', name: 'Graduation.jpg', icon: '🖼️', target: 'Photos' },
+              { id: 'f', name: 'Favourite_Song.mp3', icon: '🎵', target: 'Music' },
+              { id: 'g', name: 'Wedding_Song.mp3', icon: '🎵', target: 'Music' }
+            ],
+            folders: ['Job Applications', 'Photos', 'Music']
+          },
+          challenge:'On your own computer, create three folders: Documents, Photos, and Music. Move at least one file into each.',
+          quiz:[
+            { q:'Where should you save your CV?', options:['In the Music folder','In a clearly named folder like Job Applications','On the desktop','In the Recycle Bin'], correct:1 },
+            { q:'Which is a good file name?', options:['doc1.docx','file.docx','CV - Chisomo Banda - 2025.docx','newfolder.docx'], correct:2 },
+            { q:'What happens when you delete a file?', options:['It disappears forever','It moves to the Recycle Bin or Trash','It becomes hidden','It is emailed to the owner'], correct:1 }
+          ]}
+      ]
+    },
+    {
+      id: 'email', icon: '✉️', title: 'Email Basics',
+      lessons: [
+        { id:'e1', title:'Write Your First Email', time:'26 min', practice: 'emailcompose',
+          practiceData: {
+            task: 'Write a job application email to hr@techmountain.mw for the position of Junior Developer. Include a proper subject, a short body, and your name at the bottom.',
+            to: 'hr@techmountain.mw',
+            requiredSubjectWords: ['application', 'junior', 'developer', 'position', 'job']
+          },
+          challenge:'Write a real email to yourself. Send it. Check that it arrived. That confirms your email is working properly.',
+          quiz:[
+            { q:'What should the Subject line of a job application email say?', options:['Nothing — leave it blank','A short description of the email, like "Application for Junior Developer"','Your full CV','The name of your school'], correct:1 },
+            { q:'Which greeting is best for a job application when you do not know the name?', options:['Hey!','Dear Sir/Madam,','Hi there,','To whom it may concern!!!!'], correct:1 },
+            { q:'Which sign-off is professional?', options:['Bye','Yours faithfully,','Later','xoxo'], correct:1 }
+          ]},
+        { id:'e2', title:'Replies, Attachments & Etiquette', time:'26 min', practice: 'emailcompose',
+          practiceData: {
+            task: 'Reply to a job interview invitation. Thank them, confirm you will attend on Monday at 10am, and sign off professionally.',
+            to: 'hr@techmountain.mw',
+            requiredSubjectWords: ['interview', 're', 'application'],
+            isReply: true
+          },
+          challenge:'Forward an email to a friend. Before forwarding, delete any private information that was not meant for them.',
+          quiz:[
+            { q:'What is the difference between Reply and Reply All?', options:['No difference','Reply sends to one person, Reply All sends to everyone on the email','Reply All is faster','Reply is for work, Reply All is for friends'], correct:1 },
+            { q:'What should you do before clicking Send?', options:['Nothing','Check that you actually attached the file','Delete the subject','Add more exclamation marks'], correct:1 },
+            { q:'What should you do with a chain letter or scam email?', options:['Forward it to everyone','Reply with your details','Delete it and report as spam','Print it and post it'], correct:2 }
+          ]}
+      ]
+    },
+    {
+      id: 'safety', icon: '🛡️', title: 'Internet Safety',
+      lessons: [
+        { id:'s1', title:'Passwords & Phishing', time:'28 min', practice: 'phishing',
+          practiceData: {
+            emails: [
+              {
+                from: 'support@airtel-mw-secure.com',
+                subject: 'URGENT: Your Airtel Money account will be closed',
+                body: 'Dear customer, our system has detected unusual activity on your account. To avoid suspension, click the link below and enter your PIN and password to confirm your identity. Failure to respond within 24 hours will result in permanent closure.',
+                phishing: true,
+                why: 'Red flags: fake domain (airtel-mw-secure.com is not airtel.mw), urgency ("24 hours"), asks for PIN and password. Real companies never ask for these.'
+              },
+              {
+                from: 'hr@techmountain.mw',
+                subject: 'Interview invitation for Junior Developer position',
+                body: 'Dear Chisomo, thank you for your application for the Junior Developer position. We would like to invite you to an interview on Monday 15 March at 10:00. Please confirm your attendance by replying to this email. Best regards, HR Team, TechMountain.',
+                phishing: false,
+                why: 'Legitimate: the domain matches, no urgency or threats, no request for password or PIN, and it is a normal business message.'
+              },
+              {
+                from: 'winner@lucky-draw-mw.com',
+                subject: 'CONGRATULATIONS!!! You have won MWK 1,000,000',
+                body: 'You have been selected as the lucky winner of our national draw! To claim your prize, send your full name, ID number, bank account details and a processing fee of MWK 5,000 to the number below. Do not tell anyone about your win until you have collected your prize.',
+                phishing: true,
+                why: 'Red flags: too good to be true, asks for bank details and a fee, asks you to keep it secret, unknown domain. The "processing fee" is the scam.'
+              }
+            ]
+          },
+          challenge:'Ask a family member to show you one email they have received recently. Together, decide if it is safe or suspicious.',
+          quiz:[
+            { q:'What makes a password strong?', options:['Using your name','Being at least 12 characters with mixed case, numbers, and symbols','Using a short word you can remember','Being the same everywhere'], correct:1 },
+            { q:'What is phishing?', options:['A sport','A scam pretending to be a trusted company to steal your details','A way to speed up the internet','A type of file'], correct:1 },
+            { q:'If an email asks for your PIN, what should you do?', options:['Send it quickly','Delete the email — real companies never ask for your PIN','Reply and ask why','Click the link to check'], correct:1 }
+          ]},
+        { id:'s2', title:'Safe Browsing & Privacy', time:'26 min', practice: 'scenario',
+          practiceData: {
+            scenarios: [
+              {
+                q: 'You are at an internet café and need to check your email. What is the safest thing to do?',
+                options: [
+                  'Log in, do what you need, then click Log Out before leaving',
+                  'Just close the browser window when done',
+                  'Save the password so you can log in faster next time',
+                  'Check your mobile money at the same time'
+                ],
+                correct: 0,
+                why: 'Always click Log Out. Closing the window may leave your session active. Never save passwords on shared computers. Never do banking at a café.'
+              },
+              {
+                q: 'You receive a WhatsApp message from an unknown number saying you have won a phone and need to send MWK 3,000 to claim it. What should you do?',
+                options: [
+                  'Send the money quickly to not miss out',
+                  'Send your bank details instead',
+                  'Block the number, delete the message, and tell someone you trust',
+                  'Reply and ask for more information'
+                ],
+                correct: 2,
+                why: 'This is a classic scam. Real prizes never require you to pay a fee first. Block, delete, and tell someone.'
+              },
+              {
+                q: 'You are on public WiFi at a shopping mall and want to check your bank balance. What is best?',
+                options: [
+                  'Do it quickly so no one sees',
+                  'Wait until you are on a safe connection at home',
+                  'Ask someone nearby to help you log in',
+                  'Use a shared computer at the mall'
+                ],
+                correct: 1,
+                why: 'Public WiFi can be monitored. Save banking for a home or mobile data connection you trust.'
+              },
+              {
+                q: 'You want to download a popular video editing app, but the official one costs money. You find a "free" version on a random website. What should you do?',
+                options: [
+                  'Download the free version to save money',
+                  'Ask a friend to download it for you',
+                  'Use only the official app store or website, or find a free alternative',
+                  'Download it but do not open it'
+                ],
+                correct: 2,
+                why: 'Cracked software often contains viruses. Use the official source, or look for a legitimate free alternative.'
+              },
+              {
+                q: 'A stranger on Facebook asks to be your friend and after a few days asks you to send airtime "to help them". What should you do?',
+                options: [
+                  'Send a small amount to test',
+                  'Stop talking to them — this is a common scam',
+                  'Send your bank details instead',
+                  'Ask them to visit your house'
+                ],
+                correct: 1,
+                why: 'Never send money to someone you only know online. This is one of the most common scams in Malawi and worldwide.'
+              }
+            ]
+          },
+          challenge:'Change the passwords on your two most important accounts (email and mobile money) to something stronger. Write them down somewhere safe at home — not on your phone.',
+          quiz:[
+            { q:'What is the safest way to use public WiFi?', options:['For banking','For browsing and non-sensitive tasks only','For sharing passwords','For downloading unknown files'], correct:1 },
+            { q:'Why should you avoid cracked or "free" paid software?', options:['It costs more','It often contains viruses','It is slower','It has fewer features'], correct:1 },
+            { q:'If money is stolen from your account, what is the first thing to do?', options:['Nothing, wait to see if it comes back','Call your bank or mobile money provider immediately','Post about it online','Blame the internet'], correct:1 }
+          ]}
+      ]
+    }
+  ]
+};
+
+var allLessons = [];
+course.modules.forEach(function(m) {
+  m.lessons.forEach(function(l) {
+    allLessons.push({
+      id: l.id, title: l.title, time: l.time,
+      practice: l.practice, practiceData: l.practiceData,
+      challenge: l.challenge, quiz: l.quiz,
+      moduleId: m.id, moduleTitle: m.title, moduleIcon: m.icon
+    });
+  });
+});
+var TOTAL = allLessons.length;
+
+var readings = {};
+(function() {
+  document.querySelectorAll('.src-read').forEach(function(n) {
+    readings[n.getAttribute('data-l')] = n.innerHTML;
+  });
+})();
+
+/* ========== PROGRESS ========== */
+function loadProgress() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { lessons: {}, quiz: {} };
+    var p = JSON.parse(raw);
+    if (!p.lessons) p.lessons = {};
+    if (!p.quiz) p.quiz = {};
+    return p;
+  } catch (e) { return { lessons: {}, quiz: {} }; }
+}
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (e) {} }
+function lk(id) { return 'cb::' + id; }
+function isDone(id) { var p = loadProgress(); return !!(p.lessons[lk(id)] && p.lessons[lk(id)].status === 'completed'); }
+function markDone(id) {
+  var p = loadProgress();
+  p.lessons[lk(id)] = { status: 'completed', completed_at: new Date().toISOString() };
+  saveProgress(p);
+  renderSidebar();
+  if (currentView === 'lessons') renderLesson(currentLessonId);
+  updateMeter();
+}
+function moduleProgress(mid) {
+  var m = null;
+  for (var i = 0; i < course.modules.length; i++) if (course.modules[i].id === mid) { m = course.modules[i]; break; }
+  if (!m) return { done: 0, total: 0 };
+  var done = 0;
+  for (var j = 0; j < m.lessons.length; j++) if (isDone(m.lessons[j].id)) done++;
+  return { done: done, total: m.lessons.length };
+}
+function overallProgress() {
+  var done = 0;
+  for (var i = 0; i < allLessons.length; i++) if (isDone(allLessons[i].id)) done++;
+  return { done: done, total: TOTAL, percent: TOTAL > 0 ? Math.round((done / TOTAL) * 100) : 0 };
+}
+
+/* ========== CAPSTONE MILESTONES ========== */
+var MILESTONES = [
+  { id: 'm1', text: 'I typed a full sentence without looking at the keyboard' },
+  { id: 'm2', text: 'I know at least 5 keyboard shortcuts and use them daily' },
+  { id: 'm3', text: 'I can create a folder and give it a clear name' },
+  { id: 'm4', text: 'I can save a file into a specific folder' },
+  { id: 'm5', text: 'I can find a file I saved last week in under 10 seconds' },
+  { id: 'm6', text: 'I have sent a real email with an attachment' },
+  { id: 'm7', text: 'I have replied to an email in a professional way' },
+  { id: 'm8', text: 'I can recognise a phishing email when I see one' },
+  { id: 'm9', text: 'I have a strong password on my email and mobile money account' },
+  { id: 'm10', text: 'I know what to do if something goes wrong online' }
+];
+function loadMilestones() {
+  try {
+    var raw = localStorage.getItem(CAPSTONE_KEY);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  } catch (e) { return {}; }
+}
+function saveMilestones(m) { try { localStorage.setItem(CAPSTONE_KEY, JSON.stringify(m)); } catch (e) {} }
+function milestoneCount() {
+  var m = loadMilestones();
+  var n = 0;
+  for (var i = 0; i < MILESTONES.length; i++) if (m[MILESTONES[i].id]) n++;
+  return n;
+}
+
+/* ========== STATE ========== */
+var currentLessonId = 't1';
+var currentView = 'lessons';
+var speechActive = false;
+var currentUtterance = null;
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function $(id) { return document.getElementById(id); }
+
+/* ========== SPEECH ========== */
+function speechSupported() {
+  return typeof window !== 'undefined' && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+}
+function speakText(text, button, hint) {
+  if (!speechSupported()) return;
+  if (speechActive) {
+    window.speechSynthesis.cancel();
+    speechActive = false;
+    button.classList.remove('speaking');
+    button.innerHTML = '🔊 Listen to this lesson';
+    if (hint) hint.textContent = 'Click to have the lesson read aloud. Works offline in most modern browsers.';
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.92;
+  utter.pitch = 1.0;
+  utter.lang = 'en-GB';
+  utter.onend = function() {
+    speechActive = false;
+    button.classList.remove('speaking');
+    button.innerHTML = '🔊 Listen to this lesson';
+    if (hint) hint.textContent = 'Finished reading. Click again to listen once more.';
+  };
+  utter.onerror = function() {
+    speechActive = false;
+    button.classList.remove('speaking');
+    button.innerHTML = '🔊 Listen to this lesson';
+  };
+  speechActive = true;
+  currentUtterance = utter;
+  button.classList.add('speaking');
+  button.innerHTML = '⏹ Stop reading';
+  if (hint) hint.textContent = 'Reading aloud… click Stop to cancel.';
+  window.speechSynthesis.speak(utter);
+}
+
+/* ========== METER ========== */
+function updateMeter() {
+  var p = overallProgress();
+  var f = $('meterFill'), t = $('meterText');
+  var sf = $('sideFill'), sp = $('sidePct');
+  if (f) f.style.width = p.percent + '%';
+  if (t) t.textContent = p.percent + '%';
+  if (sf) sf.style.width = p.percent + '%';
+  if (sp) sp.textContent = p.percent + '%';
+}
+
+/* ========== SIDEBAR ========== */
+function renderSidebar() {
+  var nav = $('sideNav');
+  nav.innerHTML = '';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var wrap = document.createElement('div');
+    wrap.className = 'mod';
+    var btn = document.createElement('button');
+    btn.className = 'mod-b';
+    btn.type = 'button';
+    btn.setAttribute('aria-expanded', 'true');
+    btn.innerHTML = '<span class="mod-ic" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="mod-nm">' + esc(mod.title) + '</span>' +
+      '<span class="mod-cnt">' + mp.done + '/' + mp.total + '</span>' +
+      '<span class="mod-ch" aria-hidden="true">▼</span>';
+    btn.addEventListener('click', function() {
+      wrap.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+    });
+    wrap.appendChild(btn);
+    var list = document.createElement('ul');
+    list.className = 'mod-l';
+    mod.lessons.forEach(function(l) {
+      var li = document.createElement('li');
+      var lb = document.createElement('button');
+      lb.className = 'lsn-b' + (l.id === currentLessonId && currentView === 'lessons' ? ' active' : '');
+      lb.type = 'button';
+      var c = isDone(l.id);
+      lb.innerHTML = '<span class="lsn-tx">' + esc(l.title) + '</span>' +
+        (c ? '<span class="lsn-ck" aria-label="Completed">✓</span>' : '');
+      lb.addEventListener('click', function() {
+        selectLesson(l.id);
+        switchView('lessons');
+      });
+      li.appendChild(lb);
+      list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    nav.appendChild(wrap);
+  });
+  updateMeter();
+}
+
+/* ========== VIEW SWITCH ========== */
+function switchView(view) {
+  if (speechActive) {
+    window.speechSynthesis.cancel();
+    speechActive = false;
+  }
+  currentView = view;
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var target = $('view' + view.charAt(0).toUpperCase() + view.slice(1));
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t) {
+    var a = t.getAttribute('data-view') === view;
+    t.classList.toggle('active', a);
+    t.setAttribute('aria-selected', a ? 'true' : 'false');
+  });
+  if (view === 'lessons') renderLesson(currentLessonId);
+  else if (view === 'overview') renderOverview();
+  else if (view === 'practice') renderPractice();
+  else if (view === 'resources') renderResources();
+  else if (view === 'community') renderCommunity();
+  else if (view === 'certificate') renderCertificate();
+  renderSidebar();
+  var sp = $('sidePanel');
+  if (sp) sp.classList.remove('open');
+  var mb = $('menuBtn');
+  if (mb) { mb.setAttribute('aria-expanded', 'false'); mb.textContent = '☰'; }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectLesson(id) {
+  currentLessonId = id;
+  try { history.replaceState(null, '', '#lesson-' + id); } catch (e) { window.location.hash = '#lesson-' + id; }
+  renderLesson(id);
+  renderSidebar();
+}
+
+/* ========== RENDER LESSON ========== */
+function renderLesson(id) {
+  var lesson = null;
+  for (var i = 0; i < allLessons.length; i++) if (allLessons[i].id === id) { lesson = allLessons[i]; break; }
+  var container = $('viewLessons');
+  if (!lesson) { container.innerHTML = '<p>Lesson not found.</p>'; return; }
+  var done = isDone(lesson.id);
+  var reading = readings[lesson.id] || '<p>Content coming soon.</p>';
+
+  var html = '';
+  html += '<header class="lh">';
+  html += '<div class="lk"><span class="lk-ic" aria-hidden="true">' + lesson.moduleIcon + '</span>' + esc(lesson.moduleTitle) + ' Module</div>';
+  html += '<h1 class="lt">' + esc(lesson.title) + '</h1>';
+  html += '<div class="lmeta">';
+  html += '<span>⏱ ' + esc(lesson.time) + '</span>';
+  html += '<span>💡 Friendly for beginners</span>';
+  if (done) html += '<span class="dn">✓ Completed</span>';
+  html += '</div></header>';
+
+  if (speechSupported()) {
+    html += '<div class="listen-bar">';
+    html += '<button class="listen-btn" id="listenBtn" type="button">🔊 Listen to this lesson</button>';
+    html += '<span class="listen-hint" id="listenHint">Click to have the lesson read aloud. Works offline in most modern browsers.</span>';
+    html += '</div>';
+  }
+
+  html += '<article class="rd" id="readingBody">' + reading + '</article>';
+
+  if (lesson.practice) {
+    html += '<section class="ex">';
+    html += '<h2 class="ex-h">Practice Time <span class="ex-bdg">Interactive</span></h2>';
+    html += '<p class="ex-s">' + esc(lesson.challenge.replace(/<[^>]+>/g, '')) + '</p>';
+    html += '<div class="ex-card" id="exerciseArea"></div>';
+    html += '</section>';
+  }
+
+  if (lesson.quiz && lesson.quiz.length) {
+    html += '<section class="quiz">';
+    html += '<h2 class="q-h">✅ Check Your Understanding</h2>';
+    html += '<p class="q-s">Answer all questions, then click "Check Answers".</p>';
+    html += '<form id="quizForm">';
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      html += '<div class="q" data-qindex="' + qi + '">';
+      html += '<div class="q-t">' + (qi + 1) + '. ' + esc(q.q) + '</div>';
+      html += '<div class="q-o">';
+      for (var oi = 0; oi < q.options.length; oi++) {
+        html += '<label class="q-opt" data-option="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + esc(q.options[oi]) + '</span></label>';
+      }
+      html += '</div></div>';
+    }
+    html += '<button class="btn btn-p" id="checkQuizBtn" type="button">Check Answers</button>';
+    html += '</form></section>';
+  }
+
+  html += '<div class="dn-bar">';
+  html += '<button class="btn btn-p btn-lg" id="completeBtn" type="button"' + (done ? ' disabled' : '') + '>' + (done ? '✓ Completed' : 'Mark as Complete') + '</button>';
+  html += '<span class="dn-note">' + (done ? 'Great work! Pick the next lesson from the sidebar.' : 'Try the practice, take the quiz, then mark complete.') + '</span>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  // Listen button
+  var listenBtn = $('listenBtn');
+  if (listenBtn) {
+    listenBtn.addEventListener('click', function() {
+      var text = ($('readingBody').innerText || '').replace(/\s+/g, ' ').trim();
+      speakText(text, listenBtn, $('listenHint'));
+    });
+  }
+
+  // Practice exercise
+  if (lesson.practice && $('exerciseArea')) {
+    renderExercise(lesson.practice, lesson.practiceData, $('exerciseArea'));
+  }
+
+  if (lesson.quiz && lesson.quiz.length) attachQuiz(lesson);
+  var cb = $('completeBtn');
+  if (cb) cb.addEventListener('click', function() { markDone(lesson.id); });
+}
+
+/* ========== EXERCISE ROUTER ========== */
+function renderExercise(type, data, container) {
+  if (type === 'typing') renderTyping(data, container);
+  else if (type === 'extquiz') renderExtQuiz(data, container);
+  else if (type === 'fileorg') renderFileOrg(data, container);
+  else if (type === 'emailcompose') renderEmailCompose(data, container);
+  else if (type === 'phishing') renderPhishing(data, container);
+  else if (type === 'scenario') renderScenario(data, container);
+}
+
+/* ========== TYPING TRAINER ========== */
+function renderTyping(data, container) {
+  var html = '';
+  html += '<div class="typing-display" id="typeDisplay"></div>';
+  html += '<input class="typing-input" id="typeInput" type="text" placeholder="Start typing here..." autocomplete="off" autocorrect="off" spellcheck="false">';
+  if (data.homeRowHint) {
+    html += '<div class="kb" id="kbRow">';
+    ['A','S','D','F',' ','J','K','L',';'].forEach(function(k) {
+      html += '<div class="kb-key" data-key="' + k + '">' + (k === ' ' ? '␣' : k) + '</div>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="typing-stats" id="typeStats" style="display:none">';
+  html += '<div class="typing-stat"><div class="typing-stat-num" id="statWpm">0</div><div class="typing-stat-lbl">WPM</div></div>';
+  html += '<div class="typing-stat"><div class="typing-stat-num" id="statAcc">0%</div><div class="typing-stat-lbl">Accuracy</div></div>';
+  html += '<div class="typing-stat"><div class="typing-stat-num" id="statTime">0s</div><div class="typing-stat-lbl">Time</div></div>';
+  html += '</div>';
+  html += '<div class="ex-bar">';
+  html += '<button class="btn btn-p btn-sm" id="typeCheck" type="button">✓ Check</button>';
+  html += '<button class="btn btn-g btn-sm" id="typeReset" type="button">↺ Reset</button>';
+  html += '</div>';
+  html += '<div class="ex-result" id="typeResult"></div>';
+  container.innerHTML = html;
+
+  var target = data.target;
+  var input = $('typeInput');
+  var display = $('typeDisplay');
+  var stats = $('typeStats');
+  var result = $('typeResult');
+  var startTime = null;
+
+  function paint() {
+    var typed = input.value;
+    var out = '';
+    for (var i = 0; i < target.length; i++) {
+      var ch = target[i];
+      var displayCh = ch === ' ' ? '&nbsp;' : esc(ch);
+      if (i < typed.length) {
+        if (typed[i] === ch) out += '<span class="ok">' + displayCh + '</span>';
+        else out += '<span class="wrong">' + displayCh + '</span>';
+      } else if (i === typed.length) {
+        out += '<span class="cur">' + displayCh + '</span>';
+      } else {
+        out += '<span>' + displayCh + '</span>';
+      }
+    }
+    display.innerHTML = out;
+    // Home row hint
+    if (data.homeRowHint && $('kbRow')) {
+      var next = target[typed.length] ? target[typed.length].toUpperCase() : '';
+      document.querySelectorAll('#kbRow .kb-key').forEach(function(k) {
+        if (k.getAttribute('data-key') === next) k.classList.add('hi');
+        else k.classList.remove('hi');
+      });
+    }
+    if (!startTime && typed.length > 0) startTime = Date.now();
+  }
+
+  input.addEventListener('input', paint);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      check();
+    }
+  });
+
+  function check() {
+    var typed = input.value;
+    var correct = 0;
+    for (var i = 0; i < target.length; i++) if (typed[i] === target[i]) correct++;
+    var acc = Math.round(correct / target.length * 100);
+    var elapsed = startTime ? (Date.now() - startTime) / 1000 : 0;
+    var wpm = elapsed > 0 ? Math.round((typed.length / 5) / (elapsed / 60)) : 0;
+    stats.style.display = 'grid';
+    $('statWpm').textContent = wpm;
+    $('statAcc').textContent = acc + '%';
+    $('statTime').textContent = Math.round(elapsed) + 's';
+    if (acc === 100) {
+      result.className = 'ex-result good show';
+      result.innerHTML = '<strong>✓ Perfect!</strong> You typed the whole phrase correctly. Now try again and see if you can do it faster.';
+    } else if (acc >= 85) {
+      result.className = 'ex-result info show';
+      result.innerHTML = '<strong>Good effort!</strong> You got ' + acc + '% right. Try again — accuracy first, then speed.';
+    } else {
+      result.className = 'ex-result bad show';
+      result.innerHTML = '<strong>Keep practising.</strong> You got ' + acc + '% right. Slow down — accuracy comes first. Speed follows automatically.';
+    }
+  }
+
+  $('typeCheck').addEventListener('click', check);
+  $('typeReset').addEventListener('click', function() {
+    input.value = '';
+    startTime = null;
+    stats.style.display = 'none';
+    result.classList.remove('show');
+    paint();
+    input.focus();
+  });
+
+  paint();
+  input.focus();
+}
+
+/* ========== FILE EXTENSION QUIZ ========== */
+function renderExtQuiz(data, container) {
+  var html = '';
+  data.questions.forEach(function(q, qi) {
+    html += '<div class="ext-item" data-qi="' + qi + '">';
+    html += '<div class="ext-file"><span class="ext-icon">' + q.icon + '</span><span class="ext-name">' + esc(q.file) + '</span></div>';
+    html += '<div class="ext-opts">';
+    data.options.forEach(function(opt) {
+      html += '<button class="ext-opt" type="button" data-opt="' + esc(opt) + '" data-qi="' + qi + '">' + esc(opt) + '</button>';
+    });
+    html += '</div></div>';
+  });
+  html += '<div class="ex-result" id="extResult"></div>';
+  container.innerHTML = html;
+
+  var correct = 0;
+  var answered = {};
+  document.querySelectorAll('.ext-opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var qi = parseInt(btn.getAttribute('data-qi'), 10);
+      if (answered[qi]) return;
+      var chosen = btn.getAttribute('data-opt');
+      var q = data.questions[qi];
+      answered[qi] = true;
+      var item = container.querySelector('.ext-item[data-qi="' + qi + '"]');
+      item.querySelectorAll('.ext-opt').forEach(function(b) {
+        if (b.getAttribute('data-opt') === q.correct) b.classList.add('correct');
+        else if (b === btn) b.classList.add('wrong');
+      });
+      if (chosen === q.correct) correct++;
+      if (Object.keys(answered).length === data.questions.length) {
+        var res = $('extResult');
+        res.className = 'ex-result ' + (correct === data.questions.length ? 'good' : correct >= data.questions.length * 0.7 ? 'info' : 'bad') + ' show';
+        res.innerHTML = '<strong>You scored ' + correct + ' out of ' + data.questions.length + '.</strong> ' + (correct === data.questions.length ? 'Perfect!' : 'Well done — review the ones you missed and try again.');
+      }
+    });
+  });
+}
+
+/* ========== FILE ORGANIZER ========== */
+function renderFileOrg(data, container) {
+  var html = '';
+  html += '<div class="fo-wrap">';
+  html += '<div class="fo-desk"><div class="fo-desk-label">Desktop — files to organise</div>';
+  html += '<div class="fo-files" id="foDesk"></div></div>';
+  html += '<div class="fo-folders" id="foFolders"></div>';
+  html += '</div>';
+  html += '<div class="ex-bar">';
+  html += '<button class="btn btn-g btn-sm" id="foReset" type="button">↺ Reset</button>';
+  html += '</div>';
+  html += '<div class="ex-result" id="foResult"></div>';
+  container.innerHTML = html;
+
+  var selected = null;
+  var placed = {};
+  var desk = $('foDesk');
+  var folders = $('foFolders');
+  var result = $('foResult');
+
+  function render() {
+    desk.innerHTML = '';
+    data.files.forEach(function(f) {
+      if (placed[f.id]) return;
+      var el = document.createElement('div');
+      el.className = 'fo-file' + (selected === f.id ? ' selected' : '');
+      el.innerHTML = '<span class="fo-ic">' + f.icon + '</span>' + esc(f.name);
+      el.addEventListener('click', function() {
+        selected = (selected === f.id) ? null : f.id;
+        render();
+      });
+      desk.appendChild(el);
+    });
+    if (!desk.children.length) {
+      desk.innerHTML = '<div style="font-size:13.5px;color:var(--t3);font-style:italic">All files organised. Well done!</div>';
+    }
+
+    folders.innerHTML = '';
+    data.folders.forEach(function(folderName) {
+      var wrap = document.createElement('div');
+      wrap.className = 'fo-folder' + (selected ? ' target' : '');
+      var contents = data.files.filter(function(f) { return placed[f.id] === folderName; });
+      var contentsHtml = contents.length
+        ? contents.map(function(f) { return '<span class="item">' + f.icon + ' ' + esc(f.name) + '</span>'; }).join('')
+        : '<span style="color:var(--t4);font-style:italic">Empty — tap a file, then tap here</span>';
+      wrap.innerHTML = '<div class="fo-folder-name"><span class="fo-fic">📁</span>' + esc(folderName) + '</div><div class="fo-folder-contents">' + contentsHtml + '</div>';
+      wrap.addEventListener('click', function() {
+        if (!selected) return;
+        var f = data.files.find(function(x) { return x.id === selected; });
+        if (!f) return;
+        if (f.target === folderName) {
+          placed[f.id] = folderName;
+          selected = null;
+          render();
+          checkDone();
+        } else {
+          result.className = 'ex-result bad show';
+          result.innerHTML = '<strong>Not quite.</strong> The file "' + esc(f.name) + '" belongs somewhere else. Think about what kind of file it is.';
+        }
+      });
+      folders.appendChild(wrap);
+    });
+  }
+
+  function checkDone() {
+    if (Object.keys(placed).length === data.files.length) {
+      result.className = 'ex-result good show';
+      result.innerHTML = '<strong>✓ All files organised!</strong> You now know how to keep your computer tidy. On your own computer, create these same folders and try it for real.';
+    }
+  }
+
+  $('foReset').addEventListener('click', function() {
+    selected = null;
+    placed = {};
+    result.classList.remove('show');
+    render();
+  });
+
+  render();
+}
+
+/* ========== EMAIL COMPOSER ========== */
+function renderEmailCompose(data, container) {
+  var html = '';
+  html += '<div class="mc-wrap">';
+  html += '<div class="mc-window">';
+  html += '<div class="mc-topbar">';
+  html += '<div class="mc-dots"><span></span><span></span><span></span></div>';
+  html += '<div class="mc-title">New Message</div>';
+  html += '</div>';
+  html += '<div class="mc-toolbar">';
+  html += '<button class="mc-tool" type="button" disabled>To</button>';
+  html += '<button class="mc-tool" type="button" disabled>Cc</button>';
+  html += '<button class="mc-tool" type="button" disabled>Bcc</button>';
+  html += '<button class="mc-tool send" id="mcSend" type="button">📤 Send</button>';
+  html += '</div>';
+  html += '<div class="mc-fields">';
+  html += '<div class="mc-field"><span class="mc-fl">To:</span><input class="mc-fi" id="mcTo" type="email" value="' + esc(data.to) + '"></div>';
+  html += '<div class="mc-field"><span class="mc-fl">Subject:</span><input class="mc-fi" id="mcSubj" type="text" placeholder="Write a short subject line..."></div>';
+  html += '</div>';
+  html += '<div class="mc-body"><textarea id="mcBody" placeholder="Write your message here..."></textarea></div>';
+  html += '<div class="mc-attach">';
+  html += '<button class="mc-attach-btn" id="mcAttachBtn" type="button">📎 Attach file</button>';
+  html += '<span id="mcAttached"></span>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+  html += '<div class="ex-result" id="mcResult"></div>';
+  container.innerHTML = html;
+
+  var attached = false;
+  $('mcAttachBtn').addEventListener('click', function() {
+    attached = !attached;
+    $('mcAttached').innerHTML = attached ? '<span class="mc-attached">📄 CV - YourName.pdf</span>' : '';
+  });
+
+  $('mcSend').addEventListener('click', function() {
+    var to = $('mcTo').value.trim();
+    var subj = $('mcSubj').value.trim();
+    var body = $('mcBody').value.trim();
+    var res = $('mcResult');
+    var issues = [];
+    if (!to || !to.includes('@')) issues.push('Add a valid recipient email address.');
+    if (!subj) issues.push('Write a Subject line — it tells the reader what the email is about.');
+    if (subj && data.requiredSubjectWords) {
+      var low = subj.toLowerCase();
+      var hasKeyword = data.requiredSubjectWords.some(function(w) { return low.indexOf(w) !== -1; });
+      if (!hasKeyword) issues.push('Your Subject should mention what the email is about (e.g. "Application for Junior Developer").');
+    }
+    if (!body || body.length < 40) issues.push('Write a proper message — at least a greeting, a sentence or two, and a sign-off.');
+    if (body && body.length >= 40) {
+      var bodyLow = body.toLowerCase();
+      if (bodyLow.indexOf('dear') === -1 && bodyLow.indexOf('hello') === -1 && bodyLow.indexOf('hi ') === -1) {
+        issues.push('Start with a greeting like "Dear Sir/Madam," or "Dear Hiring Manager,".');
+      }
+      if (bodyLow.indexOf('yours') === -1 && bodyLow.indexOf('regards') === -1 && bodyLow.indexOf('thanks') === -1 && bodyLow.indexOf('sincerely') === -1) {
+        issues.push('End with a sign-off like "Yours faithfully," or "Best regards,".');
+      }
+    }
+    if (!attached && data.task && data.task.toLowerCase().indexOf('attach') !== -1) {
+      issues.push('Do not forget to click Attach file — the task says to include an attachment.');
+    }
+    if (issues.length === 0) {
+      res.className = 'ex-result good show';
+      res.innerHTML = '<strong>✓ Sent!</strong> That is a professional email. Practice by sending a real one to yourself — that confirms your email is working.';
+      setTimeout(function() {
+        res.innerHTML = '<strong>✓ Sent!</strong> That is a professional email. (The sandbox does not send real emails — this is a practice exercise. When you send a real one, the same rules apply.)';
+      }, 1200);
+    } else {
+      res.className = 'ex-result bad show';
+      res.innerHTML = '<strong>Almost there.</strong> Before sending, fix these:<ul style="margin-top:8px;padding-left:22px">' + issues.map(function(i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul>';
+    }
+  });
+}
+
+/* ========== PHISHING QUIZ ========== */
+function renderPhishing(data, container) {
+  var html = '';
+  data.emails.forEach(function(e, i) {
+    html += '<div class="ph-item" data-i="' + i + '">';
+    html += '<div class="ph-meta"><strong>From:</strong> ' + esc(e.from) + '</div>';
+    html += '<div class="ph-subject">Subject: ' + esc(e.subject) + '</div>';
+    html += '<div class="ph-body">' + esc(e.body) + '</div>';
+    html += '<div class="ph-actions">';
+    html += '<button class="ph-btn" data-answer="legit" data-i="' + i + '" type="button">✓ Safe</button>';
+    html += '<button class="ph-btn" data-answer="phish" data-i="' + i + '" type="button">⚠ Suspect</button>';
+    html += '</div>';
+    html += '<div class="ph-why" id="phWhy' + i + '"></div>';
+    html += '</div>';
+  });
+  html += '<div class="ex-result" id="phResult"></div>';
+  container.innerHTML = html;
+
+  var answered = {};
+  var correctCount = 0;
+  document.querySelectorAll('.ph-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      if (answered[i]) return;
+      answered[i] = true;
+      var e = data.emails[i];
+      var chosen = btn.getAttribute('data-answer');
+      var isCorrect = (chosen === 'phish' && e.phishing) || (chosen === 'legit' && !e.phishing);
+      if (isCorrect) correctCount++;
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      var item = container.querySelector('.ph-item[data-i="' + i + '"]');
+      item.querySelectorAll('.ph-btn').forEach(function(b) { b.disabled = true; b.style.opacity = '0.6'; });
+      var why = $('phWhy' + i);
+      why.classList.add('show');
+      why.innerHTML = (isCorrect ? '<strong>✓ Correct.</strong> ' : '<strong>✕ Not quite.</strong> ') + esc(e.why);
+      if (Object.keys(answered).length === data.emails.length) {
+        var res = $('phResult');
+        res.className = 'ex-result ' + (correctCount === data.emails.length ? 'good' : correctCount >= data.emails.length * 0.7 ? 'info' : 'bad') + ' show';
+        res.innerHTML = '<strong>You scored ' + correctCount + ' out of ' + data.emails.length + '.</strong> ' + (correctCount === data.emails.length ? 'You can spot phishing! Tell a family member what you learned.' : 'Review the ones you missed. Phishing is the most common online scam.');
+      }
+    });
+  });
+}
+
+/* ========== SCENARIO QUIZ ========== */
+function renderScenario(data, container) {
+  var html = '';
+  data.scenarios.forEach(function(s, i) {
+    html += '<div class="sc-item" data-i="' + i + '">';
+    html += '<div class="sc-q">' + (i + 1) + '. ' + esc(s.q) + '</div>';
+    html += '<div class="sc-opts">';
+    s.options.forEach(function(opt, oi) {
+      html += '<button class="sc-opt" type="button" data-i="' + i + '" data-oi="' + oi + '"><span class="sc-opt-letter">' + String.fromCharCode(65 + oi) + '.</span><span>' + esc(opt) + '</span></button>';
+    });
+    html += '</div>';
+    html += '<div class="ph-why" id="scWhy' + i + '"></div>';
+    html += '</div>';
+  });
+  html += '<div class="ex-result" id="scResult"></div>';
+  container.innerHTML = html;
+
+  var answered = {};
+  var correctCount = 0;
+  document.querySelectorAll('.sc-opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      if (answered[i]) return;
+      answered[i] = true;
+      var s = data.scenarios[i];
+      var oi = parseInt(btn.getAttribute('data-oi'), 10);
+      var isCorrect = oi === s.correct;
+      if (isCorrect) correctCount++;
+      var item = container.querySelector('.sc-item[data-i="' + i + '"]');
+      item.querySelectorAll('.sc-opt').forEach(function(b) {
+        b.disabled = true;
+        if (parseInt(b.getAttribute('data-oi'), 10) === s.correct) b.classList.add('correct');
+        else if (b === btn) b.classList.add('wrong');
+      });
+      var why = $('scWhy' + i);
+      why.classList.add('show');
+      why.innerHTML = (isCorrect ? '<strong>✓ Correct.</strong> ' : '<strong>✕ Not quite.</strong> ') + esc(s.why);
+      if (Object.keys(answered).length === data.scenarios.length) {
+        var res = $('scResult');
+        res.className = 'ex-result ' + (correctCount === data.scenarios.length ? 'good' : correctCount >= data.scenarios.length * 0.7 ? 'info' : 'bad') + ' show';
+        res.innerHTML = '<strong>You scored ' + correctCount + ' out of ' + data.scenarios.length + '.</strong> ' + (correctCount === data.scenarios.length ? 'You are ready to use the internet safely.' : 'Review the scenarios you missed — they come up in real life more often than you think.');
+      }
+    });
+  });
+}
+
+/* ========== QUIZ ========== */
+function attachQuiz(lesson) {
+  $('checkQuizBtn').addEventListener('click', function() {
+    var form = $('quizForm');
+    var score = 0;
+    for (var qi = 0; qi < lesson.quiz.length; qi++) {
+      var q = lesson.quiz[qi];
+      var block = form.querySelector('[data-qindex="' + qi + '"]');
+      var sel = form.querySelector('input[name="q' + qi + '"]:checked');
+      var chosen = sel ? parseInt(sel.value, 10) : -1;
+      var opts = block.querySelectorAll('.q-opt');
+      for (var oi = 0; oi < opts.length; oi++) {
+        opts[oi].classList.remove('correct', 'incorrect');
+        if (oi === q.correct) opts[oi].classList.add('correct');
+        else if (oi === chosen) opts[oi].classList.add('incorrect');
+      }
+      if (chosen === q.correct) score++;
+    }
+    $('checkQuizBtn').textContent = 'Score: ' + score + '/' + lesson.quiz.length + ' — Try again';
+    var p = loadProgress();
+    p.quiz[lk(lesson.id)] = { score: score, total: lesson.quiz.length, at: new Date().toISOString() };
+    saveProgress(p);
+  });
+}
+
+/* ========== OVERVIEW ========== */
+function renderOverview() {
+  var container = $('viewOverview');
+  var html = '';
+  html += '<h1 class="pg-h1">Computer Basics &amp; Digital Literacy</h1>';
+  html += '<p class="pg-sub">If you have never used a computer before, this is the perfect place to start. In four weeks you will learn to type, organise your files, send emails, and stay safe online — the four skills that unlock everything else on a computer.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">⏱</span>4 weeks</h3><p>8 friendly lessons across 4 modules. About 6 hours of learning.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📈</span>Absolute Beginner</h3><p>No experience needed. If you can press a button, you can take this course.</p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💡</span>Hands-on</h3><p>Typing trainer, file organiser, mock email client, and phishing quiz — all interactive.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">🎯 What you will learn</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>Typing</h3><p>The home row, keyboard shortcuts, and how to type without looking.</p></div>';
+  html += '<div class="ov-card"><h3>Files</h3><p>What files and folders are, why extensions matter, and how to organise your work.</p></div>';
+  html += '<div class="ov-card"><h3>Email</h3><p>Setting up an account, writing to employers, replying, and attaching documents.</p></div>';
+  html += '<div class="ov-card"><h3>Safety</h3><p>Strong passwords, spotting phishing, safe browsing, and what to do if something goes wrong.</p></div>';
+  html += '<div class="ov-card"><h3>Real practice</h3><p>Every lesson has a hands-on exercise — not just reading.</p></div>';
+  html += '<div class="ov-card"><h3>Malawi context</h3><p>Job applications by email, internet café safety, mobile money scams.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">📅 Week-by-week</h2>';
+  html += '<div class="weeks">';
+  var weeks = [
+    ['W1', 'Typing Skills', 'The keyboard, the home row, and the shortcuts that save you time.'],
+    ['W2', 'File Management', 'Files, folders, extensions, and how to keep your computer tidy.'],
+    ['W3', 'Email Basics', 'Set up an account, write to employers, reply, attach documents.'],
+    ['W4', 'Internet Safety', 'Strong passwords, phishing, safe browsing, and privacy.']
+  ];
+  weeks.forEach(function(w) {
+    html += '<div class="wk"><div class="wk-n">' + w[0] + '</div><div class="wk-b"><div class="wk-t">' + w[1] + '</div><div class="wk-d">' + w[2] + '</div></div></div>';
+  });
+  html += '</div>';
+
+  html += '<div class="cta-card">';
+  html += '<h2>Ready to start?</h2>';
+  html += '<p>Jump into the first lesson. Take it slowly. There is no rush, and you cannot break anything by clicking around.</p>';
+  html += '<button class="btn btn-p btn-lg" id="startCourseBtn" type="button">▶ Start Lesson 1</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+  $('startCourseBtn').addEventListener('click', function() {
+    selectLesson('t1');
+    switchView('lessons');
+  });
+}
+
+/* ========== PRACTICE TAB ========== */
+function renderPractice() {
+  var container = $('viewPractice');
+  var mp = overallProgress();
+  var r = 54;
+  var c = 2 * Math.PI * r;
+  var dash = (mp.percent / 100) * c;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+  var ms = loadMilestones();
+
+  var html = '';
+  html += '<h1 class="pg-h1">Practice &amp; Digital Skills Checklist</h1>';
+  html += '<p class="pg-sub">Practise any exercise from the course, then tick the real-world skills you have completed. The certificate unlocks when you finish all lessons and tick at least 7 milestones.</p>';
+
+  html += '<div class="prog-ring-row">';
+  html += '<div class="ring" aria-hidden="true"><svg width="140" height="140" viewBox="0 0 140 140">';
+  html += '<circle class="rb" cx="70" cy="70" r="' + r + '"></circle>';
+  html += '<circle class="rf" cx="70" cy="70" r="' + r + '" stroke-dasharray="' + dash + ' ' + c + '"></circle>';
+  html += '</svg><div class="ring-ct"><span class="ring-n">' + mp.percent + '%</span><span class="ring-l">Lessons</span></div></div>';
+  html += '<div class="prog-i">';
+  html += '<h2>Your progress</h2>';
+  html += '<p>' + mp.done + ' of ' + mp.total + ' lessons complete · ' + mCount + ' of ' + mTotal + ' skills ticked</p>';
+  html += '</div></div>';
+
+  html += '<h2 class="sec-h">💡 Digital Skills Checklist <span class="badge">Real world</span></h2>';
+  html += '<p style="color:var(--t2);font-size:16px;line-height:1.65;margin-bottom:8px">These are real skills you can use on any computer. Tick each one after you have actually done it — not just read about it.</p>';
+  html += '<ul class="ms-list">';
+  MILESTONES.forEach(function(m) {
+    var on = !!ms[m.id];
+    html += '<li class="ms' + (on ? ' done' : '') + '">';
+    html += '<input type="checkbox" id="' + m.id + '" data-msid="' + m.id + '"' + (on ? ' checked' : '') + '>';
+    html += '<label for="' + m.id + '">' + esc(m.text) + '</label>';
+    html += '</li>';
+  });
+  html += '</ul>';
+
+  html += '<h2 class="sec-h">🎯 Jump into any practice</h2>';
+  html += '<div class="grid-3">';
+  var practices = [
+    { id: 't1', icon: '⌨️', name: 'Typing Trainer', desc: 'Practise typing with live accuracy feedback.' },
+    { id: 'f1', icon: '📁', name: 'File Extensions Quiz', desc: 'Can you tell what kind of file something is?' },
+    { id: 'f2', icon: '🗂️', name: 'File Organiser', desc: 'Tap files, then tap the folder they belong in.' },
+    { id: 'e1', icon: '✉️', name: 'Write an Email', desc: 'Compose a job application email in a mock client.' },
+    { id: 's1', icon: '🎣', name: 'Spot the Phishing', desc: 'Three emails — can you tell which are safe?' },
+    { id: 's2', icon: '🛡️', name: 'Safe Browsing Scenarios', desc: 'Real-life situations and the safest choice.' }
+  ];
+  practices.forEach(function(p) {
+    html += '<button class="ov-card" style="text-align:left;cursor:pointer" data-lesson="' + p.id + '">';
+    html += '<h3><span class="ov-ic">' + p.icon + '</span>' + esc(p.name) + '</h3>';
+    html += '<p>' + esc(p.desc) + '</p>';
+    html += '</button>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  container.querySelectorAll('button[data-lesson]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      selectLesson(b.getAttribute('data-lesson'));
+      switchView('lessons');
+    });
+  });
+
+  container.querySelectorAll('.ms input[type=checkbox]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      var m = loadMilestones();
+      m[cb.getAttribute('data-msid')] = cb.checked;
+      saveMilestones(m);
+      var li = cb.closest('.ms');
+      li.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+/* ========== RESOURCES ========== */
+function renderResources() {
+  var container = $('viewResources');
+  var html = '';
+  html += '<h1 class="pg-h1">Resources</h1>';
+  html += '<p class="pg-sub">Links and downloads to keep learning after the course.</p>';
+
+  html += '<h2 class="sec-h">📖 Reading &amp; reference</h2>';
+  html += '<div class="res-list">';
+  var links = [
+    ['⌨️', 'TypingClub', 'Free, friendly typing lessons that start from zero.', 'https://www.typingclub.com/'],
+    ['📚', 'GCFLearnFree Computer Basics', 'Clear, patient tutorials for absolute beginners.', 'https://edu.gcfglobal.org/en/computerbasics/'],
+    ['🔒', 'Google Safety Center', 'Simple guides on passwords, phishing, and privacy.', 'https://safety.google/'],
+    ['📧', 'Gmail Help', 'How to set up and use Gmail step by step.', 'https://support.google.com/mail/'],
+    ['🛡️', 'Get Safe Online', 'Practical advice on staying safe online.', 'https://www.getsafeonline.org/'],
+    ['📱', 'Airtel Money Safety Tips', 'How to protect your mobile money account.', 'https://www.airtel.mw/']
+  ];
+  links.forEach(function(l) {
+    html += '<a class="res-item" href="' + l[3] + '" target="_blank" rel="noopener">';
+    html += '<span class="res-ic" aria-hidden="true">' + l[0] + '</span>';
+    html += '<div><div class="res-t">' + esc(l[1]) + '</div><div class="res-d">' + esc(l[2]) + '</div></div>';
+    html += '</a>';
+  });
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💾 Downloads</h2>';
+  html += '<div class="res-list">';
+  html += '<button class="res-item" id="downloadCheatBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">📄</span>';
+  html += '<div><div class="res-t">Digital Skills Cheatsheet</div><div class="res-d">A printable one-page reference with shortcuts, file types, and safety rules.</div></div>';
+  html += '</button>';
+  html += '<button class="res-item" id="downloadTemplateBtn" type="button" style="text-align:left;width:100%;cursor:pointer">';
+  html += '<span class="res-ic" aria-hidden="true">✉️</span>';
+  html += '<div><div class="res-t">Email Templates</div><div class="res-d">Ready-to-edit templates for job applications, replies, and follow-ups.</div></div>';
+  html += '</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  $('downloadCheatBtn').addEventListener('click', downloadCheatsheet);
+  $('downloadTemplateBtn').addEventListener('click', downloadTemplates);
+}
+
+function downloadCheatsheet() {
+  var lines = [
+    '============================================',
+    '  COMPUTER BASICS & DIGITAL LITERACY',
+    '  CHEATSHEET — PRINT AND KEEP',
+    '============================================',
+    '',
+    '--- KEYBOARD SHORTCUTS ---',
+    'Ctrl + C    Copy',
+    'Ctrl + V    Paste',
+    'Ctrl + X    Cut',
+    'Ctrl + Z    Undo (your safety net)',
+    'Ctrl + S    Save',
+    'Ctrl + A    Select all',
+    'Ctrl + F    Find',
+    'Ctrl + P    Print',
+    'Shift      Hold for capital letters',
+    '',
+    '--- FILE EXTENSIONS ---',
+    '.docx    Word document',
+    '.pdf     Document that looks the same everywhere',
+    '.jpg     Picture',
+    '.png     Picture (with transparency)',
+    '.mp3     Audio / song',
+    '.mp4     Video',
+    '.xlsx    Spreadsheet',
+    '.zip     Compressed bundle of files',
+    '',
+    '--- EMAIL TIPS ---',
+    'Always fill in the Subject line.',
+    'Start with "Dear Sir/Madam," if you do not know the name.',
+    'Keep it short — five paragraphs is plenty.',
+    'Attach your CV as a PDF, not Word.',
+    'End with "Yours faithfully," or "Best regards,".',
+    'Check the attachment before clicking Send.',
+    'Reply within 24 hours.',
+    '',
+    '--- STRONG PASSWORDS ---',
+    'At least 12 characters.',
+    'Mix uppercase, lowercase, numbers, and symbols.',
+    'Never use your name, phone, or birthday.',
+    'Use a different password for every account.',
+    'Pattern: three random words joined by a symbol and number.',
+    'Example: Mango!Chair7River',
+    '',
+    '--- SPOTTING PHISHING ---',
+    'Urgency: "Act now!" "24 hours!"',
+    'Wrong domain: airtel-mw-secure.com is NOT airtel.mw',
+    'Asks for your PIN, password, or card number',
+    'Too good to be true: "You have won MWK 1,000,000"',
+    'Asks for a "processing fee" to release a prize',
+    '',
+    '--- IF SOMETHING GOES WRONG ---',
+    '1. Change your password immediately',
+    '2. Tell your bank or mobile money provider',
+    '3. Tell someone you trust',
+    '4. Report to the police if money was lost',
+    '',
+    '--- AT INTERNET CAFES ---',
+    'Always click LOG OUT — do not just close the window.',
+    'Never save passwords on shared computers.',
+    'Never check your bank or mobile money if you can avoid it.',
+    'Clear the browser history when done.',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'digital-skills-cheatsheet.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function downloadTemplates() {
+  var lines = [
+    '============================================',
+    '  EMAIL TEMPLATES',
+    '  Replace the [bracketed] parts and send.',
+    '============================================',
+    '',
+    '--- 1. JOB APPLICATION ---',
+    'Subject: Application for [Job Title] position',
+    '',
+    'Dear Sir/Madam,',
+    '',
+    'I am writing to apply for the [Job Title] position advertised',
+    'on [where you saw it] on [date].',
+    '',
+    '[One or two sentences about your relevant experience.]',
+    '',
+    'My CV and certificates are attached. I am available for an',
+    'interview at any time.',
+    '',
+    'Thank you for your consideration.',
+    '',
+    'Yours faithfully,',
+    '[Your full name]',
+    '[Your phone number]',
+    '[Your email address]',
+    '',
+    '',
+    '--- 2. REPLY TO AN INTERVIEW INVITATION ---',
+    'Subject: Re: Interview invitation',
+    '',
+    'Dear [Name or Sir/Madam],',
+    '',
+    'Thank you for the invitation to interview for the [Job Title]',
+    'position. I am pleased to confirm that I will attend on',
+    '[day] at [time] at [location or online link].',
+    '',
+    'Please let me know if there is anything I should bring.',
+    '',
+    'Kind regards,',
+    '[Your full name]',
+    '[Your phone number]',
+    '',
+    '',
+    '--- 3. FOLLOW-UP AFTER INTERVIEW ---',
+    'Subject: Follow-up on interview for [Job Title]',
+    '',
+    'Dear [Name],',
+    '',
+    'Thank you for taking the time to meet with me on [date].',
+    'I enjoyed learning more about [company or role] and I remain',
+    'very interested in the position.',
+    '',
+    'Please do not hesitate to contact me if you need any further',
+    'information.',
+    '',
+    'Best regards,',
+    '[Your full name]',
+    '[Your phone number]',
+    '',
+    '',
+    '--- 4. REPLY WHEN YOU CANNOT ATTEND ---',
+    'Subject: Re: [Original subject]',
+    '',
+    'Dear [Name],',
+    '',
+    'Thank you for the invitation. Unfortunately I am unable to',
+    'attend on [date] due to [brief reason]. Would it be possible',
+    'to reschedule to [alternative date]?',
+    '',
+    'I apologize for any inconvenience.',
+    '',
+    'Kind regards,',
+    '[Your full name]',
+    '',
+    '',
+    '--- 5. SIMPLE THANK-YOU ---',
+    'Subject: Thank you',
+    '',
+    'Dear [Name],',
+    '',
+    'Thank you for [what they did]. I really appreciate it.',
+    '',
+    'Best regards,',
+    '[Your full name]',
+    '',
+    '============================================',
+    '  TechMountain Bootcamp — Malawi',
+    '============================================'
+  ];
+  var text = lines.join('\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'email-templates.txt';
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+/* ========== COMMUNITY ========== */
+function renderCommunity() {
+  var container = $('viewCommunity');
+  var html = '';
+  html += '<h1 class="pg-h1">Community</h1>';
+  html += '<p class="pg-sub">Learning computers alone can feel scary. You are not alone. Ask any question — no question is too basic.</p>';
+
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3><span class="ov-ic">💬</span>WhatsApp Beginner Group</h3><p>A friendly group just for beginners. Ask anything.</p><p style="margin-top:14px"><a class="btn btn-p btn-sm" href="https://wa.me/265999555123" target="_blank" rel="noopener">Join WhatsApp</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">✈️</span>Telegram</h3><p>Longer explanations, screenshots, and step-by-step help.</p><p style="margin-top:14px"><a class="btn btn-p btn-sm" href="https://t.me/techmountain" target="_blank" rel="noopener">Join Telegram</a></p></div>';
+  html += '<div class="ov-card"><h3><span class="ov-ic">📞</span>Call an Instructor</h3><p>If you are stuck on something, phone us on +265 999 555 123.</p></div>';
+  html += '</div>';
+
+  html += '<h2 class="sec-h">💡 Tips for beginners</h2>';
+  html += '<div class="grid-3">';
+  html += '<div class="ov-card"><h3>You cannot break it</h3><p>Clicking buttons, opening menus, typing wrong things — none of this breaks a computer. Explore freely.</p></div>';
+  html += '<div class="ov-card"><h3>Ctrl + Z is your friend</h3><p>Made a mistake? Press Ctrl + Z. It undoes your last action. Remember this one.</p></div>';
+  html += '<div class="ov-card"><h3>Slow is fine</h3><p>Nobody is timing you. Take your time. Accuracy is more important than speed at the start.</p></div>';
+  html += '</div>';
+
+  html += '<div class="cta-card" style="margin-top:36px">';
+  html += '<h2>Stuck on something?</h2>';
+  html += '<p>Ask in the WhatsApp group. There is always someone online who remembers being where you are now.</p>';
+  html += '<a class="btn btn-p btn-lg" href="https://wa.me/265999555123" target="_blank" rel="noopener">💬 Ask in WhatsApp</a>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+/* ========== CERTIFICATE ========== */
+function renderCertificate() {
+  var container = $('viewCertificate');
+  var p = overallProgress();
+  var allDone = p.done === p.total;
+  var mCount = milestoneCount();
+  var mTotal = MILESTONES.length;
+
+  var html = '';
+  html += '<div class="cert-wrap">';
+  html += '<h1>🎓 Certificate of Completion</h1>';
+  html += '<p class="cert-lead">You are eligible when you have completed every lesson and ticked at least 7 of the 10 real-world skills on the Practice tab. Print it, save it as PDF, or share it.</p>';
+
+  html += '<ul class="req-list">';
+  course.modules.forEach(function(mod) {
+    var mp = moduleProgress(mod.id);
+    var on = mp.done === mp.total;
+    html += '<li><span class="req-d' + (on ? ' on' : '') + '">' + (on ? '✓' : '') + '</span>';
+    html += esc(mod.title) + ' module — <strong>' + mp.done + '/' + mp.total + '</strong></li>';
+  });
+  html += '<li><span class="req-d' + (mCount >= 7 ? ' on' : '') + '">' + (mCount >= 7 ? '✓' : '') + '</span>';
+  html += 'Digital Skills Checklist — <strong>' + mCount + '/' + mTotal + '</strong> (at least 7 required)</li>';
+  html += '</ul>';
+
+  var unlocked = allDone && mCount >= 7;
+  if (unlocked) {
+    html += '<div class="cert-status ready">✓ All requirements met. Generate your certificate below.</div>';
+  } else {
+    var remaining = p.total - p.done;
+    html += '<div class="cert-status locked">⚠ Not yet unlocked. ';
+    if (remaining > 0) html += remaining + ' lesson' + (remaining !== 1 ? 's' : '') + ' remaining. ';
+    if (mCount < 7) html += 'Tick at least ' + (7 - mCount) + ' more skill' + (7 - mCount !== 1 ? 's' : '') + ' on the Practice tab.';
+    html += '</div>';
+  }
+
+  html += '<div class="field"><label for="certName">Full name on certificate</label>';
+  html += '<input id="certName" type="text" placeholder="e.g. Chisomo Banda"></div>';
+  html += '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">';
+  html += '<button class="btn btn-p" id="previewCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>👁 Preview</button>';
+  html += '<button class="btn btn-g" id="printCertBtn" type="button"' + (unlocked ? '' : ' disabled') + '>🖨 Print / Save PDF</button>';
+  html += '</div>';
+
+  html += '<div class="ex-result info" id="certPreview" style="display:none;margin-top:26px">';
+  html += '<div style="background:#fff;border:8px double #1a2332;padding:44px 34px;text-align:center;border-radius:10px;box-shadow:0 10px 30px rgba(15,23,33,.1)">';
+  html += '<div style="color:#9ca3af;letter-spacing:3.5px;font-size:11px;text-transform:uppercase;font-weight:600;margin-bottom:12px">Certificate of Achievement</div>';
+  html += '<h2 style="font-size:26px;color:#1a2332;letter-spacing:.5px;margin-bottom:6px;font-weight:800">Computer Basics &amp; Digital Literacy</h2>';
+  html += '<div style="color:#6b7280;letter-spacing:1.5px;font-size:11.5px;text-transform:uppercase;font-weight:600">4 Weeks · Absolute Beginner</div>';
+  html += '<div style="font-size:32px;color:#00a844;font-style:italic;margin:30px 0 18px;font-family:Georgia,serif" id="certPreviewName">Your Name</div>';
+  html += '<p style="font-size:15px;color:#4b5563;line-height:1.75;margin-bottom:24px">has successfully completed all ' + p.total + ' lessons of Computer Basics &amp; Digital Literacy, demonstrating practical skills in typing, file management, email communication, and safe internet use.</p>';
+  html += '<div style="display:flex;justify-content:space-between;padding-top:18px;border-top:1px solid #e5e7eb;font-size:12px;color:#9ca3af">';
+  html += '<span>Awarded: <span id="certDate"></span></span>';
+  html += '<span>TechMountain Bootcamp</span>';
+  html += '</div></div></div>';
+
+  html += '</div>';
+
+  container.innerHTML = html;
+
+  if (unlocked) {
+    $('previewCertBtn').addEventListener('click', function() {
+      $('certPreviewName').textContent = ($('certName').value || 'Your Name').trim();
+      $('certDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      $('certPreview').style.display = 'block';
+    });
+    $('printCertBtn').addEventListener('click', function() {
+      var name = esc(($('certName').value || 'Your Name').trim());
+      var date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Certificate</title>' +
+        '<style>body{font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f8f9fa;padding:20px}' +
+        '.c{width:100%;max-width:760px;padding:50px 40px;background:#fff;border:10px double #1a2332;text-align:center}' +
+        '.e{color:#9ca3af;letter-spacing:4px;font-size:.8rem;text-transform:uppercase;margin-bottom:8px}' +
+        'h1{font-size:2.2rem;color:#1a2332;margin:0 0 6px;letter-spacing:1px}' +
+        '.t{color:#4b5563;letter-spacing:2px;font-size:.85rem;text-transform:uppercase}' +
+        '.n{font-size:2rem;color:#00a844;margin:34px 0 14px;font-style:italic}' +
+        '.b{color:#2d3436;font-size:1rem;line-height:1.8;margin:20px 0}' +
+        '.f{display:flex;justify-content:space-between;margin-top:44px;padding-top:18px;border-top:1px solid #e0e0e0;font-size:.82rem;color:#6c757d}' +
+        '</style></head><body><div class="c">' +
+        '<div class="e">Certificate of Achievement</div>' +
+        '<h1>Computer Basics &amp; Digital Literacy</h1>' +
+        '<div class="t">4 Weeks · Absolute Beginner</div>' +
+        '<div class="n">' + name + '</div>' +
+        '<p class="b">has successfully completed all ' + p.total + ' lessons of Computer Basics &amp; Digital Literacy,<br>demonstrating practical skills in typing, file management,<br>email communication, and safe internet use.</p>' +
+        '<div class="f"><span>Awarded: ' + date + '</span><span>TechMountain Bootcamp</span></div>' +
+        '</div></body></html>';
+      var blob = new Blob([doc], { type: 'text/html' });
+      var url = URL.createObjectURL(blob);
+      var w = window.open(url, '_blank');
+      if (w) w.addEventListener('load', function() { setTimeout(function() { try { w.print(); } catch (e) {} }, 300); });
+    });
+  }
+}
+
+/* ========== INIT ========== */
+function init() {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.addEventListener('click', function() { switchView(t.getAttribute('data-view')); });
+  });
+  $('menuBtn').addEventListener('click', function() {
+    var sp = $('sidePanel');
+    var open = sp.classList.toggle('open');
+    $('menuBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+    $('menuBtn').textContent = open ? '✕' : '☰';
+  });
+
+  var hash = window.location.hash || '';
+  var m = hash.match(/^#lesson-([a-z0-9]+)$/i);
+  if (m) {
+    for (var i = 0; i < allLessons.length; i++) {
+      if (allLessons[i].id === m[1]) { currentLessonId = m[1]; break; }
+    }
+  }
+
+  renderSidebar();
+  switchView('lessons');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+})();
+</script>
+</body>
+</html>
