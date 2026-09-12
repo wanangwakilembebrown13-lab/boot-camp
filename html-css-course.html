@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free HTML & CSS course from TechMountain Bootcamp — 4 modules, live code editor, quizzes and progress tracking, built for low-data learners in Malawi.">
+<meta name="theme-color" content="#1a2332">
+<title>HTML &amp; CSS Course — TechMountain Bootcamp</title>
+<style>
+:root{
+  --clr-primary:#1a2332;--clr-primary-light:#2c3e50;--clr-primary-lighter:#3d4f63;
+  --clr-accent:#00c853;--clr-accent-hover:#00a844;--clr-accent-soft:rgba(0,200,83,.12);
+  --clr-bg:#f8f9fa;--clr-surface:#fff;--clr-text:#2d3436;--clr-text-muted:#6c757d;
+  --clr-border:#e0e0e0;--clr-danger:#e53935;--clr-warning:#ffa000;--clr-white:#fff;
+  --font-stack:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Courier New",Courier,monospace;
+  --radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-full:9999px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --transition:.25s cubic-bezier(.4,0,.2,1);--header-height:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-stack);background:var(--clr-bg);color:var(--clr-text);line-height:1.6;font-size:16px;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--clr-accent);text-decoration:none}
+a:hover{color:var(--clr-accent-hover)}
+button{cursor:pointer;font-family:inherit;font-size:inherit}
+textarea,select{font-family:inherit;font-size:inherit}
+.container{max-width:1280px;margin:0 auto;padding:0 20px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+:focus-visible{outline:3px solid var(--clr-accent);outline-offset:2px}
+
+/* header */
+.site-header{background:var(--clr-primary);color:#fff;position:sticky;top:0;z-index:1000;box-shadow:var(--shadow-md);height:var(--header-height);display:flex;align-items:center}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:1.15rem}
+.logo-icon{background:var(--clr-accent);color:var(--clr-primary);width:34px;height:34px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
+.crumb{color:rgba(255,255,255,.6);font-size:.85rem;display:none}
+.header-progress{display:flex;align-items:center;gap:10px;color:#fff;font-size:.85rem;min-width:140px}
+.mini-bar{width:90px;height:6px;background:rgba(255,255,255,.2);border-radius:var(--radius-full);overflow:hidden}
+.mini-bar-fill{height:100%;background:var(--clr-accent);border-radius:var(--radius-full);transition:width .4s ease}
+
+/* layout */
+.course-layout{display:grid;grid-template-columns:300px 1fr;flex:1;min-height:calc(100vh - var(--header-height))}
+.course-sidebar{background:var(--clr-surface);border-right:1px solid var(--clr-border);padding:20px;overflow-y:auto;max-height:calc(100vh - var(--header-height));position:sticky;top:var(--header-height)}
+.sidebar-title{font-weight:800;color:var(--clr-primary);font-size:1.1rem;margin-bottom:4px}
+.sidebar-sub{color:var(--clr-text-muted);font-size:.82rem;margin-bottom:16px}
+.overall-progress{margin-bottom:18px}
+.overall-progress .bar{height:8px;background:var(--clr-border);border-radius:var(--radius-full);overflow:hidden;margin-top:6px}
+.overall-progress .bar-fill{height:100%;background:var(--clr-accent);border-radius:var(--radius-full);transition:width .4s ease}
+.overall-progress .label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--clr-text-muted)}
+
+.module-block{margin-bottom:6px;border:1px solid var(--clr-border);border-radius:var(--radius-md);overflow:hidden}
+.module-head{width:100%;background:var(--clr-surface);border:none;padding:12px 14px;display:flex;align-items:center;gap:10px;text-align:left}
+.module-head:hover{background:var(--clr-accent-soft)}
+.module-icon{font-size:1.2rem}
+.module-name{flex:1}
+.module-name strong{display:block;font-size:.92rem;color:var(--clr-primary)}
+.module-name span{font-size:.75rem;color:var(--clr-text-muted)}
+.module-pct{font-size:.75rem;font-weight:700;color:var(--clr-accent)}
+.module-chevron{transition:transform var(--transition);color:var(--clr-text-muted)}
+.module-block.open .module-chevron{transform:rotate(90deg)}
+.module-lessons{list-style:none;display:none}
+.module-block.open .module-lessons{display:block}
+.lesson-btn{width:100%;background:transparent;border:none;text-align:left;padding:10px 14px 10px 40px;font-size:.87rem;color:var(--clr-text);border-top:1px solid var(--clr-border);display:flex;align-items:center;gap:8px}
+.lesson-btn:hover{background:var(--clr-accent-soft)}
+.lesson-btn.active{background:var(--clr-accent-soft);color:var(--clr-primary);font-weight:700;box-shadow:inset 3px 0 0 var(--clr-accent)}
+.lesson-btn[disabled]{color:#b0b6bb;cursor:not-allowed}
+.lesson-check{color:var(--clr-accent);font-weight:800;flex-shrink:0;width:14px}
+.lesson-lock{color:#b0b6bb;flex-shrink:0}
+
+/* main content */
+.course-main{padding:28px 36px 60px;max-width:840px}
+.lesson-eyebrow{color:var(--clr-text-muted);font-size:.85rem;margin-bottom:6px}
+.lesson-h1{font-size:1.9rem;font-weight:800;color:var(--clr-primary);margin-bottom:16px}
+.tablist{display:flex;gap:4px;border-bottom:2px solid var(--clr-border);margin-bottom:22px;flex-wrap:wrap}
+.tab-btn{background:transparent;border:none;padding:10px 16px;font-weight:600;font-size:.92rem;color:var(--clr-text-muted);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn.active{color:var(--clr-primary);border-bottom-color:var(--clr-accent)}
+.tab-btn:hover{color:var(--clr-primary)}
+.tabpanel{display:none}
+.tabpanel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.reading p{margin-bottom:14px}
+.reading h3{color:var(--clr-primary);font-size:1.1rem;margin:18px 0 8px}
+.reading ul,.reading ol{margin:0 0 14px 22px}
+.reading code{background:var(--clr-primary);color:var(--clr-accent);padding:2px 7px;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:.88em}
+.reading pre{background:var(--clr-primary);color:#e6e6e6;padding:16px;border-radius:var(--radius-md);overflow-x:auto;margin:10px 0 18px;font-family:var(--font-mono);font-size:.85rem;line-height:1.55}
+.reading pre code{background:transparent;color:inherit;padding:0}
+
+.editor-workspace{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.editor-col{display:flex;flex-direction:column;gap:10px}
+.editor-block label{display:block;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--clr-text-muted);margin-bottom:4px}
+.code-textarea{width:100%;min-height:120px;background:var(--clr-primary);color:#e6e6e6;font-family:var(--font-mono);font-size:.85rem;border:2px solid var(--clr-primary-light);border-radius:var(--radius-md);padding:12px;resize:vertical;line-height:1.5}
+.code-textarea:focus{border-color:var(--clr-accent)}
+.preview-col{display:flex;flex-direction:column;gap:10px}
+.preview-frame-wrap{border:2px solid var(--clr-border);border-radius:var(--radius-md);overflow:hidden;background:#fff}
+.preview-frame{width:100%;height:255px;border:none;display:block}
+.editor-actions{display:flex;gap:8px;flex-wrap:wrap}
+.lint-box{border-radius:var(--radius-md);padding:10px 14px;font-size:.85rem;background:var(--clr-accent-soft);color:var(--clr-primary);border:1px solid var(--clr-accent)}
+.lint-box.has-errors{background:rgba(229,57,53,.08);border-color:var(--clr-danger);color:var(--clr-danger)}
+.lint-box ul{margin:4px 0 0 18px}
+
+.challenge-card{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:20px;margin-bottom:18px}
+.challenge-card h3{color:var(--clr-primary);margin-bottom:8px;font-size:1.05rem}
+.challenge-checklist{list-style:none;margin-top:10px}
+.challenge-checklist li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:.92rem}
+.challenge-checklist input{margin-top:3px}
+
+.quiz-question{background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:16px}
+.quiz-question p.q-text{font-weight:700;color:var(--clr-primary);margin-bottom:10px}
+.quiz-option{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;border-radius:var(--radius-md);border:1px solid transparent;font-size:.92rem}
+.quiz-option:hover{background:var(--clr-bg)}
+.quiz-option input{margin-top:3px}
+.quiz-option.correct{background:var(--clr-accent-soft);border-color:var(--clr-accent)}
+.quiz-option.incorrect{background:rgba(229,57,53,.08);border-color:var(--clr-danger)}
+.quiz-explain{font-size:.85rem;color:var(--clr-text-muted);margin-top:8px;display:none}
+.quiz-explain.show{display:block}
+.quiz-score{font-weight:700;color:var(--clr-primary);margin-top:6px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--radius-full);font-weight:700;font-size:.92rem;border:2px solid transparent;transition:all var(--transition)}
+.btn-primary{background:var(--clr-accent);color:var(--clr-primary);border-color:var(--clr-accent)}
+.btn-primary:hover{background:var(--clr-accent-hover);border-color:var(--clr-accent-hover)}
+.btn-secondary{background:transparent;color:var(--clr-primary);border-color:var(--clr-primary)}
+.btn-secondary:hover{background:var(--clr-primary);color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.complete-bar{margin-top:26px;padding-top:18px;border-top:1px solid var(--clr-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.complete-bar .hint{font-size:.85rem;color:var(--clr-text-muted)}
+.lesson-nav-arrows{display:flex;justify-content:space-between;margin-top:28px;gap:12px}
+
+/* footer */
+.site-footer{background:var(--clr-primary);color:rgba(255,255,255,.8);padding:34px 0 18px;margin-top:auto}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;margin-bottom:24px}
+.footer-heading{color:#fff;font-weight:700;margin-bottom:10px;font-size:.98rem}
+.footer-link{display:block;color:rgba(255,255,255,.7);margin-bottom:6px;font-size:.88rem}
+.footer-link:hover{color:var(--clr-accent)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:16px;text-align:center;font-size:.82rem;color:rgba(255,255,255,.6)}
+
+@media (max-width:1024px){
+  .course-layout{grid-template-columns:1fr}
+  .course-sidebar{position:static;max-height:none;border-right:none;border-bottom:1px solid var(--clr-border)}
+  .editor-workspace{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .course-main{padding:20px 16px 48px}
+  .lesson-h1{font-size:1.5rem}
+  .crumb{display:none!important}
+  .header-progress{min-width:0}
+  .mini-bar{width:60px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="index.html#home" class="logo" aria-label="Back to TechMountain Bootcamp">
+      <span class="logo-icon" aria-hidden="true">TM</span>
+      <span>TechMountain<span class="crumb"> · HTML &amp; CSS</span></span>
+    </a>
+    <div class="header-progress" aria-label="Overall course progress">
+      <span>Progress</span>
+      <div class="mini-bar"><div class="mini-bar-fill" id="headerBarFill" style="width:0%"></div></div>
+      <span id="headerPct">0%</span>
+    </div>
+  </div>
+</header>
+
+<div class="course-layout">
+  <!-- SIDEBAR -->
+  <aside class="course-sidebar" aria-label="Course modules">
+    <div class="sidebar-title">HTML &amp; CSS Course</div>
+    <p class="sidebar-sub">4 modules · 12 lessons · self-paced</p>
+    <div class="overall-progress">
+      <div class="label"><span>Overall</span><span id="sidebarPctLabel">0 / 12 lessons</span></div>
+      <div class="bar"><div class="bar-fill" id="sidebarBarFill" style="width:0%"></div></div>
+    </div>
+    <nav id="moduleNav" aria-label="Modules and lessons"></nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="course-main" id="courseMain" role="main" aria-live="polite">
+    <!-- populated by JS -->
+  </main>
+</div>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3 class="footer-heading">TechMountain Bootcamp</h3>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:12px;">Empowering Malawi's next generation of tech talent.</p>
+        <a href="https://wanangwakilembebrown13-lab.github.io/boot-camp/" class="btn btn-primary" style="padding:8px 18px;font-size:.85rem;">View All Courses</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">This Course</h3>
+        <a href="#" class="footer-link" data-jump="beginner">Beginner Module</a>
+        <a href="#" class="footer-link" data-jump="intermediate">Intermediate Module</a>
+        <a href="#" class="footer-link" data-jump="advanced">Advanced Module</a>
+        <a href="#" class="footer-link" data-jump="professional">Professional Module</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">Get Help</h3>
+        <a href="https://wa.me/265999555123" class="footer-link">WhatsApp: +265 999 555 123</a>
+        <a href="https://t.me/techmountain" class="footer-link">Telegram: @techmountain</a>
+        <a href="mailto:hello@techmountain.mw" class="footer-link">Email: hello@techmountain.mw</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">Community</h3>
+        <a href="https://wa.me/265999555123" class="footer-link">Study Group (WhatsApp)</a>
+        <a href="https://t.me/techmountain" class="footer-link">Alumni Network (Telegram)</a>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2025 TechMountain Bootcamp — Lilongwe, Malawi. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* =========================================================
+   COURSE DATA — 4 modules, 3 real lessons + 1 upcoming each
+========================================================= */
+var courseId = 'html-css-foundations';
+
+var courseData = [
+{ id:'beginner', title:'Beginner', sub:'HTML Foundations', icon:'🧱', lessons:[
+  { id:'b1', title:'What Is HTML?',
+    reading:'<p>HTML (HyperText Markup Language) is the skeleton of every web page. It is made of <strong>elements</strong> — a start tag, some content, and an end tag.</p>'+
+      '<pre><code>&lt;h1&gt;Hello, Malawi!&lt;/h1&gt;\n&lt;p&gt;This is a paragraph.&lt;/p&gt;</code></pre>'+
+      '<p>A full page starts with a <code>&lt;!DOCTYPE html&gt;</code> declaration, then an <code>&lt;html&gt;</code> element containing a <code>&lt;head&gt;</code> (metadata, title) and a <code>&lt;body&gt;</code> (visible content).</p>'+
+      '<h3>Why tags matter</h3><p>Browsers read your tags to know what each piece of content <em>is</em> — a heading, a paragraph, a list — not just how it looks.</p>',
+    starter:{ html:'<h1>My First Page</h1>\n<p>Edit this text and watch the preview update.</p>', css:'body {\n  font-family: sans-serif;\n  padding: 16px;\n  color: #2d3436;\n}' },
+    challenge:{ text:'Add a second heading with your name, and a new paragraph underneath it that introduces yourself in one sentence.', checklist:['Used an &lt;h2&gt; (or similar) tag for your name','Added a &lt;p&gt; tag with one sentence about you','Page still shows no errors in the Quick Check'],
+      starter:{ html:'<h1>My First Page</h1>\n<p>Edit this text and watch the preview update.</p>\n\n<!-- add your heading + paragraph below -->\n', css:'body {\n  font-family: sans-serif;\n  padding: 16px;\n}' } },
+    quiz:[
+      { q:'What does HTML stand for?', options:['HyperText Markup Language','Home Tool Markup Language','Hyperlink Text Marking Logic'], correct:0, explain:'HTML stands for HyperText Markup Language — it structures content on the web.' },
+      { q:'Which pair correctly opens and closes a paragraph?', options:['&lt;p&gt; ... &lt;/p&gt;','&lt;p&gt; ... &lt;p/&gt;','&lt;paragraph&gt; ... &lt;end&gt;'], correct:0, explain:'Most HTML elements use a matching opening tag and a closing tag with a forward slash.' }
+    ]
+  },
+  { id:'b2', title:'Headings, Paragraphs & Lists',
+    reading:'<p>HTML gives you six heading levels, <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code>, from most to least important. Use only one <code>&lt;h1&gt;</code> per page.</p>'+
+      '<pre><code>&lt;h1&gt;Page Title&lt;/h1&gt;\n&lt;h2&gt;Section Title&lt;/h2&gt;\n&lt;p&gt;Body text goes here.&lt;/p&gt;</code></pre>'+
+      '<h3>Lists</h3><p>Use <code>&lt;ul&gt;</code> for an unordered (bulleted) list, and <code>&lt;ol&gt;</code> for an ordered (numbered) list. Each item goes inside <code>&lt;li&gt;</code>.</p>'+
+      '<pre><code>&lt;ul&gt;\n  &lt;li&gt;Coffee&lt;/li&gt;\n  &lt;li&gt;Tea&lt;/li&gt;\n&lt;/ul&gt;</code></pre>',
+    starter:{ html:'<h2>My Hobbies</h2>\n<ul>\n  <li>Reading</li>\n  <li>Football</li>\n</ul>', css:'body { font-family: sans-serif; padding: 16px; }\nli { margin-bottom: 4px; }' },
+    challenge:{ text:'Build a short bio: an &lt;h2&gt; with a title, then a &lt;ul&gt; listing three of your own hobbies.', checklist:['One &lt;h2&gt; heading','A &lt;ul&gt; with exactly three &lt;li&gt; items','Every &lt;li&gt; is closed properly'],
+      starter:{ html:'<h2>About Me</h2>\n<!-- add your ul/li list below -->\n', css:'body { font-family: sans-serif; padding: 16px; }' } },
+    quiz:[
+      { q:'Which tag creates a numbered list?', options:['&lt;ul&gt;','&lt;ol&gt;','&lt;li&gt;'], correct:1, explain:'&lt;ol&gt; (ordered list) produces numbers; &lt;ul&gt; produces bullets.' },
+      { q:'What goes inside &lt;ul&gt; or &lt;ol&gt;?', options:['&lt;li&gt; items','&lt;p&gt; items','&lt;div&gt; items'], correct:0, explain:'List items are marked up with &lt;li&gt;, regardless of list type.' }
+    ]
+  },
+  { id:'b3', title:'Links & Images',
+    reading:'<p>Links use the anchor tag <code>&lt;a&gt;</code> with an <code>href</code> attribute pointing to a destination.</p>'+
+      '<pre><code>&lt;a href="https://example.com"&gt;Visit site&lt;/a&gt;</code></pre>'+
+      '<h3>Images</h3><p>Images use <code>&lt;img&gt;</code>, a self-closing tag with a <code>src</code> (the file location) and an <code>alt</code> (a text description for screen readers and slow connections).</p>'+
+      '<pre><code>&lt;img src="photo.jpg" alt="Sunset over Lake Malawi"&gt;</code></pre>'+
+      '<p>Always write a real <code>alt</code> description — it is read aloud by screen readers and shown if the image fails to load.</p>',
+    starter:{ html:'<a href="https://techmountain.mw">Visit TechMountain</a>\n<img src="https://via.placeholder.com/200x100" alt="Placeholder graphic">', css:'body { font-family: sans-serif; padding: 16px; }\nimg { border-radius: 8px; margin-top: 10px; }' },
+    challenge:{ text:'Add a link to any website you like, and an image (any URL) with a meaningful alt description.', checklist:['&lt;a&gt; tag has an href attribute','&lt;img&gt; tag has both src and alt','alt text actually describes the image'],
+      starter:{ html:'<!-- add your link and image below -->\n', css:'body { font-family: sans-serif; padding: 16px; }' } },
+    quiz:[
+      { q:'Which attribute makes a link clickable to a destination?', options:['src','alt','href'], correct:2, explain:'href ("hypertext reference") tells the browser where the link should go.' },
+      { q:'Why does &lt;img&gt; need an alt attribute?', options:['It makes the image load faster','It describes the image for accessibility and slow connections','It is required for the browser to render color'], correct:1, explain:'alt text is read by screen readers and shown when images fail to load — important on low-data connections.' }
+    ]
+  },
+  { id:'b4', title:'Forms Basics', locked:true }
+]},
+
+{ id:'intermediate', title:'Intermediate', sub:'CSS Styling', icon:'🎨', lessons:[
+  { id:'i1', title:'Selectors & the Box Model',
+    reading:'<p>CSS selects HTML elements and applies styles. The three basics: element selectors (<code>p</code>), class selectors (<code>.card</code>), and id selectors (<code>#header</code>).</p>'+
+      '<pre><code>.card {\n  color: #2d3436;\n}</code></pre>'+
+      '<h3>The box model</h3><p>Every element is a box made of <strong>content</strong>, <strong>padding</strong> (inner space), <strong>border</strong>, and <strong>margin</strong> (outer space).</p>'+
+      '<pre><code>.box {\n  padding: 16px;\n  border: 2px solid #00c853;\n  margin: 12px;\n}</code></pre>',
+    starter:{ html:'<div class="box">Resize me with the box model!</div>', css:'.box {\n  background: #f8f9fa;\n  padding: 20px;\n  border: 2px solid #00c853;\n  margin: 10px;\n}' },
+    challenge:{ text:'Style the .box so it has 24px padding, a 4px solid border in any color, and 16px margin on all sides.', checklist:['padding: 24px','border: 4px solid (any color)','margin: 16px'],
+      starter:{ html:'<div class="box">Style me!</div>', css:'.box {\n  background: #f8f9fa;\n  /* add padding, border, margin */\n}' } },
+    quiz:[
+      { q:'Which selector targets an element with class="card"?', options:['#card','.card','card{}'], correct:1, explain:'A dot prefix (.card) selects by class; a hash (#card) selects by id.' },
+      { q:'Which box-model layer sits outside the border?', options:['Padding','Content','Margin'], correct:2, explain:'Order from inside out: content, padding, border, margin.' }
+    ]
+  },
+  { id:'i2', title:'Color, Typography & Backgrounds',
+    reading:'<p>Control text appearance with <code>color</code>, <code>font-family</code>, <code>font-size</code> and <code>font-weight</code>.</p>'+
+      '<pre><code>h1 {\n  color: #1a2332;\n  font-family: sans-serif;\n  font-size: 2rem;\n  font-weight: 800;\n}</code></pre>'+
+      '<h3>Backgrounds</h3><p>Use <code>background-color</code> for a solid fill. Combine it with padding so text does not touch the edge.</p>'+
+      '<pre><code>.banner {\n  background-color: #00c853;\n  padding: 12px 20px;\n}</code></pre>',
+    starter:{ html:'<h1 class="title">Style Me</h1>', css:'.title {\n  color: #1a2332;\n  font-size: 1.5rem;\n}' },
+    challenge:{ text:'Give .title a font-size of at least 2rem, a color of your choice, and a light background-color with some padding.', checklist:['font-size is 2rem or larger','A custom color is set','background-color and padding are both set'],
+      starter:{ html:'<h1 class="title">Style Me</h1>', css:'.title {\n  /* add font-size, color, background-color, padding */\n}' } },
+    quiz:[
+      { q:'Which property changes text color?', options:['background-color','color','font-weight'], correct:1, explain:'color sets text color; background-color fills the box behind it.' },
+      { q:'font-weight: 800 produces what kind of text?', options:['Italic','Very bold','Underlined'], correct:1, explain:'font-weight controls boldness; higher numbers (up to 900) are bolder.' }
+    ]
+  },
+  { id:'i3', title:'Flexbox Layout',
+    reading:'<p>Flexbox arranges items in a row or column. Turn any container into a flex container with <code>display: flex</code>.</p>'+
+      '<pre><code>.row {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 12px;\n}</code></pre>'+
+      '<p><code>justify-content</code> controls horizontal spacing, <code>align-items</code> controls vertical alignment, and <code>gap</code> adds space between items without margins.</p>',
+    starter:{ html:'<div class="row">\n  <div class="item">1</div>\n  <div class="item">2</div>\n  <div class="item">3</div>\n</div>', css:'.row {\n  display: flex;\n  gap: 10px;\n}\n.item {\n  background: #00c853;\n  color: #1a2332;\n  padding: 16px;\n  border-radius: 6px;\n  flex: 1;\n  text-align: center;\n}' },
+    challenge:{ text:'Make the three .item boxes evenly spaced across the row with room between them, using justify-content.', checklist:['.row uses display: flex','justify-content is set to space evenly (e.g. space-between)','Boxes still align vertically'],
+      starter:{ html:'<div class="row">\n  <div class="item">1</div>\n  <div class="item">2</div>\n  <div class="item">3</div>\n</div>', css:'.row {\n  /* add display: flex + justify-content */\n}\n.item {\n  background: #00c853;\n  padding: 16px;\n  border-radius: 6px;\n}' } },
+    quiz:[
+      { q:'Which property turns a container into a flex layout?', options:['float: left','display: flex','position: flex'], correct:1, explain:'display: flex activates flexbox on the direct children of that container.' },
+      { q:'Which property adds even space between flex items without extra margin?', options:['gap','padding','line-height'], correct:0, explain:'gap inserts consistent spacing between flex (or grid) items.' }
+    ]
+  },
+  { id:'i4', title:'CSS Grid', locked:true }
+]},
+
+{ id:'advanced', title:'Advanced', sub:'Responsive & Interactive CSS', icon:'🚀', lessons:[
+  { id:'a1', title:'Media Queries & Responsive Design',
+    reading:'<p>A responsive page adapts to different screen sizes. Media queries apply CSS only when a condition is met, like a maximum width.</p>'+
+      '<pre><code>.box { background: #00c853; }\n\n@media (max-width: 600px) {\n  .box { background: #1a2332; }\n}</code></pre>'+
+      '<p>Design mobile-first: write your base styles for small screens, then use <code>min-width</code> queries to add layout for larger screens.</p>',
+    starter:{ html:'<div class="box">Shrink the preview to see it change</div>', css:'.box {\n  background: #00c853;\n  color: #1a2332;\n  padding: 20px;\n  text-align: center;\n}\n\n@media (max-width: 300px) {\n  .box { background: #1a2332; color: #fff; }\n}' },
+    challenge:{ text:'Add a media query so .box turns a different background color when the preview is 300px wide or narrower (resize your browser or the panel to test).', checklist:['@media (max-width: 300px) block exists','.box background changes inside that block','No syntax errors in the Quick Check'],
+      starter:{ html:'<div class="box">Resize me</div>', css:'.box {\n  background: #00c853;\n  padding: 20px;\n}\n\n/* add your media query below */\n' } },
+    quiz:[
+      { q:'What does @media (max-width: 600px) mean?', options:['Apply these styles only on screens 600px wide or narrower','Apply these styles only on screens taller than 600px','Limit the page width to 600px always'], correct:0, explain:'max-width in a media query is a breakpoint: the styles apply at or below that width.' },
+      { q:'"Mobile-first" means:', options:['Only supporting phones','Writing base styles for small screens, then enhancing for larger ones','Testing exclusively on iOS'], correct:1, explain:'Mobile-first starts with the smallest layout and adds complexity as space increases.' }
+    ]
+  },
+  { id:'a2', title:'Transitions & Animations',
+    reading:'<p><code>transition</code> smoothly animates a property change, like a hover color.</p>'+
+      '<pre><code>.btn {\n  background: #00c853;\n  transition: background 0.3s ease;\n}\n.btn:hover {\n  background: #1a2332;\n}</code></pre>'+
+      '<h3>Keyframe animation</h3><p>For repeating or multi-step motion, use <code>@keyframes</code> with <code>animation</code>.</p>'+
+      '<pre><code>@keyframes pulse {\n  from { opacity: 1; }\n  to { opacity: 0.5; }\n}\n.dot { animation: pulse 1s infinite alternate; }</code></pre>',
+    starter:{ html:'<button class="btn">Hover me</button>', css:'.btn {\n  background: #00c853;\n  color: #1a2332;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 999px;\n  font-weight: 700;\n}' },
+    challenge:{ text:'Add a transition to .btn so its background smoothly changes color over 0.3s on :hover.', checklist:['.btn has a transition property (0.3s or similar)','A :hover rule changes background-color','Change looks smooth, not instant'],
+      starter:{ html:'<button class="btn">Hover me</button>', css:'.btn {\n  background: #00c853;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 999px;\n  /* add transition + :hover rule */\n}' } },
+    quiz:[
+      { q:'Which property makes a hover color change smooth instead of instant?', options:['transition','position','z-index'], correct:0, explain:'transition tells the browser to animate between the old and new property values.' },
+      { q:'What defines the animation steps for @keyframes?', options:['from / to (or percentages)','start / end only','begin / finish'], correct:0, explain:'@keyframes uses from/to or percentage stops (0%, 50%, 100%) to describe each step.' }
+    ]
+  },
+  { id:'a3', title:'Positioning & Z-Index',
+    reading:'<p>The <code>position</code> property controls how an element is placed: <code>static</code> (default), <code>relative</code> (offsets from its normal spot), <code>absolute</code> (positioned against its nearest positioned ancestor), and <code>fixed</code> (stuck to the viewport).</p>'+
+      '<pre><code>.card { position: relative; }\n.badge {\n  position: absolute;\n  top: 8px;\n  right: 8px;\n}</code></pre>'+
+      '<h3>Stacking with z-index</h3><p>When elements overlap, <code>z-index</code> decides which sits on top — higher numbers stack above lower ones.</p>',
+    starter:{ html:'<div class="card">\n  <span class="badge">New</span>\n  Card content here.\n</div>', css:'.card {\n  position: relative;\n  background: #f8f9fa;\n  padding: 24px;\n  border-radius: 8px;\n}\n.badge {\n  background: #00c853;\n  color: #1a2332;\n  padding: 4px 10px;\n  border-radius: 999px;\n  font-size: .8rem;\n}' },
+    challenge:{ text:'Position .badge absolutely in the top-right corner of .card (which should be position: relative).', checklist:['.card has position: relative','.badge has position: absolute','.badge uses top and right to sit in the corner'],
+      starter:{ html:'<div class="card">\n  <span class="badge">New</span>\n  Card content here.\n</div>', css:'.card {\n  background: #f8f9fa;\n  padding: 24px;\n  border-radius: 8px;\n  /* add position: relative */\n}\n.badge {\n  background: #00c853;\n  padding: 4px 10px;\n  border-radius: 999px;\n  /* add position: absolute + top/right */\n}' } },
+    quiz:[
+      { q:'An absolutely positioned element is placed relative to:', options:['The browser window only','Its nearest positioned ancestor','Its next sibling element'], correct:1, explain:'absolute positioning looks for the closest ancestor with a position other than static.' },
+      { q:'A higher z-index value means an element:', options:['Is smaller','Stacks above elements with lower z-index','Loads faster'], correct:1, explain:'z-index only affects stacking order among overlapping positioned elements.' }
+    ]
+  },
+  { id:'a4', title:'CSS Custom Properties', locked:true }
+]},
+
+{ id:'professional', title:'Professional', sub:'Real-World Practices', icon:'💼', lessons:[
+  { id:'p1', title:'Semantic HTML & Accessibility',
+    reading:'<p>Semantic tags describe meaning, not just appearance: <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;footer&gt;</code>.</p>'+
+      '<pre><code>&lt;header&gt;...&lt;/header&gt;\n&lt;main&gt;\n  &lt;article&gt;...&lt;/article&gt;\n&lt;/main&gt;\n&lt;footer&gt;...&lt;/footer&gt;</code></pre>'+
+      '<p>Screen readers and search engines rely on this structure. Compared with an all-<code>&lt;div&gt;</code> page, semantic tags make navigation dramatically easier for assistive technology.</p>',
+    starter:{ html:'<div class="page">\n  <div class="top">Site Name</div>\n  <div class="content">Main content here.</div>\n  <div class="bottom">Footer text</div>\n</div>', css:'.top, .bottom { background: #1a2332; color: #fff; padding: 12px; }\n.content { padding: 16px; }' },
+    challenge:{ text:'Rewrite the markup using semantic tags: replace .top with &lt;header&gt;, .content with &lt;main&gt;, and .bottom with &lt;footer&gt;.', checklist:['&lt;header&gt; replaces the top div','&lt;main&gt; replaces the content div','&lt;footer&gt; replaces the bottom div'],
+      starter:{ html:'<!-- rewrite using header / main / footer -->\n<div class="top">Site Name</div>\n<div class="content">Main content here.</div>\n<div class="bottom">Footer text</div>', css:'header, footer { background: #1a2332; color: #fff; padding: 12px; }\nmain { padding: 16px; display: block; }' } },
+    quiz:[
+      { q:'Which tag should wrap the primary content of a page (used once)?', options:['&lt;section&gt;','&lt;main&gt;','&lt;div&gt;'], correct:1, explain:'&lt;main&gt; identifies the primary content and should appear only once per page.' },
+      { q:'Why prefer semantic tags over generic &lt;div&gt;s?', options:['They load faster','They are shorter to type','They give structure and meaning to screen readers and search engines'], correct:2, explain:'Semantic HTML communicates the role of content to assistive technology and browsers.' }
+    ]
+  },
+  { id:'p2', title:'Organizing CSS with BEM',
+    reading:'<p>As projects grow, generic class names collide. BEM (Block__Element--Modifier) is a naming convention that keeps CSS predictable.</p>'+
+      '<pre><code>&lt;div class="card"&gt;\n  &lt;h3 class="card__title"&gt;Title&lt;/h3&gt;\n  &lt;p class="card__text card__text--muted"&gt;Text&lt;/p&gt;\n&lt;/div&gt;</code></pre>'+
+      '<p><strong>Block</strong> is the component (<code>card</code>), <strong>Element</strong> is a part of it (<code>card__title</code>), and <strong>Modifier</strong> is a variation (<code>card__text--muted</code>).</p>',
+    starter:{ html:'<div class="box">\n  <h3 class="heading">Title</h3>\n  <p class="text">Some text</p>\n</div>', css:'.box { border: 1px solid #e0e0e0; padding: 16px; border-radius: 8px; }\n.heading { color: #1a2332; }\n.text { color: #6c757d; }' },
+    challenge:{ text:'Rename the classes to BEM style: .box becomes .card, .heading becomes .card__title, .text becomes .card__text — and update the CSS selectors to match.', checklist:['HTML classes renamed to card / card__title / card__text','CSS selectors updated to match the new names','Preview still looks the same'],
+      starter:{ html:'<div class="box">\n  <h3 class="heading">Title</h3>\n  <p class="text">Some text</p>\n</div>', css:'.box { border: 1px solid #e0e0e0; padding: 16px; border-radius: 8px; }\n.heading { color: #1a2332; }\n.text { color: #6c757d; }' } },
+    quiz:[
+      { q:'In BEM, what does the double underscore (__) represent?', options:['A modifier','An element inside a block','A private class'], correct:1, explain:'Double underscore denotes an element that belongs to a block, e.g. card__title.' },
+      { q:'Why use a naming convention like BEM at all?', options:['It makes CSS load faster','It prevents class name collisions and clarifies structure as projects grow','It is required by all browsers'], correct:1, explain:'BEM is a convention, not a browser requirement — it exists to keep large stylesheets maintainable.' }
+    ]
+  },
+  { id:'p3', title:'Capstone: Responsive Card Component',
+    reading:'<p>This capstone combines everything: the box model, Flexbox, and a media query, to build one real, reusable component — a profile card.</p>'+
+      '<pre><code>&lt;div class="profile"&gt;\n  &lt;img src="..." alt="Photo of Chisomo"&gt;\n  &lt;div&gt;\n    &lt;h3&gt;Chisomo Banda&lt;/h3&gt;\n    &lt;p&gt;Web Developer&lt;/p&gt;\n  &lt;/div&gt;\n&lt;/div&gt;</code></pre>'+
+      '<p>On desktop the photo and text sit side by side with Flexbox; below 480px they should stack vertically with a media query so the card stays readable on any phone.</p>',
+    starter:{ html:'<div class="profile">\n  <img src="https://via.placeholder.com/80" alt="Profile photo">\n  <div>\n    <h3>Your Name</h3>\n    <p>Your Role</p>\n  </div>\n</div>', css:'.profile {\n  display: flex;\n  gap: 16px;\n  align-items: center;\n  border: 1px solid #e0e0e0;\n  border-radius: 12px;\n  padding: 16px;\n}\n.profile img { border-radius: 50%; }' },
+    challenge:{ text:'Add a media query so that below 480px wide, .profile switches from a row to a column (flex-direction: column) and text becomes centered.', checklist:['@media (max-width: 480px) block added','flex-direction: column set inside it','text-align: center applied for small screens'],
+      starter:{ html:'<div class="profile">\n  <img src="https://via.placeholder.com/80" alt="Profile photo">\n  <div>\n    <h3>Your Name</h3>\n    <p>Your Role</p>\n  </div>\n</div>', css:'.profile {\n  display: flex;\n  gap: 16px;\n  align-items: center;\n  border: 1px solid #e0e0e0;\n  border-radius: 12px;\n  padding: 16px;\n}\n.profile img { border-radius: 50%; }\n\n/* add your media query below */\n' } },
+    quiz:[
+      { q:'Which combination best describes this capstone card?', options:['Box model only','Flexbox row layout plus a media query for small screens','Absolute positioning only'], correct:1, explain:'The card uses Flexbox for the row layout and a media query to adapt on narrow screens.' },
+      { q:'Below the breakpoint, what should flex-direction become?', options:['row','column','row-reverse'], correct:1, explain:'column stacks the photo above the text, which reads better on a narrow phone screen.' }
+    ]
+  },
+  { id:'p4', title:'Performance & Best Practices', locked:true }
+]}
+];
+
+/* =========================================================
+   PROGRESS STORE (Supabase-compatible row shape)
+========================================================= */
+var STORAGE_KEY = 'tm_hc_progress_v1';
+var USER_ID = 'guest-local';
+
+function loadRows(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e){ return []; }
+}
+function saveRows(rows){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch(e){}
+}
+function findRow(moduleId, lessonId){
+  return loadRows().find(function(r){ return r.module_id === moduleId && r.lesson_id === lessonId; });
+}
+function upsertRow(moduleId, lessonId, patch){
+  var rows = loadRows();
+  var idx = rows.findIndex(function(r){ return r.module_id === moduleId && r.lesson_id === lessonId; });
+  var base = {
+    id: courseId + '_' + moduleId + '_' + lessonId,
+    user_id: USER_ID,
+    course_id: courseId,
+    module_id: moduleId,
+    lesson_id: lessonId,
+    completed: false,
+    completed_at: null,
+    quiz_score: null,
+    quiz_total: null
+  };
+  var row = idx > -1 ? Object.assign({}, rows[idx], patch) : Object.assign({}, base, patch);
+  if (idx > -1) rows[idx] = row; else rows.push(row);
+  saveRows(rows);
+  return row;
+}
+function isComplete(moduleId, lessonId){
+  var r = findRow(moduleId, lessonId);
+  return !!(r && r.completed);
+}
+function countableLessons(mod){ return mod.lessons.filter(function(l){ return !l.locked; }); }
+function moduleProgress(mod){
+  var total = countableLessons(mod).length;
+  var done = countableLessons(mod).filter(function(l){ return isComplete(mod.id, l.id); }).length;
+  return { done:done, total:total, pct: total ? Math.round(done/total*100) : 0 };
+}
+function overallProgress(){
+  var done=0, total=0;
+  courseData.forEach(function(mod){
+    var p = moduleProgress(mod); done += p.done; total += p.total;
+  });
+  return { done:done, total:total, pct: total ? Math.round(done/total*100) : 0 };
+}
+
+/* =========================================================
+   STATE + REFS
+========================================================= */
+var state = { moduleId: 'beginner', lessonId: 'b1', tab: 'reading', quizAttempted:{} };
+var moduleNavEl = document.getElementById('moduleNav');
+var mainEl = document.getElementById('courseMain');
+
+function findLesson(moduleId, lessonId){
+  var mod = courseData.find(function(m){ return m.id === moduleId; });
+  var lesson = mod.lessons.find(function(l){ return l.id === lessonId; });
+  return { mod:mod, lesson:lesson };
+}
+
+/* =========================================================
+   SIDEBAR RENDER
+========================================================= */
+function renderSidebar(){
+  moduleNavEl.innerHTML = '';
+  courseData.forEach(function(mod){
+    var p = moduleProgress(mod);
+    var isOpen = mod.id === state.moduleId;
+    var block = document.createElement('div');
+    block.className = 'module-block' + (isOpen ? ' open' : '');
+    block.id = 'module-' + mod.id;
+
+    var head = document.createElement('button');
+    head.className = 'module-head';
+    head.setAttribute('aria-expanded', isOpen);
+    head.innerHTML =
+      '<span class="module-icon" aria-hidden="true">' + mod.icon + '</span>' +
+      '<span class="module-name"><strong>' + mod.title + '</strong><span>' + mod.sub + '</span></span>' +
+      '<span class="module-pct">' + p.pct + '%</span>' +
+      '<span class="module-chevron" aria-hidden="true">›</span>';
+    head.addEventListener('click', function(){
+      var wasOpen = block.classList.contains('open');
+      document.querySelectorAll('.module-block').forEach(function(b){ b.classList.remove('open'); });
+      if (!wasOpen) block.classList.add('open');
+    });
+    block.appendChild(head);
+
+    var list = document.createElement('ul');
+    list.className = 'module-lessons';
+    mod.lessons.forEach(function(lesson, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.className = 'lesson-btn' + ((mod.id===state.moduleId && lesson.id===state.lessonId) ? ' active' : '');
+      var mark = lesson.locked ? '<span class="lesson-lock" aria-hidden="true">🔒</span>' :
+        (isComplete(mod.id, lesson.id) ? '<span class="lesson-check" aria-hidden="true">✓</span>' : '<span class="lesson-check" aria-hidden="true" style="opacity:.25">○</span>');
+      btn.innerHTML = mark + '<span>' + (i+1) + '. ' + lesson.title + '</span>';
+      if (lesson.locked){
+        btn.disabled = true;
+        btn.title = 'Coming soon';
+      } else {
+        btn.addEventListener('click', function(){
+          state.moduleId = mod.id; state.lessonId = lesson.id; state.tab = 'reading';
+          renderAll();
+          mainEl.focus();
+        });
+      }
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+    block.appendChild(list);
+    moduleNavEl.appendChild(block);
+  });
+
+  var overall = overallProgress();
+  document.getElementById('sidebarBarFill').style.width = overall.pct + '%';
+  document.getElementById('sidebarPctLabel').textContent = overall.done + ' / ' + overall.total + ' lessons';
+  document.getElementById('headerBarFill').style.width = overall.pct + '%';
+  document.getElementById('headerPct').textContent = overall.pct + '%';
+}
+
+/* =========================================================
+   LINTING (heuristic, instant feedback)
+========================================================= */
+var VOID_TAGS = ['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'];
+function lintHTML(html){
+  var errors = [];
+  var tagRe = /<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g;
+  var stack = [];
+  var m;
+  while ((m = tagRe.exec(html)) !== null){
+    var full = m[0], name = m[1].toLowerCase();
+    if (VOID_TAGS.indexOf(name) > -1 || /\/>\s*$/.test(full)) continue;
+    if (full.charAt(1) === '/'){
+      if (stack.length === 0 || stack[stack.length-1] !== name){
+        errors.push('Found a closing </'+name+'> with no matching opening tag.');
+      } else {
+        stack.pop();
+      }
+    } else {
+      stack.push(name);
+    }
+  }
+  if (stack.length){
+    errors.push('Unclosed tag' + (stack.length>1?'s':'') + ': &lt;' + stack.join('&gt;, &lt;') + '&gt;');
+  }
+  var openBrackets = (html.match(/</g)||[]).length;
+  var closeBrackets = (html.match(/>/g)||[]).length;
+  if (openBrackets !== closeBrackets){
+    errors.push('Mismatched &lt; and &gt; brackets — check for a stray "<" or ">".');
+  }
+  return errors;
+}
+function lintCSS(css){
+  var errors = [];
+  var open = (css.match(/{/g)||[]).length;
+  var close = (css.match(/}/g)||[]).length;
+  if (open !== close) errors.push('Mismatched braces: ' + open + ' "{" vs ' + close + ' "}".');
+  var lines = css.split('\n');
+  for (var i=0;i<lines.length;i++){
+    var line = lines[i].trim();
+    if (!line || line.indexOf('/*') > -1) continue;
+    var isDeclaration = /^[a-zA-Z-]+\s*:\s*[^;{}]+$/.test(line);
+    if (isDeclaration){
+      var next = (lines[i+1]||'').trim();
+      if (next.charAt(0) !== '}' ) {
+        errors.push('Missing semicolon after "' + line + '".');
+      }
+    }
+  }
+  return errors;
+}
+function renderLint(containerId, html, css){
+  var box = document.getElementById(containerId);
+  if (!box) return;
+  var errs = lintHTML(html).concat(lintCSS(css));
+  if (!errs.length){
+    box.className = 'lint-box';
+    box.innerHTML = '✓ Quick Check: no obvious issues found.';
+  } else {
+    box.className = 'lint-box has-errors';
+    box.innerHTML = '⚠ Quick Check found ' + errs.length + ' possible issue' + (errs.length>1?'s':'') + ':<ul>' +
+      errs.map(function(e){ return '<li>'+e+'</li>'; }).join('') + '</ul>';
+  }
+}
+
+/* =========================================================
+   CODE EDITOR (shared factory for Playground + Challenge)
+========================================================= */
+function buildEditor(root, prefix, initial){
+  root.innerHTML =
+    '<div class="editor-workspace">' +
+      '<div class="editor-col">' +
+        '<div class="editor-block"><label for="'+prefix+'html">HTML</label>' +
+          '<textarea class="code-textarea" id="'+prefix+'html" spellcheck="false" aria-label="HTML code"></textarea></div>' +
+        '<div class="editor-block"><label for="'+prefix+'css">CSS</label>' +
+          '<textarea class="code-textarea" id="'+prefix+'css" spellcheck="false" aria-label="CSS code" style="min-height:90px"></textarea></div>' +
+        '<div class="editor-actions">' +
+          '<button class="btn btn-secondary" type="button" id="'+prefix+'reset">Reset Starter Code</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="preview-col">' +
+        '<label>Live Preview</label>' +
+        '<div class="preview-frame-wrap"><iframe class="preview-frame" id="'+prefix+'frame" title="Code preview"></iframe></div>' +
+        '<div class="lint-box" id="'+prefix+'lint">Quick Check will appear here.</div>' +
+      '</div>' +
+    '</div>';
+
+  var htmlBox = document.getElementById(prefix+'html');
+  var cssBox = document.getElementById(prefix+'css');
+  var frame = document.getElementById(prefix+'frame');
+  htmlBox.value = initial.html || '';
+  cssBox.value = initial.css || '';
+
+  var timer;
+  function run(){
+    var doc = '<!DOCTYPE html><html><head><style>' + cssBox.value + '</style></head><body>' + htmlBox.value + '</body></html>';
+    frame.setAttribute('srcdoc', doc);
+    renderLint(prefix+'lint', htmlBox.value, cssBox.value);
+  }
+  function scheduleRun(){ clearTimeout(timer); timer = setTimeout(run, 400); }
+  htmlBox.addEventListener('input', scheduleRun);
+  cssBox.addEventListener('input', scheduleRun);
+  document.getElementById(prefix+'reset').addEventListener('click', function(){
+    htmlBox.value = initial.html || ''; cssBox.value = initial.css || ''; run();
+  });
+  run();
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+function renderQuiz(root, mod, lesson){
+  var qs = lesson.quiz;
+  var html = '';
+  qs.forEach(function(q, qi){
+    html += '<div class="quiz-question" data-qi="'+qi+'">' +
+      '<p class="q-text">'+(qi+1)+'. '+q.q+'</p>';
+    q.options.forEach(function(opt, oi){
+      html += '<label class="quiz-option"><input type="radio" name="quiz-'+lesson.id+'-'+qi+'" value="'+oi+'"> <span>'+opt+'</span></label>';
+    });
+    html += '<p class="quiz-explain">'+q.explain+'</p></div>';
+  });
+  html += '<button class="btn btn-primary" type="button" id="checkQuizBtn">Check Answers</button>' +
+          '<p class="quiz-score" id="quizScoreText" aria-live="polite"></p>';
+  root.innerHTML = html;
+
+  document.getElementById('checkQuizBtn').addEventListener('click', function(){
+    var score = 0;
+    qs.forEach(function(q, qi){
+      var block = root.querySelector('.quiz-question[data-qi="'+qi+'"]');
+      var selected = block.querySelector('input[type="radio"]:checked');
+      var opts = block.querySelectorAll('.quiz-option');
+      opts.forEach(function(optEl, oi){
+        optEl.classList.remove('correct','incorrect');
+        if (oi === q.correct) optEl.classList.add('correct');
+        else if (selected && parseInt(selected.value,10) === oi) optEl.classList.add('incorrect');
+      });
+      block.querySelector('.quiz-explain').classList.add('show');
+      if (selected && parseInt(selected.value,10) === q.correct) score++;
+    });
+    document.getElementById('quizScoreText').textContent = 'Score: ' + score + ' / ' + qs.length;
+    state.quizAttempted[mod.id+'_'+lesson.id] = { score:score, total:qs.length };
+    upsertRow(mod.id, lesson.id, { quiz_score: score, quiz_total: qs.length });
+    updateCompleteBar(mod, lesson);
+  });
+}
+
+/* =========================================================
+   MAIN LESSON RENDER
+========================================================= */
+var TABS = [
+  { id:'reading', label:'Reading' },
+  { id:'playground', label:'Code Playground' },
+  { id:'challenge', label:'Try It Yourself' },
+  { id:'quiz', label:'Quiz' }
+];
+
+function updateCompleteBar(mod, lesson){
+  var btn = document.getElementById('markCompleteBtn');
+  var hint = document.getElementById('completeHint');
+  if (!btn) return;
+  var attempted = !!state.quizAttempted[mod.id+'_'+lesson.id] || isComplete(mod.id, lesson.id);
+  var already = isComplete(mod.id, lesson.id);
+  btn.disabled = !attempted || already;
+  btn.textContent = already ? '✓ Completed' : 'Mark Lesson Complete';
+  hint.textContent = already ? 'Nice work — this lesson is saved to your progress.' :
+    (attempted ? 'You can mark this lesson complete now.' : 'Answer the quiz first to unlock this button.');
+}
+
+function renderMain(){
+  var found = findLesson(state.moduleId, state.lessonId);
+  var mod = found.mod, lesson = found.lesson;
+  var lessonIndex = mod.lessons.indexOf(lesson) + 1;
+
+  mainEl.innerHTML =
+    '<p class="lesson-eyebrow">'+mod.title+' Module · Lesson '+lessonIndex+' of '+mod.lessons.length+'</p>' +
+    '<h1 class="lesson-h1">'+lesson.title+'</h1>' +
+    '<div class="tablist" role="tablist" aria-label="Lesson sections" id="tablist"></div>' +
+    '<div id="panel-reading" class="tabpanel" role="tabpanel"><div class="reading"></div></div>' +
+    '<div id="panel-playground" class="tabpanel" role="tabpanel"></div>' +
+    '<div id="panel-challenge" class="tabpanel" role="tabpanel"></div>' +
+    '<div id="panel-quiz" class="tabpanel" role="tabpanel"></div>' +
+    '<div class="complete-bar">' +
+      '<p class="hint" id="completeHint"></p>' +
+      '<button class="btn btn-primary" type="button" id="markCompleteBtn" disabled>Mark Lesson Complete</button>' +
+    '</div>' +
+    '<div class="lesson-nav-arrows">' +
+      '<button class="btn btn-secondary" type="button" id="prevLessonBtn">← Previous</button>' +
+      '<button class="btn btn-secondary" type="button" id="nextLessonBtn">Next →</button>' +
+    '</div>';
+
+  // tabs
+  var tablist = document.getElementById('tablist');
+  TABS.forEach(function(t){
+    var b = document.createElement('button');
+    b.className = 'tab-btn' + (state.tab === t.id ? ' active' : '');
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', state.tab === t.id);
+    b.textContent = t.label;
+    b.addEventListener('click', function(){ state.tab = t.id; renderMain(); });
+    tablist.appendChild(b);
+  });
+  TABS.forEach(function(t){
+    document.getElementById('panel-'+t.id).classList.toggle('active', state.tab === t.id);
+  });
+
+  // reading
+  mainEl.querySelector('#panel-reading .reading').innerHTML = lesson.reading || '<p>Content coming soon.</p>';
+
+  // playground
+  buildEditor(document.getElementById('panel-playground'), 'pg_'+lesson.id+'_', lesson.starter || {html:'',css:''});
+
+  // challenge
+  var challengeRoot = document.getElementById('panel-challenge');
+  if (lesson.challenge){
+    challengeRoot.innerHTML =
+      '<div class="challenge-card"><h3>🎯 Challenge</h3><p>'+lesson.challenge.text+'</p>' +
+        '<ul class="challenge-checklist">' + lesson.challenge.checklist.map(function(c){
+          return '<li><input type="checkbox"> <span>'+c+'</span></li>';
+        }).join('') + '</ul>' +
+      '</div><div id="challengeEditorRoot"></div>';
+    buildEditor(document.getElementById('challengeEditorRoot'), 'ch_'+lesson.id+'_', lesson.challenge.starter);
+  } else {
+    challengeRoot.innerHTML = '<p>Challenge coming soon.</p>';
+  }
+
+  // quiz
+  var quizRoot = document.getElementById('panel-quiz');
+  if (lesson.quiz) renderQuiz(quizRoot, mod, lesson);
+  else quizRoot.innerHTML = '<p>Quiz coming soon.</p>';
+
+  // complete button
+  document.getElementById('markCompleteBtn').addEventListener('click', function(){
+    var attempt = state.quizAttempted[mod.id+'_'+lesson.id];
+    upsertRow(mod.id, lesson.id, {
+      completed: true,
+      completed_at: new Date().toISOString(),
+      quiz_score: attempt ? attempt.score : null,
+      quiz_total: attempt ? attempt.total : null
+    });
+    renderSidebar();
+    updateCompleteBar(mod, lesson);
+  });
+  updateCompleteBar(mod, lesson);
+
+  // prev/next
+  var flat = [];
+  courseData.forEach(function(m){ m.lessons.forEach(function(l){ if(!l.locked) flat.push({m:m,l:l}); }); });
+  var curIdx = flat.findIndex(function(f){ return f.m.id===mod.id && f.l.id===lesson.id; });
+  var prevBtn = document.getElementById('prevLessonBtn');
+  var nextBtn = document.getElementById('nextLessonBtn');
+  prevBtn.disabled = curIdx <= 0;
+  nextBtn.disabled = curIdx === -1 || curIdx >= flat.length - 1;
+  prevBtn.addEventListener('click', function(){
+    if (curIdx > 0){ state.moduleId = flat[curIdx-1].m.id; state.lessonId = flat[curIdx-1].l.id; state.tab='reading'; renderAll(); }
+  });
+  nextBtn.addEventListener('click', function(){
+    if (curIdx < flat.length-1){ state.moduleId = flat[curIdx+1].m.id; state.lessonId = flat[curIdx+1].l.id; state.tab='reading'; renderAll(); }
+  });
+}
+
+function renderAll(){ renderSidebar(); renderMain(); }
+
+/* footer jump links open the right module */
+document.querySelectorAll('.footer-link[data-jump]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var modId = a.getAttribute('data-jump');
+    var mod = courseData.find(function(m){ return m.id === modId; });
+    state.moduleId = modId; state.lessonId = mod.lessons.find(function(l){return !l.locked;}).id; state.tab = 'reading';
+    renderAll();
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+renderAll();
+})();
+</script>
+</body>
+</html>
